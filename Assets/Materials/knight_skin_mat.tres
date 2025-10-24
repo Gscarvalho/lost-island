@@ -1,0 +1,29 @@
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://b8ewj6kci467r"]
+
+[ext_resource type="Shader" uid="uid://cw5jkssrochks" path="res://Assets/Shaders/knight_skin.gdshader" id="1_2uj3t"]
+[ext_resource type="Texture2D" uid="uid://d0jsyt0r8jcqa" path="res://Assets/Images/Textures/knight_texture.png" id="2_qxayk"]
+
+[sub_resource type="Gradient" id="Gradient_42bwj"]
+offsets = PackedFloat32Array(0.5, 0.50877196)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0m4wn"]
+gradient = SubResource("Gradient_42bwj")
+
+[sub_resource type="Gradient" id="Gradient_ehxue"]
+offsets = PackedFloat32Array(0.7, 0.9)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6htn1"]
+gradient = SubResource("Gradient_ehxue")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_2uj3t")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("2_qxayk")
+shader_parameter/albedo_texture_size = Vector2i(1024, 1024)
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/color_gradient = SubResource("GradientTexture1D_0m4wn")
+shader_parameter/fresnel_gradient = SubResource("GradientTexture1D_6htn1")

@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://df6prq4xcpyx3"]
+
+[ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Characters/player.tscn" id="1_vflva"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_p361o"]
+size = Vector2(50, 50)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vflva"]
+data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0, -25, 25, 0, -25)
+
+[node name="Level_Test" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.90107703, -0.18327227, 0.39302865, 0, 0.90630776, 0.42261827, -0.43365914, 0.3808116, -0.81665313, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Weather" type="Node" parent="."]
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Ground" type="Node3D" parent="World"]
+
+[node name="Floor1" type="MeshInstance3D" parent="World/Ground"]
+mesh = SubResource("PlaneMesh_p361o")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/Ground/Floor1"]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Ground/Floor1/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_vflva")
+
+[node name="Entities" type="Node3D" parent="."]
+
+[node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
