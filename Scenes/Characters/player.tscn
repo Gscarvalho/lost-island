@@ -28,7 +28,8 @@ spring_length = 5.0
 [node name="Timers" type="Node" parent="."]
 
 [node name="StaminaRegenTimer" type="Timer" parent="Timers"]
-wait_time = 5.0
+wait_time = 3.0
+one_shot = true
 
 [node name="WeaponChoiceTimer" type="Timer" parent="Timers"]
 wait_time = 3.0
@@ -38,4 +39,5 @@ one_shot = true
 wait_time = 3.0
 one_shot = true
 
+[connection signal="timeout" from="Timers/StaminaRegenTimer" to="." method="_on_stamina_regen_timer_timeout"]
 [connection signal="timeout" from="Timers/WeaponChoiceTimer" to="." method="_on_weapon_choice_timer_timeout"]

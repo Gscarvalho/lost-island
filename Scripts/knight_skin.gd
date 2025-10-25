@@ -22,9 +22,9 @@ var mana_types:= [
 	Skills.SkillType.Water, 
 	Skills.SkillType.Light,
 	]
-var current_mana : int = 0 :
+var current_mana_type : int = 0 :
 	set(value):
-		current_mana = value
+		current_mana_type = value
 		ui.update_slots(mana_types[value])
 		if value == 0:
 			weapon_active = true

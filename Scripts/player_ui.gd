@@ -21,19 +21,29 @@ func update_slots(value: Skills.SkillType) -> void:
 			child.get_child(0).modulate.a = 0
 		weapon_icon_image.texture = icons[0]
 		weapon_icon_image.modulate = Color.LIGHT_BLUE
+		
 	if value == Skills.SkillType.Fire:
 		for child in mana_slots.get_children():
-			child.get_child(0).modulate = Color.DARK_ORANGE
+			if child.get_index() >= skin.mana_inventory[1] + 1:
+				child.get_child(0).modulate = Color.DARK_ORANGE
+			else:
+				child.get_child(0).modulate.a = 0
 		weapon_icon_image.texture = icons[1]
 		weapon_icon_image.modulate = Color.DARK_ORANGE
 	if value == Skills.SkillType.Water:
 		for child in mana_slots.get_children():
-			child.get_child(0).modulate = Color.DEEP_SKY_BLUE
+			if child.get_index() >= skin.mana_inventory[1] + 1:
+				child.get_child(0).modulate = Color.DEEP_SKY_BLUE
+			else:
+				child.get_child(0).modulate.a = 0	
 		weapon_icon_image.texture = icons[2]
 		weapon_icon_image.modulate = Color.DEEP_SKY_BLUE
 	if value == Skills.SkillType.Light:
 		for child in mana_slots.get_children():
-			child.get_child(0).modulate = Color.GOLD
+			if child.get_index() >= skin.mana_inventory[1] + 1:
+				child.get_child(0).modulate = Color.GOLD
+			else:
+				child.get_child(0).modulate.a = 0	
 		weapon_icon_image.texture = icons[3]
 		weapon_icon_image.modulate = Color.GOLD
 		

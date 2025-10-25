@@ -9,6 +9,7 @@ var walk_speed := 5.5
 var run_speed := 8.5
 var movement_input := Vector2.ZERO
 var speed_modifier := 1.0
+var stamina_cost_reduction := 1.0
 
 #Jump
 var jump_height : float = 3.5
@@ -26,7 +27,7 @@ var is_being_hit := false
 
 
 func _physics_process(delta: float) -> void:
-	print($Timers/MenuDelayTimer.time_left)
+	#print($Timers/MenuDelayTimer.time_left)
 	_menu_logic()
 	_equip_logic()
 	_move_logic(delta)
@@ -48,9 +49,9 @@ func _equip_logic() -> void:
 		var left = Input.is_action_just_pressed("menu_left")
 		var right = Input.is_action_just_pressed("menu_right")
 		if left:
-			skin.current_mana = ( skin.current_mana - 1 ) % skin.mana_types.size()
+			skin.current_mana_type = ( skin.current_mana_type - 1 ) % skin.mana_types.size()
 		elif right:
-			skin.current_mana = ( skin.current_mana + 1 ) % skin.mana_types.size()
+			skin.current_mana_type = ( skin.current_mana_type + 1 ) % skin.mana_types.size()
 
 func _close_weapon_choice() -> void:
 	StateManager.set_state(StateManager.State.PLAY)
@@ -59,7 +60,13 @@ func _close_weapon_choice() -> void:
 func _on_weapon_choice_timer_timeout() -> void:
 	_close_weapon_choice()
 	$Timers/MenuDelayTimer.start()
-	
+
+func _on_stamina_regen_timer_timeout() -> void:
+	if skin.current_stamina <= 0.0:# and $Timers/StaminaRegenTimer.time_left:
+		print("Stamina depleted, delayed regeneration.")
+		await get_tree().create_timer(3.0).timeout
+	skin.current_stamina = 100.0
+	$Timers/StaminaRegenTimer.stop()
 
 func _menu_logic() -> void:
 	if Input.is_action_just_pressed("menu"):
@@ -127,6 +134,7 @@ func _jump_logic(delta) -> void:
 	if StateManager.current_state == StateManager.State.PLAY:
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			velocity.y = -jump_velocity
+			skin.current_stamina -= 10.0 * stamina_cost_reduction
 		var gravity = jump_gravity if velocity.y > 0.0 else fall_gravity
 		velocity.y -= gravity * delta
 
@@ -137,4 +145,3 @@ func stop_movement(stop_speed: float, start_speed: float) -> void:
 	var tween = create_tween()
 	tween.tween_property(self,"speed_modifier", 0.0, stop_speed)
 	tween.tween_property(self,"speed_modifier", 1.0, start_speed)
-	
