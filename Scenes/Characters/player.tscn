@@ -1,14 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://c6rjbesajt77w"]
+[gd_scene load_steps=6 format=3 uid="uid://c6rjbesajt77w"]
 
 [ext_resource type="Script" uid="uid://ctshhk3eb7d2h" path="res://Scripts/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://c7hpgqo2k5244" path="res://Scenes/Characters/Skins/knight_skin.tscn" id="2_40svl"]
 [ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Utilities/camera_controller.tscn" id="3_al8ar"]
+[ext_resource type="Script" uid="uid://cobymstmjcomy" path="res://Scripts/player_ui.gd" id="4_gy20a"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_40svl"]
 radius = 0.7
 height = 2.5
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_mask = 54
 script = ExtResource("1_v0iea")
 
@@ -21,3 +22,12 @@ shape = SubResource("CapsuleShape3D_40svl")
 [node name="CameraController" parent="." instance=ExtResource("3_al8ar")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1515634, 0)
 spring_length = 5.0
+
+[node name="PlayerUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_gy20a")

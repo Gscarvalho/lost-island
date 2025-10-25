@@ -1,6 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=10 format=3 uid="uid://df6prq4xcpyx3"]
 
+[ext_resource type="PackedScene" uid="uid://bmbm2rnr4wx14" path="res://Scenes/Levels/title_ui.tscn" id="1_ojicq"]
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Characters/player.tscn" id="1_vflva"]
+[ext_resource type="Material" uid="uid://cl6e3woev4yo6" path="res://Assets/Materials/ground_mat.tres" id="1_xawdm"]
+[ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/Levels/menu_ui.tscn" id="2_qkmes"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
+sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)
+sky_horizon_color = Color(1.0800443, 1.3085082, 1.4199688, 1)
+ground_bottom_color = Color(0.4187766, 0.63131994, 0.8815971, 1)
+ground_horizon_color = Color(1.0800443, 1.3085082, 1.4199688, 1)
+
+[sub_resource type="Sky" id="Sky_xawdm"]
+sky_material = SubResource("ProceduralSkyMaterial_vflva")
+
+[sub_resource type="Environment" id="Environment_ojicq"]
+background_mode = 2
+sky = SubResource("Sky_xawdm")
+tonemap_mode = 2
+ssao_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_p361o"]
 size = Vector2(50, 50)
@@ -10,17 +30,27 @@ data = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, 25, -25, 0,
 
 [node name="Level_Test" type="Node3D"]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.90107703, -0.18327227, 0.39302865, 0, 0.90630776, 0.42261827, -0.43365914, 0.3808116, -0.81665313, 0, 0, 0)
-shadow_enabled = true
+[node name="Menus" type="Node" parent="." groups=["Menu"]]
+
+[node name="Title" parent="Menus" instance=ExtResource("1_ojicq")]
+
+[node name="Menu" parent="Menus" instance=ExtResource("2_qkmes")]
 
 [node name="Weather" type="Node" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="Weather"]
+transform = Transform3D(-0.90107703, -0.18327229, 0.39302868, 0, 0.9063078, 0.4226183, -0.43365914, 0.38081163, -0.81665313, 0, 100, 0)
+shadow_enabled = true
+
+[node name="Sky" type="WorldEnvironment" parent="Weather"]
+environment = SubResource("Environment_ojicq")
 
 [node name="World" type="Node3D" parent="."]
 
 [node name="Ground" type="Node3D" parent="World"]
 
 [node name="Floor1" type="MeshInstance3D" parent="World/Ground"]
+material_override = ExtResource("1_xawdm")
 mesh = SubResource("PlaneMesh_p361o")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="World/Ground/Floor1"]
@@ -33,3 +63,4 @@ shape = SubResource("ConcavePolygonShape3D_vflva")
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.842709)

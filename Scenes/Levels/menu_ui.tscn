@@ -1,0 +1,477 @@
+[gd_scene load_steps=7 format=3 uid="uid://ddwgfs476kvdr"]
+
+[ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
+[ext_resource type="Texture2D" uid="uid://bqn82nnijhe2c" path="res://Assets/Images/UI/circle_fill_gradient.svg" id="2_b1j0w"]
+[ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
+[ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="3_prqvn"]
+
+[sub_resource type="Gradient" id="Gradient_ehti2"]
+colors = PackedColorArray(7.2196126e-06, 0.58050644, 0.7578227, 1, 0.42462867, 0.7794049, 0.9089255, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5sxxi"]
+gradient = SubResource("Gradient_ehti2")
+width = 1280
+use_hdr = true
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_axiel")
+
+[node name="Screen" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_5sxxi")
+
+[node name="Background" type="TextureRect" parent="."]
+visible = false
+modulate = Color(0, 1, 1, 1)
+clip_contents = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -600.0
+offset_top = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("2_b1j0w")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Main" type="HBoxContainer" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -1000.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(500, 50)
+alignment = 2
+
+[node name="Left" type="VBoxContainer" parent="Main"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="StatsRow" type="HBoxContainer" parent="Main/Left"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="ATK" type="TextureRect" parent="Main/Left/StatsRow"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/ATK"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/ATK"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "ATK"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="DEF" type="TextureRect" parent="Main/Left/StatsRow"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/DEF"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/DEF"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "DEF"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="MATK" type="TextureRect" parent="Main/Left/StatsRow"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/MATK"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/MATK"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "MATK"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="MDEF" type="TextureRect" parent="Main/Left/StatsRow"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/MDEF"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/MDEF"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "MDEF"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="SPD" type="TextureRect" parent="Main/Left/StatsRow"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/SPD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/SPD"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "SPD
+"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="RowBottom" type="HBoxContainer" parent="Main/Left"]
+visible = false
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Main/Left/RowBottom"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "ATK"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="TextureRect2" type="TextureRect" parent="Main/Left/RowBottom"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect2"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "DEF"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="TextureRect3" type="TextureRect" parent="Main/Left/RowBottom"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect3"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "MATK"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="TextureRect4" type="TextureRect" parent="Main/Left/RowBottom"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect4"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "MDEF"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="TextureRect5" type="TextureRect" parent="Main/Left/RowBottom"]
+layout_mode = 2
+texture = ExtResource("3_prqvn")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 64
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect5"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 24
+text = "SPD
+"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="Right" type="VBoxContainer" parent="Main"]
+visible = false
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="Main/Right"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_cuj2c")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect2" type="TextureRect" parent="Main/Right"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_cuj2c")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="Main/Right"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_cuj2c")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="Main/Right"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_cuj2c")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="TextureRect5" type="TextureRect" parent="Main/Right"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_cuj2c")
+expand_mode = 3
+stretch_mode = 5
