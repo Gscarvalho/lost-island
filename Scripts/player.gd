@@ -2,7 +2,7 @@
 class_name Player
 extends CharacterBody3D
 @onready var camera = $CameraController/Camera3D
-@onready var skin = $Skin
+@onready var skin = $Skin as PlayerSkin
 
 #Movement
 var walk_speed := 5.5
@@ -26,14 +26,40 @@ var is_being_hit := false
 
 
 func _physics_process(delta: float) -> void:
+	print($Timers/MenuDelayTimer.time_left)
 	_menu_logic()
-	if StateManager.current_state == StateManager.State.PLAY:
-		_move_logic(delta)
-		_jump_logic(delta)
-		_attacks_logic()
-		_skills_logic()
-		move_and_slide()
+	_equip_logic()
+	_move_logic(delta)
+	_jump_logic(delta)
+	_attacks_logic()
+	_skills_logic()
+	move_and_slide()
 
+func _equip_logic() -> void:
+	if Input.is_action_pressed("swap") and StateManager.current_state == StateManager.State.PLAY and not $Timers/MenuDelayTimer.time_left:
+		$Timers/WeaponChoiceTimer.start()
+		StateManager.set_state(StateManager.State.WEAPON)
+	elif Input.is_action_just_released("swap") and StateManager.current_state == StateManager.State.WEAPON:
+			_close_weapon_choice()
+	if StateManager.current_state == StateManager.State.WEAPON:
+		skin.set_move_timescale(0.1)
+		var tween = create_tween()
+		tween. tween_property(self, "velocity", Vector3.ZERO, 0.3)
+		var left = Input.is_action_just_pressed("menu_left")
+		var right = Input.is_action_just_pressed("menu_right")
+		if left:
+			skin.current_mana = ( skin.current_mana - 1 ) % skin.mana_types.size()
+		elif right:
+			skin.current_mana = ( skin.current_mana + 1 ) % skin.mana_types.size()
+
+func _close_weapon_choice() -> void:
+	StateManager.set_state(StateManager.State.PLAY)
+	skin.set_move_timescale(1)
+	
+func _on_weapon_choice_timer_timeout() -> void:
+	_close_weapon_choice()
+	$Timers/MenuDelayTimer.start()
+	
 
 func _menu_logic() -> void:
 	if Input.is_action_just_pressed("menu"):
@@ -43,6 +69,7 @@ func _menu_logic() -> void:
 			StateManager.set_state(StateManager.State.PLAY)
 		elif StateManager.current_state == StateManager.State.TITLE:
 			StateManager.set_state(StateManager.State.MENU)
+		velocity = Vector3.ZERO
 	if Input.is_action_just_pressed("title"):
 		if StateManager.current_state == StateManager.State.PLAY:
 			StateManager.set_state(StateManager.State.TITLE)
@@ -50,45 +77,58 @@ func _menu_logic() -> void:
 			StateManager.set_state(StateManager.State.TITLE)
 		elif StateManager.current_state == StateManager.State.TITLE:
 			StateManager.set_state(StateManager.State.PLAY)
+		velocity = Vector3.ZERO
 		
 		#print(StateManager.current_state)
 
 func _attacks_logic() -> void:
-	if Input.is_action_just_pressed("attack"):
-		skin.current_attack = skin.attacks[0] #in Skill inventory X is first [0]
-		skin.attack("X attack")
-	if Input.is_action_just_pressed("skill"):
-		skin.current_attack = skin.attacks[1] #in Skill inventory Y is first [0]
-		skin.attack("Y attack")
+	if StateManager.current_state == StateManager.State.PLAY:
+		if not Input.is_action_pressed("aim") and skin.weapon_active: #Melee attackes
+			if Input.is_action_just_pressed("attack"):
+				skin.current_attack = skin.attacks[0] #in Skill inventory X is first [0]
+				skin.attack()
+			if Input.is_action_just_pressed("skill"):
+				skin.current_attack = skin.attacks[1] #in Skill inventory Y is first [1]
+				skin.attack()
+		if Input.is_action_pressed("aim"): #Aimmed attackes
+			if Input.is_action_just_pressed("attack"):
+				skin.current_attack = skin.magic_attacks[0] #in Skill inventory Y is first [0]
+				skin.attack()
+			elif Input.is_action_just_pressed("skill"):
+				skin.current_attack = skin.magic_attacks[1] #in Skill inventory Y is first [1]
+				skin.attack()
 
 func _skills_logic() -> void:
 	pass
 
 func _move_logic(delta) -> void:
-	movement_input = Input.get_vector("move_left","move_right","move_forward","move_backward").rotated(-camera.global_rotation.y)
-	var vel_2d = Vector2(velocity.x,velocity.z)
-	if is_on_floor():
-		is_running = Input.is_action_pressed("run")
-	if movement_input != Vector2.ZERO:
-		var speed = run_speed if is_running else walk_speed
-		vel_2d += movement_input * speed * delta * 10
-		vel_2d = vel_2d.limit_length(speed) * speed_modifier
-		velocity.x = vel_2d.x
-		velocity.z = vel_2d.y
-		var target_angle = -movement_input.angle() + PI/2
-		skin.rotation.y = rotate_toward(skin.rotation.y, target_angle, 6.0 * delta)
-		#tween.tween_property(skin,"rotation:y", target_angle, 0.3)
-	else:
-		vel_2d = vel_2d.move_toward(Vector2.ZERO, walk_speed * 8.0)
-		velocity.x = vel_2d.x
-		velocity.z = vel_2d.y
-		#velocity = Vector3.ZERO
+	if StateManager.current_state == StateManager.State.PLAY:
+		movement_input = Input.get_vector("move_left","move_right","move_forward","move_backward").rotated(-camera.global_rotation.y)
+		var vel_2d = Vector2(velocity.x,velocity.z)
+		if is_on_floor():
+			is_running = Input.is_action_pressed("run")
+		if movement_input != Vector2.ZERO:
+			var speed = run_speed if is_running else walk_speed
+			vel_2d += movement_input * speed * delta * 10
+			vel_2d = vel_2d.limit_length(speed) * speed_modifier
+			velocity.x = vel_2d.x
+			velocity.z = vel_2d.y
+			var target_angle = -movement_input.angle() + PI/2
+			skin.rotation.y = rotate_toward(skin.rotation.y, target_angle, 6.0 * delta)
+			#tween.tween_property(skin,"rotation:y", target_angle, 0.3)
+		else:
+			vel_2d = vel_2d.move_toward(Vector2.ZERO, walk_speed * 8.0)
+			velocity.x = vel_2d.x
+			velocity.z = vel_2d.y
+	elif StateManager.current_state == StateManager.State.MENU:
+		velocity = Vector3.ZERO
 
 func _jump_logic(delta) -> void:
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = -jump_velocity
-	var gravity = jump_gravity if velocity.y > 0.0 else fall_gravity
-	velocity.y -= gravity * delta
+	if StateManager.current_state == StateManager.State.PLAY:
+		if Input.is_action_just_pressed("jump") and is_on_floor():
+			velocity.y = -jump_velocity
+		var gravity = jump_gravity if velocity.y > 0.0 else fall_gravity
+		velocity.y -= gravity * delta
 
 func hit(damage: float, attacker: CharacterBody3D) -> void:
 	pass

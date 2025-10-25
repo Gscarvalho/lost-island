@@ -1,7 +1,7 @@
 #state_manager.gd
 extends Node
 
-enum State { TITLE, PLAY, MENU }
+enum State { TITLE, PLAY, MENU, WEAPON }
 
 @onready var menus = get_tree().get_first_node_in_group("Menu")
 
