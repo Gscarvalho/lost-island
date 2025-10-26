@@ -1,0 +1,66 @@
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://eny68tv2tgfa"]
+
+[sub_resource type="Shader" id="Shader_idut0"]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_toon, specular_toon;
+
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color, filter_linear_mipmap, repeat_enable;
+uniform ivec2 albedo_texture_size;
+
+uniform vec3 uv1_scale;
+uniform vec3 uv1_offset;
+uniform vec3 uv2_scale;
+uniform vec3 uv2_offset;
+
+uniform sampler2D color_gradient;
+uniform sampler2D fresnel_gradient;
+
+float fresnel(float amount, vec3 normal, vec3 view){
+	return pow((1.0-clamp(dot(normalize(normal), normalize(view)), 0.0, 1.0)), amount);
+}
+
+void vertex(){
+	UV = UV * uv1_scale.xy + uv1_offset.xy;
+}
+
+void fragment() {
+	vec2 base_uv = UV;
+	float basic_fresnel = fresnel(4.0, NORMAL, VIEW);
+
+	vec4 albedo_tex = texture(texture_albedo, base_uv);
+	ALBEDO = albedo.rgb + (basic_fresnel * texture(fresnel_gradient, vec2(basic_fresnel, 0.0)).rgb * 1.0);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+}
+
+void light() {
+	float dotproduct = clamp(dot(NORMAL, LIGHT), -0.9, 0.9);
+	float sample = clamp((dotproduct + 1.0) * ATTENUATION / 2.1, 0.05, 0.95);
+	vec4 shaded = texture(color_gradient, vec2(sample, 0.0));
+	DIFFUSE_LIGHT += clamp((shaded.rgb * LIGHT_COLOR), 0.0, 1.0);
+//	DIFFUSE_LIGHT += (shaded.rgb * LIGHT_COLOR);
+}"
+
+[sub_resource type="Gradient" id="Gradient_42bwj"]
+offsets = PackedFloat32Array(0.5, 0.50877196)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_0m4wn"]
+gradient = SubResource("Gradient_42bwj")
+
+[sub_resource type="Gradient" id="Gradient_ehxue"]
+offsets = PackedFloat32Array(0.7, 0.9)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6htn1"]
+gradient = SubResource("Gradient_ehxue")
+
+[resource]
+render_priority = 0
+shader = SubResource("Shader_idut0")
+shader_parameter/albedo = Color(0.2834238, 0.32886407, 0.3651121, 1)
+shader_parameter/albedo_texture_size = Vector2i(1024, 1024)
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/color_gradient = SubResource("GradientTexture1D_0m4wn")
+shader_parameter/fresnel_gradient = SubResource("GradientTexture1D_6htn1")

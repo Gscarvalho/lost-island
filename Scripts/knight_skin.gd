@@ -14,12 +14,13 @@ var weapon_active:= true :
 	set(value):
 		weapon_active = value
 		handslot_r.visible = value
+		set_weapon()
 var current_attack : Skills 
-var mana_inventory := [3,3,3]
+var mana_inventory := [1,3,5]
 var mana_types:= [
 	Skills.SkillType.Physical,
-	Skills.SkillType.Fire, 
 	Skills.SkillType.Water, 
+	Skills.SkillType.Fire, 
 	Skills.SkillType.Light,
 	]
 var current_mana_type : int = 0 :
@@ -43,6 +44,7 @@ var current_stamina := 1.0:
 func _ready() -> void:
 	base_stats = base_stats.duplicate()
 	attacks = attacks.duplicate()
+	set_weapon()
 	await get_tree().create_timer(0.5).timeout
 	#current_hp = base_stats.max_hp
 	current_hp = 60
@@ -81,6 +83,21 @@ func attack() -> void:
 	else:
 		print("no mana")
 		return
+
+func set_weapon() -> void:
+	var current_weapon = handslot_r.get_child(0) as Weapon
+	current_weapon.user = self.get_parent()
+	if weapon_active:
+		for prop in base_stats.get_property_list():
+			if prop.usage & PROPERTY_USAGE_STORAGE and typeof(base_stats.get(prop.name)) == TYPE_FLOAT:
+				if prop.name in current_weapon.stats_boost:
+					base_stats.set(prop.name, base_stats.get(prop.name) + current_weapon.stats_boost.get(prop.name))
+	else:
+		for prop in base_stats.get_property_list():
+			if prop.usage & PROPERTY_USAGE_STORAGE and typeof(base_stats.get(prop.name)) == TYPE_FLOAT:
+				if prop.name in current_weapon.stats_boost:
+					base_stats.set(prop.name, base_stats.get(prop.name) - current_weapon.stats_boost.get(prop.name))
+		
 
 func set_move_timescale(value: float) -> void:
 	$AnimationTree.set("parameters/MovementTimeScale/scale", value)

@@ -72,18 +72,24 @@ func _menu_logic() -> void:
 	if Input.is_action_just_pressed("menu"):
 		if StateManager.current_state == StateManager.State.PLAY:
 			StateManager.set_state(StateManager.State.MENU)
-		elif StateManager.current_state == StateManager.State.MENU:
-			StateManager.set_state(StateManager.State.PLAY)
+			skin.ui.modulate.a = 0.0
 		elif StateManager.current_state == StateManager.State.TITLE:
 			StateManager.set_state(StateManager.State.MENU)
+			skin.ui.modulate.a = 0.0
+		elif StateManager.current_state == StateManager.State.MENU:
+			StateManager.set_state(StateManager.State.PLAY)
+			skin.ui.modulate.a = 1.0
 		velocity = Vector3.ZERO
 	if Input.is_action_just_pressed("title"):
 		if StateManager.current_state == StateManager.State.PLAY:
 			StateManager.set_state(StateManager.State.TITLE)
+			skin.ui.modulate.a = 0.0
 		elif StateManager.current_state == StateManager.State.MENU:
 			StateManager.set_state(StateManager.State.TITLE)
+			skin.ui.modulate.a = 0.0
 		elif StateManager.current_state == StateManager.State.TITLE:
 			StateManager.set_state(StateManager.State.PLAY)
+			skin.ui.modulate.a = 1.0
 		velocity = Vector3.ZERO
 		
 		#print(StateManager.current_state)
