@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=9 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://bqn82nnijhe2c" path="res://Assets/Images/UI/circle_fill_gradient.svg" id="2_b1j0w"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
+[ext_resource type="Texture2D" uid="uid://bc2wps3tp6ait" path="res://Assets/Images/UI/bar_line.svg" id="3_n8txd"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="3_prqvn"]
+[ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="5_jlchu"]
 
 [sub_resource type="Gradient" id="Gradient_ehti2"]
 colors = PackedColorArray(7.2196126e-06, 0.58050644, 0.7578227, 1, 0.42462867, 0.7794049, 0.9089255, 1)
@@ -54,424 +56,526 @@ stretch_mode = 5
 [node name="Main" type="HBoxContainer" parent="."]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.049000002
+anchor_right = 0.95000005
+anchor_bottom = 1.0
+offset_left = -62.72
+offset_right = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(500, 50)
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="Stats" type="VBoxContainer" parent="Main"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 5
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="StatsTitle" type="HBoxContainer" parent="Main/Stats"]
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Main/Stats/StatsTitle"]
+custom_minimum_size = Vector2(300, 30)
+layout_mode = 2
+texture = ExtResource("3_n8txd")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Main/Stats/StatsTitle/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(150, 15)
+text = "Character Stats"
+shortcut_keys_enabled = false
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 161
+
+[node name="ATKStatBox" type="Control" parent="Main/Stats"]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ATKLevelBar" type="TextureProgressBar" parent="Main/Stats/ATKStatBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_progress = Color(0.3529412, 1, 1, 1)
+
+[node name="StatTitle" type="RichTextLabel" parent="Main/Stats/ATKStatBox/ATKLevelBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+offset_right = -100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "Attack"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ValueBG" type="TextureRect" parent="Main/Stats/ATKStatBox"]
+self_modulate = Color(1, 0.84313726, 0, 1)
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -1000.0
-offset_top = -20.0
-offset_bottom = 20.0
+offset_left = -90.0
+offset_top = -15.0
+offset_right = -10.0
+offset_bottom = 15.0
 grow_horizontal = 0
 grow_vertical = 2
-pivot_offset = Vector2(500, 50)
-alignment = 2
+texture = ExtResource("5_jlchu")
+expand_mode = 1
 
-[node name="Left" type="VBoxContainer" parent="Main"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 15
-alignment = 1
-
-[node name="StatsRow" type="HBoxContainer" parent="Main/Left"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-theme_override_constants/separation = 15
-alignment = 1
-
-[node name="ATK" type="TextureRect" parent="Main/Left/StatsRow"]
-layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/ATK"]
+[node name="ATKValue" type="RichTextLabel" parent="Main/Stats/ATKStatBox/ValueBG"]
+clip_contents = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
+offset_top = -9.0
+offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
 text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/ATK"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "ATK"
+fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-justification_flags = 162
 
-[node name="DEF" type="TextureRect" parent="Main/Left/StatsRow"]
+[node name="DEFStatBox" type="Control" parent="Main/Stats"]
+custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/DEF"]
+[node name="DEFLevelBar" type="TextureProgressBar" parent="Main/Stats/DEFStatBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_progress = Color(0.3529412, 1, 1, 1)
+
+[node name="StatTitle" type="RichTextLabel" parent="Main/Stats/DEFStatBox/DEFLevelBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+offset_right = -100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "Defense"
+scroll_active = false
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/DEF"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "DEF"
+[node name="ValueBG" type="TextureRect" parent="Main/Stats/DEFStatBox"]
+self_modulate = Color(1, 0.84313726, 0, 1)
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -15.0
+offset_right = -10.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("5_jlchu")
+expand_mode = 1
+
+[node name="DEFValue" type="RichTextLabel" parent="Main/Stats/DEFStatBox/ValueBG"]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "99"
+fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-justification_flags = 162
 
-[node name="MATK" type="TextureRect" parent="Main/Left/StatsRow"]
+[node name="MATKStatBox" type="Control" parent="Main/Stats"]
+custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/MATK"]
+[node name="MATKLevelBar" type="TextureProgressBar" parent="Main/Stats/MATKStatBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_progress = Color(0.3529412, 1, 1, 1)
+
+[node name="StatTitle" type="RichTextLabel" parent="Main/Stats/MATKStatBox/MATKLevelBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+offset_right = -100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "Mana Attack"
+scroll_active = false
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/MATK"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "MATK"
+[node name="ValueBG" type="TextureRect" parent="Main/Stats/MATKStatBox"]
+self_modulate = Color(1, 0.84313726, 0, 1)
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -15.0
+offset_right = -10.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("5_jlchu")
+expand_mode = 1
+
+[node name="MATKValue" type="RichTextLabel" parent="Main/Stats/MATKStatBox/ValueBG"]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "99"
+fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-justification_flags = 162
 
-[node name="MDEF" type="TextureRect" parent="Main/Left/StatsRow"]
+[node name="MDEFStatBox" type="Control" parent="Main/Stats"]
+custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/MDEF"]
+[node name="MDEFLevelBar" type="TextureProgressBar" parent="Main/Stats/MDEFStatBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_progress = Color(0.3529412, 1, 1, 1)
+
+[node name="StatTitle" type="RichTextLabel" parent="Main/Stats/MDEFStatBox/MDEFLevelBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+offset_right = -100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "Mana Defense"
+scroll_active = false
+horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/MDEF"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "MDEF"
+[node name="ValueBG" type="TextureRect" parent="Main/Stats/MDEFStatBox"]
+self_modulate = Color(1, 0.84313726, 0, 1)
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -15.0
+offset_right = -10.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("5_jlchu")
+expand_mode = 1
+
+[node name="MDEFValue" type="RichTextLabel" parent="Main/Stats/MDEFStatBox/ValueBG"]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "99"
+fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-justification_flags = 162
 
-[node name="SPD" type="TextureRect" parent="Main/Left/StatsRow"]
+[node name="SPDStatBox" type="Control" parent="Main/Stats"]
+custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
-[node name="Value" type="RichTextLabel" parent="Main/Left/StatsRow/SPD"]
+[node name="SPDLevelBar" type="TextureProgressBar" parent="Main/Stats/SPDStatBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_progress = Color(0.3529412, 1, 1, 1)
 
-[node name="Title" type="RichTextLabel" parent="Main/Left/StatsRow/SPD"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
+[node name="StatTitle" type="RichTextLabel" parent="Main/Stats/SPDStatBox/SPDLevelBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -4.0
+offset_right = -100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "SPD
+theme_override_font_sizes/normal_font_size = 32
+text = "Speed
 "
 scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="ValueBG" type="TextureRect" parent="Main/Stats/SPDStatBox"]
+self_modulate = Color(1, 0.84313726, 0, 1)
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -15.0
+offset_right = -10.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("5_jlchu")
+expand_mode = 1
+
+[node name="SPDValue" type="RichTextLabel" parent="Main/Stats/SPDStatBox/ValueBG"]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -9.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "99"
+fit_content = true
+scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
-justification_flags = 162
 
-[node name="RowBottom" type="HBoxContainer" parent="Main/Left"]
+[node name="Player" type="VBoxContainer" parent="Main"]
+custom_minimum_size = Vector2(200, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 5
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/Player"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ColorRect" type="NinePatchRect" parent="Main/Player/VBoxContainer"]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
+
+[node name="ColorRect2" type="NinePatchRect" parent="Main/Player/VBoxContainer"]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
+
+[node name="ColorRect3" type="NinePatchRect" parent="Main/Player/VBoxContainer"]
+custom_minimum_size = Vector2(300, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
+
+[node name="ColorRect4" type="NinePatchRect" parent="Main/Player/VBoxContainer"]
 visible = false
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
-theme_override_constants/separation = 15
-alignment = 1
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
 
-[node name="TextureRect" type="TextureRect" parent="Main/Left/RowBottom"]
+[node name="ColorRect5" type="NinePatchRect" parent="Main/Player/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="CenterContainer" type="CenterContainer" parent="Main/Player"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_vertical = 0
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "ATK"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-justification_flags = 162
-
-[node name="TextureRect2" type="TextureRect" parent="Main/Left/RowBottom"]
+[node name="TextureRect" type="TextureRect" parent="Main/Player/CenterContainer"]
+custom_minimum_size = Vector2(300, 300)
 layout_mode = 2
 texture = ExtResource("3_prqvn")
-expand_mode = 3
+expand_mode = 1
 stretch_mode = 5
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect2"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="model" type="SubViewport" parent="Main/Player/CenterContainer"]
+transparent_bg = true
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect2"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "DEF"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-justification_flags = 162
-
-[node name="TextureRect3" type="TextureRect" parent="Main/Left/RowBottom"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="Main/Player"]
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_vertical = 0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect3"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "MATK"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-justification_flags = 162
-
-[node name="TextureRect4" type="TextureRect" parent="Main/Left/RowBottom"]
+[node name="ColorRect" type="NinePatchRect" parent="Main/Player/VBoxContainer2"]
+custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect4"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect4"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "MDEF"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-justification_flags = 162
-
-[node name="TextureRect5" type="TextureRect" parent="Main/Left/RowBottom"]
+[node name="ColorRect2" type="NinePatchRect" parent="Main/Player/VBoxContainer2"]
+custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect5"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 10.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(0, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 64
-text = "99"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="RichTextLabel2" type="RichTextLabel" parent="Main/Left/RowBottom/TextureRect5"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "SPD
-"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-justification_flags = 162
-
-[node name="Right" type="VBoxContainer" parent="Main"]
+[node name="Info" type="VBoxContainer" parent="Main"]
 visible = false
 clip_contents = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 5
+size_flags_vertical = 5
 size_flags_stretch_ratio = 1.5
-alignment = 2
+alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="Main/Right"]
-custom_minimum_size = Vector2(0, 40)
+[node name="TextureRect" type="NinePatchRect" parent="Main/Info"]
+custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_cuj2c")
-expand_mode = 3
-stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="Main/Right"]
-custom_minimum_size = Vector2(0, 40)
+[node name="TextureRect2" type="NinePatchRect" parent="Main/Info"]
+custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_cuj2c")
-expand_mode = 3
-stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="Main/Right"]
-custom_minimum_size = Vector2(0, 40)
+[node name="TextureRect3" type="NinePatchRect" parent="Main/Info"]
+custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_cuj2c")
-expand_mode = 3
-stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="Main/Right"]
-custom_minimum_size = Vector2(0, 40)
+[node name="TextureRect4" type="NinePatchRect" parent="Main/Info"]
+custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_cuj2c")
-expand_mode = 3
-stretch_mode = 5
 
-[node name="TextureRect5" type="TextureRect" parent="Main/Right"]
-custom_minimum_size = Vector2(0, 40)
+[node name="TextureRect5" type="NinePatchRect" parent="Main/Info"]
+custom_minimum_size = Vector2(200, 20)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_cuj2c")
-expand_mode = 3
-stretch_mode = 5
