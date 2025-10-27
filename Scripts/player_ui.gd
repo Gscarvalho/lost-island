@@ -8,9 +8,12 @@ class_name UI
 @onready var weapon_icon_image: TextureRect = $HBoxContainer/Weapon/Control/WeaponIconImage
 @onready var mana_slots: HBoxContainer = $HBoxContainer/ManaSlots
 @export var icons: Array[Texture2D]
+@onready var circle_timer: TextureProgressBar = $HBoxContainer/Weapon/CircleTimer
+
 func update_health(value: float) -> void:
 	var tween = create_tween()
 	tween.tween_property(hitpoints,"value",value, 0.4)
+
 func update_stamina(value: float) -> void:
 	var tween = create_tween()
 	tween.tween_property(stamina,"value",value, 0.4)
@@ -49,3 +52,11 @@ func update_slots(value: Skills.SkillType) -> void:
 		weapon_icon_image.texture = icons[3]
 		weapon_icon_image.modulate = Color.GOLD
 		
+func show_timer_ui(reveal: bool) -> void:
+	var t: Timer = get_parent().get_node("Timers/WeaponChoiceTimer")
+	if reveal:
+		circle_timer.value = t.time_left
+	else:
+		circle_timer.value = 0
+
+	

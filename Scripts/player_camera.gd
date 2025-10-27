@@ -6,7 +6,7 @@ extends Node3D
 var look_direction := Vector2.ZERO
 
 func _process(delta: float) -> void:
-	if StateManager.current_state == StateManager.State.PLAY:
+	if StateManager.current_state == StateManager.State.PLAY or StateManager.current_state == StateManager.State.WEAPON:
 		look_direction = Input.get_vector("look_left","look_right","look_up","look_down")
 		rotate_from_vector2(look_direction * delta * Vector2(horizontal_acceration,vertical_acceration))
 

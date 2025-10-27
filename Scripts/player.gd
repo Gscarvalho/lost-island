@@ -41,8 +41,9 @@ func _equip_logic() -> void:
 		$Timers/WeaponChoiceTimer.start()
 		StateManager.set_state(StateManager.State.WEAPON)
 	elif Input.is_action_just_released("swap") and StateManager.current_state == StateManager.State.WEAPON:
-			_close_weapon_choice()
+		_close_weapon_choice()
 	if StateManager.current_state == StateManager.State.WEAPON:
+		skin.ui.show_timer_ui(true)
 		skin.set_move_timescale(0.1)
 		var tween = create_tween()
 		tween. tween_property(self, "velocity", Vector3.ZERO, 0.3)
@@ -56,6 +57,7 @@ func _equip_logic() -> void:
 func _close_weapon_choice() -> void:
 	StateManager.set_state(StateManager.State.PLAY)
 	skin.set_move_timescale(1)
+	skin.ui.show_timer_ui(false)
 	
 func _on_weapon_choice_timer_timeout() -> void:
 	_close_weapon_choice()
@@ -69,7 +71,7 @@ func _on_stamina_regen_timer_timeout() -> void:
 	$Timers/StaminaRegenTimer.stop()
 
 func _menu_logic() -> void:
-	if Input.is_action_just_pressed("menu"):
+	if Input.is_action_just_pressed("menu") and not StateManager.current_state == StateManager.State.WEAPON:
 		if StateManager.current_state == StateManager.State.PLAY:
 			StateManager.set_state(StateManager.State.MENU)
 			skin.ui.modulate.a = 0.0
@@ -80,7 +82,7 @@ func _menu_logic() -> void:
 			StateManager.set_state(StateManager.State.PLAY)
 			skin.ui.modulate.a = 1.0
 		velocity = Vector3.ZERO
-	if Input.is_action_just_pressed("title"):
+	if Input.is_action_just_pressed("title") and not StateManager.current_state == StateManager.State.WEAPON:
 		if StateManager.current_state == StateManager.State.PLAY:
 			StateManager.set_state(StateManager.State.TITLE)
 			skin.ui.modulate.a = 0.0
@@ -138,9 +140,10 @@ func _move_logic(delta) -> void:
 
 func _jump_logic(delta) -> void:
 	if StateManager.current_state == StateManager.State.PLAY:
-		if Input.is_action_just_pressed("jump") and is_on_floor():
+		if Input.is_action_just_pressed("jump") and is_on_floor() and skin.current_stamina >= 10:
 			velocity.y = -jump_velocity
 			skin.current_stamina -= 10.0 * stamina_cost_reduction
+			$Timers/StaminaRegenTimer.start()
 		var gravity = jump_gravity if velocity.y > 0.0 else fall_gravity
 		velocity.y -= gravity * delta
 

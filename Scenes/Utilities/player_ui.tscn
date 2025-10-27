@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://krfjlcxyplgw"]
+[gd_scene load_steps=9 format=3 uid="uid://krfjlcxyplgw"]
 
 [ext_resource type="Script" uid="uid://cobymstmjcomy" path="res://Scripts/player_ui.gd" id="1_njokc"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="2_kkctp"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="4_1csck"]
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="4_mwh7w"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="5_mrpqa"]
+[ext_resource type="Texture2D" uid="uid://dy15xf6smaddf" path="res://Assets/Images/UI/circle_line.svg" id="7_mwh7w"]
 
 [node name="PlayerUI" type="Control"]
 layout_mode = 3
@@ -237,6 +238,17 @@ pivot_offset = Vector2(35, 35)
 texture = ExtResource("3_uswer")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="CircleTimer" type="TextureProgressBar" parent="HBoxContainer/Weapon"]
+custom_minimum_size = Vector2(115, 115)
+layout_mode = 2
+max_value = 3.0
+step = 0.05
+fill_mode = 5
+nine_patch_stretch = true
+texture_under = ExtResource("7_mwh7w")
+texture_progress = ExtResource("7_mwh7w")
+tint_progress = Color(0.5019608, 0.5019608, 0.5019608, 1)
 
 [node name="HUD" type="VBoxContainer" parent="HBoxContainer"]
 custom_minimum_size = Vector2(450, 40)

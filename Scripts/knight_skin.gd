@@ -46,8 +46,7 @@ func _ready() -> void:
 	attacks = attacks.duplicate()
 	set_weapon()
 	await get_tree().create_timer(0.5).timeout
-	#current_hp = base_stats.max_hp
-	current_hp = 60
+	current_hp = base_stats.max_hp
 	current_stamina = 100.0
 	
 func attack() -> void:
@@ -63,11 +62,13 @@ func attack() -> void:
 				mana_inventory[1] += current_attack.skill_regen_power
 			elif current_attack.skill_type == Skills.SkillType.Light:
 				mana_inventory[2] += current_attack.skill_regen_power
+
 	if current_attack.skill_type == Skills.SkillType.Physical and current_stamina >= current_attack.skill_cost:
 		attack_state_machine.travel(current_attack.skill_anim_name)
 		$AnimationTree.set("parameters/AttackOneShot/request",AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		current_stamina -= current_attack.skill_cost
 		timers.get_node("StaminaRegenTimer").start()
+		
 	elif current_attack.skill_type != Skills.SkillType.Physical:
 		if current_attack.skill_type == Skills.SkillType.Water and mana_inventory[0] >= current_attack.skill_cost:
 			mana_inventory[0] -= current_attack.skill_cost
@@ -80,6 +81,7 @@ func attack() -> void:
 		magic_state_machine.travel(current_attack.skill_anim_name)
 		$AnimationTree.set("parameters/MagicOneShot/request",AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
 		print(current_attack.skill_name)
+	
 	else:
 		print("no mana")
 		return
@@ -87,16 +89,18 @@ func attack() -> void:
 func set_weapon() -> void:
 	var current_weapon = handslot_r.get_child(0) as Weapon
 	current_weapon.user = self.get_parent()
+	var original_stats = base_stats.duplicate()
 	if weapon_active:
 		for prop in base_stats.get_property_list():
 			if prop.usage & PROPERTY_USAGE_STORAGE and typeof(base_stats.get(prop.name)) == TYPE_FLOAT:
 				if prop.name in current_weapon.stats_boost:
 					base_stats.set(prop.name, base_stats.get(prop.name) + current_weapon.stats_boost.get(prop.name))
 	else:
-		for prop in base_stats.get_property_list():
-			if prop.usage & PROPERTY_USAGE_STORAGE and typeof(base_stats.get(prop.name)) == TYPE_FLOAT:
-				if prop.name in current_weapon.stats_boost:
-					base_stats.set(prop.name, base_stats.get(prop.name) - current_weapon.stats_boost.get(prop.name))
+		base_stats = original_stats
+		#for prop in base_stats.get_property_list():
+			#if prop.usage & PROPERTY_USAGE_STORAGE and typeof(base_stats.get(prop.name)) == TYPE_FLOAT:
+				#if prop.name in current_weapon.stats_boost:
+					#base_stats.set(prop.name, base_stats.get(prop.name) - current_weapon.stats_boost.get(prop.name))
 		
 
 func set_move_timescale(value: float) -> void:
