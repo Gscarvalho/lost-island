@@ -7,7 +7,7 @@
 [node name="CameraController" type="SpringArm3D"]
 collision_mask = 54
 shape = SubResource("SphereShape3D_q81a4")
-spring_length = -5.0
+spring_length = 6.5
 script = ExtResource("1_q81a4")
 horizontal_acceration = 3.0
 vertical_acceration = 2.0

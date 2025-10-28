@@ -23,9 +23,9 @@ void vertex(){
 
 void fragment() {
 	//vec2 base_uv = UV;
-	float basic_fresnel = fresnel(4.0, NORMAL, VIEW);
-
 	//vec4 albedo_tex = texture(texture_albedo, base_uv);
+
+	float basic_fresnel = fresnel(4.0, NORMAL, VIEW);
 	ALBEDO = albedo.rgb + (basic_fresnel * texture(fresnel_gradient, vec2(basic_fresnel, 0.0)).rgb * 1.0);
 	//ALBEDO = albedo.rgb * albedo_tex.rgb;
 }
