@@ -1,6 +1,5 @@
-[gd_scene load_steps=27 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=26 format=3 uid="uid://df6prq4xcpyx3"]
 
-[ext_resource type="PackedScene" uid="uid://bmbm2rnr4wx14" path="res://Scenes/Levels/title_ui.tscn" id="1_ojicq"]
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Characters/player.tscn" id="1_vflva"]
 [ext_resource type="Material" uid="uid://cl6e3woev4yo6" path="res://Assets/Materials/ground_mat.tres" id="1_xawdm"]
 [ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/Levels/menu_ui.tscn" id="2_qkmes"]
@@ -43,36 +42,36 @@ size = Vector2(70, 200)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_oerva"]
 data = PackedVector3Array(35, 0, 100, -35, 0, 100, 35, 0, -100, -35, 0, 100, -35, 0, -100, 35, 0, -100)
 
-[sub_resource type="Resource" id="Resource_2rbid"]
+[sub_resource type="Resource" id="Resource_fjvvq"]
 script = ExtResource("7_g1i77")
 amount = 10000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_kxg02"]
+[sub_resource type="Resource" id="Resource_oerva"]
 script = ExtResource("8_q55b2")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
 scale = Vector3(0.5, 0.5, 0.5)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_v6cxb"]
+[sub_resource type="Resource" id="Resource_t2ggk"]
 script = ExtResource("9_hwde3")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_gljck"]
+[sub_resource type="Resource" id="Resource_x7ba5"]
 script = ExtResource("10_btpkh")
 ray_length = 5.0
 ray_offset = 5.0
 remove_points_on_miss = false
 collision_mask = 16
 
-[sub_resource type="Resource" id="Resource_gokht"]
+[sub_resource type="Resource" id="Resource_g1i77"]
 script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_2rbid"), SubResource("Resource_kxg02"), SubResource("Resource_v6cxb"), SubResource("Resource_gljck")])
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_fjvvq"), SubResource("Resource_oerva"), SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
@@ -82,8 +81,6 @@ metadata/_custom_type_script = "uid://c68s2472h76yi"
 [node name="Level_Test" type="Node3D"]
 
 [node name="Menus" type="Node" parent="." groups=["Menu"]]
-
-[node name="Title" parent="Menus" instance=ExtResource("1_ojicq")]
 
 [node name="Menu" parent="Menus" instance=ExtResource("2_qkmes")]
 
@@ -114,7 +111,7 @@ shape = SubResource("ConcavePolygonShape3D_oerva")
 [node name="ProtonScatter" type="Node3D" parent="World/Ground"]
 script = ExtResource("4_oerva")
 render_mode = 2
-modifier_stack = SubResource("Resource_gokht")
+modifier_stack = SubResource("Resource_g1i77")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"

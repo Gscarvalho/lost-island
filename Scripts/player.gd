@@ -50,9 +50,10 @@ func _equip_logic() -> void:
 		var left = Input.is_action_just_pressed("menu_left")
 		var right = Input.is_action_just_pressed("menu_right")
 		if left:
-			skin.current_mana_type = ( skin.current_mana_type - 1 ) % skin.mana_types.size()
+			skin.current_mana_type = wrapi(skin.current_mana_type - 1, 0, skin.mana_types.size())
 		elif right:
-			skin.current_mana_type = ( skin.current_mana_type + 1 ) % skin.mana_types.size()
+			skin.current_mana_type = wrapi(skin.current_mana_type + 1, 0, skin.mana_types.size())
+
 
 func _close_weapon_choice() -> void:
 	StateManager.set_state(StateManager.State.PLAY)
@@ -82,36 +83,133 @@ func _menu_logic() -> void:
 			StateManager.set_state(StateManager.State.PLAY)
 			skin.ui.modulate.a = 1.0
 		velocity = Vector3.ZERO
-	if Input.is_action_just_pressed("title") and not StateManager.current_state == StateManager.State.WEAPON:
-		if StateManager.current_state == StateManager.State.PLAY:
-			StateManager.set_state(StateManager.State.TITLE)
-			skin.ui.modulate.a = 0.0
-		elif StateManager.current_state == StateManager.State.MENU:
-			StateManager.set_state(StateManager.State.TITLE)
-			skin.ui.modulate.a = 0.0
-		elif StateManager.current_state == StateManager.State.TITLE:
-			StateManager.set_state(StateManager.State.PLAY)
-			skin.ui.modulate.a = 1.0
-		velocity = Vector3.ZERO
+	#if Input.is_action_just_pressed("title") and not StateManager.current_state == StateManager.State.WEAPON:
+		#if StateManager.current_state == StateManager.State.PLAY:
+			#StateManager.set_state(StateManager.State.TITLE)
+			#skin.ui.modulate.a = 0.0
+		#elif StateManager.current_state == StateManager.State.MENU:
+			#StateManager.set_state(StateManager.State.TITLE)
+			#skin.ui.modulate.a = 0.0
+		#elif StateManager.current_state == StateManager.State.TITLE:
+			#StateManager.set_state(StateManager.State.PLAY)
+			#skin.ui.modulate.a = 1.0
+		#velocity = Vector3.ZERO
 		
 		#print(StateManager.current_state)
 
 func _attacks_logic() -> void:
-	if StateManager.current_state == StateManager.State.PLAY:
-		if not Input.is_action_pressed("aim") and skin.weapon_active: #Melee attackes
+	if StateManager.current_state == StateManager.State.PLAY and skin.weapon_active: #Physical attackes
+		if not Input.is_action_pressed("aim"): 
 			if Input.is_action_just_pressed("attack"):
-				skin.current_attack = skin.attacks[0] #in Skill inventory X is first [0]
-				skin.attack()
+				if skin.attacks[0]:
+					skin.current_attack = skin.attacks[0] #in Skill inventory X is first [0]
+					skin.attack()
+				else:
+					print("No attack assigned.")
 			if Input.is_action_just_pressed("skill"):
-				skin.current_attack = skin.attacks[1] #in Skill inventory Y is first [1]
-				skin.attack()
-		if Input.is_action_pressed("aim"): #Aimmed attackes
+				if skin.attacks[1]:
+					skin.current_attack = skin.attacks[1] #in Skill inventory Y is [1]
+					skin.attack()
+				else:
+					print("No attack assigned.")
+		elif Input.is_action_pressed("aim"): #Aimmed Physical attackes
 			if Input.is_action_just_pressed("attack"):
-				skin.current_attack = skin.magic_attacks[0] #in Skill inventory Y is first [0]
-				skin.attack()
+				if skin.attacks[2]:
+					skin.current_attack = skin.attacks[2] #in Skill inventory LT+X is [2]
+					skin.attack()
+				else:
+					print("No attack assigned.")
 			elif Input.is_action_just_pressed("skill"):
-				skin.current_attack = skin.magic_attacks[1] #in Skill inventory Y is first [1]
-				skin.attack()
+				if skin.attacks[3]:
+					skin.current_attack = skin.attacks[3] #in Skill inventory LT+Y is [3]
+					skin.attack()
+				else:
+					print("No attack assigned.")
+	elif StateManager.current_state == StateManager.State.PLAY and not skin.weapon_active: #Mana attackes
+		if skin.current_mana_type == 1: #WATER
+			if not Input.is_action_pressed("aim"): 
+				if Input.is_action_just_pressed("attack"):
+					if skin.skill_book.water_skills[0]:
+						skin.current_attack = skin.skill_book.water_skills[0] #in Water Skill inventory X is first [0]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+				if Input.is_action_just_pressed("skill"):
+					if skin.skill_book.water_skills[1]:
+						skin.current_attack = skin.skill_book.water_skills[1] #in Water Skill inventory Y is [1]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+			elif Input.is_action_pressed("aim"): #Aimmed mana attackes
+				if Input.is_action_just_pressed("attack"):
+					if skin.skill_book.water_skills[2]:
+						skin.current_attack = skin.skill_book.water_skills[2] #in Water Skill inventory LT+X is [2]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+				elif Input.is_action_just_pressed("skill"):
+					if skin.skill_book.water_skills[3]:
+						skin.current_attack = skin.skill_book.water_skills[3] #in Water Skill inventory LT+Y is [3]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+
+		if skin.current_mana_type == 2: #FIRE
+			if not Input.is_action_pressed("aim"): 
+				if Input.is_action_just_pressed("attack"):
+					if skin.skill_book.fire_skills[0]:
+						skin.current_attack = skin.skill_book.fire_skills[0] #in Water Skill inventory X is first [0]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+				if Input.is_action_just_pressed("skill"):
+					if skin.skill_book.fire_skills[1]:
+						skin.current_attack = skin.skill_book.fire_skills[1] #in Water Skill inventory Y is [1]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+			elif Input.is_action_pressed("aim"): #Aimmed mana attackes
+				if Input.is_action_just_pressed("attack"):
+					if skin.skill_book.fire_skills[2]:
+						skin.current_attack = skin.skill_book.fire_skills[2] #in Water Skill inventory LT+X is [2]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+				elif Input.is_action_just_pressed("skill"):
+					if skin.skill_book.fire_skills[3]:
+						skin.current_attack = skin.skill_book.fire_skills[3] #in Water Skill inventory LT+Y is [3]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+
+		if skin.current_mana_type == 3: #LIGHT
+			if not Input.is_action_pressed("aim"): 
+				if Input.is_action_just_pressed("attack"):
+					if skin.skill_book.light_skills[0]:
+						skin.current_attack = skin.skill_book.light_skills[0] #in Water Skill inventory X is first [0]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+				if Input.is_action_just_pressed("skill"):
+					if skin.skill_book.light_skills[1]:
+						skin.current_attack = skin.skill_book.light_skills[1] #in Water Skill inventory Y is [1]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+			elif Input.is_action_pressed("aim"): #Aimmed mana attackes
+				if Input.is_action_just_pressed("attack"):
+					if skin.skill_book.light_skills[2]:
+						skin.current_attack = skin.skill_book.light_skills[2] #in Water Skill inventory LT+X is [2]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+				elif Input.is_action_just_pressed("skill"):
+					if skin.skill_book.light_skills[3]:
+						skin.current_attack = skin.skill_book.light_skills[3] #in Water Skill inventory LT+Y is [3]
+						skin.attack()
+					else:
+						print("No attack assigned.")
+
 
 func _skills_logic() -> void:
 	pass

@@ -9,14 +9,14 @@ extends Node3D
 @onready var timers = $"../Timers" 
 @export var base_stats: Stats
 @export var attacks : Array[Skills]
-@export var magic_attacks : Array[Skills]
+@export var skill_book: Skillbook
 var weapon_active:= true :
 	set(value):
 		weapon_active = value
 		handslot_r.visible = value
 		set_weapon()
 var current_attack : Skills 
-var mana_inventory := [1,3,5]
+var mana_inventory := [7,7,7]
 var mana_types:= [
 	Skills.SkillType.Physical,
 	Skills.SkillType.Water, 
@@ -35,6 +35,7 @@ var current_mana_type : int = 0 :
 var current_hp := 1.0:
 	set(value):
 		current_hp = value
+		current_hp = clamp(current_hp, 0.0, base_stats.max_hp)
 		ui.update_health(value)
 var current_stamina := 1.0:
 	set(value):
@@ -53,15 +54,20 @@ func attack() -> void:
 	if current_attack.skill_regen_type != Skills.RegenType.None:
 		if current_attack.skill_regen_type == Skills.RegenType.Health:
 			current_hp += base_stats.max_hp * (current_attack.skill_regen_power/100)
+			print("Healed ",str(current_attack.skill_regen_power).pad_decimals(0),"%!")
 		elif current_attack.skill_regen_type == Skills.RegenType.Stamina:
 			current_stamina += current_attack.skill_regen_power
+			print("Regenerated ",str(current_attack.skill_regen_power).pad_decimals(0)," stamina!")
 		elif current_attack.skill_regen_type == Skills.RegenType.Mana:
 			if current_attack.skill_type == Skills.SkillType.Water:
 				mana_inventory[0] += current_attack.skill_regen_power
+				print("Regenerated ",str(current_attack.skill_regen_power).pad_decimals(0)," of water mana!")
 			elif current_attack.skill_type == Skills.SkillType.Fire:
 				mana_inventory[1] += current_attack.skill_regen_power
+				print("Regenerated ",str(current_attack.skill_regen_power).pad_decimals(0)," of fire mana!")
 			elif current_attack.skill_type == Skills.SkillType.Light:
 				mana_inventory[2] += current_attack.skill_regen_power
+				print("Regenerated ",str(current_attack.skill_regen_power).pad_decimals(0)," of light mana!")
 
 	if current_attack.skill_type == Skills.SkillType.Physical and current_stamina >= current_attack.skill_cost:
 		attack_state_machine.travel(current_attack.skill_anim_name)
