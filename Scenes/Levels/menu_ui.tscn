@@ -20,6 +20,7 @@ width = 1280
 use_hdr = true
 
 [node name="Menu" type="Control"]
+custom_minimum_size = Vector2(1280, 720)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -65,13 +66,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 24
 theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
 [node name="Seperator" type="HBoxContainer" parent="Main"]
-custom_minimum_size = Vector2(1280, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
@@ -743,16 +744,87 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AvatarViewportLayer" type="SubViewportContainer" parent="Main"]
-custom_minimum_size = Vector2(1280, 720)
+[node name="InventoryPage" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 720.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="InventoryPage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="InventoryPage/CenterContainer"]
 layout_mode = 2
+text = "INVENTORY PAGE"
+
+[node name="SettingsPage" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -720.0
+offset_bottom = -720.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="SettingsPage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SettingsPage/CenterContainer"]
+custom_minimum_size = Vector2(500, 30)
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "SETTINGS"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="VolumeLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Master Volume"
+fit_content = true
+
+[node name="MasterVolumeSlider" type="HSlider" parent="SettingsPage/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 2
+value = 100.0
+
+[node name="AvatarViewportLayer" type="SubViewportContainer" parent="."]
+z_index = 1
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="Main/AvatarViewportLayer"]
+[node name="SubViewport" type="SubViewport" parent="AvatarViewportLayer"]
 own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
-[node name="MenuAvatar" parent="Main/AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
+[node name="MenuAvatar" parent="AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
+unique_name_in_owner = true

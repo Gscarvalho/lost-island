@@ -9,11 +9,28 @@ extends Control
 @onready var magic_attack_value: RichTextLabel = %MATKValue
 @onready var magic_defense_value: RichTextLabel = %MDEFValue
 @onready var speed_value: RichTextLabel = %SPDValue
+@onready var menu_avatar: MenuAvatar = %MenuAvatar
+@onready var inventory_page: Control = $InventoryPage
+@onready var settings_page: Control = $SettingsPage
+@onready var avatar_viewport_layer: SubViewportContainer = $AvatarViewportLayer
+@onready var master_volume_slider: HSlider = %MasterVolumeSlider
+
 var player: PlayerSkin
 var menu_tween: Tween
+enum MenuPage {
+	SETTINGS,
+	CHARACTER,
+	INVENTORY
+}
+
+var current_page: MenuPage = MenuPage.CHARACTER
+var page_tween: Tween
 
 func _ready() -> void:
 	StateManager.state_changed.connect(_toggle_menu)
+	master_volume_slider.value_changed.connect(
+		_on_master_volume_changed
+	)
 
 	player = get_tree().get_first_node_in_group("Player").get_child(0) as PlayerSkin
 	player.health_changed.connect(_update_health)
@@ -30,12 +47,15 @@ func _ready() -> void:
 		if menu_is_open
 		else Control.MOUSE_FILTER_IGNORE
 	)
+	_apply_page_positions()
 	
+	
+
 func _set_stat_display(
 	label: RichTextLabel,
 	final_value: float,
 	normal_value: float
-) -> void:
+	) -> void:
 	var bonus := final_value - normal_value
 	var final_text := str(final_value).pad_decimals(0)
 
@@ -55,7 +75,7 @@ func _set_stat_display(
 		)
 	else:
 		label.text = final_text
-	
+
 func _update_health(value: float, maximum: float) -> void:
 	current.get_child(0).get_child(0).text = (
 		str(value).pad_decimals(0)
@@ -65,7 +85,6 @@ func _update_health(value: float, maximum: float) -> void:
 
 	var tween = create_tween()
 	tween.tween_property(current.get_child(0), "value", value, 0.5)
-
 
 func _update_stamina(value: float, maximum: float) -> void:
 	current.get_child(1).get_child(0).text = (
@@ -87,7 +106,7 @@ func _toggle_menu(state: StateManager.State) -> void:
 
 		main.modulate.a = 0.0
 		screen.modulate.a = 0.0
-
+		menu_avatar.sync_loadout(player.weapon_active)
 		_set_stats()
 
 		menu_tween = create_tween()
@@ -103,7 +122,6 @@ func _toggle_menu(state: StateManager.State) -> void:
 		menu_tween.tween_property(main, "modulate:a", 0.0, 0.1)
 		menu_tween.tween_property(screen, "modulate:a", 0.0, 0.1)
 		menu_tween.finished.connect(_finish_hiding_menu)
-
 
 func _finish_hiding_menu() -> void:
 	if StateManager.current_state != StateManager.State.MENU:
@@ -162,5 +180,107 @@ func _set_stats() -> void:
 	mana.get_child(2).get_child(1).text = "" #make Mana Levels
 	
 		#a.text = player.base_stats.get_property_list().
-	
-	
+
+func _change_page(new_page: MenuPage) -> void:
+	if current_page == new_page:
+		return
+
+	if page_tween != null:
+		page_tween.kill()
+
+	current_page = new_page
+
+	var screen_height := get_viewport_rect().size.y
+	var page_offset := _get_page_offset(screen_height)
+
+	page_tween = create_tween()
+	page_tween.set_parallel(true)
+	page_tween.set_trans(Tween.TRANS_QUAD)
+	page_tween.set_ease(Tween.EASE_IN_OUT)
+
+	page_tween.tween_property(
+		settings_page,
+		"position:y",
+		-screen_height + page_offset,
+		0.35
+	)
+
+	page_tween.tween_property(
+		main,
+		"position:y",
+		page_offset,
+		0.35
+	)
+
+	page_tween.tween_property(
+		avatar_viewport_layer,
+		"position:y",
+		page_offset,
+		0.35
+	)
+
+	page_tween.tween_property(
+		inventory_page,
+		"position:y",
+		screen_height + page_offset,
+		0.35
+	)
+
+func _apply_page_positions() -> void:
+	var screen_height := get_viewport_rect().size.y
+	var page_offset := _get_page_offset(screen_height)
+
+	settings_page.position.y = -screen_height + page_offset
+	main.position.y = page_offset
+	avatar_viewport_layer.position.y = page_offset
+	inventory_page.position.y = screen_height + page_offset
+
+func _get_page_offset(screen_height: float) -> float:
+	match current_page:
+		MenuPage.SETTINGS:
+			return screen_height
+
+		MenuPage.INVENTORY:
+			return -screen_height
+
+		_:
+			return 0.0
+
+func _unhandled_input(event: InputEvent) -> void:
+	if StateManager.current_state != StateManager.State.MENU:
+		return
+
+	if page_tween != null and page_tween.is_running():
+		return
+
+	if event.is_action_pressed("ui_up"):
+		match current_page:
+			MenuPage.INVENTORY:
+				_change_page(MenuPage.CHARACTER)
+
+			MenuPage.CHARACTER:
+				_change_page(MenuPage.SETTINGS)
+
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("ui_down"):
+		match current_page:
+			MenuPage.SETTINGS:
+				_change_page(MenuPage.CHARACTER)
+
+			MenuPage.CHARACTER:
+				_change_page(MenuPage.INVENTORY)
+
+		get_viewport().set_input_as_handled()
+
+func _on_master_volume_changed(value: float) -> void:
+	var master_bus := AudioServer.get_bus_index("Master")
+
+	if value <= 0.0:
+		AudioServer.set_bus_mute(master_bus, true)
+		return
+
+	AudioServer.set_bus_mute(master_bus, false)
+
+	var volume_db := linear_to_db(value / 100.0)
+	AudioServer.set_bus_volume_db(master_bus, volume_db)
