@@ -4,7 +4,13 @@ extends Control
 @onready var stats: VBoxContainer = $Main/Seperator/Stats
 @onready var current: VBoxContainer = $Main/Seperator/Player/Current
 @onready var mana: VBoxContainer = $Main/Seperator/Mana
+@onready var attack_value: RichTextLabel = %ATKValue
+@onready var defense_value: RichTextLabel = %DEFValue
+@onready var magic_attack_value: RichTextLabel = %MATKValue
+@onready var magic_defense_value: RichTextLabel = %MDEFValue
+@onready var speed_value: RichTextLabel = %SPDValue
 var player: PlayerSkin
+var menu_tween: Tween
 
 func _ready() -> void:
 	StateManager.state_changed.connect(_toggle_menu)
@@ -14,6 +20,16 @@ func _ready() -> void:
 	player.stamina_changed.connect(_update_stamina)
 
 	_set_stats()
+	var menu_is_open := StateManager.current_state == StateManager.State.MENU
+
+	visible = menu_is_open
+	main.modulate.a = 1.0 if menu_is_open else 0.0
+	screen.modulate.a = 1.0 if menu_is_open else 0.0
+	mouse_filter = (
+		Control.MOUSE_FILTER_STOP
+		if menu_is_open
+		else Control.MOUSE_FILTER_IGNORE
+	)
 	
 func _set_stat_display(
 	label: RichTextLabel,
@@ -62,23 +78,36 @@ func _update_stamina(value: float, maximum: float) -> void:
 	tween.tween_property(current.get_child(1), "value", value, 0.5)
 
 func _toggle_menu(state: StateManager.State) -> void:
+	if menu_tween != null:
+		menu_tween.kill()
+
 	if state == StateManager.State.MENU:
-		#var tween1 = create_tween()
-		#tween1.tween_property(main,"const", 0, 0.5)
-		var tween2 = create_tween()
-		tween2.tween_property(main,"modulate:a", 1.0, 0.3)
-		var tween3 = create_tween()
-		tween3.tween_property(screen,"modulate:a", 1.0, 0.1)
+		visible = true
+		mouse_filter = Control.MOUSE_FILTER_STOP
+
+		main.modulate.a = 0.0
+		screen.modulate.a = 0.0
+
 		_set_stats()
+
+		menu_tween = create_tween()
+		menu_tween.set_parallel(true)
+		menu_tween.tween_property(screen, "modulate:a", 1.0, 0.1)
+		menu_tween.tween_property(main, "modulate:a", 1.0, 0.3)
+
 	else:
-	#elif state == StateManager.State.PLAY:
-		#var tween1 = create_tween()
-		#tween1.tween_property(main,"position:x", 1280, 0.5)
-		var tween2 = create_tween()
-		tween2.tween_property(main,"modulate:a", 0.0, 0.1)
-		var tween3 = create_tween()
-		tween3.tween_property(screen,"modulate:a", 0.0, 0.1)
-		
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+		menu_tween = create_tween()
+		menu_tween.set_parallel(true)
+		menu_tween.tween_property(main, "modulate:a", 0.0, 0.1)
+		menu_tween.tween_property(screen, "modulate:a", 0.0, 0.1)
+		menu_tween.finished.connect(_finish_hiding_menu)
+
+
+func _finish_hiding_menu() -> void:
+	if StateManager.current_state != StateManager.State.MENU:
+		visible = false
 
 func _set_stats() -> void:
 	#stats.get_child(1).get_child(1).get_child(0).text = str(player.base_stats.attack).pad_decimals(0)
@@ -92,31 +121,31 @@ func _set_stats() -> void:
 		normal_stats = player.base_stats
 
 	_set_stat_display(
-		stats.get_child(1).get_child(1).get_child(0) as RichTextLabel,
+		attack_value,
 		player.base_stats.attack,
 		normal_stats.attack
 	)
 
 	_set_stat_display(
-		stats.get_child(2).get_child(1).get_child(0) as RichTextLabel,
+		defense_value,
 		player.base_stats.defense,
 		normal_stats.defense
 	)
 
 	_set_stat_display(
-		stats.get_child(3).get_child(1).get_child(0) as RichTextLabel,
+		magic_attack_value,
 		player.base_stats.m_attack,
 		normal_stats.m_attack
 	)
 
 	_set_stat_display(
-		stats.get_child(4).get_child(1).get_child(0) as RichTextLabel,
+		magic_defense_value,
 		player.base_stats.m_defense,
 		normal_stats.m_defense
 	)
 
 	_set_stat_display(
-		stats.get_child(5).get_child(1).get_child(0) as RichTextLabel,
+		speed_value,
 		player.base_stats.speed,
 		normal_stats.speed
 	)

@@ -10,6 +10,13 @@ class_name UI
 @export var icons: Array[Texture2D]
 @onready var circle_timer: TextureProgressBar = $HBoxContainer/Weapon/CircleTimer
 
+func _ready() -> void:
+	StateManager.state_changed.connect(_on_state_changed)
+	_on_state_changed(StateManager.current_state)
+
+func _on_state_changed(state: StateManager.State) -> void:
+	visible = state != StateManager.State.MENU
+
 func update_health(value: float) -> void:
 	var tween = create_tween()
 	tween.tween_property(hitpoints,"value",value, 0.4)

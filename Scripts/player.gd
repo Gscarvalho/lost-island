@@ -10,6 +10,7 @@ var run_speed := 8.5
 var movement_input := Vector2.ZERO
 var speed_modifier := 1.0
 var stamina_cost_reduction := 1.0
+var stamina_depleted_delay_active := false
 
 #Jump
 var jump_height : float = 3.5
@@ -25,6 +26,18 @@ var is_attacking := false
 var is_running := false
 var is_being_hit := false
 
+func _ready() -> void:
+	StateManager.state_changed.connect(_on_state_changed)
+	_on_state_changed(StateManager.current_state)
+
+func _on_state_changed(state: StateManager.State) -> void:
+	var should_pause_regen := state != StateManager.State.PLAY
+
+	for node in get_tree().get_nodes_in_group("regen_timers"):
+		var regen_timer := node as Timer
+
+		if regen_timer != null:
+			regen_timer.paused = should_pause_regen
 
 func _physics_process(delta: float) -> void:
 	#print($Timers/MenuDelayTimer.time_left)
@@ -58,47 +71,48 @@ func _open_weapon_choice() -> void:
 	StateManager.set_state(StateManager.State.WEAPON)
 
 func _close_weapon_choice() -> void:
+	if StateManager.current_state != StateManager.State.WEAPON:
+		return
+
+	$Timers/WeaponChoiceTimer.stop()
 	StateManager.set_state(StateManager.State.PLAY)
-	skin.set_move_timescale(1)
+	skin.set_move_timescale(1.0)
 	skin.ui.show_timer_ui(false)
 	
 func _on_weapon_choice_timer_timeout() -> void:
+	if StateManager.current_state != StateManager.State.WEAPON:
+		return
+
 	_close_weapon_choice()
 	$Timers/MenuDelayTimer.start()
 
 func _on_stamina_regen_timer_timeout() -> void:
-	if skin.current_stamina <= 0.0:# and $Timers/StaminaRegenTimer.time_left:
+	if skin.current_stamina <= 0.0 and not stamina_depleted_delay_active:
 		print("Stamina depleted, delayed regeneration.")
-		await get_tree().create_timer(3.0).timeout
+		stamina_depleted_delay_active = true
+		$Timers/StaminaRegenTimer.start(3.0)
+		return
+
 	skin.current_stamina = 100.0
+	stamina_depleted_delay_active = false
 	$Timers/StaminaRegenTimer.stop()
 
 func _menu_logic() -> void:
-	if Input.is_action_just_pressed("menu"):
-		#and not StateManager.current_state == StateManager.State.WEAPON
+	if (
+	Input.is_action_just_pressed("menu")
+	and $Timers/MenuTransitionTimer.is_stopped()
+	):
+		$Timers/MenuTransitionTimer.start()
 		if StateManager.current_state == StateManager.State.PLAY:
 			StateManager.set_state(StateManager.State.MENU)
-			skin.ui.modulate.a = 0.0
-		elif StateManager.current_state == StateManager.State.TITLE:
-			StateManager.set_state(StateManager.State.MENU)
-			skin.ui.modulate.a = 0.0
-		elif StateManager.current_state == StateManager.State.MENU:
-			StateManager.set_state(StateManager.State.PLAY)
-			skin.ui.modulate.a = 1.0
-		velocity = Vector3.ZERO
-	#if Input.is_action_just_pressed("title") and not StateManager.current_state == StateManager.State.WEAPON:
-		#if StateManager.current_state == StateManager.State.PLAY:
-			#StateManager.set_state(StateManager.State.TITLE)
-			#skin.ui.modulate.a = 0.0
-		#elif StateManager.current_state == StateManager.State.MENU:
-			#StateManager.set_state(StateManager.State.TITLE)
-			#skin.ui.modulate.a = 0.0
-		#elif StateManager.current_state == StateManager.State.TITLE:
-			#StateManager.set_state(StateManager.State.PLAY)
-			#skin.ui.modulate.a = 1.0
-		#velocity = Vector3.ZERO
 		
-		#print(StateManager.current_state)
+		elif StateManager.current_state == StateManager.State.TITLE:
+			StateManager.set_state(StateManager.State.MENU)			
+		
+		elif StateManager.current_state == StateManager.State.MENU:
+			StateManager.set_state(StateManager.State.PLAY)			
+		
+		velocity = Vector3.ZERO
 
 func _try_attack(attack_list: Array, attack_index: int) -> void:
 	if attack_index >= attack_list.size():

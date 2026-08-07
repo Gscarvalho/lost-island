@@ -431,6 +431,7 @@ texture = ExtResource("5_jlchu")
 expand_mode = 3
 
 [node name="ATKValue" type="RichTextLabel" parent="Main/Seperator/Stats/ATKStatBox/ValueBG"]
+unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -504,6 +505,7 @@ texture = ExtResource("5_jlchu")
 expand_mode = 3
 
 [node name="DEFValue" type="RichTextLabel" parent="Main/Seperator/Stats/DEFStatBox/ValueBG"]
+unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -575,6 +577,7 @@ texture = ExtResource("5_jlchu")
 expand_mode = 3
 
 [node name="MATKValue" type="RichTextLabel" parent="Main/Seperator/Stats/MATKStatBox/ValueBG"]
+unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -646,6 +649,7 @@ texture = ExtResource("5_jlchu")
 expand_mode = 3
 
 [node name="MDEFValue" type="RichTextLabel" parent="Main/Seperator/Stats/MDEFStatBox/ValueBG"]
+unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -718,6 +722,7 @@ texture = ExtResource("5_jlchu")
 expand_mode = 3
 
 [node name="SPDValue" type="RichTextLabel" parent="Main/Seperator/Stats/SPDStatBox/ValueBG"]
+unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
