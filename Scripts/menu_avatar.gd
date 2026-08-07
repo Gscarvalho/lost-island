@@ -6,6 +6,7 @@ extends Node3D
 @onready var rig: Node3D = $Rig
 @onready var weapon_preview: Node3D = %WeaponPreview
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+var rotation_enabled := false
 
 func sync_loadout(weapon_is_active: bool) -> void:
 	weapon_preview.visible = weapon_is_active
@@ -19,6 +20,9 @@ func _process(delta: float) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
 
+	if not rotation_enabled:
+		return
+
 	var rotation_input := Input.get_axis(
 		"menu_left",
 		"menu_right"
@@ -29,3 +33,6 @@ func _process(delta: float) -> void:
 		* rotation_input
 		* delta
 	)
+	
+func set_rotation_enabled(enabled: bool) -> void:
+	rotation_enabled = enabled

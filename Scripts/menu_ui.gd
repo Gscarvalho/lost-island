@@ -31,6 +31,18 @@ var current_page: MenuPage = MenuPage.CHARACTER
 var page_tween: Tween
 
 func _ready() -> void:
+	mana_fire.focus_entered.connect(
+		_on_mana_focused.bind("Fire")
+	)
+
+	mana_water.focus_entered.connect(
+		_on_mana_focused.bind("Water")
+	)
+
+	mana_light.focus_entered.connect(
+		_on_mana_focused.bind("Light")
+	)
+	
 	StateManager.state_changed.connect(_toggle_menu)
 	exit_game_button.pressed.connect(_on_exit_game_pressed)
 	master_volume_slider.value_changed.connect(
@@ -43,6 +55,7 @@ func _ready() -> void:
 	exit_game_button.focus_neighbor_top = (
 		exit_game_button.get_path_to(master_volume_slider)
 	)
+	
 	
 	player = get_tree().get_first_node_in_group("Player").get_child(0) as PlayerSkin
 	player.health_changed.connect(_update_health)
@@ -60,7 +73,9 @@ func _ready() -> void:
 		else Control.MOUSE_FILTER_IGNORE
 	)
 	_apply_page_positions()
-	
+
+func _on_mana_focused(mana_name: String) -> void:
+	print("Mana focused: ", mana_name)	
 	
 func _on_exit_game_pressed() -> void:
 	get_tree().quit()
@@ -123,6 +138,9 @@ func _toggle_menu(state: StateManager.State) -> void:
 	if state == StateManager.State.MENU:
 		visible = true
 		mouse_filter = Control.MOUSE_FILTER_STOP
+		menu_avatar.set_rotation_enabled(
+			current_page == MenuPage.CHARACTER
+		)
 
 		main.modulate.a = 0.0
 		screen.modulate.a = 0.0
@@ -136,7 +154,7 @@ func _toggle_menu(state: StateManager.State) -> void:
 
 	else:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
-
+		menu_avatar.set_rotation_enabled(false)
 		menu_tween = create_tween()
 		menu_tween.set_parallel(true)
 		menu_tween.tween_property(main, "modulate:a", 0.0, 0.1)
@@ -195,9 +213,9 @@ func _set_stats() -> void:
 	current.get_child(1).get_child(0).text = str(player.current_stamina).pad_decimals(0) + "/100"
 	var tween2 = create_tween()
 	tween2.tween_property(current.get_child(1),"value", player.current_stamina, 0.5)
-	mana.get_child(0).get_child(1).text = "" #make Mana Levels
-	mana.get_child(1).get_child(1).text = "" #make Mana Levels
-	mana.get_child(2).get_child(1).text = "" #make Mana Levels
+	#mana.get_child(0).get_child(1).text = "" #make Mana Levels
+	#mana.get_child(1).get_child(1).text = "" #make Mana Levels
+	#mana.get_child(2).get_child(1).text = "" #make Mana Levels
 	
 		#a.text = player.base_stats.get_property_list().
 
@@ -209,6 +227,9 @@ func _change_page(new_page: MenuPage) -> void:
 		page_tween.kill()
 
 	current_page = new_page
+	menu_avatar.set_rotation_enabled(
+	current_page == MenuPage.CHARACTER
+	)
 	
 	volume_editing = false
 
@@ -327,10 +348,6 @@ func _input(event: InputEvent) -> void:
 
 	if page_tween != null and page_tween.is_running():
 		return
-	if mana_fire.has_focus():
-		print("focused")
-		var mana_level = mana_fire.get_child(1) as RichTextLabel
-		mana_level.visible = true
 		
 	if master_volume_slider.has_focus():
 		if event.is_action_pressed("ui_accept"):

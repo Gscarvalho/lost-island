@@ -218,6 +218,7 @@ layout_mode = 2
 size_flags_vertical = 4
 focus_neighbor_top = NodePath("../ManaLight")
 focus_neighbor_bottom = NodePath("../ManaWater")
+focus_mode = 2
 alignment = 1
 
 [node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaFire"]
@@ -265,6 +266,7 @@ layout_mode = 2
 size_flags_vertical = 4
 focus_neighbor_top = NodePath("../ManaFire")
 focus_neighbor_bottom = NodePath("../ManaLight")
+focus_mode = 2
 alignment = 1
 
 [node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaWater"]
@@ -312,6 +314,7 @@ layout_mode = 2
 size_flags_vertical = 4
 focus_neighbor_top = NodePath("../ManaWater")
 focus_neighbor_bottom = NodePath("../ManaFire")
+focus_mode = 2
 alignment = 1
 
 [node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaLight"]
