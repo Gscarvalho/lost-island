@@ -5,14 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
 [ext_resource type="Texture2D" uid="uid://bc2wps3tp6ait" path="res://Assets/Images/UI/bar_line.svg" id="3_n8txd"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="3_prqvn"]
+[ext_resource type="PackedScene" uid="uid://cyba446df5nc6" path="res://Scenes/Characters/Skins/menu_avatar.tscn" id="4_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="5_jlchu"]
-[ext_resource type="Texture2D" uid="uid://dy15xf6smaddf" path="res://Assets/Images/UI/circle_line.svg" id="7_2txfs"]
 [ext_resource type="Texture2D" uid="uid://dxwf0q22n2ggm" path="res://Assets/Images/Icons/fire_icon.svg" id="8_tjubs"]
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="9_uf2rm"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
 
 [sub_resource type="Gradient" id="Gradient_ehti2"]
-colors = PackedColorArray(7.2196126e-06, 0.58050644, 0.7578227, 1, 0.42462867, 0.7794049, 0.9089255, 1)
+colors = PackedColorArray(0, 0.7490196, 1, 1, 0.3647059, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5sxxi"]
 gradient = SubResource("Gradient_ehti2")
@@ -71,34 +71,32 @@ theme_override_constants/margin_right = 24
 theme_override_constants/margin_bottom = 24
 
 [node name="Seperator" type="HBoxContainer" parent="Main"]
+custom_minimum_size = Vector2(1280, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 24
+alignment = 1
 
 [node name="Player" type="VBoxContainer" parent="Main/Seperator"]
-custom_minimum_size = Vector2(200, 400)
+custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 5
+size_flags_horizontal = 5
+size_flags_vertical = 4
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="Anim" type="CenterContainer" parent="Main/Seperator/Player"]
-custom_minimum_size = Vector2(300, 300)
+[node name="Anim" type="MarginContainer" parent="Main/Seperator/Player"]
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Anim"]
+[node name="AvatarBG" type="TextureRect" parent="Main/Seperator/Player/Anim"]
 custom_minimum_size = Vector2(300, 300)
 layout_mode = 2
 texture = ExtResource("3_prqvn")
-expand_mode = 1
+expand_mode = 3
 stretch_mode = 5
 
-[node name="model" type="SubViewport" parent="Main/Seperator/Player/Anim"]
-transparent_bg = true
-
 [node name="Current" type="VBoxContainer" parent="Main/Seperator/Player"]
+z_index = 2
 layout_mode = 2
 size_flags_vertical = 0
 
@@ -183,6 +181,7 @@ texture = ExtResource("3_n8txd")
 expand_mode = 1
 
 [node name="Equips" type="VBoxContainer" parent="Main/Seperator/Player"]
+z_index = 2
 layout_mode = 2
 size_flags_vertical = 0
 
@@ -201,9 +200,11 @@ texture = ExtResource("2_cuj2c")
 axis_stretch_horizontal = 2
 
 [node name="Mana" type="VBoxContainer" parent="Main/Seperator"]
+z_index = 2
 clip_contents = true
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 5
+size_flags_vertical = 4
 alignment = 1
 
 [node name="ManaFire" type="VBoxContainer" parent="Main/Seperator/Mana"]
@@ -218,7 +219,7 @@ custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-texture = ExtResource("7_2txfs")
+texture = ExtResource("3_prqvn")
 expand_mode = 3
 stretch_mode = 5
 
@@ -265,7 +266,7 @@ custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-texture = ExtResource("7_2txfs")
+texture = ExtResource("3_prqvn")
 expand_mode = 3
 stretch_mode = 5
 
@@ -312,7 +313,7 @@ custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-texture = ExtResource("7_2txfs")
+texture = ExtResource("3_prqvn")
 expand_mode = 3
 stretch_mode = 5
 
@@ -348,10 +349,11 @@ horizontal_alignment = 1
 vertical_alignment = 3
 
 [node name="Stats" type="VBoxContainer" parent="Main/Seperator"]
+z_index = 2
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 5
+size_flags_horizontal = 5
+size_flags_vertical = 4
 theme_override_constants/separation = 15
 alignment = 1
 
@@ -740,3 +742,17 @@ scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AvatarViewportLayer" type="SubViewportContainer" parent="Main"]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Main/AvatarViewportLayer"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="MenuAvatar" parent="Main/AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
