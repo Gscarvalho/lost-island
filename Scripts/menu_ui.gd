@@ -14,7 +14,11 @@ extends Control
 @onready var settings_page: Control = $SettingsPage
 @onready var avatar_viewport_layer: SubViewportContainer = $AvatarViewportLayer
 @onready var master_volume_slider: HSlider = %MasterVolumeSlider
-
+@onready var exit_game_button: TextureButton = %ExitGameButton
+@onready var mana_fire: VBoxContainer = %ManaFire
+@onready var mana_water: VBoxContainer = %ManaWater
+@onready var mana_light: VBoxContainer = %ManaLight
+var volume_editing := false
 var player: PlayerSkin
 var menu_tween: Tween
 enum MenuPage {
@@ -28,10 +32,18 @@ var page_tween: Tween
 
 func _ready() -> void:
 	StateManager.state_changed.connect(_toggle_menu)
+	exit_game_button.pressed.connect(_on_exit_game_pressed)
 	master_volume_slider.value_changed.connect(
 		_on_master_volume_changed
 	)
-
+	
+	master_volume_slider.focus_neighbor_bottom = (
+	master_volume_slider.get_path_to(exit_game_button)
+	)
+	exit_game_button.focus_neighbor_top = (
+		exit_game_button.get_path_to(master_volume_slider)
+	)
+	
 	player = get_tree().get_first_node_in_group("Player").get_child(0) as PlayerSkin
 	player.health_changed.connect(_update_health)
 	player.stamina_changed.connect(_update_stamina)
@@ -50,6 +62,8 @@ func _ready() -> void:
 	_apply_page_positions()
 	
 	
+func _on_exit_game_pressed() -> void:
+	get_tree().quit()
 
 func _set_stat_display(
 	label: RichTextLabel,
@@ -97,6 +111,12 @@ func _update_stamina(value: float, maximum: float) -> void:
 	tween.tween_property(current.get_child(1), "value", value, 0.5)
 
 func _toggle_menu(state: StateManager.State) -> void:
+	if current_page == MenuPage.SETTINGS:
+		volume_editing = false
+		master_volume_slider.grab_focus()
+	elif current_page == MenuPage.CHARACTER:
+		mana_fire.grab_focus()
+	
 	if menu_tween != null:
 		menu_tween.kill()
 
@@ -189,6 +209,19 @@ func _change_page(new_page: MenuPage) -> void:
 		page_tween.kill()
 
 	current_page = new_page
+	
+	volume_editing = false
+
+	if current_page == MenuPage.SETTINGS:
+		master_volume_slider.grab_focus()
+	elif current_page == MenuPage.CHARACTER:
+		mana_fire.grab_focus()
+	else:
+		mana_fire.release_focus()
+		mana_water.release_focus()
+		mana_light.release_focus()
+		master_volume_slider.release_focus()
+		exit_game_button.release_focus()
 
 	var screen_height := get_viewport_rect().size.y
 	var page_offset := _get_page_offset(screen_height)
@@ -253,7 +286,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if page_tween != null and page_tween.is_running():
 		return
 
-	if event.is_action_pressed("ui_up"):
+	if event.is_action_pressed("ui_page_up"):
 		match current_page:
 			MenuPage.INVENTORY:
 				_change_page(MenuPage.CHARACTER)
@@ -263,13 +296,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		get_viewport().set_input_as_handled()
 
-	elif event.is_action_pressed("ui_down"):
+	elif event.is_action_pressed("ui_page_down"):
 		match current_page:
-			MenuPage.SETTINGS:
-				_change_page(MenuPage.CHARACTER)
-
 			MenuPage.CHARACTER:
 				_change_page(MenuPage.INVENTORY)
+				
+			MenuPage.SETTINGS:
+				_change_page(MenuPage.CHARACTER)
 
 		get_viewport().set_input_as_handled()
 
@@ -284,3 +317,49 @@ func _on_master_volume_changed(value: float) -> void:
 
 	var volume_db := linear_to_db(value / 100.0)
 	AudioServer.set_bus_volume_db(master_bus, volume_db)
+
+func _input(event: InputEvent) -> void:
+	if StateManager.current_state != StateManager.State.MENU:
+		return
+
+	if current_page != MenuPage.SETTINGS:
+		return
+
+	if page_tween != null and page_tween.is_running():
+		return
+	if mana_fire.has_focus():
+		print("focused")
+		var mana_level = mana_fire.get_child(1) as RichTextLabel
+		mana_level.visible = true
+		
+	if master_volume_slider.has_focus():
+		if event.is_action_pressed("ui_accept"):
+			volume_editing = not volume_editing
+			get_viewport().set_input_as_handled()
+			return
+
+		if volume_editing:
+			# Left and right pass through to the HSlider.
+			# Up and down stay locked until A is pressed again.
+			if (
+				event.is_action_pressed("ui_up")
+				or event.is_action_pressed("ui_down")
+			):
+				get_viewport().set_input_as_handled()
+
+			return
+
+		# Prevent Left/Right from changing volume before A is pressed.
+		if (
+			event.is_action_pressed("ui_left")
+			or event.is_action_pressed("ui_right")
+		):
+			get_viewport().set_input_as_handled()
+			return
+
+	if (
+		exit_game_button.has_focus()
+		and event.is_action_pressed("ui_page_down")
+	):
+		_change_page(MenuPage.CHARACTER)
+		get_viewport().set_input_as_handled()

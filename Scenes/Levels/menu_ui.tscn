@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=15 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://bqn82nnijhe2c" path="res://Assets/Images/UI/circle_fill_gradient.svg" id="2_b1j0w"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://dxwf0q22n2ggm" path="res://Assets/Images/Icons/fire_icon.svg" id="8_tjubs"]
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="9_uf2rm"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
+[ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/snowflake_icon.svg" id="10_ujsln"]
+[ext_resource type="Texture2D" uid="uid://cbp5radrdej4e" path="res://Assets/Images/Icons/godot_icon.svg" id="11_ujsln"]
 
 [sub_resource type="Gradient" id="Gradient_ehti2"]
 colors = PackedColorArray(0, 0.7490196, 1, 1, 0.3647059, 1, 1, 1)
@@ -206,20 +208,23 @@ clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 4
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="ManaFire" type="VBoxContainer" parent="Main/Seperator/Mana"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ManaLight")
+focus_neighbor_bottom = NodePath("../ManaWater")
 alignment = 1
 
 [node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaFire"]
-custom_minimum_size = Vector2(120, 120)
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
+size_flags_vertical = 4
 texture = ExtResource("3_prqvn")
 expand_mode = 3
 stretch_mode = 5
@@ -243,30 +248,30 @@ texture = ExtResource("8_tjubs")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaFire"]
+[node name="FireManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaFire"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 32
-text = "99"
+text = "9996"
 fit_content = true
-scroll_active = false
 horizontal_alignment = 1
-vertical_alignment = 3
 
 [node name="ManaWater" type="VBoxContainer" parent="Main/Seperator/Mana"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ManaFire")
+focus_neighbor_bottom = NodePath("../ManaLight")
 alignment = 1
 
 [node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaWater"]
-custom_minimum_size = Vector2(120, 120)
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
+size_flags_vertical = 4
 texture = ExtResource("3_prqvn")
 expand_mode = 3
 stretch_mode = 5
@@ -290,30 +295,30 @@ texture = ExtResource("9_uf2rm")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaWater"]
+[node name="WaterManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaWater"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 32
-text = "99"
+text = "999"
 fit_content = true
-scroll_active = false
 horizontal_alignment = 1
-vertical_alignment = 3
 
 [node name="ManaLight" type="VBoxContainer" parent="Main/Seperator/Mana"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ManaWater")
+focus_neighbor_bottom = NodePath("../ManaFire")
 alignment = 1
 
 [node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaLight"]
-custom_minimum_size = Vector2(120, 120)
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 3
+size_flags_vertical = 4
 texture = ExtResource("3_prqvn")
 expand_mode = 3
 stretch_mode = 5
@@ -337,17 +342,15 @@ texture = ExtResource("10_o1rl0")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="ManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaLight"]
+[node name="LightManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaLight"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 32
-text = "99"
+text = "999"
 fit_content = true
-scroll_active = false
 horizontal_alignment = 1
-vertical_alignment = 3
 
 [node name="Stats" type="VBoxContainer" parent="Main/Seperator"]
 z_index = 2
@@ -806,6 +809,22 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
 value = 100.0
+
+[node name="ExitLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit Game"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="ExitGameButton" type="TextureButton" parent="SettingsPage/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture_normal = ExtResource("3_prqvn")
+texture_hover = ExtResource("10_ujsln")
+texture_focused = ExtResource("11_ujsln")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="AvatarViewportLayer" type="SubViewportContainer" parent="."]
 z_index = 1
