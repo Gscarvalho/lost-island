@@ -1,7 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=14 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
-[ext_resource type="Texture2D" uid="uid://bqn82nnijhe2c" path="res://Assets/Images/UI/circle_fill_gradient.svg" id="2_b1j0w"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
 [ext_resource type="Texture2D" uid="uid://bc2wps3tp6ait" path="res://Assets/Images/UI/bar_line.svg" id="3_n8txd"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="3_prqvn"]
@@ -31,7 +30,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_axiel")
 
-[node name="Screen" type="TextureRect" parent="."]
+[node name="MenuBG" type="TextureRect" parent="."]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -40,25 +39,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_5sxxi")
-
-[node name="Background" type="TextureRect" parent="."]
-visible = false
-modulate = Color(0, 1, 1, 1)
-clip_contents = true
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -600.0
-offset_top = -200.0
-offset_bottom = 200.0
-grow_horizontal = 0
-grow_vertical = 2
-texture = ExtResource("2_b1j0w")
-expand_mode = 3
-stretch_mode = 5
 
 [node name="Main" type="MarginContainer" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -827,7 +807,6 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="AvatarViewportLayer" type="SubViewportContainer" parent="."]
-visible = false
 z_index = 1
 custom_minimum_size = Vector2(1280, 720)
 layout_mode = 1
@@ -844,7 +823,40 @@ own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
 size = Vector2i(1280, 720)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
 [node name="MenuAvatar" parent="AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
 unique_name_in_owner = true
+
+[node name="SkillTreeOverlay" type="Control" parent="."]
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SkillTreeBG" type="TextureRect" parent="SkillTreeOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture1D_5sxxi")
+
+[node name="CenterContainer" type="CenterContainer" parent="SkillTreeOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="SkillTreeOverlay/CenterContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "SKILL TREE"

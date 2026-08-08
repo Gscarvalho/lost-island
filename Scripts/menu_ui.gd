@@ -1,5 +1,5 @@
 extends Control
-@onready var screen: TextureRect = $Screen
+@onready var screen: TextureRect = $MenuBG
 @onready var main: MarginContainer = $Main
 @onready var stats: VBoxContainer = $Main/Seperator/Stats
 @onready var current: VBoxContainer = $Main/Seperator/Player/Current
@@ -18,9 +18,14 @@ extends Control
 @onready var mana_fire: VBoxContainer = %ManaFire
 @onready var mana_water: VBoxContainer = %ManaWater
 @onready var mana_light: VBoxContainer = %ManaLight
+@onready var skill_tree_overlay: Control = $SkillTreeOverlay
+@onready var skill_tree_title: Label = $SkillTreeOverlay/CenterContainer/Label
+var last_mana_focus: Control
+var skill_tree_open := false
 var volume_editing := false
 var player: PlayerSkin
 var menu_tween: Tween
+var skill_tree_tween: Tween
 enum MenuPage {
 	SETTINGS,
 	CHARACTER,
@@ -133,6 +138,71 @@ func _set_stat_display(
 		)
 	else:
 		label.text = final_text
+
+func _open_skill_tree(
+	mana_name: String,
+	mana_control: Control
+	) -> void:
+	skill_tree_open = true
+	last_mana_focus = mana_control
+
+	skill_tree_title.text = mana_name.to_upper() + " SKILL TREE"
+
+	if skill_tree_tween != null:
+		skill_tree_tween.kill()
+
+	skill_tree_overlay.visible = true
+	skill_tree_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	skill_tree_overlay.modulate.a = 0.0
+
+	mana_fire.release_focus()
+	mana_water.release_focus()
+	mana_light.release_focus()
+
+	menu_avatar.set_rotation_enabled(false)
+
+	skill_tree_tween = create_tween()
+	skill_tree_tween.set_trans(Tween.TRANS_QUAD)
+	skill_tree_tween.set_ease(Tween.EASE_OUT)
+
+	skill_tree_tween.tween_property(
+		skill_tree_overlay,
+		"modulate:a",
+		1.0,
+		0.2
+	)
+
+func _close_skill_tree() -> void:
+	if not skill_tree_open:
+		return
+
+	skill_tree_open = false
+
+	if skill_tree_tween != null:
+		skill_tree_tween.kill()
+
+	skill_tree_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	skill_tree_tween = create_tween()
+	skill_tree_tween.set_trans(Tween.TRANS_QUAD)
+	skill_tree_tween.set_ease(Tween.EASE_IN)
+
+	skill_tree_tween.tween_property(
+		skill_tree_overlay,
+		"modulate:a",
+		0.0,
+		0.15
+	)
+
+	await skill_tree_tween.finished
+
+	skill_tree_overlay.visible = false
+
+	if current_page == MenuPage.CHARACTER:
+		menu_avatar.set_rotation_enabled(true)
+
+		if last_mana_focus != null:
+			last_mana_focus.grab_focus()
 
 func _update_health(value: float, maximum: float) -> void:
 	current.get_child(0).get_child(0).text = (
@@ -322,6 +392,8 @@ func _get_page_offset(screen_height: float) -> float:
 func _unhandled_input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
+	if skill_tree_open:
+		return
 
 	if page_tween != null and page_tween.is_running():
 		return
@@ -361,6 +433,28 @@ func _on_master_volume_changed(value: float) -> void:
 func _input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
+	if skill_tree_open:
+		if event.is_action_pressed("ui_cancel"):
+			_close_skill_tree()
+			get_viewport().set_input_as_handled()
+
+		return	
+	if current_page == MenuPage.CHARACTER and not skill_tree_open:
+		if event.is_action_pressed("ui_accept"):
+			if mana_fire.has_focus():
+				_open_skill_tree("Fire", mana_fire)
+				get_viewport().set_input_as_handled()
+				return
+
+			if mana_water.has_focus():
+				_open_skill_tree("Water", mana_water)
+				get_viewport().set_input_as_handled()
+				return
+
+			if mana_light.has_focus():
+				_open_skill_tree("Light", mana_light)
+				get_viewport().set_input_as_handled()
+				return
 
 	if current_page != MenuPage.SETTINGS:
 		return
