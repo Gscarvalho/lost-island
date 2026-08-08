@@ -73,10 +73,39 @@ func _ready() -> void:
 		else Control.MOUSE_FILTER_IGNORE
 	)
 	_apply_page_positions()
+	_update_page_focus()
 
 func _on_mana_focused(mana_name: String) -> void:
-	print("Mana focused: ", mana_name)	
+	print("Mana focused: ", mana_name)
+
+	_set_mana_focus_visual(mana_fire, mana_name == "Fire")
+	_set_mana_focus_visual(mana_water, mana_name == "Water")
+	_set_mana_focus_visual(mana_light, mana_name == "Light")
 	
+func _set_mana_focus_visual(
+	mana_control: Control,
+	is_focused: bool
+	) -> void:
+	var mana_bg := mana_control.get_child(0) as Control
+
+	mana_bg.pivot_offset = mana_bg.size / 2.0
+
+	var target_scale := Vector2.ONE
+
+	if is_focused:
+		target_scale = Vector2(1.1, 1.1)
+
+	var tween := create_tween()
+	tween.set_trans(Tween.TRANS_QUAD)
+	tween.set_ease(Tween.EASE_OUT)
+
+	tween.tween_property(
+		mana_bg,
+		"scale",
+		target_scale,
+		0.12
+	)
+
 func _on_exit_game_pressed() -> void:
 	get_tree().quit()
 
@@ -227,22 +256,12 @@ func _change_page(new_page: MenuPage) -> void:
 		page_tween.kill()
 
 	current_page = new_page
+	_update_page_focus()
 	menu_avatar.set_rotation_enabled(
 	current_page == MenuPage.CHARACTER
 	)
 	
 	volume_editing = false
-
-	if current_page == MenuPage.SETTINGS:
-		master_volume_slider.grab_focus()
-	elif current_page == MenuPage.CHARACTER:
-		mana_fire.grab_focus()
-	else:
-		mana_fire.release_focus()
-		mana_water.release_focus()
-		mana_light.release_focus()
-		master_volume_slider.release_focus()
-		exit_game_button.release_focus()
 
 	var screen_height := get_viewport_rect().size.y
 	var page_offset := _get_page_offset(screen_height)
@@ -380,3 +399,43 @@ func _input(event: InputEvent) -> void:
 	):
 		_change_page(MenuPage.CHARACTER)
 		get_viewport().set_input_as_handled()
+
+func _update_page_focus() -> void:
+	var character_active := current_page == MenuPage.CHARACTER
+	var settings_active := current_page == MenuPage.SETTINGS
+
+	mana_fire.focus_mode = (
+		Control.FOCUS_ALL
+		if character_active
+		else Control.FOCUS_NONE
+	)
+
+	mana_water.focus_mode = (
+		Control.FOCUS_ALL
+		if character_active
+		else Control.FOCUS_NONE
+	)
+
+	mana_light.focus_mode = (
+		Control.FOCUS_ALL
+		if character_active
+		else Control.FOCUS_NONE
+	)
+
+	master_volume_slider.focus_mode = (
+		Control.FOCUS_ALL
+		if settings_active
+		else Control.FOCUS_NONE
+	)
+
+	exit_game_button.focus_mode = (
+		Control.FOCUS_ALL
+		if settings_active
+		else Control.FOCUS_NONE
+	)
+
+	if character_active:
+		mana_fire.grab_focus()
+
+	elif settings_active:
+		master_volume_slider.grab_focus()
