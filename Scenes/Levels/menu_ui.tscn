@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="3_prqvn"]
 [ext_resource type="PackedScene" uid="uid://cyba446df5nc6" path="res://Scenes/Characters/Skins/menu_avatar.tscn" id="4_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="5_jlchu"]
-[ext_resource type="Texture2D" uid="uid://dxwf0q22n2ggm" path="res://Assets/Images/Icons/fire_icon.svg" id="8_tjubs"]
+[ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/fire_icon.png" id="5_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="9_uf2rm"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/snowflake_icon.svg" id="10_ujsln"]
@@ -222,8 +222,8 @@ offset_right = 50.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("8_tjubs")
-expand_mode = 1
+texture = ExtResource("5_o1rl0")
+expand_mode = 3
 stretch_mode = 5
 
 [node name="FireManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaFire"]

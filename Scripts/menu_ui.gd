@@ -78,7 +78,8 @@ func _ready() -> void:
 		else Control.MOUSE_FILTER_IGNORE
 	)
 	_apply_page_positions()
-	_update_page_focus()
+	if menu_is_open:
+		_update_page_focus()
 
 func _on_mana_focused(mana_name: String) -> void:
 	print("Mana focused: ", mana_name)
@@ -110,6 +111,15 @@ func _set_mana_focus_visual(
 		target_scale,
 		0.12
 	)
+
+func _clear_mana_focus() -> void:
+	mana_fire.release_focus()
+	mana_water.release_focus()
+	mana_light.release_focus()
+
+	_set_mana_focus_visual(mana_fire, false)
+	_set_mana_focus_visual(mana_water, false)
+	_set_mana_focus_visual(mana_light, false)
 
 func _on_exit_game_pressed() -> void:
 	get_tree().quit()
@@ -225,18 +235,20 @@ func _update_stamina(value: float, maximum: float) -> void:
 	tween.tween_property(current.get_child(1), "value", value, 0.5)
 
 func _toggle_menu(state: StateManager.State) -> void:
-	if current_page == MenuPage.SETTINGS:
-		volume_editing = false
-		master_volume_slider.grab_focus()
-	elif current_page == MenuPage.CHARACTER:
-		mana_fire.grab_focus()
-	
 	if menu_tween != null:
 		menu_tween.kill()
 
 	if state == StateManager.State.MENU:
 		visible = true
 		mouse_filter = Control.MOUSE_FILTER_STOP
+		
+		if current_page == MenuPage.SETTINGS:
+			volume_editing = false
+			master_volume_slider.grab_focus()
+			
+		elif current_page == MenuPage.CHARACTER:
+			_clear_mana_focus()
+			
 		menu_avatar.set_rotation_enabled(
 			current_page == MenuPage.CHARACTER
 		)
@@ -394,9 +406,26 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if skill_tree_open:
 		return
-
 	if page_tween != null and page_tween.is_running():
 		return
+
+	if current_page == MenuPage.CHARACTER:
+		var mana_has_focus := (
+			mana_fire.has_focus()
+			or mana_water.has_focus()
+			or mana_light.has_focus()
+		)
+
+		if not mana_has_focus:
+			if event.is_action_pressed("ui_down"):
+				mana_fire.grab_focus()
+				get_viewport().set_input_as_handled()
+				return
+
+			elif event.is_action_pressed("ui_up"):
+				mana_light.grab_focus()
+				get_viewport().set_input_as_handled()
+				return
 
 	if event.is_action_pressed("ui_page_up"):
 		match current_page:
@@ -529,7 +558,7 @@ func _update_page_focus() -> void:
 	)
 
 	if character_active:
-		mana_fire.grab_focus()
+		_clear_mana_focus()
 
 	elif settings_active:
 		master_volume_slider.grab_focus()
