@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=15 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
@@ -11,14 +11,14 @@
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/snowflake_icon.svg" id="10_ujsln"]
 [ext_resource type="Texture2D" uid="uid://cbp5radrdej4e" path="res://Assets/Images/Icons/godot_icon.svg" id="11_ujsln"]
+[ext_resource type="PackedScene" uid="uid://dpa0nvwc7fayx" path="res://Scenes/UI/skill_tree_node.tscn" id="12_ujsln"]
 
 [sub_resource type="Gradient" id="Gradient_ehti2"]
-colors = PackedColorArray(0, 0.7490196, 1, 1, 0.3647059, 1, 1, 1)
+colors = PackedColorArray(0.2, 0.2, 0.2, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5sxxi"]
 gradient = SubResource("Gradient_ehti2")
 width = 1280
-use_hdr = true
 
 [node name="Menu" type="Control"]
 custom_minimum_size = Vector2(1280, 720)
@@ -848,7 +848,25 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture1D_5sxxi")
 
-[node name="CenterContainer" type="CenterContainer" parent="SkillTreeOverlay"]
+[node name="SkillTreeBGIcon" type="MarginContainer" parent="SkillTreeOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_bottom = 150
+
+[node name="BGIcon" type="TextureRect" parent="SkillTreeOverlay/SkillTreeBGIcon"]
+modulate = Color(1, 0.54901963, 0, 1)
+layout_mode = 2
+texture = ExtResource("5_o1rl0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="FireTree" type="Control" parent="SkillTreeOverlay"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -856,7 +874,145 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="SkillTreeOverlay/CenterContainer"]
+[node name="FireFlight" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 794.0
+offset_top = 169.0
+offset_right = -390.0
+offset_bottom = -455.0
+pivot_offset = Vector2(48, 48)
+
+[node name="FireJump" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 843.0
+offset_top = 448.0
+offset_right = -341.0
+offset_bottom = -176.0
+pivot_offset = Vector2(48, 48)
+
+[node name="Flamethrower" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 362.0
+offset_top = 448.0
+offset_right = -822.0
+offset_bottom = -176.0
+pivot_offset = Vector2(48, 48)
+
+[node name="Flare" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 390.0
+offset_top = 237.0
+offset_right = -794.0
+offset_bottom = -387.0
+pivot_offset = Vector2(48, 48)
+
+[node name="Fireball" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 590.0
+offset_top = 564.0
+offset_right = -594.0
+offset_bottom = -60.0
+pivot_offset = Vector2(48, 48)
+
+[node name="SkillInfo" type="Control" parent="SkillTreeOverlay"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HboxContainer" type="HBoxContainer" parent="SkillTreeOverlay/SkillInfo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="MarginContainerL" type="MarginContainer" parent="SkillTreeOverlay/SkillInfo/HboxContainer"]
+visible = false
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "SKILL TREE"
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerL"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SkillNameL" type="RichTextLabel" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerL/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Fireball"
+vertical_alignment = 2
+
+[node name="SkillDescriptionL" type="RichTextLabel" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerL/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.35
+text = "Luanch a ball a fire,"
+vertical_alignment = 1
+
+[node name="SkillInputL" type="RichTextLabel" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerL/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Skill unassigned."
+
+[node name="MarginContainerR" type="MarginContainer" parent="SkillTreeOverlay/SkillInfo/HboxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerR"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SkillNameR" type="RichTextLabel" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerR/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Fireball"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="SkillDescriptionR" type="RichTextLabel" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerR/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.35
+text = "Launch a ball of fire."
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SkillInputR" type="RichTextLabel" parent="SkillTreeOverlay/SkillInfo/HboxContainer/MarginContainerR/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Skill unassigned."
+horizontal_alignment = 2
+
+[node name="TitleContainer" type="CenterContainer" parent="SkillTreeOverlay"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+
+[node name="SkillTreeTitle" type="Label" parent="SkillTreeOverlay/TitleContainer"]
+layout_mode = 2
+text = "Skill Tree"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=2 format=3 uid="uid://d0cd0kfwgpuxy"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/skills.gd" id="1_4s8m8"]
+
+[resource]
+script = ExtResource("1_4s8m8")
+skill_id = &"5"
+skill_name = "Flare"
+skill_description = "Emit a large and powerful flare."
+unlock_cost = 5
+skill_power = 200.0
+skill_anim_name = "Spellcast_Shoot"
+skill_type = 1
+skill_cost = 3.0
+skill_regen_type = 1
+skill_regen_power = -50.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

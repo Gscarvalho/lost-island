@@ -18,8 +18,23 @@ extends Control
 @onready var mana_fire: VBoxContainer = %ManaFire
 @onready var mana_water: VBoxContainer = %ManaWater
 @onready var mana_light: VBoxContainer = %ManaLight
+@onready var skill_tree_bg: TextureRect = $SkillTreeOverlay/SkillTreeBG
+@onready var bg_icon: TextureRect = $SkillTreeOverlay/SkillTreeBGIcon/BGIcon
 @onready var skill_tree_overlay: Control = $SkillTreeOverlay
-@onready var skill_tree_title: Label = $SkillTreeOverlay/CenterContainer/Label
+@onready var skill_tree_title: Label = $SkillTreeOverlay/TitleContainer/SkillTreeTitle
+@onready var skill_name_r: RichTextLabel = %SkillNameR
+@onready var skill_name_l: RichTextLabel = %SkillNameL
+@onready var skill_description_r: RichTextLabel = %SkillDescriptionR
+@onready var skill_description_l: RichTextLabel = %SkillDescriptionL
+@onready var skill_input_r: RichTextLabel = %SkillInputR
+@onready var skill_input_l: RichTextLabel = %SkillInputL
+@onready var fire_tree: Control = %FireTree
+
+
+
+
+
+
 var last_mana_focus: Control
 var skill_tree_open := false
 var volume_editing := false

@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://dpa0nvwc7fayx"]
+
+[ext_resource type="Script" uid="uid://45d37y6ljqpr" path="res://Scripts/skill_tree_node.gd" id="1_8sbre"]
+[ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="2_55nba"]
+
+[node name="SkillTreeNode" type="TextureButton"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1184.0
+offset_bottom = -624.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch_mode = 5
+script = ExtResource("1_8sbre")
+
+[node name="CostBadge" type="TextureRect" parent="."]
+modulate = Color(1, 0.54901963, 0, 1)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_55nba")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CostLabel" type="Label" parent="CostBadge"]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1

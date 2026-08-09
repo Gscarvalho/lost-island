@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://dfdunhb5aa7w1"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/skills.gd" id="1_v4sp6"]
+[ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/fire_icon.png" id="2_wyut0"]
+
+[resource]
+script = ExtResource("1_v4sp6")
+skill_id = &"2"
+skill_name = "Fire Flight"
+skill_description = "Erupt flames enabling flight for a short time."
+skill_icon = ExtResource("2_wyut0")
+unlock_cost = 5
+skill_anim_name = "Jump_Idle"
+skill_type = 1
+skill_cost = 1.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"
