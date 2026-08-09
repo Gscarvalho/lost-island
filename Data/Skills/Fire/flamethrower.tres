@@ -7,6 +7,7 @@ script = ExtResource("1_hqvjb")
 skill_id = &"4"
 skill_name = "Flamethrower"
 skill_description = "Erupt far-reaching flames from your hands,"
+skill_cost_color = Color(1, 0.54901963, 0, 1)
 unlock_cost = 2
 skill_power = 80.0
 skill_anim_name = "Spellcast_Long"

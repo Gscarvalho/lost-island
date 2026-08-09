@@ -9,6 +9,7 @@ skill_id = &"2"
 skill_name = "Fire Flight"
 skill_description = "Erupt flames enabling flight for a short time."
 skill_icon = ExtResource("2_wyut0")
+skill_cost_color = Color(1, 0.54901963, 0, 1)
 unlock_cost = 5
 skill_anim_name = "Jump_Idle"
 skill_type = 1

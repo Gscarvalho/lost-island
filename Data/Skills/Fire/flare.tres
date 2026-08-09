@@ -7,6 +7,7 @@ script = ExtResource("1_4s8m8")
 skill_id = &"5"
 skill_name = "Flare"
 skill_description = "Emit a large and powerful flare."
+skill_cost_color = Color(1, 0.54901963, 0, 1)
 unlock_cost = 5
 skill_power = 200.0
 skill_anim_name = "Spellcast_Shoot"

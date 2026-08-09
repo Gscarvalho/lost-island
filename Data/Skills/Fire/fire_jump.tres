@@ -9,6 +9,7 @@ skill_id = &"3"
 skill_name = "Fire Jump"
 skill_description = "After jumping, burst flames enabling a second jump."
 skill_icon = ExtResource("2_njfpq")
+skill_cost_color = Color(1, 0.54901963, 0, 1)
 unlock_cost = 3
 skill_power = 60.0
 skill_anim_name = "Jump_Idle"
