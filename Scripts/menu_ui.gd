@@ -28,8 +28,8 @@ extends Control
 @onready var skill_description_l: RichTextLabel = %SkillDescriptionL
 @onready var skill_input_r: RichTextLabel = %SkillInputR
 @onready var skill_input_l: RichTextLabel = %SkillInputL
-@onready var fire_tree: Control = %FireTree
-
+@onready var fire_tree: SkillTree = %FireTree
+var active_skill_tree: SkillTree
 
 
 
@@ -51,6 +51,13 @@ var current_page: MenuPage = MenuPage.CHARACTER
 var page_tween: Tween
 
 func _ready() -> void:
+	fire_tree.skill_focused.connect(
+		_on_tree_skill_focused
+	)
+
+	fire_tree.skill_activated.connect(
+		_on_tree_skill_activated
+	)
 	mana_fire.focus_entered.connect(
 		_on_mana_focused.bind("Fire")
 	)
@@ -170,7 +177,18 @@ func _open_skill_tree(
 	) -> void:
 	skill_tree_open = true
 	last_mana_focus = mana_control
+	active_skill_tree = null
+	skill_name_r.text = ""
+	skill_description_r.text = ""
+	skill_input_r.text = ""
 
+	skill_name_l.text = ""
+	skill_description_l.text = ""
+	skill_input_l.text = ""
+	match mana_name:
+		"Fire":
+			active_skill_tree = fire_tree
+			fire_tree.visible = active_skill_tree == fire_tree
 	skill_tree_title.text = mana_name.to_upper() + " SKILL TREE"
 
 	if skill_tree_tween != null:
@@ -228,6 +246,25 @@ func _close_skill_tree() -> void:
 
 		if last_mana_focus != null:
 			last_mana_focus.grab_focus()
+
+func _on_tree_skill_focused(skill: Skills) -> void:
+	if skill == null:
+		return
+
+	skill_name_r.text = skill.skill_name.to_upper()
+	skill_description_r.text = skill.skill_description
+	skill_input_r.text = "INPUT: UNASSIGNED"
+
+func _on_tree_skill_activated(skill: Skills) -> void:
+	if skill == null:
+		return
+
+	print(
+		"Selected: ",
+		skill.skill_name,
+		" | Unlock cost: ",
+		skill.unlock_cost
+	)
 
 func _update_health(value: float, maximum: float) -> void:
 	current.get_child(0).get_child(0).text = (
@@ -481,8 +518,24 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("ui_cancel"):
 			_close_skill_tree()
 			get_viewport().set_input_as_handled()
+			return
 
-		return	
+		if active_skill_tree != null:
+			if not active_skill_tree.has_skill_focus():
+				var directional_input := (
+					event.is_action_pressed("ui_up")
+					or event.is_action_pressed("ui_down")
+					or event.is_action_pressed("ui_left")
+					or event.is_action_pressed("ui_right")
+				)
+
+				if directional_input:
+					active_skill_tree.grab_default_focus()
+					get_viewport().set_input_as_handled()
+					return
+
+		return
+
 	if current_page == MenuPage.CHARACTER and not skill_tree_open:
 		if event.is_action_pressed("ui_accept"):
 			if mana_fire.has_focus():

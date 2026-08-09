@@ -10,7 +10,7 @@ signal skill_activated(skill: Skills)
 		skill = value
 		_refresh()
 
-@export var focused_scale := 1.12
+@export var focused_scale := 1.01
 
 @onready var cost_label: Label = %CostLabel
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=21 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
@@ -11,7 +11,13 @@
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/snowflake_icon.svg" id="10_ujsln"]
 [ext_resource type="Texture2D" uid="uid://cbp5radrdej4e" path="res://Assets/Images/Icons/godot_icon.svg" id="11_ujsln"]
+[ext_resource type="Script" uid="uid://bbqj0din761lv" path="res://Scripts/skill_tree.gd" id="12_edv07"]
 [ext_resource type="PackedScene" uid="uid://dpa0nvwc7fayx" path="res://Scenes/UI/skill_tree_node.tscn" id="12_ujsln"]
+[ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="14_0uc32"]
+[ext_resource type="Resource" uid="uid://dfdunhb5aa7w1" path="res://Data/Skills/Fire/fire_flight.tres" id="14_1myk2"]
+[ext_resource type="Resource" uid="uid://b6tvfeksugqay" path="res://Data/Skills/Fire/fire_jump.tres" id="15_fjin3"]
+[ext_resource type="Resource" uid="uid://1m3a8boffpvd" path="res://Data/Skills/Fire/flamethrower.tres" id="16_7q1ka"]
+[ext_resource type="Resource" uid="uid://d0cd0kfwgpuxy" path="res://Data/Skills/Fire/flare.tres" id="17_8aa3k"]
 
 [sub_resource type="Gradient" id="Gradient_ehti2"]
 colors = PackedColorArray(0.2, 0.2, 0.2, 1, 0, 0, 0, 1)
@@ -865,7 +871,7 @@ texture = ExtResource("5_o1rl0")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="FireTree" type="Control" parent="SkillTreeOverlay"]
+[node name="FireTree" type="Control" parent="SkillTreeOverlay" node_paths=PackedStringArray("default_skill_node")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -873,6 +879,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("12_edv07")
+default_skill_node = NodePath("Fireball")
 
 [node name="FireFlight" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
@@ -880,7 +888,12 @@ offset_left = 794.0
 offset_top = 169.0
 offset_right = -390.0
 offset_bottom = -455.0
-pivot_offset = Vector2(48, 48)
+focus_neighbor_left = NodePath("../Flare")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../FireJump")
+texture_normal = ExtResource("5_o1rl0")
+skill = ExtResource("14_1myk2")
 
 [node name="FireJump" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
@@ -888,7 +901,12 @@ offset_left = 843.0
 offset_top = 448.0
 offset_right = -341.0
 offset_bottom = -176.0
-pivot_offset = Vector2(48, 48)
+focus_neighbor_left = NodePath("../Flamethrower")
+focus_neighbor_top = NodePath("../FireFlight")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../Fireball")
+texture_normal = ExtResource("5_o1rl0")
+skill = ExtResource("15_fjin3")
 
 [node name="Flamethrower" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
@@ -896,7 +914,11 @@ offset_left = 362.0
 offset_top = 448.0
 offset_right = -822.0
 offset_bottom = -176.0
-pivot_offset = Vector2(48, 48)
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../Flare")
+focus_neighbor_right = NodePath("../FireJump")
+focus_neighbor_bottom = NodePath("../Fireball")
+skill = ExtResource("16_7q1ka")
 
 [node name="Flare" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
@@ -904,7 +926,11 @@ offset_left = 390.0
 offset_top = 237.0
 offset_right = -794.0
 offset_bottom = -387.0
-pivot_offset = Vector2(48, 48)
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../FireFlight")
+focus_neighbor_bottom = NodePath("../Flamethrower")
+skill = ExtResource("17_8aa3k")
 
 [node name="Fireball" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
@@ -912,7 +938,12 @@ offset_left = 590.0
 offset_top = 564.0
 offset_right = -594.0
 offset_bottom = -60.0
-pivot_offset = Vector2(48, 48)
+focus_neighbor_left = NodePath("../Flamethrower")
+focus_neighbor_top = NodePath(".")
+focus_neighbor_right = NodePath("../FireJump")
+focus_neighbor_bottom = NodePath(".")
+texture_normal = ExtResource("5_o1rl0")
+skill = ExtResource("14_0uc32")
 
 [node name="SkillInfo" type="Control" parent="SkillTreeOverlay"]
 custom_minimum_size = Vector2(0, 55)
@@ -983,7 +1014,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Fireball"
 horizontal_alignment = 2
 vertical_alignment = 2
 
@@ -993,7 +1023,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.35
-text = "Launch a ball of fire."
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -1002,7 +1031,6 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "Skill unassigned."
 horizontal_alignment = 2
 
 [node name="TitleContainer" type="CenterContainer" parent="SkillTreeOverlay"]
