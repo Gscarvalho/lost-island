@@ -9,14 +9,12 @@ extends CharacterBody3D
 @onready var character: PlayerCharacter = $Character
 #endregion
 
-
 #region Movement Configuration
 var walk_speed := 5.5
 var run_speed := 8.5
 var speed_modifier := 1.0
 var stamina_cost_reduction := 1.0
 #endregion
-
 
 #region Jump Configuration
 var jump_height : float = 3.5
@@ -36,7 +34,6 @@ var jump_time_to_descent : float = 0.3
 ) * -1.0
 #endregion
 
-
 #region Runtime State
 var movement_input := Vector2.ZERO
 var is_running := false
@@ -45,7 +42,6 @@ var stamina_depleted_delay_active := false
 var is_attacking := false
 var is_being_hit := false
 #endregion
-
 
 #region Lifecycle
 func _ready() -> void:
@@ -60,7 +56,6 @@ func _physics_process(delta: float) -> void:
 	_attacks_logic()
 	move_and_slide()
 #endregion
-
 
 #region Game State
 func _on_state_changed(state: StateManager.State) -> void:
@@ -89,7 +84,6 @@ func _menu_logic() -> void:
 		
 		velocity = Vector3.ZERO
 #endregion
-
 
 #region Weapon Selection
 func _equip_logic() -> void:
@@ -165,7 +159,6 @@ func _on_weapon_choice_timer_timeout() -> void:
 	$Timers/MenuDelayTimer.start()
 #endregion
 
-
 #region Combat
 func _try_attack(attack_list: Array, attack_index: int) -> void:
 	if attack_index >= attack_list.size():
@@ -222,7 +215,6 @@ func _attacks_logic() -> void:
 				_try_attack(magic_skills, 3)
 #endregion
 
-
 #region Movement
 func _move_logic(delta) -> void:
 	if StateManager.current_state == StateManager.State.PLAY:
@@ -261,7 +253,6 @@ func stop_movement(stop_speed: float, start_speed: float) -> void:
 	tween.tween_property(self,"speed_modifier", 1.0, start_speed)
 #endregion
 
-
 #region Stamina
 func _on_stamina_regen_timer_timeout() -> void:
 	if character.current_stamina <= 0.0 and not stamina_depleted_delay_active:
@@ -274,7 +265,6 @@ func _on_stamina_regen_timer_timeout() -> void:
 	stamina_depleted_delay_active = false
 	$Timers/StaminaRegenTimer.stop()
 #endregion
-
 
 #region Damage
 func hit(damage: float, attacker: CharacterBody3D) -> void:

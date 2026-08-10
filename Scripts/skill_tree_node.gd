@@ -2,26 +2,34 @@
 class_name SkillTreeNode
 extends TextureButton
 
+#region Signals
 signal skill_focused(skill: Skills)
 signal skill_activated(skill: Skills)
+#endregion
 
+#region Configuration
 @export var skill: Skills:
 	set(value):
 		skill = value
 		_refresh()
 
 @export var focused_scale := 1.01
+#endregion
 
+#region Refernces
 @onready var cost_badge: TextureRect = $VBoxContainer/CostBadge
 @onready var cost_label: RichTextLabel = %CostLabel
 @onready var skill_name_label: RichTextLabel = %SkillNameLabel
+#endregion
 
+#region Runtime State
+var focus_tween: Tween
+var badge_tween: Tween
 var tree_color: Color = Color.WHITE
 var is_unlocked := false
+#endregion
 
-func set_tree_color(color: Color) -> void:
-	tree_color = color
-
+#region Lifecycle
 func _ready() -> void:
 	_refresh()
 
@@ -34,13 +42,13 @@ func _ready() -> void:
 	focus_exited.connect(_on_focus_exited)
 	mouse_entered.connect(grab_focus)
 	pressed.connect(_on_pressed)
-
-
+	
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:
 		pivot_offset = size / 2.0
+#endregion
 
-
+#region Skill Data
 func _refresh() -> void:
 	if skill == null:
 		texture_normal = null
@@ -58,6 +66,11 @@ func _refresh() -> void:
 		skill_name_label.text = skill.skill_name
 
 
+func set_tree_color(color: Color) -> void:
+	tree_color = color
+#endregion
+
+#region Focus Events
 func _on_focus_entered() -> void:
 	skill_focused.emit(skill)
 	_fade_cost_badge(0)
@@ -73,9 +86,13 @@ func _on_focus_exited() -> void:
 
 func _on_pressed() -> void:
 	skill_activated.emit(skill)
+#endregion
 
-
+#region Focus Visuals
 func _set_focus_visual(is_focused: bool) -> void:
+	if focus_tween != null:
+		focus_tween.kill()
+
 	var target_scale := Vector2.ONE
 
 	if is_focused:
@@ -84,11 +101,11 @@ func _set_focus_visual(is_focused: bool) -> void:
 	else:
 		z_index = 0
 
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD)
-	tween.set_ease(Tween.EASE_OUT)
+	focus_tween = create_tween()
+	focus_tween.set_trans(Tween.TRANS_QUAD)
+	focus_tween.set_ease(Tween.EASE_OUT)
 
-	tween.tween_property(
+	focus_tween.tween_property(
 		self,
 		"scale",
 		target_scale,
@@ -96,17 +113,22 @@ func _set_focus_visual(is_focused: bool) -> void:
 	)
 
 func _fade_cost_badge(target: float) -> void:
-	var tween := create_tween()
-	tween.set_trans(Tween.TRANS_QUAD)
-	tween.set_ease(Tween.EASE_OUT)
-	
-	tween.tween_property(
+	if badge_tween != null:
+		badge_tween.kill()
+
+	badge_tween = create_tween()
+	badge_tween.set_trans(Tween.TRANS_QUAD)
+	badge_tween.set_ease(Tween.EASE_OUT)
+
+	badge_tween.tween_property(
 		cost_badge,
 		"self_modulate:a",
 		target,
 		0.2
 	)
+#endregion
 
+#region Progression Display
 func set_unlocked(unlocked: bool) -> void:
 	is_unlocked = unlocked
 
@@ -114,3 +136,4 @@ func set_unlocked(unlocked: bool) -> void:
 		cost_badge.visible = false
 	else:
 		cost_badge.visible = true
+#endregion

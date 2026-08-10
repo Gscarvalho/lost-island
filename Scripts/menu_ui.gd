@@ -1,29 +1,38 @@
 extends Control
+#region Main Menu References
 @onready var screen: TextureRect = $MenuBG
 @onready var main: MarginContainer = $Main
+@onready var inventory_page: Control = $InventoryPage
+@onready var settings_page: Control = $SettingsPage
+@onready var avatar_viewport_layer: SubViewportContainer = $AvatarViewportLayer
+@onready var menu_avatar: MenuAvatar = %MenuAvatar
+#endregion
+
+#region Character Page References
 @onready var stats: VBoxContainer = $Main/Seperator/Stats
 @onready var current: VBoxContainer = $Main/Seperator/Player/Current
 @onready var mana: VBoxContainer = $Main/Seperator/Mana
+
 @onready var attack_value: RichTextLabel = %ATKValue
 @onready var defense_value: RichTextLabel = %DEFValue
 @onready var magic_attack_value: RichTextLabel = %MATKValue
 @onready var magic_defense_value: RichTextLabel = %MDEFValue
 @onready var speed_value: RichTextLabel = %SPDValue
-@onready var menu_avatar: MenuAvatar = %MenuAvatar
-@onready var inventory_page: Control = $InventoryPage
-@onready var settings_page: Control = $SettingsPage
-@onready var avatar_viewport_layer: SubViewportContainer = $AvatarViewportLayer
-@onready var master_volume_slider: HSlider = %MasterVolumeSlider
-@onready var exit_game_button: TextureButton = %ExitGameButton
 @onready var mana_fire: VBoxContainer = %ManaFire
 @onready var mana_water: VBoxContainer = %ManaWater
 @onready var mana_light: VBoxContainer = %ManaLight
+#endregion
+
+#region Settings References
+@onready var master_volume_slider: HSlider = %MasterVolumeSlider
+@onready var exit_game_button: TextureButton = %ExitGameButton
+#endregion
+
+#region Skill Tree References
 @onready var skill_tree_bg: TextureRect = $SkillTreeOverlay/SkillTreeBG
 @onready var bg_icon: TextureRect = $SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon/BGIcon
 @onready var skill_tree_overlay: Control = $SkillTreeOverlay
 @onready var skill_tree_title: Label = $SkillTreeOverlay/TitleContainer/SkillTreeTitle
-
-
 
 @onready var skill_name: RichTextLabel = %SkillName
 @onready var skill_power_value: RichTextLabel = %SkillPowerValue
@@ -31,31 +40,44 @@ extends Control
 @onready var skill_range_value: RichTextLabel = %SkillRangeValue
 @onready var skill_description: RichTextLabel = %SkillDescription
 @onready var skill_input: RichTextLabel = %SkillInput
+
 @onready var skill_power_box: Control = %SkillPowerBox
 @onready var skill_mana_cost_box: Control = %SkillManaCostBox
 @onready var skill_range_box: Control = %SkillRangeBox
 
-
-
-
 @onready var fire_tree: SkillTree = %FireTree
-var active_skill_tree: SkillTree
-var last_mana_focus: Control
-var skill_tree_open := false
-var player_controller: Player
-var character: PlayerCharacter
-var menu_tween: Tween
-var skill_tree_tween: Tween
+#endregion
+
+#region Runtime State
 enum MenuPage {
 	SETTINGS,
 	CHARACTER,
 	INVENTORY
 }
 
-var current_page: MenuPage = MenuPage.CHARACTER
-var page_tween: Tween
+var player_controller: Player
+var character: PlayerCharacter
 
+var current_page: MenuPage = MenuPage.CHARACTER
+
+var active_skill_tree: SkillTree
+var last_mana_focus: Control
+
+var skill_tree_open := false
+
+var menu_tween: Tween
+var skill_tree_tween: Tween
+var page_tween: Tween
+#endregion
+
+#region Lifecycle
 func _ready() -> void:
+	_connect_signals()
+	_configure_focus_navigation()
+	_resolve_player_references()
+	_initialize_menu()
+
+func _connect_signals() -> void:
 	fire_tree.skill_focused.connect(
 		_on_tree_skill_focused
 	)
@@ -63,6 +85,7 @@ func _ready() -> void:
 	fire_tree.skill_activated.connect(
 		_on_tree_skill_activated
 	)
+
 	mana_fire.focus_entered.connect(
 		_on_mana_focused.bind("Fire")
 	)
@@ -74,55 +97,338 @@ func _ready() -> void:
 	mana_light.focus_entered.connect(
 		_on_mana_focused.bind("Light")
 	)
-	
-	StateManager.state_changed.connect(_toggle_menu)
-	exit_game_button.pressed.connect(_on_exit_game_pressed)
+
+	StateManager.state_changed.connect(
+		_toggle_menu
+	)
+
+	exit_game_button.pressed.connect(
+		_on_exit_game_pressed
+	)
+
 	master_volume_slider.value_changed.connect(
 		_on_master_volume_changed
 	)
-	
+
+func _configure_focus_navigation() -> void:
 	master_volume_slider.focus_neighbor_bottom = (
-	master_volume_slider.get_path_to(exit_game_button)
+		master_volume_slider.get_path_to(
+			exit_game_button
+		)
 	)
+
 	exit_game_button.focus_neighbor_top = (
-		exit_game_button.get_path_to(master_volume_slider)
+		exit_game_button.get_path_to(
+			master_volume_slider
+		)
 	)
-	
+
+func _resolve_player_references() -> void:
 	player_controller = (
-		get_tree().get_first_node_in_group("Player") as Player
+		get_tree().get_first_node_in_group("Player")
+		as Player
 	)
 
 	character = (
-	player_controller.get_node("Character")
-	as PlayerCharacter
+		player_controller.get_node("Character")
+		as PlayerCharacter
 	)
-	
-	print(
-		"Starting skill points: ",
-		player_controller.progression.skill_points
-	)
-	
-	character.health_changed.connect(_update_health)
-	character.stamina_changed.connect(_update_stamina)
 
+	character.health_changed.connect(
+		_update_health
+	)
+
+	character.stamina_changed.connect(
+		_update_stamina
+	)
+
+func _initialize_menu() -> void:
 	_set_stats()
-	var menu_is_open := StateManager.current_state == StateManager.State.MENU
+
+	var menu_is_open := (
+		StateManager.current_state
+		== StateManager.State.MENU
+	)
 
 	visible = menu_is_open
-	main.modulate.a = 1.0 if menu_is_open else 0.0
-	screen.modulate.a = 1.0 if menu_is_open else 0.0
+
+	main.modulate.a = (
+		1.0 if menu_is_open else 0.0
+	)
+
+	screen.modulate.a = (
+		1.0 if menu_is_open else 0.0
+	)
+
 	mouse_filter = (
 		Control.MOUSE_FILTER_STOP
 		if menu_is_open
 		else Control.MOUSE_FILTER_IGNORE
 	)
+
 	_apply_page_positions()
+
 	if menu_is_open:
 		_update_page_focus()
+#endregion
 
+#region Menu Visibility
+func _toggle_menu(state: StateManager.State) -> void:
+	if menu_tween != null:
+		menu_tween.kill()
+
+	if state == StateManager.State.MENU:
+		visible = true
+		mouse_filter = Control.MOUSE_FILTER_STOP
+		
+		_update_page_focus()
+			
+		menu_avatar.set_rotation_enabled(
+			current_page == MenuPage.CHARACTER
+		)
+
+		main.modulate.a = 0.0
+		screen.modulate.a = 0.0
+		menu_avatar.sync_loadout(character.weapon_active)
+		_set_stats()
+
+		menu_tween = create_tween()
+		menu_tween.set_parallel(true)
+		menu_tween.tween_property(screen, "modulate:a", 1.0, 0.1)
+		menu_tween.tween_property(main, "modulate:a", 1.0, 0.3)
+
+	else:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		menu_avatar.set_rotation_enabled(false)
+		menu_tween = create_tween()
+		menu_tween.set_parallel(true)
+		menu_tween.tween_property(main, "modulate:a", 0.0, 0.1)
+		menu_tween.tween_property(screen, "modulate:a", 0.0, 0.1)
+		menu_tween.finished.connect(_finish_hiding_menu)
+
+func _finish_hiding_menu() -> void:
+	if StateManager.current_state != StateManager.State.MENU:
+		visible = false
+#endregion
+
+#region Page Navigation
+func _change_page(new_page: MenuPage) -> void:
+	if current_page == new_page:
+		return
+
+	if page_tween != null:
+		page_tween.kill()
+
+	current_page = new_page
+	_update_page_focus()
+	menu_avatar.set_rotation_enabled(
+	current_page == MenuPage.CHARACTER
+	)
+
+	var screen_height := get_viewport_rect().size.y
+	var page_offset := _get_page_offset(screen_height)
+
+	page_tween = create_tween()
+	page_tween.set_parallel(true)
+	page_tween.set_trans(Tween.TRANS_QUAD)
+	page_tween.set_ease(Tween.EASE_IN_OUT)
+
+	page_tween.tween_property(
+		settings_page,
+		"position:y",
+		-screen_height + page_offset,
+		0.35
+	)
+
+	page_tween.tween_property(
+		main,
+		"position:y",
+		page_offset,
+		0.35
+	)
+
+	page_tween.tween_property(
+		avatar_viewport_layer,
+		"position:y",
+		page_offset,
+		0.35
+	)
+
+	page_tween.tween_property(
+		inventory_page,
+		"position:y",
+		screen_height + page_offset,
+		0.35
+	)
+
+func _apply_page_positions() -> void:
+	var screen_height := get_viewport_rect().size.y
+	var page_offset := _get_page_offset(screen_height)
+
+	settings_page.position.y = -screen_height + page_offset
+	main.position.y = page_offset
+	avatar_viewport_layer.position.y = page_offset
+	inventory_page.position.y = screen_height + page_offset
+
+func _get_page_offset(screen_height: float) -> float:
+	match current_page:
+		MenuPage.SETTINGS:
+			return screen_height
+
+		MenuPage.INVENTORY:
+			return -screen_height
+
+		_:
+			return 0.0
+
+func _update_page_focus() -> void:
+	var character_active := current_page == MenuPage.CHARACTER
+	var settings_active := current_page == MenuPage.SETTINGS
+
+	mana_fire.focus_mode = (
+		Control.FOCUS_ALL
+		if character_active
+		else Control.FOCUS_NONE
+	)
+
+	mana_water.focus_mode = (
+		Control.FOCUS_ALL
+		if character_active
+		else Control.FOCUS_NONE
+	)
+
+	mana_light.focus_mode = (
+		Control.FOCUS_ALL
+		if character_active
+		else Control.FOCUS_NONE
+	)
+
+	master_volume_slider.focus_mode = (
+		Control.FOCUS_ALL
+		if settings_active
+		else Control.FOCUS_NONE
+	)
+
+	exit_game_button.focus_mode = (
+		Control.FOCUS_ALL
+		if settings_active
+		else Control.FOCUS_NONE
+	)
+
+	if character_active:
+		_clear_mana_focus()
+
+	elif settings_active:
+		master_volume_slider.grab_focus()
+#endregion
+
+#region Character Stats
+func _set_stats() -> void:
+	var final_stats := character.current_stats
+
+	# MenuUI may initialize before PlayerCharacter has built
+	# its runtime stats, so fall back to the base values.
+	if final_stats == null:
+		final_stats = character.base_stats
+
+	_set_stat_display(
+		attack_value,
+		final_stats.attack,
+		character.base_stats.attack
+	)
+
+	_set_stat_display(
+		defense_value,
+		final_stats.defense,
+		character.base_stats.defense
+	)
+
+	_set_stat_display(
+		magic_attack_value,
+		final_stats.m_attack,
+		character.base_stats.m_attack
+	)
+
+	_set_stat_display(
+		magic_defense_value,
+		final_stats.m_defense,
+		character.base_stats.m_defense
+	)
+
+	_set_stat_display(
+		speed_value,
+		final_stats.speed,
+		character.base_stats.speed
+	)
+	
+	
+	current.get_child(0).get_child(0).text = (
+		str(character.current_hp).pad_decimals(0)
+		+ "/"
+		+ str(final_stats.max_hp).pad_decimals(0)
+	)
+	var tween = create_tween()
+	tween.tween_property(current.get_child(0),"value", character.current_hp, 0.5)
+	current.get_child(1).get_child(0).text = (
+		str(character.current_stamina).pad_decimals(0) 
+		+ "/100"
+	)
+	var tween2 = create_tween()
+	tween2.tween_property(current.get_child(1),"value", character.current_stamina, 0.5)
+	#mana.get_child(0).get_child(1).text = "" #make Mana Levels
+	#mana.get_child(1).get_child(1).text = "" #make Mana Levels
+	#mana.get_child(2).get_child(1).text = "" #make Mana Levels
+	
+		#a.text = player.base_stats.get_property_list().
+
+func _set_stat_display(
+	label: RichTextLabel,
+	final_value: float,
+	normal_value: float
+	) -> void:
+	var bonus := final_value - normal_value
+	var final_text := str(final_value).pad_decimals(0)
+
+	if bonus > 0.0:
+		label.text = (
+			final_text
+			+ " (+"
+			+ str(bonus).pad_decimals(0)
+			+ ")"
+		)
+	elif bonus < 0.0:
+		label.text = (
+			final_text
+			+ " ("
+			+ str(bonus).pad_decimals(0)
+			+ ")"
+		)
+	else:
+		label.text = final_text
+
+func _update_health(value: float, maximum: float) -> void:
+	current.get_child(0).get_child(0).text = (
+		str(value).pad_decimals(0)
+		+ "/"
+		+ str(maximum).pad_decimals(0)
+	)
+
+	var tween = create_tween()
+	tween.tween_property(current.get_child(0), "value", value, 0.5)
+
+func _update_stamina(value: float, maximum: float) -> void:
+	current.get_child(1).get_child(0).text = (
+		str(value).pad_decimals(0)
+		+ "/"
+		+ str(maximum).pad_decimals(0)
+	)
+
+	var tween = create_tween()
+	tween.tween_property(current.get_child(1), "value", value, 0.5)
+#endregion
+
+#region Mana Focus
 func _on_mana_focused(mana_name: String) -> void:
-	print("Mana focused: ", mana_name)
-
 	_set_mana_focus_visual(mana_fire, mana_name == "Fire")
 	_set_mana_focus_visual(mana_water, mana_name == "Water")
 	_set_mana_focus_visual(mana_light, mana_name == "Light")
@@ -159,36 +465,9 @@ func _clear_mana_focus() -> void:
 	_set_mana_focus_visual(mana_fire, false)
 	_set_mana_focus_visual(mana_water, false)
 	_set_mana_focus_visual(mana_light, false)
+#endregion
 
-func _on_exit_game_pressed() -> void:
-	print("Game Exited.")
-	#get_tree().quit()
-
-func _set_stat_display(
-	label: RichTextLabel,
-	final_value: float,
-	normal_value: float
-	) -> void:
-	var bonus := final_value - normal_value
-	var final_text := str(final_value).pad_decimals(0)
-
-	if bonus > 0.0:
-		label.text = (
-			final_text
-			+ " (+"
-			+ str(bonus).pad_decimals(0)
-			+ ")"
-		)
-	elif bonus < 0.0:
-		label.text = (
-			final_text
-			+ " ("
-			+ str(bonus).pad_decimals(0)
-			+ ")"
-		)
-	else:
-		label.text = final_text
-
+#region Skill Tree
 func _open_skill_tree(
 	mana_name: String,
 	mana_control: Control
@@ -202,9 +481,6 @@ func _open_skill_tree(
 	skill_power_box.modulate.a = 0
 	skill_mana_cost_box.modulate.a = 0
 	skill_range_box.modulate.a = 0
-	#var power_bg = skill_power_value.get_parent_control() as TextureRect
-	#var mana_cost_bg = skill_mana_cost_value.get_parent_control() as TextureRect
-	#var range_value_bg = skill_range_value.get_parent_control() as TextureRect
 	
 	match mana_name:
 		"Fire":
@@ -212,13 +488,14 @@ func _open_skill_tree(
 	
 	if active_skill_tree != null:
 		active_skill_tree.refresh_unlock_states(
-		player_controller.progression
-	)
-	
+			player_controller.progression
+		)
 
-	if active_skill_tree != null:
 		active_skill_tree.visible = true
-		_apply_skill_tree_visuals(active_skill_tree)
+
+		_apply_skill_tree_visuals(
+			active_skill_tree
+		)
 
 	if skill_tree_tween != null:
 		skill_tree_tween.kill()
@@ -346,237 +623,9 @@ func _apply_skill_tree_visuals(tree: SkillTree) -> void:
 	power_bg.self_modulate = tree.tree_color
 	mana_bg.self_modulate = tree.tree_color
 	range_bg.self_modulate = tree.tree_color
+#endregion
 
-func _update_health(value: float, maximum: float) -> void:
-	current.get_child(0).get_child(0).text = (
-		str(value).pad_decimals(0)
-		+ "/"
-		+ str(maximum).pad_decimals(0)
-	)
-
-	var tween = create_tween()
-	tween.tween_property(current.get_child(0), "value", value, 0.5)
-
-func _update_stamina(value: float, maximum: float) -> void:
-	current.get_child(1).get_child(0).text = (
-		str(value).pad_decimals(0)
-		+ "/"
-		+ str(maximum).pad_decimals(0)
-	)
-
-	var tween = create_tween()
-	tween.tween_property(current.get_child(1), "value", value, 0.5)
-
-func _toggle_menu(state: StateManager.State) -> void:
-	if menu_tween != null:
-		menu_tween.kill()
-
-	if state == StateManager.State.MENU:
-		visible = true
-		mouse_filter = Control.MOUSE_FILTER_STOP
-		
-		_update_page_focus()
-			
-		menu_avatar.set_rotation_enabled(
-			current_page == MenuPage.CHARACTER
-		)
-
-		main.modulate.a = 0.0
-		screen.modulate.a = 0.0
-		menu_avatar.sync_loadout(character.weapon_active)
-		_set_stats()
-
-		menu_tween = create_tween()
-		menu_tween.set_parallel(true)
-		menu_tween.tween_property(screen, "modulate:a", 1.0, 0.1)
-		menu_tween.tween_property(main, "modulate:a", 1.0, 0.3)
-
-	else:
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		menu_avatar.set_rotation_enabled(false)
-		menu_tween = create_tween()
-		menu_tween.set_parallel(true)
-		menu_tween.tween_property(main, "modulate:a", 0.0, 0.1)
-		menu_tween.tween_property(screen, "modulate:a", 0.0, 0.1)
-		menu_tween.finished.connect(_finish_hiding_menu)
-
-func _finish_hiding_menu() -> void:
-	if StateManager.current_state != StateManager.State.MENU:
-		visible = false
-
-func _set_stats() -> void:
-	var final_stats := character.current_stats
-
-	# MenuUI may initialize before PlayerCharacter has built
-	# its runtime stats, so fall back to the base values.
-	if final_stats == null:
-		final_stats = character.base_stats
-
-	_set_stat_display(
-		attack_value,
-		character.current_stats.attack,
-		character.base_stats.attack
-	)
-
-	_set_stat_display(
-		defense_value,
-		character.current_stats.defense,
-		character.base_stats.defense
-	)
-
-	_set_stat_display(
-		magic_attack_value,
-		character.current_stats.m_attack,
-		character.base_stats.m_attack
-	)
-
-	_set_stat_display(
-		magic_defense_value,
-		character.current_stats.m_defense,
-		character.base_stats.m_defense
-	)
-
-	_set_stat_display(
-		speed_value,
-		character.current_stats.speed,
-		character.base_stats.speed
-	)
-	
-	
-	current.get_child(0).get_child(0).text = (
-		str(character.current_hp).pad_decimals(0)
-		+ "/"
-		+ str(final_stats.max_hp).pad_decimals(0)
-	)
-	var tween = create_tween()
-	tween.tween_property(current.get_child(0),"value", character.current_hp, 0.5)
-	current.get_child(1).get_child(0).text = (
-		str(character.current_stamina).pad_decimals(0) 
-		+ "/100"
-	)
-	var tween2 = create_tween()
-	tween2.tween_property(current.get_child(1),"value", character.current_stamina, 0.5)
-	#mana.get_child(0).get_child(1).text = "" #make Mana Levels
-	#mana.get_child(1).get_child(1).text = "" #make Mana Levels
-	#mana.get_child(2).get_child(1).text = "" #make Mana Levels
-	
-		#a.text = player.base_stats.get_property_list().
-
-func _change_page(new_page: MenuPage) -> void:
-	if current_page == new_page:
-		return
-
-	if page_tween != null:
-		page_tween.kill()
-
-	current_page = new_page
-	_update_page_focus()
-	menu_avatar.set_rotation_enabled(
-	current_page == MenuPage.CHARACTER
-	)
-
-	var screen_height := get_viewport_rect().size.y
-	var page_offset := _get_page_offset(screen_height)
-
-	page_tween = create_tween()
-	page_tween.set_parallel(true)
-	page_tween.set_trans(Tween.TRANS_QUAD)
-	page_tween.set_ease(Tween.EASE_IN_OUT)
-
-	page_tween.tween_property(
-		settings_page,
-		"position:y",
-		-screen_height + page_offset,
-		0.35
-	)
-
-	page_tween.tween_property(
-		main,
-		"position:y",
-		page_offset,
-		0.35
-	)
-
-	page_tween.tween_property(
-		avatar_viewport_layer,
-		"position:y",
-		page_offset,
-		0.35
-	)
-
-	page_tween.tween_property(
-		inventory_page,
-		"position:y",
-		screen_height + page_offset,
-		0.35
-	)
-
-func _apply_page_positions() -> void:
-	var screen_height := get_viewport_rect().size.y
-	var page_offset := _get_page_offset(screen_height)
-
-	settings_page.position.y = -screen_height + page_offset
-	main.position.y = page_offset
-	avatar_viewport_layer.position.y = page_offset
-	inventory_page.position.y = screen_height + page_offset
-
-func _get_page_offset(screen_height: float) -> float:
-	match current_page:
-		MenuPage.SETTINGS:
-			return screen_height
-
-		MenuPage.INVENTORY:
-			return -screen_height
-
-		_:
-			return 0.0
-
-func _unhandled_input(event: InputEvent) -> void:
-	if StateManager.current_state != StateManager.State.MENU:
-		return
-	if skill_tree_open:
-		return
-	if page_tween != null and page_tween.is_running():
-		return
-
-	if current_page == MenuPage.CHARACTER:
-		var mana_has_focus := (
-			mana_fire.has_focus()
-			or mana_water.has_focus()
-			or mana_light.has_focus()
-		)
-
-		if not mana_has_focus:
-			if event.is_action_pressed("ui_down"):
-				mana_fire.grab_focus()
-				get_viewport().set_input_as_handled()
-				return
-
-			elif event.is_action_pressed("ui_up"):
-				mana_light.grab_focus()
-				get_viewport().set_input_as_handled()
-				return
-
-	if event.is_action_pressed("ui_page_up"):
-		match current_page:
-			MenuPage.INVENTORY:
-				_change_page(MenuPage.CHARACTER)
-
-			MenuPage.CHARACTER:
-				_change_page(MenuPage.SETTINGS)
-
-		get_viewport().set_input_as_handled()
-
-	elif event.is_action_pressed("ui_page_down"):
-		match current_page:
-			MenuPage.CHARACTER:
-				_change_page(MenuPage.INVENTORY)
-				
-			MenuPage.SETTINGS:
-				_change_page(MenuPage.CHARACTER)
-
-		get_viewport().set_input_as_handled()
-
+#region Settings
 func _on_master_volume_changed(value: float) -> void:
 	var master_bus := AudioServer.get_bus_index("Master")
 
@@ -589,6 +638,12 @@ func _on_master_volume_changed(value: float) -> void:
 	var volume_db := linear_to_db(value / 100.0)
 	AudioServer.set_bus_volume_db(master_bus, volume_db)
 
+func _on_exit_game_pressed() -> void:
+	print("Game Exited.")
+	#get_tree().quit()
+#endregion
+
+#region Input
 func _input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
@@ -644,42 +699,49 @@ func _input(event: InputEvent) -> void:
 		_change_page(MenuPage.CHARACTER)
 		get_viewport().set_input_as_handled()
 
-func _update_page_focus() -> void:
-	var character_active := current_page == MenuPage.CHARACTER
-	var settings_active := current_page == MenuPage.SETTINGS
+func _unhandled_input(event: InputEvent) -> void:
+	if StateManager.current_state != StateManager.State.MENU:
+		return
+	if skill_tree_open:
+		return
+	if page_tween != null and page_tween.is_running():
+		return
 
-	mana_fire.focus_mode = (
-		Control.FOCUS_ALL
-		if character_active
-		else Control.FOCUS_NONE
-	)
+	if current_page == MenuPage.CHARACTER:
+		var mana_has_focus := (
+			mana_fire.has_focus()
+			or mana_water.has_focus()
+			or mana_light.has_focus()
+		)
 
-	mana_water.focus_mode = (
-		Control.FOCUS_ALL
-		if character_active
-		else Control.FOCUS_NONE
-	)
+		if not mana_has_focus:
+			if event.is_action_pressed("ui_down"):
+				mana_fire.grab_focus()
+				get_viewport().set_input_as_handled()
+				return
 
-	mana_light.focus_mode = (
-		Control.FOCUS_ALL
-		if character_active
-		else Control.FOCUS_NONE
-	)
+			elif event.is_action_pressed("ui_up"):
+				mana_light.grab_focus()
+				get_viewport().set_input_as_handled()
+				return
 
-	master_volume_slider.focus_mode = (
-		Control.FOCUS_ALL
-		if settings_active
-		else Control.FOCUS_NONE
-	)
+	if event.is_action_pressed("ui_page_up"):
+		match current_page:
+			MenuPage.INVENTORY:
+				_change_page(MenuPage.CHARACTER)
 
-	exit_game_button.focus_mode = (
-		Control.FOCUS_ALL
-		if settings_active
-		else Control.FOCUS_NONE
-	)
+			MenuPage.CHARACTER:
+				_change_page(MenuPage.SETTINGS)
 
-	if character_active:
-		_clear_mana_focus()
+		get_viewport().set_input_as_handled()
 
-	elif settings_active:
-		master_volume_slider.grab_focus()
+	elif event.is_action_pressed("ui_page_down"):
+		match current_page:
+			MenuPage.CHARACTER:
+				_change_page(MenuPage.INVENTORY)
+				
+			MenuPage.SETTINGS:
+				_change_page(MenuPage.CHARACTER)
+
+		get_viewport().set_input_as_handled()
+#endregion

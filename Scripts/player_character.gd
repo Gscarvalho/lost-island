@@ -1,32 +1,51 @@
 # player_character.gd
 class_name PlayerCharacter
 extends Node3D
+
+#region Signals
 signal health_changed(current: float, maximum: float)
 signal stamina_changed(current: float, maximum: float)
+#endregion
+
+#region References
 @onready var attack_state_machine = $AnimationTree.get("parameters/AttackStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var magic_state_machine = $AnimationTree.get("parameters/MagicStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var handslot_r: BoneAttachment3D = $Rig/Skeleton3D/handslot_r
 @onready var handslot_l: BoneAttachment3D = $Rig/Skeleton3D/handslot_l
 @onready var ui = $"../PlayerUI" as UI
 @onready var timers = $"../Timers" 
-@export var base_stats: Stats
+#endregion
 
-var current_stats: Stats
+#region Character Data
+@export var base_stats: Stats
 @export var attacks : Array[Skills]
 @export var skill_book: Skillbook
+
+var current_stats: Stats
+#endregion
+
+#region Equipment State
 var weapon_active:= true :
 	set(value):
 		weapon_active = value
 		handslot_r.visible = value
 		set_weapon()
+#endregion
+
+#region Combat State
 var current_attack : Skills 
+#endregion
+
+#region Mana
 var mana_inventory := [7,7,7]
+
 var mana_types:= [
 	Skills.SkillType.Physical,
 	Skills.SkillType.Water, 
 	Skills.SkillType.Fire, 
 	Skills.SkillType.Light,
-	]
+]
+
 var current_mana_type : int = 0 :
 	set(value):
 		current_mana_type = value
@@ -35,19 +54,37 @@ var current_mana_type : int = 0 :
 			weapon_active = true
 		else:
 			weapon_active = false
-			
+#endregion
+
+#region Vital Resources
 var current_hp := 1.0:
 	set(value):
-		current_hp = clamp(value, 0.0, base_stats.max_hp)
+		current_hp = clamp(
+			value,
+			0.0,
+			current_stats.max_hp
+			if current_stats != null
+			else base_stats.max_hp
+		)
+
 		ui.update_health(current_hp)
-		health_changed.emit(current_hp, base_stats.max_hp)
+
+		var max_hp := (
+			current_stats.max_hp
+			if current_stats != null
+			else base_stats.max_hp
+		)
+
+		health_changed.emit(current_hp, max_hp)
 
 var current_stamina := 1.0:
 	set(value):
 		current_stamina = clamp(value, 0.0, 100.0)
 		ui.update_stamina(current_stamina)
 		stamina_changed.emit(current_stamina, 100.0)
+#endregion
 
+#region Lifecycle
 func _ready() -> void:
 	current_stats = base_stats.duplicate()
 	attacks = attacks.duplicate()
@@ -58,6 +95,9 @@ func _ready() -> void:
 
 	current_hp = current_stats.max_hp
 	current_stamina = 100.0
+#endregion
+
+#region Action State
 func is_action_animation_playing() -> bool:
 	var attack_active: bool = $AnimationTree.get(
 		"parameters/AttackOneShot/active"
@@ -68,7 +108,9 @@ func is_action_animation_playing() -> bool:
 	)
 
 	return attack_active or magic_active
+#endregion
 
+#region Resource Costs
 func _get_mana_index(skill_type: Skills.SkillType) -> int:
 	match skill_type:
 		Skills.SkillType.Water:
@@ -104,25 +146,9 @@ func _pay_skill_cost(skill: Skills) -> void:
 
 	mana_inventory[mana_index] -= skill.skill_cost
 	ui.update_slots(skill.skill_type)
+#endregion
 
-func attack() -> void:
-	if current_attack == null:
-		return
-
-	if not _can_afford_skill(current_attack):
-		if current_attack.skill_type == Skills.SkillType.Physical:
-			print("Not enough stamina.")
-		else:
-			print("No mana.")
-
-		return
-
-	_pay_skill_cost(current_attack)
-	_apply_skill_effect(current_attack)
-	_play_skill_animation(current_attack)
-
-	print(current_attack.skill_name)
-
+#region Skill Effects
 func _apply_skill_effect(skill: Skills) -> void:
 	match skill.skill_regen_type:
 		Skills.RegenType.Health:
@@ -148,6 +174,26 @@ func _apply_skill_effect(skill: Skills) -> void:
 			)
 
 			ui.update_slots(skill.skill_type)
+#endregion
+
+#region Combat Execution
+func attack() -> void:
+	if current_attack == null:
+		return
+
+	if not _can_afford_skill(current_attack):
+		if current_attack.skill_type == Skills.SkillType.Physical:
+			print("Not enough stamina.")
+		else:
+			print("No mana.")
+
+		return
+
+	_pay_skill_cost(current_attack)
+	_apply_skill_effect(current_attack)
+	_play_skill_animation(current_attack)
+
+	print(current_attack.skill_name)
 
 func _play_skill_animation(skill: Skills) -> void:
 	if skill.skill_type == Skills.SkillType.Physical:
@@ -169,7 +215,9 @@ func _play_skill_animation(skill: Skills) -> void:
 			"parameters/MagicOneShot/request",
 			AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 		)
+#endregion
 
+#region Equipment
 func set_weapon() -> void:
 	var current_weapon := handslot_r.get_child(0) as Weapon
 
@@ -197,7 +245,9 @@ func set_weapon() -> void:
 			current_stats.get(property.name)
 			+ current_weapon.stats_boost.get(property.name)
 		)
+#endregion
 
+#region Time Scale
 func set_move_timescale(value: float) -> void:
-	#$AnimationTree.set("parameters/MovementTimeScale/scale", value)
 	Engine.time_scale = value
+#endregion
