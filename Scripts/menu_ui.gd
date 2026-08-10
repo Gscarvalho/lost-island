@@ -43,7 +43,7 @@ var active_skill_tree: SkillTree
 var last_mana_focus: Control
 var skill_tree_open := false
 var player_controller: Player
-var player: PlayerSkin
+var character: PlayerCharacter
 var menu_tween: Tween
 var skill_tree_tween: Tween
 enum MenuPage {
@@ -92,15 +92,18 @@ func _ready() -> void:
 		get_tree().get_first_node_in_group("Player") as Player
 	)
 
-	player = player_controller.get_node("Skin") as PlayerSkin
+	character = (
+	player_controller.get_node("Character")
+	as PlayerCharacter
+	)
 	
 	print(
 		"Starting skill points: ",
 		player_controller.progression.skill_points
 	)
 	
-	player.health_changed.connect(_update_health)
-	player.stamina_changed.connect(_update_stamina)
+	character.health_changed.connect(_update_health)
+	character.stamina_changed.connect(_update_stamina)
 
 	_set_stats()
 	var menu_is_open := StateManager.current_state == StateManager.State.MENU
@@ -380,7 +383,7 @@ func _toggle_menu(state: StateManager.State) -> void:
 
 		main.modulate.a = 0.0
 		screen.modulate.a = 0.0
-		menu_avatar.sync_loadout(player.weapon_active)
+		menu_avatar.sync_loadout(character.weapon_active)
 		_set_stats()
 
 		menu_tween = create_tween()
@@ -402,53 +405,57 @@ func _finish_hiding_menu() -> void:
 		visible = false
 
 func _set_stats() -> void:
-	#stats.get_child(1).get_child(1).get_child(0).text = str(player.base_stats.attack).pad_decimals(0)
-	#stats.get_child(2).get_child(1).get_child(0).text = str(player.base_stats.defense).pad_decimals(0)
-	#stats.get_child(3).get_child(1).get_child(0).text = str(player.base_stats.m_attack).pad_decimals(0)
-	#stats.get_child(4).get_child(1).get_child(0).text = str(player.base_stats.m_defense).pad_decimals(0)
-	#stats.get_child(5).get_child(1).get_child(0).text = str(player.base_stats.speed).pad_decimals(0)
-	var normal_stats := player.stats_without_weapon
+	var final_stats := character.current_stats
 
-	if normal_stats == null:
-		normal_stats = player.base_stats
+	# MenuUI may initialize before PlayerCharacter has built
+	# its runtime stats, so fall back to the base values.
+	if final_stats == null:
+		final_stats = character.base_stats
 
 	_set_stat_display(
 		attack_value,
-		player.base_stats.attack,
-		normal_stats.attack
+		character.current_stats.attack,
+		character.base_stats.attack
 	)
 
 	_set_stat_display(
 		defense_value,
-		player.base_stats.defense,
-		normal_stats.defense
+		character.current_stats.defense,
+		character.base_stats.defense
 	)
 
 	_set_stat_display(
 		magic_attack_value,
-		player.base_stats.m_attack,
-		normal_stats.m_attack
+		character.current_stats.m_attack,
+		character.base_stats.m_attack
 	)
 
 	_set_stat_display(
 		magic_defense_value,
-		player.base_stats.m_defense,
-		normal_stats.m_defense
+		character.current_stats.m_defense,
+		character.base_stats.m_defense
 	)
 
 	_set_stat_display(
 		speed_value,
-		player.base_stats.speed,
-		normal_stats.speed
+		character.current_stats.speed,
+		character.base_stats.speed
 	)
 	
 	
-	current.get_child(0).get_child(0).text = str(player.current_hp).pad_decimals(0) + "/" + str(player.base_stats.max_hp).pad_decimals(0)
+	current.get_child(0).get_child(0).text = (
+		str(character.current_hp).pad_decimals(0)
+		+ "/"
+		+ str(final_stats.max_hp).pad_decimals(0)
+	)
 	var tween = create_tween()
-	tween.tween_property(current.get_child(0),"value", player.current_hp, 0.5)
-	current.get_child(1).get_child(0).text = str(player.current_stamina).pad_decimals(0) + "/100"
+	tween.tween_property(current.get_child(0),"value", character.current_hp, 0.5)
+	current.get_child(1).get_child(0).text = (
+		str(character.current_stamina).pad_decimals(0) 
+		+ "/100"
+	)
 	var tween2 = create_tween()
-	tween2.tween_property(current.get_child(1),"value", player.current_stamina, 0.5)
+	tween2.tween_property(current.get_child(1),"value", character.current_stamina, 0.5)
 	#mana.get_child(0).get_child(1).text = "" #make Mana Levels
 	#mana.get_child(1).get_child(1).text = "" #make Mana Levels
 	#mana.get_child(2).get_child(1).text = "" #make Mana Levels
