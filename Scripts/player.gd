@@ -1,6 +1,8 @@
 #player.gd
 class_name Player
 extends CharacterBody3D
+@export var progression: PlayerProgress
+
 @onready var camera = $CameraController/Camera3D
 @onready var skin = $Skin as PlayerSkin
 

@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_g6t8d")
-skill_id = &"3"
+skill_id = &"fire_jump"
 skill_name = "Fire Jump"
 skill_description = "After jumping, burst flames enabling a second jump."
 skill_icon = ExtResource("2_njfpq")

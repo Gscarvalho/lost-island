@@ -42,7 +42,7 @@ extends Control
 var active_skill_tree: SkillTree
 var last_mana_focus: Control
 var skill_tree_open := false
-var volume_editing := false
+var player_controller: Player
 var player: PlayerSkin
 var menu_tween: Tween
 var skill_tree_tween: Tween
@@ -88,8 +88,17 @@ func _ready() -> void:
 		exit_game_button.get_path_to(master_volume_slider)
 	)
 	
+	player_controller = (
+		get_tree().get_first_node_in_group("Player") as Player
+	)
+
+	player = player_controller.get_node("Skin") as PlayerSkin
 	
-	player = get_tree().get_first_node_in_group("Player").get_child(0) as PlayerSkin
+	print(
+		"Starting skill points: ",
+		player_controller.progression.skill_points
+	)
+	
 	player.health_changed.connect(_update_health)
 	player.stamina_changed.connect(_update_stamina)
 
@@ -114,7 +123,7 @@ func _on_mana_focused(mana_name: String) -> void:
 	_set_mana_focus_visual(mana_fire, mana_name == "Fire")
 	_set_mana_focus_visual(mana_water, mana_name == "Water")
 	_set_mana_focus_visual(mana_light, mana_name == "Light")
-	
+
 func _set_mana_focus_visual(
 	mana_control: Control,
 	is_focused: bool
@@ -149,7 +158,8 @@ func _clear_mana_focus() -> void:
 	_set_mana_focus_visual(mana_light, false)
 
 func _on_exit_game_pressed() -> void:
-	get_tree().quit()
+	print("Game Exited.")
+	#get_tree().quit()
 
 func _set_stat_display(
 	label: RichTextLabel,
@@ -189,20 +199,23 @@ func _open_skill_tree(
 	skill_power_box.modulate.a = 0
 	skill_mana_cost_box.modulate.a = 0
 	skill_range_box.modulate.a = 0
-	var power_bg = skill_power_value.get_parent_control() as TextureRect
-	var mana_cost_bg = skill_mana_cost_value.get_parent_control() as TextureRect
-	var range_value_bg = skill_range_value.get_parent_control() as TextureRect
+	#var power_bg = skill_power_value.get_parent_control() as TextureRect
+	#var mana_cost_bg = skill_mana_cost_value.get_parent_control() as TextureRect
+	#var range_value_bg = skill_range_value.get_parent_control() as TextureRect
+	
 	match mana_name:
 		"Fire":
 			active_skill_tree = fire_tree
-			fire_tree.visible = active_skill_tree == fire_tree
-			skill_name.add_theme_color_override("default_color", Color.DARK_ORANGE)
-			power_bg.self_modulate = Color.DARK_ORANGE
-			mana_cost_bg.self_modulate = Color.DARK_ORANGE
-			range_value_bg.self_modulate = Color.DARK_ORANGE
-			
-			
-	skill_tree_title.text = mana_name.to_upper() + " SKILL TREE"
+	
+	if active_skill_tree != null:
+		active_skill_tree.refresh_unlock_states(
+		player_controller.progression
+	)
+	
+
+	if active_skill_tree != null:
+		active_skill_tree.visible = true
+		_apply_skill_tree_visuals(active_skill_tree)
 
 	if skill_tree_tween != null:
 		skill_tree_tween.kill()
@@ -270,18 +283,66 @@ func _on_tree_skill_focused(skill: Skills) -> void:
 	skill_power_box.modulate.a = 1
 	skill_mana_cost_box.modulate.a = 1
 	skill_range_box.modulate.a = 1
-	
-	
+
 func _on_tree_skill_activated(skill: Skills) -> void:
 	if skill == null:
 		return
 
-	print(
-		"Selected: ",
-		skill.skill_name,
-		" | Unlock cost: ",
-		skill.unlock_cost
+	var progression := player_controller.progression
+
+	if progression.is_skill_unlocked(skill):
+		print(skill.skill_name, " is already unlocked.")
+		return
+
+	if progression.try_unlock_skill(skill):
+		active_skill_tree.refresh_unlock_states(progression)
+		print(
+			"Unlocked ",
+			skill.skill_name,
+			"! Remaining points: ",
+			progression.skill_points
+		)
+	else:
+		print(
+			"Not enough skill points for ",
+			skill.skill_name
+		)
+
+func _apply_skill_tree_visuals(tree: SkillTree) -> void:
+	if tree == null:
+		return
+
+	skill_tree_title.text = (
+		tree.tree_name.to_upper()
+		+ " SKILL TREE"
 	)
+
+	bg_icon.texture = tree.background_icon
+	bg_icon.self_modulate = tree.tree_color
+
+	skill_name.add_theme_color_override(
+		"default_color",
+		tree.tree_color
+	)
+
+	var power_bg := (
+		skill_power_value.get_parent_control()
+		as TextureRect
+	)
+
+	var mana_bg := (
+		skill_mana_cost_value.get_parent_control()
+		as TextureRect
+	)
+
+	var range_bg := (
+		skill_range_value.get_parent_control()
+		as TextureRect
+	)
+
+	power_bg.self_modulate = tree.tree_color
+	mana_bg.self_modulate = tree.tree_color
+	range_bg.self_modulate = tree.tree_color
 
 func _update_health(value: float, maximum: float) -> void:
 	current.get_child(0).get_child(0).text = (
@@ -311,12 +372,7 @@ func _toggle_menu(state: StateManager.State) -> void:
 		visible = true
 		mouse_filter = Control.MOUSE_FILTER_STOP
 		
-		if current_page == MenuPage.SETTINGS:
-			volume_editing = false
-			master_volume_slider.grab_focus()
-			
-		elif current_page == MenuPage.CHARACTER:
-			_clear_mana_focus()
+		_update_page_focus()
 			
 		menu_avatar.set_rotation_enabled(
 			current_page == MenuPage.CHARACTER
@@ -411,8 +467,6 @@ func _change_page(new_page: MenuPage) -> void:
 	menu_avatar.set_rotation_enabled(
 	current_page == MenuPage.CHARACTER
 	)
-	
-	volume_editing = false
 
 	var screen_height := get_viewport_rect().size.y
 	var page_offset := _get_page_offset(screen_height)
@@ -575,36 +629,6 @@ func _input(event: InputEvent) -> void:
 
 	if page_tween != null and page_tween.is_running():
 		return
-		
-	if master_volume_slider.has_focus():
-		volume_editing = true
-	else:
-		volume_editing = false
-			
-	#get_viewport().set_input_as_handled()
-	#return
-
-		#if volume_editing:
-			## Left and right pass through to the HSlider.
-			## Up and down stay locked until A is pressed again.
-			#if (
-				#event.is_action_pressed("ui_up")
-				#or event.is_action_pressed("ui_down")
-			#):
-				#get_viewport().set_input_as_handled()
-			#if (
-				#event.is_action_pressed("ui_cancel")
-			#):
-				#volume_editing = not volume_editing
-			#return
-			#
-		## Prevent Left/Right from changing volume before A is pressed.
-		#if (
-			#event.is_action_pressed("ui_left")
-			#or event.is_action_pressed("ui_right")
-		#):
-			#get_viewport().set_input_as_handled()
-			#return
 
 	if (
 		exit_game_button.has_focus()

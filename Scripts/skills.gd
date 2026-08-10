@@ -12,7 +12,6 @@ enum RegenType {
 @export var skill_name: String
 @export_multiline var skill_description: String
 @export var skill_icon: Texture2D
-@export var skill_cost_color: Color
 
 # Skill Tree
 @export var unlock_cost: int = 1

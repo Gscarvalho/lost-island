@@ -6,6 +6,11 @@ signal skill_activated(skill: Skills)
 
 @export var default_skill_node: SkillTreeNode
 
+@export_category("Tree Identity")
+@export var tree_name: String = ""
+@export var tree_color: Color = Color.WHITE
+@export var background_icon: Texture2D
+
 var skill_nodes: Array[SkillTreeNode] = []
 
 
@@ -17,7 +22,9 @@ func _collect_skill_nodes(parent: Node) -> void:
 	for child in parent.get_children():
 		if child is SkillTreeNode:
 			skill_nodes.append(child)
-
+			
+			child.set_tree_color(tree_color)
+			
 			child.skill_focused.connect(
 				_on_skill_focused
 			)
@@ -53,3 +60,14 @@ func clear_skill_focus() -> void:
 func grab_default_focus() -> void:
 	if default_skill_node != null:
 		default_skill_node.grab_focus()
+
+func refresh_unlock_states(
+	progression: PlayerProgress
+	) -> void:
+	for node in skill_nodes:
+		if node.skill == null:
+			continue
+
+		node.set_unlocked(
+			progression.is_skill_unlocked(node.skill)
+		)

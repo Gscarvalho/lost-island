@@ -16,6 +16,11 @@ signal skill_activated(skill: Skills)
 @onready var cost_label: RichTextLabel = %CostLabel
 @onready var skill_name_label: RichTextLabel = %SkillNameLabel
 
+var tree_color: Color = Color.WHITE
+var is_unlocked := false
+
+func set_tree_color(color: Color) -> void:
+	tree_color = color
 
 func _ready() -> void:
 	_refresh()
@@ -56,7 +61,7 @@ func _refresh() -> void:
 func _on_focus_entered() -> void:
 	skill_focused.emit(skill)
 	_fade_cost_badge(0)
-	cost_label.add_theme_color_override("default_color", skill.skill_cost_color)
+	cost_label.add_theme_color_override("default_color", tree_color)
 	_set_focus_visual(true)
 
 
@@ -101,3 +106,11 @@ func _fade_cost_badge(target: float) -> void:
 		target,
 		0.2
 	)
+
+func set_unlocked(unlocked: bool) -> void:
+	is_unlocked = unlocked
+
+	if is_unlocked:
+		cost_badge.visible = false
+	else:
+		cost_badge.visible = true

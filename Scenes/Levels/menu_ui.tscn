@@ -408,7 +408,7 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="ValueBG" type="TextureRect" parent="Main/Seperator/Stats/ATKStatBox"]
-self_modulate = Color(1, 0.84313726, 0, 1)
+self_modulate = Color(0.2, 0.2, 0.2, 1)
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -482,7 +482,7 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="ValueBG" type="TextureRect" parent="Main/Seperator/Stats/DEFStatBox"]
-self_modulate = Color(1, 0.84313726, 0, 1)
+self_modulate = Color(0.2, 0.2, 0.2, 1)
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -554,7 +554,7 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="ValueBG" type="TextureRect" parent="Main/Seperator/Stats/MATKStatBox"]
-self_modulate = Color(1, 0.84313726, 0, 1)
+self_modulate = Color(0.2, 0.2, 0.2, 1)
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -626,7 +626,7 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="ValueBG" type="TextureRect" parent="Main/Seperator/Stats/MDEFStatBox"]
-self_modulate = Color(1, 0.84313726, 0, 1)
+self_modulate = Color(0.2, 0.2, 0.2, 1)
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -699,7 +699,7 @@ scroll_active = false
 vertical_alignment = 1
 
 [node name="ValueBG" type="TextureRect" parent="Main/Seperator/Stats/SPDStatBox"]
-self_modulate = Color(1, 0.84313726, 0, 1)
+self_modulate = Color(0.2, 0.2, 0.2, 1)
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -874,7 +874,6 @@ theme_override_constants/margin_top = 70
 theme_override_constants/margin_bottom = 150
 
 [node name="BGIcon" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon"]
-modulate = Color(1, 0.54901963, 0, 1)
 layout_mode = 2
 texture = ExtResource("5_o1rl0")
 expand_mode = 3
@@ -1215,6 +1214,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("12_edv07")
 default_skill_node = NodePath("Fireball")
+tree_name = "Ember"
+tree_color = Color(1, 0.54901963, 0, 1)
+background_icon = ExtResource("5_o1rl0")
 
 [node name="FireFlight" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1

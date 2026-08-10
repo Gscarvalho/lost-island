@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_8sqoc")
-skill_id = &"1"
+skill_id = &"fireball"
 skill_name = "Fireball"
 skill_description = "Launch a ball of fire."
 skill_icon = ExtResource("2_ibdn5")
