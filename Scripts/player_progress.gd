@@ -9,14 +9,14 @@ signal skill_unlocked(skill_id: StringName)
 
 
 func is_skill_unlocked(skill: Skills) -> bool:
-	if skill == null:
+	if not _has_valid_skill_id(skill):
 		return false
 
 	return unlocked_skill_ids.has(skill.skill_id)
 
 
 func can_unlock_skill(skill: Skills) -> bool:
-	if skill == null:
+	if not _has_valid_skill_id(skill):
 		return false
 
 	if is_skill_unlocked(skill):
@@ -36,3 +36,16 @@ func try_unlock_skill(skill: Skills) -> bool:
 	skill_unlocked.emit(skill.skill_id)
 
 	return true
+
+func _has_valid_skill_id(skill: Skills) -> bool:
+	return (
+		skill != null
+		and not skill.skill_id.is_empty()
+	)
+
+func add_skill_points(amount: int) -> void:
+	if amount <= 0:
+		return
+
+	skill_points += amount
+	skill_points_changed.emit(skill_points)

@@ -3,17 +3,13 @@
 [ext_resource type="Script" uid="uid://cp6dyfr1sfrb8" path="res://Scripts/weapon.gd" id="1_dgvbj"]
 [ext_resource type="ArrayMesh" uid="uid://nomklp7jljys" path="res://Imports/Weapons/Sword_Big.obj" id="1_udtht"]
 [ext_resource type="Material" uid="uid://eny68tv2tgfa" path="res://Assets/Materials/sword_1_mat.tres" id="2_dgvbj"]
-[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/stats.gd" id="2_i0jd5"]
+[ext_resource type="Script" uid="uid://c7arumaghh7h7" path="res://Scripts/stat_modifiers.gd" id="2_i0jd5"]
 
 [sub_resource type="Resource" id="Resource_shmom"]
 script = ExtResource("2_i0jd5")
-max_hp = 0.0
 attack = 2.0
-defense = 0.0
-m_attack = 0.0
-m_defense = 0.0
 speed = 1.0
-metadata/_custom_type_script = "uid://baaxbte0f7aus"
+metadata/_custom_type_script = "uid://c7arumaghh7h7"
 
 [sub_resource type="Shader" id="Shader_idut0"]
 code = "shader_type spatial;

@@ -21,6 +21,13 @@ extends Control
 @onready var mana_fire: VBoxContainer = %ManaFire
 @onready var mana_water: VBoxContainer = %ManaWater
 @onready var mana_light: VBoxContainer = %ManaLight
+
+@onready var menu_health_bar: TextureProgressBar = %MenuHealthBar
+@onready var menu_health_label: RichTextLabel = %MenuHealthLabel
+@onready var menu_stamina_bar: TextureProgressBar = %MenuStaminaBar
+@onready var menu_stamina_label: RichTextLabel = %MenuStaminaLabel
+
+
 #endregion
 
 #region Settings References
@@ -87,15 +94,15 @@ func _connect_signals() -> void:
 	)
 
 	mana_fire.focus_entered.connect(
-		_on_mana_focused.bind("Fire")
+		_on_mana_focused.bind(mana_fire)
 	)
 
 	mana_water.focus_entered.connect(
-		_on_mana_focused.bind("Water")
+		_on_mana_focused.bind(mana_water)
 	)
 
 	mana_light.focus_entered.connect(
-		_on_mana_focused.bind("Light")
+		_on_mana_focused.bind(mana_light)
 	)
 
 	StateManager.state_changed.connect(
@@ -189,7 +196,10 @@ func _toggle_menu(state: StateManager.State) -> void:
 
 		main.modulate.a = 0.0
 		screen.modulate.a = 0.0
-		menu_avatar.sync_loadout(character.weapon_active)
+		menu_avatar.sync_loadout(
+			character.physical_mode_active
+			and character.has_equipped_weapon()
+		)
 		_set_stats()
 
 		menu_tween = create_tween()
@@ -282,37 +292,22 @@ func _get_page_offset(screen_height: float) -> float:
 			return 0.0
 
 func _update_page_focus() -> void:
-	var character_active := current_page == MenuPage.CHARACTER
-	var settings_active := current_page == MenuPage.SETTINGS
-
-	mana_fire.focus_mode = (
-		Control.FOCUS_ALL
-		if character_active
-		else Control.FOCUS_NONE
+	var character_active := (
+		current_page == MenuPage.CHARACTER
 	)
 
-	mana_water.focus_mode = (
-		Control.FOCUS_ALL
-		if character_active
-		else Control.FOCUS_NONE
+	var settings_active := (
+		current_page == MenuPage.SETTINGS
 	)
 
-	mana_light.focus_mode = (
-		Control.FOCUS_ALL
-		if character_active
-		else Control.FOCUS_NONE
+	_set_controls_focus_enabled(
+		_get_mana_controls(),
+		character_active
 	)
 
-	master_volume_slider.focus_mode = (
-		Control.FOCUS_ALL
-		if settings_active
-		else Control.FOCUS_NONE
-	)
-
-	exit_game_button.focus_mode = (
-		Control.FOCUS_ALL
-		if settings_active
-		else Control.FOCUS_NONE
+	_set_controls_focus_enabled(
+		_get_settings_controls(),
+		settings_active
 	)
 
 	if character_active:
@@ -361,25 +356,20 @@ func _set_stats() -> void:
 		character.base_stats.speed
 	)
 	
-	
-	current.get_child(0).get_child(0).text = (
-		str(character.current_hp).pad_decimals(0)
-		+ "/"
-		+ str(final_stats.max_hp).pad_decimals(0)
+	_update_health(
+	character.current_hp,
+	final_stats.max_hp
 	)
+
+	_update_stamina(
+		character.current_stamina,
+		100.0
+	)
+	
 	var tween = create_tween()
-	tween.tween_property(current.get_child(0),"value", character.current_hp, 0.5)
-	current.get_child(1).get_child(0).text = (
-		str(character.current_stamina).pad_decimals(0) 
-		+ "/100"
-	)
 	var tween2 = create_tween()
+	tween.tween_property(current.get_child(0),"value", character.current_hp, 0.5)
 	tween2.tween_property(current.get_child(1),"value", character.current_stamina, 0.5)
-	#mana.get_child(0).get_child(1).text = "" #make Mana Levels
-	#mana.get_child(1).get_child(1).text = "" #make Mana Levels
-	#mana.get_child(2).get_child(1).text = "" #make Mana Levels
-	
-		#a.text = player.base_stats.get_property_list().
 
 func _set_stat_display(
 	label: RichTextLabel,
@@ -406,32 +396,54 @@ func _set_stat_display(
 	else:
 		label.text = final_text
 
-func _update_health(value: float, maximum: float) -> void:
-	current.get_child(0).get_child(0).text = (
+func _update_health(
+	value: float,
+	maximum: float
+	) -> void:
+	menu_health_label.text = (
 		str(value).pad_decimals(0)
 		+ "/"
 		+ str(maximum).pad_decimals(0)
 	)
 
-	var tween = create_tween()
-	tween.tween_property(current.get_child(0), "value", value, 0.5)
+	var tween := create_tween()
 
-func _update_stamina(value: float, maximum: float) -> void:
-	current.get_child(1).get_child(0).text = (
+	tween.tween_property(
+		menu_health_bar,
+		"value",
+		value,
+		0.5
+	)
+	
+func _update_stamina(
+	value: float,
+	maximum: float
+	) -> void:
+	menu_stamina_label.text = (
 		str(value).pad_decimals(0)
 		+ "/"
 		+ str(maximum).pad_decimals(0)
 	)
 
-	var tween = create_tween()
-	tween.tween_property(current.get_child(1), "value", value, 0.5)
+	var tween := create_tween()
+
+	tween.tween_property(
+		menu_stamina_bar,
+		"value",
+		value,
+		0.5
+	)
 #endregion
 
 #region Mana Focus
-func _on_mana_focused(mana_name: String) -> void:
-	_set_mana_focus_visual(mana_fire, mana_name == "Fire")
-	_set_mana_focus_visual(mana_water, mana_name == "Water")
-	_set_mana_focus_visual(mana_light, mana_name == "Light")
+func _on_mana_focused(
+	focused_mana: Control
+	) -> void:
+	for mana_control in _get_mana_controls():
+		_set_mana_focus_visual(
+			mana_control,
+			mana_control == focused_mana
+		)
 
 func _set_mana_focus_visual(
 	mana_control: Control,
@@ -458,61 +470,107 @@ func _set_mana_focus_visual(
 	)
 
 func _clear_mana_focus() -> void:
-	mana_fire.release_focus()
-	mana_water.release_focus()
-	mana_light.release_focus()
+	for mana_control in _get_mana_controls():
+		mana_control.release_focus()
+		_set_mana_focus_visual(
+			mana_control,
+			false
+		)
 
-	_set_mana_focus_visual(mana_fire, false)
-	_set_mana_focus_visual(mana_water, false)
-	_set_mana_focus_visual(mana_light, false)
+func _get_mana_controls() -> Array:
+	return [
+		mana_fire,
+		mana_water,
+		mana_light,
+	]
+
+
+func _get_settings_controls() -> Array:
+	return [
+		master_volume_slider,
+		exit_game_button,
+	]
+
+func _set_controls_focus_enabled(
+	controls: Array,
+	enabled: bool
+	) -> void:
+	var focus_mode := (
+		Control.FOCUS_ALL
+		if enabled
+		else Control.FOCUS_NONE
+	)
+
+	for control in controls:
+		control.focus_mode = focus_mode
+	
 #endregion
 
 #region Skill Tree
+func _get_skill_tree_for_type(
+	skill_type: Skills.SkillType
+) -> SkillTree:
+	match skill_type:
+		Skills.SkillType.Fire:
+			return fire_tree
+
+		_:
+			return null
+
 func _open_skill_tree(
-	mana_name: String,
+	skill_type: Skills.SkillType,
 	mana_control: Control
-	) -> void:
+) -> bool:
+	var tree := _get_skill_tree_for_type(
+		skill_type
+	)
+
+	if tree == null:
+		return false
+
 	skill_tree_open = true
 	last_mana_focus = mana_control
-	active_skill_tree = null
+	active_skill_tree = tree
+
 	skill_name.text = ""
-	skill_description.text = "Use D-Pad to select a skill."
+	skill_description.text = (
+		"Use D-Pad to select a skill."
+	)
 	skill_input.text = ""
-	skill_power_box.modulate.a = 0
-	skill_mana_cost_box.modulate.a = 0
-	skill_range_box.modulate.a = 0
-	
-	match mana_name:
-		"Fire":
-			active_skill_tree = fire_tree
-	
-	if active_skill_tree != null:
-		active_skill_tree.refresh_unlock_states(
-			player_controller.progression
-		)
 
-		active_skill_tree.visible = true
+	skill_power_box.modulate.a = 0.0
+	skill_mana_cost_box.modulate.a = 0.0
+	skill_range_box.modulate.a = 0.0
 
-		_apply_skill_tree_visuals(
-			active_skill_tree
-		)
+	active_skill_tree.refresh_unlock_states(
+		player_controller.progression
+	)
+
+	active_skill_tree.visible = true
+
+	_apply_skill_tree_visuals(
+		active_skill_tree
+	)
 
 	if skill_tree_tween != null:
 		skill_tree_tween.kill()
 
 	skill_tree_overlay.visible = true
-	skill_tree_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	skill_tree_overlay.mouse_filter = (
+		Control.MOUSE_FILTER_STOP
+	)
 	skill_tree_overlay.modulate.a = 0.0
 
-	mana_fire.release_focus()
-	mana_water.release_focus()
-	mana_light.release_focus()
-
+	_clear_mana_focus()
 	menu_avatar.set_rotation_enabled(false)
 
 	skill_tree_tween = create_tween()
-	skill_tree_tween.set_trans(Tween.TRANS_QUAD)
-	skill_tree_tween.set_ease(Tween.EASE_OUT)
+	skill_tree_tween.set_trans(
+		Tween.TRANS_QUAD
+	)
+	skill_tree_tween.set_ease(
+		Tween.EASE_OUT
+	)
 
 	skill_tree_tween.tween_property(
 		skill_tree_overlay,
@@ -520,6 +578,8 @@ func _open_skill_tree(
 		1.0,
 		0.2
 	)
+
+	return true
 
 func _close_skill_tree() -> void:
 	if not skill_tree_open:
@@ -647,101 +707,165 @@ func _on_exit_game_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
+
 	if skill_tree_open:
-		if event.is_action_pressed("ui_cancel"):
-			_close_skill_tree()
-			get_viewport().set_input_as_handled()
-			return
-
-		if active_skill_tree != null:
-			if not active_skill_tree.has_skill_focus():
-				var directional_input := (
-					event.is_action_pressed("ui_up")
-					or event.is_action_pressed("ui_down")
-					or event.is_action_pressed("ui_left")
-					or event.is_action_pressed("ui_right")
-				)
-
-				if directional_input:
-					active_skill_tree.grab_default_focus()
-					get_viewport().set_input_as_handled()
-					return
-
+		_handle_skill_tree_input(event)
 		return
 
-	if current_page == MenuPage.CHARACTER and not skill_tree_open:
+	if current_page == MenuPage.CHARACTER:
 		if event.is_action_pressed("ui_accept"):
-			if mana_fire.has_focus():
-				_open_skill_tree("Fire", mana_fire)
-				get_viewport().set_input_as_handled()
-				return
+			_open_focused_skill_tree()
 
-			if mana_water.has_focus():
-				_open_skill_tree("Water", mana_water)
-				get_viewport().set_input_as_handled()
-				return
-
-			if mana_light.has_focus():
-				_open_skill_tree("Light", mana_light)
-				get_viewport().set_input_as_handled()
-				return
-
-	if current_page != MenuPage.SETTINGS:
 		return
 
-	if page_tween != null and page_tween.is_running():
-		return
+	if current_page == MenuPage.SETTINGS:
+		_handle_settings_boundary_input(event)
 
+func _is_directional_input(
+	event: InputEvent
+	) -> bool:
+	return (
+		event.is_action_pressed("ui_up")
+		or event.is_action_pressed("ui_down")
+		or event.is_action_pressed("ui_left")
+		or event.is_action_pressed("ui_right")
+	)
+
+func _handle_skill_tree_input(
+	event: InputEvent
+	) -> bool:
+	if event.is_action_pressed("ui_cancel"):
+		_close_skill_tree()
+		get_viewport().set_input_as_handled()
+		return true
+
+	if active_skill_tree == null:
+		return false
+
+	if active_skill_tree.has_skill_focus():
+		return false
+
+	if not _is_directional_input(event):
+		return false
+
+	active_skill_tree.grab_default_focus()
+	get_viewport().set_input_as_handled()
+
+	return true
+
+func _open_focused_skill_tree() -> bool:
+	var opened := false
+
+	if mana_fire.has_focus():
+		opened = _open_skill_tree(
+			Skills.SkillType.Fire,
+			mana_fire
+		)
+
+	elif mana_water.has_focus():
+		opened = _open_skill_tree(
+			Skills.SkillType.Water,
+			mana_water
+		)
+
+	elif mana_light.has_focus():
+		opened = _open_skill_tree(
+			Skills.SkillType.Light,
+			mana_light
+		)
+
+	if not opened:
+		return false
+
+	get_viewport().set_input_as_handled()
+	return true
+
+func _handle_settings_boundary_input(
+	event: InputEvent
+	) -> bool:
 	if (
 		exit_game_button.has_focus()
 		and event.is_action_pressed("ui_page_down")
 	):
 		_change_page(MenuPage.CHARACTER)
 		get_viewport().set_input_as_handled()
+		return true
+
+	return false
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
+
 	if skill_tree_open:
 		return
+
 	if page_tween != null and page_tween.is_running():
 		return
 
-	if current_page == MenuPage.CHARACTER:
-		var mana_has_focus := (
-			mana_fire.has_focus()
-			or mana_water.has_focus()
-			or mana_light.has_focus()
-		)
+	if _handle_character_focus_entry(event):
+		return
 
-		if not mana_has_focus:
-			if event.is_action_pressed("ui_down"):
-				mana_fire.grab_focus()
-				get_viewport().set_input_as_handled()
-				return
+	_handle_page_navigation(event)
 
-			elif event.is_action_pressed("ui_up"):
-				mana_light.grab_focus()
-				get_viewport().set_input_as_handled()
-				return
+func _mana_has_focus() -> bool:
+	return (
+		mana_fire.has_focus()
+		or mana_water.has_focus()
+		or mana_light.has_focus()
+	)
+
+func _handle_character_focus_entry(
+	event: InputEvent
+	) -> bool:
+	if current_page != MenuPage.CHARACTER:
+		return false
+
+	if _mana_has_focus():
+		return false
+
+	if event.is_action_pressed("ui_down"):
+		mana_fire.grab_focus()
+
+	elif event.is_action_pressed("ui_up"):
+		mana_light.grab_focus()
+
+	else:
+		return false
+
+	get_viewport().set_input_as_handled()
+	return true
+
+func _handle_page_navigation(
+	event: InputEvent
+	) -> bool:
+	var new_page := current_page
 
 	if event.is_action_pressed("ui_page_up"):
 		match current_page:
 			MenuPage.INVENTORY:
-				_change_page(MenuPage.CHARACTER)
+				new_page = MenuPage.CHARACTER
 
 			MenuPage.CHARACTER:
-				_change_page(MenuPage.SETTINGS)
-
-		get_viewport().set_input_as_handled()
+				new_page = MenuPage.SETTINGS
 
 	elif event.is_action_pressed("ui_page_down"):
 		match current_page:
-			MenuPage.CHARACTER:
-				_change_page(MenuPage.INVENTORY)
-				
 			MenuPage.SETTINGS:
-				_change_page(MenuPage.CHARACTER)
+				new_page = MenuPage.CHARACTER
 
-		get_viewport().set_input_as_handled()
+			MenuPage.CHARACTER:
+				new_page = MenuPage.INVENTORY
+
+	else:
+		return false
+
+	if new_page == current_page:
+		return false
+
+	_change_page(new_page)
+	get_viewport().set_input_as_handled()
+
+	return true
 #endregion

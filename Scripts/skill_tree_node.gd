@@ -16,7 +16,7 @@ signal skill_activated(skill: Skills)
 @export var focused_scale := 1.01
 #endregion
 
-#region Refernces
+#region References
 @onready var cost_badge: TextureRect = $VBoxContainer/CostBadge
 @onready var cost_label: RichTextLabel = %CostLabel
 @onready var skill_name_label: RichTextLabel = %SkillNameLabel
@@ -59,7 +59,6 @@ func _refresh() -> void:
 		return
 
 	texture_normal = null
-	#texture_normal = skill.skill_icon
 
 	if cost_label != null:
 		cost_label.text = str(skill.unlock_cost)

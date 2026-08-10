@@ -8,10 +8,10 @@ extends Node3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 var rotation_enabled := false
 
-func sync_loadout(weapon_is_active: bool) -> void:
-	weapon_preview.visible = weapon_is_active
+func sync_loadout(show_weapon: bool) -> void:
+	weapon_preview.visible = show_weapon
 
-	if weapon_is_active:
+	if show_weapon:
 		animation_player.play("2H_Melee_Idle")
 	else:
 		animation_player.play("Idle")

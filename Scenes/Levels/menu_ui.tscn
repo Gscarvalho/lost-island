@@ -91,7 +91,8 @@ z_index = 2
 layout_mode = 2
 size_flags_vertical = 0
 
-[node name="HealthBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
+[node name="MenuHealthBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 30)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -102,7 +103,8 @@ texture_progress = ExtResource("2_cuj2c")
 tint_under = Color(1, 1, 1, 0)
 tint_progress = Color(0.3647059, 1, 0.62352943, 1)
 
-[node name="Value" type="RichTextLabel" parent="Main/Seperator/Player/Current/HealthBar"]
+[node name="MenuHealthLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuHealthBar"]
+unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -121,7 +123,7 @@ scroll_active = false
 vertical_alignment = 3
 justification_flags = 161
 
-[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/HealthBar"]
+[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuHealthBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -131,7 +133,8 @@ grow_vertical = 2
 texture = ExtResource("3_n8txd")
 expand_mode = 1
 
-[node name="StaminaBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
+[node name="MenuStaminaBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 30)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -142,7 +145,8 @@ texture_progress = ExtResource("2_cuj2c")
 tint_under = Color(1, 1, 1, 0)
 tint_progress = Color(0.3647059, 1, 1, 1)
 
-[node name="Value" type="RichTextLabel" parent="Main/Seperator/Player/Current/StaminaBar"]
+[node name="MenuStaminaLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
+unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
 anchors_preset = 15
@@ -161,7 +165,7 @@ scroll_active = false
 vertical_alignment = 3
 justification_flags = 161
 
-[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/StaminaBar"]
+[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

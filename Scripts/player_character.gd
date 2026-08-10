@@ -12,8 +12,12 @@ signal stamina_changed(current: float, maximum: float)
 @onready var magic_state_machine = $AnimationTree.get("parameters/MagicStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var handslot_r: BoneAttachment3D = $Rig/Skeleton3D/handslot_r
 @onready var handslot_l: BoneAttachment3D = $Rig/Skeleton3D/handslot_l
-@onready var ui = $"../PlayerUI" as UI
-@onready var timers = $"../Timers" 
+@onready var ui: PlayerHUD = (
+	$"../PlayerUI"
+)
+@onready var stamina_regen_timer: Timer = (
+	$"../Timers/StaminaRegenTimer"
+)
 #endregion
 
 #region Character Data
@@ -25,19 +29,49 @@ var current_stats: Stats
 #endregion
 
 #region Equipment State
-var weapon_active:= true :
+var physical_mode_active:= true :
 	set(value):
-		weapon_active = value
+		physical_mode_active = value
 		handslot_r.visible = value
 		set_weapon()
 #endregion
 
 #region Combat State
-var current_attack : Skills 
+
 #endregion
 
 #region Mana
-var mana_inventory := [7,7,7]
+var mana_inventory: Array[float] = [
+	7.0,
+	7.0,
+	7.0
+]
+
+func get_mana_amount(
+	skill_type: Skills.SkillType
+) -> float:
+	var mana_index := _get_mana_index(skill_type)
+
+	if mana_index == -1:
+		return 0.0
+
+	return mana_inventory[mana_index]
+
+func change_mana(
+	skill_type: Skills.SkillType,
+	amount: float
+) -> void:
+	var mana_index := _get_mana_index(skill_type)
+
+	if mana_index == -1:
+		return
+
+	mana_inventory[mana_index] = maxf(
+		mana_inventory[mana_index] + amount,
+		0.0
+	)
+
+	ui.update_slots(skill_type)
 
 var mana_types:= [
 	Skills.SkillType.Physical,
@@ -46,14 +80,15 @@ var mana_types:= [
 	Skills.SkillType.Light,
 ]
 
-var current_mana_type : int = 0 :
+var current_mana_type: int = 0:
 	set(value):
 		current_mana_type = value
-		ui.update_slots(mana_types[value])
-		if value == 0:
-			weapon_active = true
-		else:
-			weapon_active = false
+
+		ui.update_slots(
+			mana_types[value]
+		)
+
+		physical_mode_active = value == 0
 #endregion
 
 #region Vital Resources
@@ -126,26 +161,24 @@ func _can_afford_skill(skill: Skills) -> bool:
 	if skill.skill_type == Skills.SkillType.Physical:
 		return current_stamina >= skill.skill_cost
 
-	var mana_index := _get_mana_index(skill.skill_type)
-
-	if mana_index == -1:
-		return false
-
-	return mana_inventory[mana_index] >= skill.skill_cost
+	return (
+		get_mana_amount(skill.skill_type)
+		>= skill.skill_cost
+	)
 
 func _pay_skill_cost(skill: Skills) -> void:
 	if skill.skill_type == Skills.SkillType.Physical:
 		current_stamina -= skill.skill_cost
-		timers.get_node("StaminaRegenTimer").start()
+		stamina_regen_timer.start()
 		return
 
-	var mana_index := _get_mana_index(skill.skill_type)
+	change_mana(
+		skill.skill_type,
+		-skill.skill_cost
+	)
 
-	if mana_index == -1:
-		return
-
-	mana_inventory[mana_index] -= skill.skill_cost
-	ui.update_slots(skill.skill_type)
+func get_current_skill_type() -> Skills.SkillType:
+	return mana_types[current_mana_type]
 #endregion
 
 #region Skill Effects
@@ -162,38 +195,30 @@ func _apply_skill_effect(skill: Skills) -> void:
 			current_stamina += skill.skill_regen_power
 
 		Skills.RegenType.Mana:
-			var mana_index := _get_mana_index(
-				skill.skill_type
-			)
-
-			if mana_index == -1:
-				return
-
-			mana_inventory[mana_index] += (
+			change_mana(
+				skill.skill_type,
 				skill.skill_regen_power
 			)
-
-			ui.update_slots(skill.skill_type)
 #endregion
 
 #region Combat Execution
-func attack() -> void:
-	if current_attack == null:
+func attack(skill: Skills) -> void:
+	if skill == null:
 		return
 
-	if not _can_afford_skill(current_attack):
-		if current_attack.skill_type == Skills.SkillType.Physical:
+	if not _can_afford_skill(skill):
+		if skill.skill_type == Skills.SkillType.Physical:
 			print("Not enough stamina.")
 		else:
 			print("No mana.")
 
 		return
 
-	_pay_skill_cost(current_attack)
-	_apply_skill_effect(current_attack)
-	_play_skill_animation(current_attack)
+	_pay_skill_cost(skill)
+	_apply_skill_effect(skill)
+	_play_skill_animation(skill)
 
-	print(current_attack.skill_name)
+	print(skill.skill_name)
 
 func _play_skill_animation(skill: Skills) -> void:
 	if skill.skill_type == Skills.SkillType.Physical:
@@ -219,32 +244,38 @@ func _play_skill_animation(skill: Skills) -> void:
 
 #region Equipment
 func set_weapon() -> void:
-	var current_weapon := handslot_r.get_child(0) as Weapon
-
-	current_weapon.user = get_parent()
-
-	# Always rebuild current stats from the character's base values.
-	# This prevents equipment bonuses from stacking repeatedly.
+	# Runtime stats are always rebuilt from base values so
+	# equipment bonuses can never stack across loadout changes.
 	current_stats = base_stats.duplicate()
 
-	if not weapon_active:
-		return
+	var current_weapon := get_equipped_weapon()
 
-	for property in current_stats.get_property_list():
-		if not property.usage & PROPERTY_USAGE_STORAGE:
-			continue
-
-		if typeof(current_stats.get(property.name)) != TYPE_FLOAT:
-			continue
-
-		if property.name not in current_weapon.stats_boost:
-			continue
-
-		current_stats.set(
-			property.name,
-			current_stats.get(property.name)
-			+ current_weapon.stats_boost.get(property.name)
+	if (
+		current_weapon != null
+		and physical_mode_active
+	):
+		current_weapon.user = (
+			get_parent() as CharacterBody3D
 		)
+
+		if current_weapon.stats_boost != null:
+			current_weapon.stats_boost.apply_to(
+				current_stats
+			)
+
+	# Reapply HP through its setter so removing equipment that
+	# lowers max HP cannot leave current HP above the new maximum.
+	if ui.is_node_ready():
+		current_hp = current_hp
+
+func get_equipped_weapon() -> Weapon:
+	if handslot_r.get_child_count() == 0:
+		return null
+
+	return handslot_r.get_child(0) as Weapon
+
+func has_equipped_weapon() -> bool:
+	return get_equipped_weapon() != null
 #endregion
 
 #region Time Scale

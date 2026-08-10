@@ -1,10 +1,68 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6rjbesajt77w"]
+[gd_scene load_steps=21 format=3 uid="uid://c6rjbesajt77w"]
 
 [ext_resource type="Script" uid="uid://ctshhk3eb7d2h" path="res://Scripts/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://c7hpgqo2k5244" path="res://Scenes/Characters/Skins/player_character.tscn" id="2_40svl"]
 [ext_resource type="Resource" uid="uid://bv6tkpmy8ybc4" path="res://Data/Player/player_progress.tres" id="2_cqrjx"]
 [ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Utilities/camera_controller.tscn" id="3_al8ar"]
+[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/stats.gd" id="4_01b8d"]
 [ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/Utilities/player_ui.tscn" id="4_gy20a"]
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/skills.gd" id="5_xccyk"]
+[ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/sword_icon.svg" id="6_h1n2f"]
+[ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="7_dxpk4"]
+[ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="8_15c3i"]
+[ext_resource type="Script" uid="uid://bsrbwx2d03seu" path="res://Scripts/skillbook.gd" id="9_yt1oc"]
+[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="10_jnx77"]
+[ext_resource type="Texture2D" uid="uid://dxwf0q22n2ggm" path="res://Assets/Images/Icons/fire_icon.svg" id="13_hy8lp"]
+
+[sub_resource type="Resource" id="Resource_6htn1"]
+script = ExtResource("4_01b8d")
+metadata/_custom_type_script = "uid://baaxbte0f7aus"
+
+[sub_resource type="Resource" id="Resource_ehxue"]
+script = ExtResource("5_xccyk")
+skill_name = "Slice"
+skill_icon = ExtResource("6_h1n2f")
+skill_power = 60.0
+skill_anim_name = "1H_Melee_Attack_Slice_Diagonal"
+skill_cost = 10.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"
+
+[sub_resource type="Resource" id="Resource_kmsq5"]
+script = ExtResource("5_xccyk")
+skill_name = "Stab"
+skill_icon = ExtResource("6_h1n2f")
+skill_power = 80.0
+skill_anim_name = "1H_Melee_Attack_Stab"
+skill_cost = 20.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"
+
+[sub_resource type="Resource" id="Resource_dm2ul"]
+script = ExtResource("5_xccyk")
+skill_name = "Heal"
+skill_icon = ExtResource("8_15c3i")
+skill_anim_name = "Spellcast_Long"
+skill_type = 3
+skill_cost = 1.0
+skill_regen_type = 1
+skill_regen_power = 50.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"
+
+[sub_resource type="Resource" id="Resource_i7ag3"]
+script = ExtResource("5_xccyk")
+skill_name = "Aqua Blast"
+skill_icon = ExtResource("10_jnx77")
+skill_power = 50.0
+skill_anim_name = "Spellcast_Shoot"
+skill_type = 2
+skill_cost = 1.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"
+
+[sub_resource type="Resource" id="Resource_gx0ld"]
+script = ExtResource("9_yt1oc")
+water_skills = Array[ExtResource("5_xccyk")]([SubResource("Resource_i7ag3")])
+fire_skills = Array[ExtResource("5_xccyk")]([ExtResource("7_dxpk4")])
+light_skills = Array[ExtResource("5_xccyk")]([SubResource("Resource_dm2ul")])
+metadata/_custom_type_script = "uid://bsrbwx2d03seu"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_40svl"]
 radius = 0.7
@@ -16,6 +74,9 @@ script = ExtResource("1_v0iea")
 progression = ExtResource("2_cqrjx")
 
 [node name="Character" parent="." instance=ExtResource("2_40svl")]
+base_stats = SubResource("Resource_6htn1")
+attacks = Array[ExtResource("5_xccyk")]([SubResource("Resource_ehxue"), SubResource("Resource_kmsq5")])
+skill_book = SubResource("Resource_gx0ld")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
@@ -26,6 +87,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
 spring_length = 5.0
 
 [node name="PlayerUI" parent="." instance=ExtResource("4_gy20a")]
+physical_icon = ExtResource("6_h1n2f")
+fire_icon = ExtResource("13_hy8lp")
+water_icon = ExtResource("10_jnx77")
+light_icon = ExtResource("8_15c3i")
 
 [node name="Timers" type="Node" parent="."]
 

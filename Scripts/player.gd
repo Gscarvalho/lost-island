@@ -5,8 +5,29 @@ extends CharacterBody3D
 #region References
 @export var progression: PlayerProgress
 
-@onready var camera = $CameraController/Camera3D
-@onready var character: PlayerCharacter = $Character
+@onready var camera: Camera3D = (
+	$CameraController/Camera3D
+)
+
+@onready var character: PlayerCharacter = (
+	$Character
+)
+
+@onready var stamina_regen_timer: Timer = (
+	$Timers/StaminaRegenTimer
+)
+
+@onready var weapon_choice_timer: Timer = (
+	$Timers/WeaponChoiceTimer
+)
+
+@onready var menu_delay_timer: Timer = (
+	$Timers/MenuDelayTimer
+)
+
+@onready var menu_transition_timer: Timer = (
+	$Timers/MenuTransitionTimer
+)
 #endregion
 
 #region Movement Configuration
@@ -38,9 +59,6 @@ var jump_time_to_descent : float = 0.3
 var movement_input := Vector2.ZERO
 var is_running := false
 var stamina_depleted_delay_active := false
-
-var is_attacking := false
-var is_being_hit := false
 #endregion
 
 #region Lifecycle
@@ -70,9 +88,9 @@ func _on_state_changed(state: StateManager.State) -> void:
 func _menu_logic() -> void:
 	if (
 	Input.is_action_just_pressed("menu")
-	and $Timers/MenuTransitionTimer.is_stopped()
+	and menu_transition_timer.is_stopped()
 	):
-		$Timers/MenuTransitionTimer.start()
+		menu_transition_timer.start()
 		if StateManager.current_state == StateManager.State.PLAY:
 			StateManager.set_state(StateManager.State.MENU)
 		
@@ -83,6 +101,13 @@ func _menu_logic() -> void:
 			StateManager.set_state(StateManager.State.PLAY)			
 		
 		velocity = Vector3.ZERO
+		
+func _enter_tree() -> void:
+	if progression != null:
+		progression = (
+			progression.duplicate(true)
+			as PlayerProgress
+		)
 #endregion
 
 #region Weapon Selection
@@ -90,7 +115,7 @@ func _equip_logic() -> void:
 	if (
 		Input.is_action_pressed("swap")
 		and StateManager.current_state == StateManager.State.PLAY
-		and $Timers/MenuDelayTimer.is_stopped()
+		and menu_delay_timer.is_stopped()
 	):
 		_open_weapon_choice()
 
@@ -121,7 +146,7 @@ func _equip_logic() -> void:
 		)
 
 func _open_weapon_choice() -> void:
-	$Timers/WeaponChoiceTimer.start()
+	weapon_choice_timer.start()
 
 	StateManager.set_state(
 		StateManager.State.WEAPON
@@ -142,7 +167,7 @@ func _close_weapon_choice() -> void:
 	if StateManager.current_state != StateManager.State.WEAPON:
 		return
 
-	$Timers/WeaponChoiceTimer.stop()
+	weapon_choice_timer.stop()
 
 	StateManager.set_state(
 		StateManager.State.PLAY
@@ -156,67 +181,80 @@ func _on_weapon_choice_timer_timeout() -> void:
 		return
 
 	_close_weapon_choice()
-	$Timers/MenuDelayTimer.start()
+	menu_delay_timer.start()
 #endregion
 
 #region Combat
-func _try_attack(attack_list: Array, attack_index: int) -> void:
+func _attacks_logic() -> void:
+	if StateManager.current_state != StateManager.State.PLAY:
+		return
+
+	var attack_index := _get_attack_input_index()
+
+	if attack_index == -1:
+		return
+
+	var attack_list := _get_current_attack_list()
+
+	if attack_list.is_empty():
+		return
+
+	_try_attack(
+		attack_list,
+		attack_index
+	)
+
+func _try_attack(
+	attack_list: Array,
+	attack_index: int
+	) -> void:
 	if attack_index >= attack_list.size():
 		print("No attack assigned.")
 		return
-	var selected_attack = attack_list[attack_index]
+
+	var selected_attack := (
+		attack_list[attack_index] as Skills
+	)
+
 	if selected_attack == null:
 		print("No attack assigned.")
 		return
+
 	if character.is_action_animation_playing():
 		print("Attack already in progress.")
 		return
-	character.current_attack = selected_attack
-	character.attack()
 
-func _get_current_magic_skills() -> Array:
-	match character.current_mana_type:
-		1:
-			return character.skill_book.water_skills
-		2:
-			return character.skill_book.fire_skills
-		3:
-			return character.skill_book.light_skills
-		_:
+	character.attack(selected_attack)
+
+func _get_current_attack_list() -> Array:
+	if character.physical_mode_active:
+		if not character.has_equipped_weapon():
 			return []
 
-func _attacks_logic() -> void:
-	if StateManager.current_state == StateManager.State.PLAY and character.weapon_active: #Physical attackes
-		if not Input.is_action_pressed("aim"): 
-			if Input.is_action_just_pressed("attack"):
-				_try_attack(character.attacks, 0)
-			if Input.is_action_just_pressed("skill"):
-				_try_attack(character.attacks, 1)
-		else:
-			if Input.is_action_just_pressed("attack"):
-				_try_attack(character.attacks, 2)
-			elif Input.is_action_just_pressed("skill"):
-				_try_attack(character.attacks, 3)
-	elif StateManager.current_state == StateManager.State.PLAY and not character.weapon_active:
-		var magic_skills := _get_current_magic_skills()
+		return character.attacks
 
-		if not Input.is_action_pressed("aim"):
-			if Input.is_action_just_pressed("attack"):
-				_try_attack(magic_skills, 0)
+	return character.skill_book.get_skills_for_type(
+		character.get_current_skill_type()
+	)
 
-			elif Input.is_action_just_pressed("skill"):
-				_try_attack(magic_skills, 1)
+func _get_attack_input_index() -> int:
+	var index_offset := (
+		2
+		if Input.is_action_pressed("aim")
+		else 0
+	)
 
-		else:
-			if Input.is_action_just_pressed("attack"):
-				_try_attack(magic_skills, 2)
+	if Input.is_action_just_pressed("attack"):
+		return index_offset
 
-			elif Input.is_action_just_pressed("skill"):
-				_try_attack(magic_skills, 3)
+	if Input.is_action_just_pressed("skill"):
+		return index_offset + 1
+
+	return -1
 #endregion
 
 #region Movement
-func _move_logic(delta) -> void:
+func _move_logic(delta: float) -> void:
 	if StateManager.current_state == StateManager.State.PLAY:
 		movement_input = Input.get_vector("move_left","move_right","move_forward","move_backward").rotated(-camera.global_rotation.y)
 		var vel_2d = Vector2(velocity.x,velocity.z)
@@ -230,7 +268,6 @@ func _move_logic(delta) -> void:
 			velocity.z = vel_2d.y
 			var target_angle = -movement_input.angle() + PI/2
 			character.rotation.y = rotate_toward(character.rotation.y, target_angle, 6.0 * delta)
-			#tween.tween_property(character,"rotation:y", target_angle, 0.3)
 		else:
 			vel_2d = vel_2d.move_toward(Vector2.ZERO, walk_speed * 8.0)
 			velocity.x = vel_2d.x
@@ -238,12 +275,12 @@ func _move_logic(delta) -> void:
 	elif StateManager.current_state == StateManager.State.MENU:
 		velocity = Vector3.ZERO
 
-func _jump_logic(delta) -> void:
+func _jump_logic(delta: float) -> void:
 	if StateManager.current_state == StateManager.State.PLAY:
 		if Input.is_action_just_pressed("jump") and is_on_floor() and character.current_stamina >= 10:
 			velocity.y = -jump_velocity
 			character.current_stamina -= 10.0 * stamina_cost_reduction
-			$Timers/StaminaRegenTimer.start()
+			stamina_regen_timer.start()
 		var gravity = jump_gravity if velocity.y > 0.0 else fall_gravity
 		velocity.y -= gravity * delta
 
@@ -258,12 +295,12 @@ func _on_stamina_regen_timer_timeout() -> void:
 	if character.current_stamina <= 0.0 and not stamina_depleted_delay_active:
 		print("Stamina depleted, delayed regeneration.")
 		stamina_depleted_delay_active = true
-		$Timers/StaminaRegenTimer.start(3.0)
+		stamina_regen_timer.start(3.0)
 		return
 
 	character.current_stamina = 100.0
 	stamina_depleted_delay_active = false
-	$Timers/StaminaRegenTimer.stop()
+	stamina_regen_timer.stop()
 #endregion
 
 #region Damage

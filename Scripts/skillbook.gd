@@ -12,3 +12,19 @@ extends Resource
 @export var dark_skills: Array[Skills]
 @export var ice_skills: Array[Skills]
 #endregion
+
+func get_skills_for_type(
+	skill_type: Skills.SkillType
+) -> Array[Skills]:
+	match skill_type:
+		Skills.SkillType.Water:
+			return water_skills
+
+		Skills.SkillType.Fire:
+			return fire_skills
+
+		Skills.SkillType.Light:
+			return light_skills
+
+		_:
+			return []

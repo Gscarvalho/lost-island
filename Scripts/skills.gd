@@ -29,7 +29,8 @@ enum RegenType {
 #region Progression
 @export_category("Progression")
 
-@export var unlock_cost: int = 1
+@export_range(0, 999, 1)
+var unlock_cost: int = 1
 
 # Reserved for future skill-tree progression.
 # Prerequisites are intentionally not enforced in the demo.

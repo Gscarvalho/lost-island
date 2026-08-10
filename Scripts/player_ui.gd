@@ -1,10 +1,17 @@
 # player_ui.gd
-class_name UI
+class_name PlayerHUD
 extends Control
 
+#region Configuration
+@export_category("Loadout Icons")
+
+@export var physical_icon: Texture2D
+@export var fire_icon: Texture2D
+@export var water_icon: Texture2D
+@export var light_icon: Texture2D
+#endregion
 
 #region References
-
 @onready var character: PlayerCharacter = (
 	get_parent().get_node("Character")
 )
@@ -36,9 +43,6 @@ extends Control
 @onready var weapon_choice_timer: Timer = (
 	$"../Timers/WeaponChoiceTimer"
 )
-
-@export var icons: Array[Texture2D]
-
 #endregion
 
 #region Lifecycle
@@ -73,37 +77,45 @@ func update_stamina(value: float) -> void:
 #endregion
 
 #region Loadout Display
-func update_slots(value: Skills.SkillType) -> void:
+func update_slots(
+	value: Skills.SkillType
+) -> void:
 	match value:
 		Skills.SkillType.Physical:
 			_hide_mana()
 
-			weapon_icon_image.texture = icons[0]
+			weapon_icon_image.texture = physical_icon
 			weapon_icon_image.modulate = Color.LIGHT_BLUE
 
 		Skills.SkillType.Water:
 			_show_mana(
-				character.mana_inventory[0],
+				character.get_mana_amount(
+					Skills.SkillType.Water
+				),
 				Color.DEEP_SKY_BLUE,
-				icons[2]
+				water_icon
 			)
 
 		Skills.SkillType.Fire:
 			_show_mana(
-				character.mana_inventory[1],
+				character.get_mana_amount(
+					Skills.SkillType.Fire
+				),
 				Color.DARK_ORANGE,
-				icons[1]
+				fire_icon
 			)
 
 		Skills.SkillType.Light:
 			_show_mana(
-				character.mana_inventory[2],
+				character.get_mana_amount(
+					Skills.SkillType.Light
+				),
 				Color.GOLD,
-				icons[3]
+				light_icon
 			)
 
 func _show_mana(
-	amount: int,
+	amount: float,
 	color: Color,
 	icon: Texture2D
 	) -> void:
