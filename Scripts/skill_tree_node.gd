@@ -12,8 +12,9 @@ signal skill_activated(skill: Skills)
 
 @export var focused_scale := 1.01
 
+@onready var cost_badge: TextureRect = $VBoxContainer/CostBadge
 @onready var cost_label: RichTextLabel = %CostLabel
-@onready var cost_badge: TextureRect = $CostBadge
+@onready var skill_name_label: RichTextLabel = %SkillNameLabel
 
 
 func _ready() -> void:
@@ -44,21 +45,23 @@ func _refresh() -> void:
 
 		return
 
-	texture_normal = skill.skill_icon
+	texture_normal = null
+	#texture_normal = skill.skill_icon
 
 	if cost_label != null:
 		cost_label.text = str(skill.unlock_cost)
+		skill_name_label.text = skill.skill_name
 
 
 func _on_focus_entered() -> void:
 	skill_focused.emit(skill)
-	_fade_cost_badge(Vector2.ZERO)
+	_fade_cost_badge(0)
 	cost_label.add_theme_color_override("default_color", skill.skill_cost_color)
 	_set_focus_visual(true)
 
 
 func _on_focus_exited() -> void:
-	_fade_cost_badge(Vector2(96,96))
+	_fade_cost_badge(1)
 	cost_label.add_theme_color_override("default_color", Color.WHITE)
 	_set_focus_visual(false)
 
@@ -87,14 +90,14 @@ func _set_focus_visual(is_focused: bool) -> void:
 		0.12
 	)
 
-func _fade_cost_badge(target_size: Vector2) -> void:
+func _fade_cost_badge(target: float) -> void:
 	var tween := create_tween()
 	tween.set_trans(Tween.TRANS_QUAD)
 	tween.set_ease(Tween.EASE_OUT)
 	
 	tween.tween_property(
 		cost_badge,
-		"custom_minimum_size",
-		target_size,
+		"self_modulate:a",
+		target,
 		0.2
 	)

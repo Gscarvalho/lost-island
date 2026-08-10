@@ -19,22 +19,27 @@ extends Control
 @onready var mana_water: VBoxContainer = %ManaWater
 @onready var mana_light: VBoxContainer = %ManaLight
 @onready var skill_tree_bg: TextureRect = $SkillTreeOverlay/SkillTreeBG
-@onready var bg_icon: TextureRect = $SkillTreeOverlay/SkillTreeBGIcon/BGIcon
+@onready var bg_icon: TextureRect = $SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon/BGIcon
 @onready var skill_tree_overlay: Control = $SkillTreeOverlay
 @onready var skill_tree_title: Label = $SkillTreeOverlay/TitleContainer/SkillTreeTitle
-@onready var skill_name_r: RichTextLabel = %SkillNameR
-@onready var skill_name_l: RichTextLabel = %SkillNameL
-@onready var skill_description_r: RichTextLabel = %SkillDescriptionR
-@onready var skill_description_l: RichTextLabel = %SkillDescriptionL
-@onready var skill_input_r: RichTextLabel = %SkillInputR
-@onready var skill_input_l: RichTextLabel = %SkillInputL
+
+
+
+@onready var skill_name: RichTextLabel = %SkillName
+@onready var skill_power_value: RichTextLabel = %SkillPowerValue
+@onready var skill_mana_cost_value: RichTextLabel = %SkillManaCostValue
+@onready var skill_range_value: RichTextLabel = %SkillRangeValue
+@onready var skill_description: RichTextLabel = %SkillDescription
+@onready var skill_input: RichTextLabel = %SkillInput
+@onready var skill_power_box: Control = %SkillPowerBox
+@onready var skill_mana_cost_box: Control = %SkillManaCostBox
+@onready var skill_range_box: Control = %SkillRangeBox
+
+
+
+
 @onready var fire_tree: SkillTree = %FireTree
 var active_skill_tree: SkillTree
-
-
-
-
-
 var last_mana_focus: Control
 var skill_tree_open := false
 var volume_editing := false
@@ -178,17 +183,25 @@ func _open_skill_tree(
 	skill_tree_open = true
 	last_mana_focus = mana_control
 	active_skill_tree = null
-	skill_name_r.text = ""
-	skill_description_r.text = ""
-	skill_input_r.text = ""
-
-	skill_name_l.text = ""
-	skill_description_l.text = ""
-	skill_input_l.text = ""
+	skill_name.text = ""
+	skill_description.text = "Use D-Pad to select a skill."
+	skill_input.text = ""
+	skill_power_box.modulate.a = 0
+	skill_mana_cost_box.modulate.a = 0
+	skill_range_box.modulate.a = 0
+	var power_bg = skill_power_value.get_parent_control() as TextureRect
+	var mana_cost_bg = skill_mana_cost_value.get_parent_control() as TextureRect
+	var range_value_bg = skill_range_value.get_parent_control() as TextureRect
 	match mana_name:
 		"Fire":
 			active_skill_tree = fire_tree
 			fire_tree.visible = active_skill_tree == fire_tree
+			skill_name.add_theme_color_override("default_color", Color.DARK_ORANGE)
+			power_bg.self_modulate = Color.DARK_ORANGE
+			mana_cost_bg.self_modulate = Color.DARK_ORANGE
+			range_value_bg.self_modulate = Color.DARK_ORANGE
+			
+			
 	skill_tree_title.text = mana_name.to_upper() + " SKILL TREE"
 
 	if skill_tree_tween != null:
@@ -251,10 +264,14 @@ func _on_tree_skill_focused(skill: Skills) -> void:
 	if skill == null:
 		return
 
-	skill_name_r.text = skill.skill_name.to_upper()
-	skill_description_r.text = skill.skill_description
-	skill_input_r.text = "INPUT: UNASSIGNED"
-
+	skill_name.text = skill.skill_name.to_upper()
+	skill_description.text = skill.skill_description
+	skill_input.text = "INPUT: UNASSIGNED"
+	skill_power_box.modulate.a = 1
+	skill_mana_cost_box.modulate.a = 1
+	skill_range_box.modulate.a = 1
+	
+	
 func _on_tree_skill_activated(skill: Skills) -> void:
 	if skill == null:
 		return
@@ -560,29 +577,34 @@ func _input(event: InputEvent) -> void:
 		return
 		
 	if master_volume_slider.has_focus():
-		if event.is_action_pressed("ui_accept"):
-			volume_editing = not volume_editing
-			get_viewport().set_input_as_handled()
-			return
+		volume_editing = true
+	else:
+		volume_editing = false
+			
+	#get_viewport().set_input_as_handled()
+	#return
 
-		if volume_editing:
-			# Left and right pass through to the HSlider.
-			# Up and down stay locked until A is pressed again.
-			if (
-				event.is_action_pressed("ui_up")
-				or event.is_action_pressed("ui_down")
-			):
-				get_viewport().set_input_as_handled()
-
-			return
-
-		# Prevent Left/Right from changing volume before A is pressed.
-		if (
-			event.is_action_pressed("ui_left")
-			or event.is_action_pressed("ui_right")
-		):
-			get_viewport().set_input_as_handled()
-			return
+		#if volume_editing:
+			## Left and right pass through to the HSlider.
+			## Up and down stay locked until A is pressed again.
+			#if (
+				#event.is_action_pressed("ui_up")
+				#or event.is_action_pressed("ui_down")
+			#):
+				#get_viewport().set_input_as_handled()
+			#if (
+				#event.is_action_pressed("ui_cancel")
+			#):
+				#volume_editing = not volume_editing
+			#return
+			#
+		## Prevent Left/Right from changing volume before A is pressed.
+		#if (
+			#event.is_action_pressed("ui_left")
+			#or event.is_action_pressed("ui_right")
+		#):
+			#get_viewport().set_input_as_handled()
+			#return
 
 	if (
 		exit_game_button.has_focus()

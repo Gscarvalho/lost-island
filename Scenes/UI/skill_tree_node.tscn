@@ -1,43 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://dpa0nvwc7fayx"]
+[gd_scene load_steps=3 format=3 uid="uid://dpa0nvwc7fayx"]
 
 [ext_resource type="Script" uid="uid://45d37y6ljqpr" path="res://Scripts/skill_tree_node.gd" id="1_8sbre"]
-[ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/fire_icon.png" id="1_55nba"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="2_55nba"]
 
 [node name="SkillTreeNode" type="TextureButton"]
+custom_minimum_size = Vector2(100, 100)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1184.0
-offset_bottom = -624.0
+offset_right = -1180.0
+offset_bottom = -620.0
 grow_horizontal = 2
 grow_vertical = 2
-pivot_offset = Vector2(48, 48)
-texture_normal = ExtResource("1_55nba")
+pivot_offset = Vector2(50, 50)
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("1_8sbre")
 focused_scale = 1.12
 
-[node name="CostBadge" type="TextureRect" parent="."]
-self_modulate = Color(1, 0.54901963, 0, 1)
-custom_minimum_size = Vector2(96, 96)
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -24.0
-offset_right = 24.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="CostBadge" type="TextureRect" parent="VBoxContainer"]
+self_modulate = Color(1, 0.54901963, 0, 1)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
 mouse_filter = 2
 texture = ExtResource("2_55nba")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="CostLabel" type="RichTextLabel" parent="."]
+[node name="CostLabel" type="RichTextLabel" parent="VBoxContainer/CostBadge"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -45,8 +44,21 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 6
+size_flags_stretch_ratio = 2.0
 theme_override_font_sizes/normal_font_size = 32
 text = "1"
 fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SkillNameLabel" type="RichTextLabel" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+theme_override_font_sizes/normal_font_size = 20
+text = "1"
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=21 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://cyba446df5nc6" path="res://Scenes/Characters/Skins/menu_avatar.tscn" id="4_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="5_jlchu"]
 [ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/fire_icon.png" id="5_o1rl0"]
-[ext_resource type="Texture2D" uid="uid://ddh5torayetl2" path="res://Data/Theme/Styles/disabled_grabber.tres" id="9_fjin3"]
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="9_uf2rm"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/snowflake_icon.svg" id="10_ujsln"]
@@ -33,8 +32,6 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -1.0
-offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_axiel")
@@ -797,7 +794,6 @@ fit_content = true
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
-theme_override_icons/grabber_disabled = ExtResource("9_fjin3")
 value = 100.0
 
 [node name="ExitLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
@@ -884,7 +880,7 @@ stretch_mode = 5
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VboxContainer" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo"]
+[node name="HboxContainer" type="HBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -894,316 +890,74 @@ grow_vertical = 2
 theme_override_constants/separation = 25
 alignment = 1
 
-[node name="MarginContainerTop" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_right = 50
-
-[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop"]
+[node name="MarginContainerL" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer"]
 visible = false
-custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="SkillNameL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
-theme_override_font_sizes/normal_font_size = 48
-text = "Fireball"
-vertical_alignment = 2
-
-[node name="SkillDescriptionL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Luanch a ball a fire,"
-
-[node name="SkillInputL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Skill unassigned."
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-alignment = 1
-
-[node name="SkillName" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
-theme_override_font_sizes/normal_font_size = 48
-text = "Fireball"
-fit_content = true
-horizontal_alignment = 2
-vertical_alignment = 2
-
-[node name="SkillPowerBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(400, 40)
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-nine_patch_stretch = true
-texture_under = ExtResource("2_cuj2c")
-texture_progress = ExtResource("2_cuj2c")
-tint_progress = Color(0.3529412, 1, 1, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox/SkillBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox/SkillBar/MarginContainer"]
-layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 20
-text = "POWER"
-fit_content = true
-scroll_active = false
-vertical_alignment = 1
-
-[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox"]
-custom_minimum_size = Vector2(100, 30)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -105.0
-offset_top = -15.0
-offset_right = -5.0
-offset_bottom = 15.0
-grow_horizontal = 0
-grow_vertical = 2
-texture = ExtResource("5_jlchu")
-expand_mode = 3
-
-[node name="SkillPowerValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox/ValueBG"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -9.0
-offset_bottom = 6.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "locked"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="SkillManaCostBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(400, 40)
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-nine_patch_stretch = true
-texture_under = ExtResource("2_cuj2c")
-texture_progress = ExtResource("2_cuj2c")
-tint_progress = Color(0.3529412, 1, 1, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox/SkillBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox/SkillBar/MarginContainer"]
-layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 20
-text = "MANA COST"
-fit_content = true
-scroll_active = false
-vertical_alignment = 1
-
-[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox"]
-custom_minimum_size = Vector2(100, 30)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -105.0
-offset_top = -15.0
-offset_right = -5.0
-offset_bottom = 15.0
-grow_horizontal = 0
-grow_vertical = 2
-texture = ExtResource("5_jlchu")
-expand_mode = 3
-
-[node name="SkillManaCostValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox/ValueBG"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -9.0
-offset_bottom = 6.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "locked"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="SkillRangeBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
-unique_name_in_owner = true
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(400, 40)
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-nine_patch_stretch = true
-texture_under = ExtResource("2_cuj2c")
-texture_progress = ExtResource("2_cuj2c")
-tint_progress = Color(0.3529412, 1, 1, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox/SkillBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 24
-
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox/SkillBar/MarginContainer"]
-layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 20
-text = "RANGE"
-fit_content = true
-scroll_active = false
-vertical_alignment = 1
-
-[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox"]
-custom_minimum_size = Vector2(100, 30)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -105.0
-offset_top = -15.0
-offset_right = -5.0
-offset_bottom = 15.0
-grow_horizontal = 0
-grow_vertical = 2
-texture = ExtResource("5_jlchu")
-expand_mode = 3
-
-[node name="SkillRangeValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox/ValueBG"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -9.0
-offset_bottom = 6.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 24
-text = "locked"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
-layout_mode = 2
-theme_override_constants/margin_left = 150
-
-[node name="SkillDescription" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/MarginContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 20
-text = "Launch a concentrated ball of fire."
-fit_content = true
-scroll_active = false
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="SkillInput" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Skill unassigned."
-fit_content = true
-horizontal_alignment = 2
-
-[node name="MarginContainerBottom" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.25
 theme_override_constants/margin_left = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerL"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SkillNameL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerL/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Fireball"
+vertical_alignment = 2
+
+[node name="SkillDescriptionL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerL/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.35
+text = "Luanch a ball a fire,"
+vertical_alignment = 1
+
+[node name="SkillInputL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerL/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Skill unassigned."
+
+[node name="MarginContainerR" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/margin_right = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerBottom"]
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerR"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="SkillNameR" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerR/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="SkillDescriptionR" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerR/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.35
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkillInputR" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/HboxContainer/MarginContainerR/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
 
 [node name="FireTree" type="Control" parent="SkillTreeOverlay" node_paths=PackedStringArray("default_skill_node")]
 unique_name_in_owner = true
