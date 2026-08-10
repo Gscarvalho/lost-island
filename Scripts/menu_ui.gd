@@ -9,10 +9,6 @@ extends Control
 #endregion
 
 #region Character Page References
-@onready var stats: VBoxContainer = $Main/Seperator/Stats
-@onready var current: VBoxContainer = $Main/Seperator/Player/Current
-@onready var mana: VBoxContainer = $Main/Seperator/Mana
-
 @onready var attack_value: RichTextLabel = %ATKValue
 @onready var defense_value: RichTextLabel = %DEFValue
 @onready var magic_attack_value: RichTextLabel = %MATKValue
@@ -36,7 +32,6 @@ extends Control
 #endregion
 
 #region Skill Tree References
-@onready var skill_tree_bg: TextureRect = $SkillTreeOverlay/SkillTreeBG
 @onready var bg_icon: TextureRect = $SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon/BGIcon
 @onready var skill_tree_overlay: Control = $SkillTreeOverlay
 @onready var skill_tree_title: Label = $SkillTreeOverlay/TitleContainer/SkillTreeTitle
@@ -365,11 +360,6 @@ func _set_stats() -> void:
 		character.current_stamina,
 		100.0
 	)
-	
-	var tween = create_tween()
-	var tween2 = create_tween()
-	tween.tween_property(current.get_child(0),"value", character.current_hp, 0.5)
-	tween2.tween_property(current.get_child(1),"value", character.current_stamina, 0.5)
 
 func _set_stat_display(
 	label: RichTextLabel,

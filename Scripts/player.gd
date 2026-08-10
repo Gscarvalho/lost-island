@@ -13,6 +13,10 @@ extends CharacterBody3D
 	$Character
 )
 
+@onready var ui: PlayerHUD = (
+	$PlayerUI
+)
+
 @onready var stamina_regen_timer: Timer = (
 	$Timers/StaminaRegenTimer
 )
@@ -152,8 +156,8 @@ func _open_weapon_choice() -> void:
 		StateManager.State.WEAPON
 	)
 
-	character.ui.show_timer_ui(true)
-	character.set_move_timescale(0.1)
+	ui.show_timer_ui(true)
+	Engine.time_scale = 0.1
 
 	var tween := create_tween()
 	tween.tween_property(
@@ -173,8 +177,8 @@ func _close_weapon_choice() -> void:
 		StateManager.State.PLAY
 	)
 
-	character.set_move_timescale(1.0)
-	character.ui.show_timer_ui(false)
+	Engine.time_scale = 1.0
+	ui.show_timer_ui(false)
 
 func _on_weapon_choice_timer_timeout() -> void:
 	if StateManager.current_state != StateManager.State.WEAPON:

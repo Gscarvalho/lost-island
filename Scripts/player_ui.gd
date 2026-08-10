@@ -24,10 +24,6 @@ extends Control
 	$HBoxContainer/HUD/Stamina
 )
 
-@onready var info: RichTextLabel = (
-	$HBoxContainer/HUD/Hitpoints/Info
-)
-
 @onready var weapon_icon_image: TextureRect = (
 	$HBoxContainer/Weapon/Control/WeaponIconImage
 )
@@ -51,10 +47,63 @@ func _ready() -> void:
 		_on_state_changed
 	)
 
+	character.health_changed.connect(
+		_on_health_changed
+	)
+
+	character.stamina_changed.connect(
+		_on_stamina_changed
+	)
+
+	character.mana_changed.connect(
+		_on_mana_changed
+	)
+
+	character.loadout_changed.connect(
+		update_slots
+	)
+
 	_on_state_changed(
 		StateManager.current_state
 	)
 
+	update_health(
+		character.current_hp
+	)
+
+	update_stamina(
+		character.current_stamina
+	)
+
+	update_slots(
+		character.get_current_skill_type()
+	)
+
+func _on_health_changed(
+	value: float,
+	_maximum: float
+) -> void:
+	update_health(value)
+
+
+func _on_stamina_changed(
+	value: float,
+	_maximum: float
+) -> void:
+	update_stamina(value)
+
+
+func _on_mana_changed(
+	skill_type: Skills.SkillType,
+	_amount: float
+) -> void:
+	if (
+		skill_type
+		!= character.get_current_skill_type()
+	):
+		return
+
+	update_slots(skill_type)
 
 func _process(_delta: float) -> void:
 	if StateManager.current_state == StateManager.State.WEAPON:

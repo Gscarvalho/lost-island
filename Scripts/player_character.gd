@@ -3,8 +3,24 @@ class_name PlayerCharacter
 extends Node3D
 
 #region Signals
-signal health_changed(current: float, maximum: float)
-signal stamina_changed(current: float, maximum: float)
+signal health_changed(
+	current: float,
+	maximum: float
+)
+
+signal stamina_changed(
+	current: float,
+	maximum: float
+)
+
+signal mana_changed(
+	skill_type: Skills.SkillType,
+	amount: float
+)
+
+signal loadout_changed(
+	skill_type: Skills.SkillType
+)
 #endregion
 
 #region References
@@ -12,9 +28,7 @@ signal stamina_changed(current: float, maximum: float)
 @onready var magic_state_machine = $AnimationTree.get("parameters/MagicStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var handslot_r: BoneAttachment3D = $Rig/Skeleton3D/handslot_r
 @onready var handslot_l: BoneAttachment3D = $Rig/Skeleton3D/handslot_l
-@onready var ui: PlayerHUD = (
-	$"../PlayerUI"
-)
+
 @onready var stamina_regen_timer: Timer = (
 	$"../Timers/StaminaRegenTimer"
 )
@@ -60,7 +74,7 @@ func get_mana_amount(
 func change_mana(
 	skill_type: Skills.SkillType,
 	amount: float
-) -> void:
+	) -> void:
 	var mana_index := _get_mana_index(skill_type)
 
 	if mana_index == -1:
@@ -71,7 +85,10 @@ func change_mana(
 		0.0
 	)
 
-	ui.update_slots(skill_type)
+	mana_changed.emit(
+		skill_type,
+		mana_inventory[mana_index]
+	)
 
 var mana_types:= [
 	Skills.SkillType.Physical,
@@ -84,39 +101,47 @@ var current_mana_type: int = 0:
 	set(value):
 		current_mana_type = value
 
-		ui.update_slots(
-			mana_types[value]
+		physical_mode_active = (
+			value == 0
 		)
 
-		physical_mode_active = value == 0
+		loadout_changed.emit(
+			mana_types[value]
+		)
 #endregion
 
 #region Vital Resources
 var current_hp := 1.0:
 	set(value):
-		current_hp = clamp(
-			value,
-			0.0,
-			current_stats.max_hp
-			if current_stats != null
-			else base_stats.max_hp
-		)
-
-		ui.update_health(current_hp)
-
 		var max_hp := (
 			current_stats.max_hp
 			if current_stats != null
 			else base_stats.max_hp
 		)
 
-		health_changed.emit(current_hp, max_hp)
+		current_hp = clamp(
+			value,
+			0.0,
+			max_hp
+		)
+
+		health_changed.emit(
+			current_hp,
+			max_hp
+		)
 
 var current_stamina := 1.0:
 	set(value):
-		current_stamina = clamp(value, 0.0, 100.0)
-		ui.update_stamina(current_stamina)
-		stamina_changed.emit(current_stamina, 100.0)
+		current_stamina = clamp(
+			value,
+			0.0,
+			100.0
+		)
+
+		stamina_changed.emit(
+			current_stamina,
+			100.0
+		)
 #endregion
 
 #region Lifecycle
@@ -265,8 +290,7 @@ func set_weapon() -> void:
 
 	# Reapply HP through its setter so removing equipment that
 	# lowers max HP cannot leave current HP above the new maximum.
-	if ui.is_node_ready():
-		current_hp = current_hp
+	current_hp = current_hp
 
 func get_equipped_weapon() -> Weapon:
 	if handslot_r.get_child_count() == 0:
@@ -276,9 +300,4 @@ func get_equipped_weapon() -> Weapon:
 
 func has_equipped_weapon() -> bool:
 	return get_equipped_weapon() != null
-#endregion
-
-#region Time Scale
-func set_move_timescale(value: float) -> void:
-	Engine.time_scale = value
 #endregion
