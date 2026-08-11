@@ -11,6 +11,7 @@ var skill_points: int = 10
 
 @export var unlocked_skill_ids: Array[StringName] = []
 
+@export var skill_loadout: SkillLoadout
 
 func is_skill_unlocked(skill: Skills) -> bool:
 	if not _has_valid_skill_id(skill):
@@ -39,9 +40,13 @@ func try_unlock_skill(skill: Skills) -> bool:
 		return false
 
 	skill_points -= skill.unlock_cost
+
 	unlocked_skill_ids.append(
 		skill.skill_id
 	)
+
+	if skill_loadout != null:
+		skill_loadout.auto_assign(skill)
 
 	skill_points_changed.emit(
 		skill_points

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Characters/player.tscn" id="1_vflva"]
 [ext_resource type="Material" uid="uid://cl6e3woev4yo6" path="res://Assets/Materials/ground_mat.tres" id="1_xawdm"]
-[ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/Levels/menu_ui.tscn" id="2_qkmes"]
+[ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/UI/menu_ui.tscn" id="2_qkmes"]
 [ext_resource type="Script" uid="uid://c5iwctc5ytawr" path="res://addons/proton_scatter/src/scatter.gd" id="4_oerva"]
 [ext_resource type="Script" uid="uid://dtlrvtcbtehim" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="5_t2ggk"]
 [ext_resource type="Script" uid="uid://cielkn180j662" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="6_x7ba5"]

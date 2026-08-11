@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="PlayerProgress" load_steps=2 format=3 uid="uid://bv6tkpmy8ybc4"]
+[gd_resource type="Resource" script_class="PlayerProgress" load_steps=3 format=3 uid="uid://bv6tkpmy8ybc4"]
 
 [ext_resource type="Script" uid="uid://cyy31lq4aaaf0" path="res://Scripts/Player/player_progress.gd" id="1_fijew"]
+[ext_resource type="Resource" uid="uid://t4uugwo1dyb1" path="res://Data/Player/skill_loadout.tres" id="2_rqqga"]
 
 [resource]
 script = ExtResource("1_fijew")
 unlocked_skill_ids = Array[StringName]([&"fireball"])
+skill_loadout = ExtResource("2_rqqga")
 metadata/_custom_type_script = "uid://cyy31lq4aaaf0"
