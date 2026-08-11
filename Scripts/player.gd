@@ -35,26 +35,26 @@ extends CharacterBody3D
 #endregion
 
 #region Movement Configuration
-var walk_speed := 5.5
-var run_speed := 8.5
-var speed_modifier := 1.0
-var stamina_cost_reduction := 1.0
+var walk_speed: float = 5.5
+var run_speed: float = 8.5
+var speed_modifier: float = 1.0
+var stamina_cost_reduction: float = 1.0
 #endregion
 
 #region Jump Configuration
-var jump_height : float = 3.5
-var jump_time_to_peak : float = 0.4
-var jump_time_to_descent : float = 0.3
+var jump_height: float = 3.5
+var jump_time_to_peak: float = 0.4
+var jump_time_to_descent: float = 0.3
 
-@onready var jump_velocity : float = (
+@onready var jump_velocity: float = (
 	(2.0 * jump_height) / jump_time_to_peak
 ) * -1.0
 
-@onready var jump_gravity : float = (
+@onready var jump_gravity: float = (
 	(-2.0 * jump_height) / (jump_time_to_peak * jump_time_to_peak)
 ) * -1.0
 
-@onready var fall_gravity : float = (
+@onready var fall_gravity: float = (
 	(-2.0 * jump_height) / (jump_time_to_descent * jump_time_to_descent)
 ) * -1.0
 #endregion
@@ -66,9 +66,23 @@ var stamina_depleted_delay_active := false
 #endregion
 
 #region Lifecycle
+func _enter_tree() -> void:
+	if progression != null:
+		progression = (
+			progression.duplicate(true)
+			as PlayerProgress
+		)
+
+
 func _ready() -> void:
-	StateManager.state_changed.connect(_on_state_changed)
-	_on_state_changed(StateManager.current_state)
+	StateManager.state_changed.connect(
+		_on_state_changed
+	)
+
+	_on_state_changed(
+		StateManager.current_state
+	)
+
 
 func _physics_process(delta: float) -> void:
 	_menu_logic()
@@ -76,6 +90,7 @@ func _physics_process(delta: float) -> void:
 	_move_logic(delta)
 	_jump_logic(delta)
 	_attacks_logic()
+
 	move_and_slide()
 #endregion
 
@@ -105,13 +120,6 @@ func _menu_logic() -> void:
 			StateManager.set_state(StateManager.State.PLAY)			
 		
 		velocity = Vector3.ZERO
-		
-func _enter_tree() -> void:
-	if progression != null:
-		progression = (
-			progression.duplicate(true)
-			as PlayerProgress
-		)
 #endregion
 
 #region Weapon Selection
@@ -209,7 +217,7 @@ func _attacks_logic() -> void:
 	)
 
 func _try_attack(
-	attack_list: Array,
+	attack_list: Array[Skills],
 	attack_index: int
 	) -> void:
 	if attack_index >= attack_list.size():
@@ -230,7 +238,7 @@ func _try_attack(
 
 	character.attack(selected_attack)
 
-func _get_current_attack_list() -> Array:
+func _get_current_attack_list() -> Array[Skills]:
 	if character.physical_mode_active:
 		if not character.has_equipped_weapon():
 			return []
@@ -259,34 +267,93 @@ func _get_attack_input_index() -> int:
 
 #region Movement
 func _move_logic(delta: float) -> void:
-	if StateManager.current_state == StateManager.State.PLAY:
-		movement_input = Input.get_vector("move_left","move_right","move_forward","move_backward").rotated(-camera.global_rotation.y)
-		var vel_2d = Vector2(velocity.x,velocity.z)
-		if is_on_floor():
-			is_running = Input.is_action_pressed("run")
-		if movement_input != Vector2.ZERO:
-			var speed = run_speed if is_running else walk_speed
-			vel_2d += movement_input * speed * delta * 10
-			vel_2d = vel_2d.limit_length(speed) * speed_modifier
-			velocity.x = vel_2d.x
-			velocity.z = vel_2d.y
-			var target_angle = -movement_input.angle() + PI/2
-			character.rotation.y = rotate_toward(character.rotation.y, target_angle, 6.0 * delta)
-		else:
-			vel_2d = vel_2d.move_toward(Vector2.ZERO, walk_speed * 8.0)
-			velocity.x = vel_2d.x
-			velocity.z = vel_2d.y
-	elif StateManager.current_state == StateManager.State.MENU:
+	if StateManager.current_state == StateManager.State.MENU:
 		velocity = Vector3.ZERO
+		return
+
+	if StateManager.current_state != StateManager.State.PLAY:
+		return
+
+	movement_input = Input.get_vector(
+		"move_left",
+		"move_right",
+		"move_forward",
+		"move_backward"
+	).rotated(
+		-camera.global_rotation.y
+	)
+
+	var horizontal_velocity := Vector2(
+		velocity.x,
+		velocity.z
+	)
+
+	if is_on_floor():
+		is_running = Input.is_action_pressed("run")
+
+	if movement_input != Vector2.ZERO:
+		var move_speed := (
+			run_speed
+			if is_running
+			else walk_speed
+		)
+
+		horizontal_velocity += (
+			movement_input
+			* move_speed
+			* delta
+			* 10.0
+		)
+
+		horizontal_velocity = (
+			horizontal_velocity.limit_length(move_speed)
+			* speed_modifier
+		)
+
+		var target_angle := (
+			-movement_input.angle()
+			+ PI / 2.0
+		)
+
+		character.rotation.y = rotate_toward(
+			character.rotation.y,
+			target_angle,
+			6.0 * delta
+		)
+
+	else:
+		horizontal_velocity = horizontal_velocity.move_toward(
+			Vector2.ZERO,
+			walk_speed * 8.0
+		)
+
+	velocity.x = horizontal_velocity.x
+	velocity.z = horizontal_velocity.y
 
 func _jump_logic(delta: float) -> void:
-	if StateManager.current_state == StateManager.State.PLAY:
-		if Input.is_action_just_pressed("jump") and is_on_floor() and character.current_stamina >= 10:
-			velocity.y = -jump_velocity
-			character.current_stamina -= 10.0 * stamina_cost_reduction
-			stamina_regen_timer.start()
-		var gravity = jump_gravity if velocity.y > 0.0 else fall_gravity
-		velocity.y -= gravity * delta
+	if StateManager.current_state != StateManager.State.PLAY:
+		return
+
+	var can_jump := (
+		Input.is_action_just_pressed("jump")
+		and is_on_floor()
+		and character.current_stamina >= 10.0
+	)
+
+	if can_jump:
+		velocity.y = -jump_velocity
+		character.current_stamina -= (
+			10.0 * stamina_cost_reduction
+		)
+		stamina_regen_timer.start()
+
+	var gravity := (
+		jump_gravity
+		if velocity.y > 0.0
+		else fall_gravity
+	)
+
+	velocity.y -= gravity * delta
 
 func stop_movement(stop_speed: float, start_speed: float) -> void:
 	var tween = create_tween()
@@ -308,6 +375,10 @@ func _on_stamina_regen_timer_timeout() -> void:
 #endregion
 
 #region Damage
-func hit(damage: float, attacker: CharacterBody3D) -> void:
+func hit(
+	_damage: float,
+	_attacker: CharacterBody3D
+) -> void:
+	# TODO: Implement player damage handling.
 	pass
 #endregion

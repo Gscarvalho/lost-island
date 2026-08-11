@@ -13,6 +13,7 @@ extends Resource
 @export var ice_skills: Array[Skills]
 #endregion
 
+#region Skill Lookup
 func get_skills_for_type(
 	skill_type: Skills.SkillType
 ) -> Array[Skills]:
@@ -28,3 +29,4 @@ func get_skills_for_type(
 
 		_:
 			return []
+#endregion

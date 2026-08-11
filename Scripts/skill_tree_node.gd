@@ -26,7 +26,6 @@ signal skill_activated(skill: Skills)
 var focus_tween: Tween
 var badge_tween: Tween
 var tree_color: Color = Color.WHITE
-var is_unlocked := false
 #endregion
 
 #region Lifecycle
@@ -50,19 +49,26 @@ func _notification(what: int) -> void:
 
 #region Skill Data
 func _refresh() -> void:
-	if skill == null:
-		texture_normal = null
+	texture_normal = null
 
+	if skill == null:
 		if cost_label != null:
 			cost_label.text = ""
 
+		if skill_name_label != null:
+			skill_name_label.text = ""
+
 		return
 
-	texture_normal = null
-
 	if cost_label != null:
-		cost_label.text = str(skill.unlock_cost)
-		skill_name_label.text = skill.skill_name
+		cost_label.text = str(
+			skill.unlock_cost
+		)
+
+	if skill_name_label != null:
+		skill_name_label.text = (
+			skill.skill_name
+		)
 
 
 func set_tree_color(color: Color) -> void:
@@ -129,10 +135,5 @@ func _fade_cost_badge(target: float) -> void:
 
 #region Progression Display
 func set_unlocked(unlocked: bool) -> void:
-	is_unlocked = unlocked
-
-	if is_unlocked:
-		cost_badge.visible = false
-	else:
-		cost_badge.visible = true
+	cost_badge.visible = not unlocked
 #endregion

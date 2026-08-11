@@ -27,7 +27,6 @@ signal loadout_changed(
 @onready var attack_state_machine = $AnimationTree.get("parameters/AttackStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var magic_state_machine = $AnimationTree.get("parameters/MagicStateMachine/playback") as AnimationNodeStateMachinePlayback
 @onready var handslot_r: BoneAttachment3D = $Rig/Skeleton3D/handslot_r
-@onready var handslot_l: BoneAttachment3D = $Rig/Skeleton3D/handslot_l
 
 @onready var stamina_regen_timer: Timer = (
 	$"../Timers/StaminaRegenTimer"
@@ -36,64 +35,31 @@ signal loadout_changed(
 
 #region Character Data
 @export var base_stats: Stats
-@export var attacks : Array[Skills]
+@export var attacks: Array[Skills]
 @export var skill_book: Skillbook
 
 var current_stats: Stats
 #endregion
 
 #region Equipment State
-var physical_mode_active:= true :
+var physical_mode_active := true:
 	set(value):
 		physical_mode_active = value
 		handslot_r.visible = value
-		set_weapon()
-#endregion
-
-#region Combat State
-
+		_refresh_equipment_stats()
 #endregion
 
 #region Mana
 var mana_inventory: Array[float] = [
 	7.0,
 	7.0,
-	7.0
+	7.0,
 ]
 
-func get_mana_amount(
-	skill_type: Skills.SkillType
-) -> float:
-	var mana_index := _get_mana_index(skill_type)
-
-	if mana_index == -1:
-		return 0.0
-
-	return mana_inventory[mana_index]
-
-func change_mana(
-	skill_type: Skills.SkillType,
-	amount: float
-	) -> void:
-	var mana_index := _get_mana_index(skill_type)
-
-	if mana_index == -1:
-		return
-
-	mana_inventory[mana_index] = maxf(
-		mana_inventory[mana_index] + amount,
-		0.0
-	)
-
-	mana_changed.emit(
-		skill_type,
-		mana_inventory[mana_index]
-	)
-
-var mana_types:= [
+var mana_types := [
 	Skills.SkillType.Physical,
-	Skills.SkillType.Water, 
-	Skills.SkillType.Fire, 
+	Skills.SkillType.Water,
+	Skills.SkillType.Fire,
 	Skills.SkillType.Light,
 ]
 
@@ -108,6 +74,45 @@ var current_mana_type: int = 0:
 		loadout_changed.emit(
 			mana_types[value]
 		)
+
+
+func get_current_skill_type() -> Skills.SkillType:
+	return mana_types[current_mana_type]
+
+
+func get_mana_amount(
+	skill_type: Skills.SkillType
+) -> float:
+	var mana_index := _get_mana_index(
+		skill_type
+	)
+
+	if mana_index == -1:
+		return 0.0
+
+	return mana_inventory[mana_index]
+
+
+func change_mana(
+	skill_type: Skills.SkillType,
+	amount: float
+) -> void:
+	var mana_index := _get_mana_index(
+		skill_type
+	)
+
+	if mana_index == -1:
+		return
+
+	mana_inventory[mana_index] = maxf(
+		mana_inventory[mana_index] + amount,
+		0.0
+	)
+
+	mana_changed.emit(
+		skill_type,
+		mana_inventory[mana_index]
+	)
 #endregion
 
 #region Vital Resources
@@ -149,7 +154,7 @@ func _ready() -> void:
 	current_stats = base_stats.duplicate()
 	attacks = attacks.duplicate()
 
-	set_weapon()
+	_refresh_equipment_stats()
 
 	await get_tree().create_timer(0.5).timeout
 
@@ -201,9 +206,6 @@ func _pay_skill_cost(skill: Skills) -> void:
 		skill.skill_type,
 		-skill.skill_cost
 	)
-
-func get_current_skill_type() -> Skills.SkillType:
-	return mana_types[current_mana_type]
 #endregion
 
 #region Skill Effects
@@ -268,7 +270,7 @@ func _play_skill_animation(skill: Skills) -> void:
 #endregion
 
 #region Equipment
-func set_weapon() -> void:
+func _refresh_equipment_stats() -> void:
 	# Runtime stats are always rebuilt from base values so
 	# equipment bonuses can never stack across loadout changes.
 	current_stats = base_stats.duplicate()

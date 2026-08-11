@@ -1,4 +1,14 @@
+class_name MenuUI
 extends Control
+
+#region Enums
+enum MenuPage {
+	SETTINGS,
+	CHARACTER,
+	INVENTORY,
+}
+#endregion
+
 #region Main Menu References
 @onready var screen: TextureRect = $MenuBG
 @onready var main: MarginContainer = $Main
@@ -22,8 +32,6 @@ extends Control
 @onready var menu_health_label: RichTextLabel = %MenuHealthLabel
 @onready var menu_stamina_bar: TextureProgressBar = %MenuStaminaBar
 @onready var menu_stamina_label: RichTextLabel = %MenuStaminaLabel
-
-
 #endregion
 
 #region Settings References
@@ -32,7 +40,7 @@ extends Control
 #endregion
 
 #region Skill Tree References
-@onready var bg_icon: TextureRect = $SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon/BGIcon
+@onready var skill_tree_bg_icon: TextureRect = $SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon/BGIcon
 @onready var skill_tree_overlay: Control = $SkillTreeOverlay
 @onready var skill_tree_title: Label = $SkillTreeOverlay/TitleContainer/SkillTreeTitle
 
@@ -51,12 +59,6 @@ extends Control
 #endregion
 
 #region Runtime State
-enum MenuPage {
-	SETTINGS,
-	CHARACTER,
-	INVENTORY
-}
-
 var player_controller: Player
 var character: PlayerCharacter
 
@@ -467,7 +469,7 @@ func _clear_mana_focus() -> void:
 			false
 		)
 
-func _get_mana_controls() -> Array:
+func _get_mana_controls() -> Array[Control]:
 	return [
 		mana_fire,
 		mana_water,
@@ -475,14 +477,14 @@ func _get_mana_controls() -> Array:
 	]
 
 
-func _get_settings_controls() -> Array:
+func _get_settings_controls() -> Array[Control]:
 	return [
 		master_volume_slider,
 		exit_game_button,
 	]
 
 func _set_controls_focus_enabled(
-	controls: Array,
+	controls: Array[Control],
 	enabled: bool
 	) -> void:
 	var focus_mode := (
@@ -493,7 +495,6 @@ func _set_controls_focus_enabled(
 
 	for control in controls:
 		control.focus_mode = focus_mode
-	
 #endregion
 
 #region Skill Tree
@@ -610,9 +611,9 @@ func _on_tree_skill_focused(skill: Skills) -> void:
 	skill_name.text = skill.skill_name.to_upper()
 	skill_description.text = skill.skill_description
 	skill_input.text = "INPUT: UNASSIGNED"
-	skill_power_box.modulate.a = 1
-	skill_mana_cost_box.modulate.a = 1
-	skill_range_box.modulate.a = 1
+	skill_power_box.modulate.a = 1.0
+	skill_mana_cost_box.modulate.a = 1.0
+	skill_range_box.modulate.a = 1.0
 
 func _on_tree_skill_activated(skill: Skills) -> void:
 	if skill == null:
@@ -647,8 +648,8 @@ func _apply_skill_tree_visuals(tree: SkillTree) -> void:
 		+ " SKILL TREE"
 	)
 
-	bg_icon.texture = tree.background_icon
-	bg_icon.self_modulate = tree.tree_color
+	skill_tree_bg_icon.texture = tree.background_icon
+	skill_tree_bg_icon.self_modulate = tree.tree_color
 
 	skill_name.add_theme_color_override(
 		"default_color",
@@ -689,8 +690,11 @@ func _on_master_volume_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(master_bus, volume_db)
 
 func _on_exit_game_pressed() -> void:
-	print("Game Exited.")
-	#get_tree().quit()
+	if OS.is_debug_build():
+		print("Exit disabled in debug build.")
+		return
+
+	get_tree().quit()
 #endregion
 
 #region Input

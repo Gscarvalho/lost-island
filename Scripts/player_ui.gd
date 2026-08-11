@@ -43,6 +43,17 @@ extends Control
 
 #region Lifecycle
 func _ready() -> void:
+	_connect_signals()
+	_initialize_display()
+
+
+func _process(_delta: float) -> void:
+	if StateManager.current_state == StateManager.State.WEAPON:
+		circle_timer.value = (
+			weapon_choice_timer.time_left
+		)
+
+func _connect_signals() -> void:
 	StateManager.state_changed.connect(
 		_on_state_changed
 	)
@@ -63,6 +74,8 @@ func _ready() -> void:
 		update_slots
 	)
 
+
+func _initialize_display() -> void:
 	_on_state_changed(
 		StateManager.current_state
 	)
@@ -78,6 +91,16 @@ func _ready() -> void:
 	update_slots(
 		character.get_current_skill_type()
 	)
+#endregion
+
+#region Signal Handlers
+func _on_state_changed(
+	state: StateManager.State
+) -> void:
+	visible = (
+		state != StateManager.State.MENU
+	)
+
 
 func _on_health_changed(
 	value: float,
@@ -104,25 +127,28 @@ func _on_mana_changed(
 		return
 
 	update_slots(skill_type)
-
-func _process(_delta: float) -> void:
-	if StateManager.current_state == StateManager.State.WEAPON:
-		circle_timer.value = weapon_choice_timer.time_left
-#endregion
-
-#region State
-func _on_state_changed(state: StateManager.State) -> void:
-	visible = state != StateManager.State.MENU
 #endregion
 
 #region Resource Bars
 func update_health(value: float) -> void:
-	var tween = create_tween()
-	tween.tween_property(hitpoints,"value",value, 0.4)
+	var tween := create_tween()
+
+	tween.tween_property(
+		hitpoints,
+		"value",
+		value,
+		0.4
+	)
 
 func update_stamina(value: float) -> void:
-	var tween = create_tween()
-	tween.tween_property(stamina,"value",value, 0.4)
+	var tween := create_tween()
+
+	tween.tween_property(
+		stamina,
+		"value",
+		value,
+		0.4
+	)
 #endregion
 
 #region Loadout Display
@@ -167,9 +193,12 @@ func _show_mana(
 	amount: float,
 	color: Color,
 	icon: Texture2D
-	) -> void:
+) -> void:
 	for child in mana_slots.get_children():
-		var slot_icon := child.get_child(0) as CanvasItem
+		var slot_icon := (
+			child.get_child(0)
+			as CanvasItem
+		)
 
 		if child.get_index() < amount:
 			slot_icon.modulate = color
@@ -181,7 +210,12 @@ func _show_mana(
 
 func _hide_mana() -> void:
 	for child in mana_slots.get_children():
-		child.get_child(0).modulate.a = 0.0
+		var slot_icon := (
+			child.get_child(0)
+			as CanvasItem
+		)
+
+		slot_icon.modulate.a = 0.0
 #endregion
 
 #region Weapon Choice Timer

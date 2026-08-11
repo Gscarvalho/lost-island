@@ -77,6 +77,8 @@ func refresh_unlock_states(
 			continue
 
 		node.set_unlocked(
-			progression.is_skill_unlocked(node.skill)
+			progression.is_skill_unlocked(
+				node.skill
+			)
 		)
 #endregion
