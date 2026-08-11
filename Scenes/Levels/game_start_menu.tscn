@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=4 uid="uid://bttb5q3hpcdpf"]
 
-[ext_resource type="Script" uid="uid://brrswrq3n3u5p" path="res://Scripts/title_ui.gd" id="1_rbodu"]
+[ext_resource type="Script" uid="uid://brrswrq3n3u5p" path="res://Scripts/UI/title_ui.gd" id="1_rbodu"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_bqyb0"]
 [ext_resource type="Texture2D" uid="uid://chli8vbob5bvm" path="res://Assets/Images/UI/Vinette.png" id="2_mt134"]
 [ext_resource type="Material" uid="uid://cl6e3woev4yo6" path="res://Assets/Materials/ground_mat.tres" id="4_j0h7k"]

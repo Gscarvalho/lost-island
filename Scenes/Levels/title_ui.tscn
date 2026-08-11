@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bmbm2rnr4wx14"]
 
-[ext_resource type="Script" uid="uid://brrswrq3n3u5p" path="res://Scripts/title_ui.gd" id="1_ehti2"]
+[ext_resource type="Script" uid="uid://brrswrq3n3u5p" path="res://Scripts/UI/title_ui.gd" id="1_ehti2"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_5sxxi"]
 
 [sub_resource type="Gradient" id="Gradient_ehti2"]
