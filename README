@@ -1,0 +1,175 @@
+# Lost Island
+
+Lost Island is a 3D action-adventure prototype built in Godot 4.
+
+The project is currently focused on a small playable demo used to develop
+the core character, combat, elemental skill, progression, and menu systems.
+
+## Current Features
+
+- Third-person character movement
+- Running and stamina
+- Jumping
+- Physical weapon attacks
+- Elemental skill selection
+- Mana-based skills
+- Slow-motion weapon/element selection
+- Health, stamina, mana, and loadout HUD
+- Character menu
+- Inventory page
+- Settings page
+- Character stat display with equipment bonuses
+- Skill tree interface
+- Skill-point progression
+- Unlockable Fire skills
+- Menu character preview
+
+## Current Elements
+
+### Physical
+
+Uses stamina and the currently equipped weapon.
+
+### Fire
+
+Fire skill tree and progression are currently the most developed elemental
+systems.
+
+### Water
+
+Basic skill support exists. A full Water skill tree is not yet implemented.
+
+### Light
+
+Basic skill support exists. A full Light skill tree is not yet implemented.
+
+## Architecture
+
+### Player
+
+`Scripts/Player/player.gd`
+
+Responsible for:
+
+- Player input
+- Movement
+- Jumping
+- Combat input
+- Element selection
+- Weapon-wheel state
+- Global slow motion
+
+### PlayerCharacter
+
+`Scripts/Player/player_character.gd`
+
+Responsible for:
+
+- Runtime character stats
+- Health
+- Stamina
+- Mana
+- Equipment
+- Skill costs
+- Skill effects
+- Combat animations
+
+### PlayerProgress
+
+`Scripts/Player/player_progress.gd`
+
+Responsible for:
+
+- Skill points
+- Unlocked skill IDs
+- Skill-purchase validation
+
+### PlayerHUD
+
+`Scripts/UI/player_ui.gd`
+
+Gameplay HUD driven primarily through PlayerCharacter signals.
+
+### MenuUI
+
+`Scripts/UI/menu_ui.gd`
+
+Controls the Character, Inventory, Settings, and Skill Tree interfaces.
+
+### Skills
+
+`Scripts/Skills/skills.gd`
+
+Resource definition for individual skills.
+
+Skills contain identity, progression cost, gameplay data, resource cost,
+animation information, and regeneration effects.
+
+### Skillbook
+
+`Scripts/Skills/skillbook.gd`
+
+Stores the currently available combat skills for each elemental type.
+
+### SkillTree / SkillTreeNode
+
+Reusable UI controllers used to display and interact with elemental
+skill trees.
+
+### Stats / StatModifiers
+
+`Stats` contains character stat values.
+
+`StatModifiers` contains additive equipment bonuses and is kept separate
+from base character stats.
+
+### StateManager
+
+`Scripts/Core/state_manager.gd`
+
+Global game-state manager.
+
+Current states:
+
+- TITLE
+- PLAY
+- MENU
+- WEAPON
+
+## Development Direction
+
+The character is not intended to choose a permanent class.
+
+Instead, character identity will emerge from:
+
+- Equipment
+- Unlocked skills
+- Element investment
+- Stat distribution
+- Skill loadout
+
+Future character titles may recognize those builds without defining them.
+
+Example:
+
+- Fire-focused build -> Pyromancer
+- Physical-heavy build -> Vanguard
+- Fire + Physical -> Ember Knight
+
+The build determines the title; the title does not determine the build.
+
+## Planned Systems
+
+- Skill loadout assignment
+- Additional elemental skill trees
+- Save/load persistence
+- Weapon damage and hit detection
+- Enemy combat
+- Skill-tree prerequisites
+- Derived character titles
+- Additional equipment
+- Demo-world content
+
+## Development Status
+
+This is an active prototype and not a finished game.
