@@ -17,7 +17,7 @@ config/icon="res://Assets/Images/Icons/godot_icon.svg"
 
 [autoload]
 
-StateManager="*res://Scripts/state_manager.gd"
+StateManager="*res://Scripts/Core/state_manager.gd"
 
 [display]
 

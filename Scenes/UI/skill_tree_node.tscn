@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dpa0nvwc7fayx"]
 
-[ext_resource type="Script" uid="uid://45d37y6ljqpr" path="res://Scripts/skill_tree_node.gd" id="1_8sbre"]
+[ext_resource type="Script" uid="uid://45d37y6ljqpr" path="res://Scripts/Skills/skill_tree_node.gd" id="1_8sbre"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="2_55nba"]
 
 [node name="SkillTreeNode" type="TextureButton"]

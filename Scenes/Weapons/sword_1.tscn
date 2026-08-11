@@ -1,9 +1,9 @@
 [gd_scene load_steps=15 format=3 uid="uid://ef86k64qgffe"]
 
-[ext_resource type="Script" uid="uid://cp6dyfr1sfrb8" path="res://Scripts/weapon.gd" id="1_dgvbj"]
+[ext_resource type="Script" uid="uid://cp6dyfr1sfrb8" path="res://Scripts/Combat/weapon.gd" id="1_dgvbj"]
 [ext_resource type="ArrayMesh" uid="uid://nomklp7jljys" path="res://Imports/Weapons/Sword_Big.obj" id="1_udtht"]
 [ext_resource type="Material" uid="uid://eny68tv2tgfa" path="res://Assets/Materials/sword_1_mat.tres" id="2_dgvbj"]
-[ext_resource type="Script" uid="uid://c7arumaghh7h7" path="res://Scripts/stat_modifiers.gd" id="2_i0jd5"]
+[ext_resource type="Script" uid="uid://c7arumaghh7h7" path="res://Scripts/Player/stat_modifiers.gd" id="2_i0jd5"]
 
 [sub_resource type="Resource" id="Resource_shmom"]
 script = ExtResource("2_i0jd5")

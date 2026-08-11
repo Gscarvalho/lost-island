@@ -1,7 +1,7 @@
 [gd_scene load_steps=126 format=4 uid="uid://cyba446df5nc6"]
 
 [ext_resource type="PackedScene" uid="uid://ef86k64qgffe" path="res://Scenes/Weapons/sword_1.tscn" id="1_p150c"]
-[ext_resource type="Script" uid="uid://dka00wfwlrlxq" path="res://Scripts/menu_avatar.gd" id="1_qj666"]
+[ext_resource type="Script" uid="uid://dka00wfwlrlxq" path="res://Scripts/UI/menu_avatar.gd" id="1_qj666"]
 [ext_resource type="Material" uid="uid://b8ewj6kci467r" path="res://Assets/Materials/knight_skin_mat.tres" id="2_qj666"]
 
 [sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_5othy"]

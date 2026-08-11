@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://krfjlcxyplgw"]
 
-[ext_resource type="Script" uid="uid://cobymstmjcomy" path="res://Scripts/player_ui.gd" id="1_njokc"]
+[ext_resource type="Script" uid="uid://cobymstmjcomy" path="res://Scripts/UI/player_ui.gd" id="1_njokc"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="2_kkctp"]
 [ext_resource type="Texture2D" uid="uid://dxwf0q22n2ggm" path="res://Assets/Images/Icons/fire_icon.svg" id="3_1csck"]
 [ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/sword_icon.svg" id="3_uswer"]

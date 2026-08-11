@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://ddwgfs476kvdr"]
 
-[ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/menu_ui.gd" id="1_axiel"]
+[ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/UI/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
 [ext_resource type="Texture2D" uid="uid://bc2wps3tp6ait" path="res://Assets/Images/UI/bar_line.svg" id="3_n8txd"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="3_prqvn"]
@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/snowflake_icon.svg" id="10_ujsln"]
 [ext_resource type="Texture2D" uid="uid://cbp5radrdej4e" path="res://Assets/Images/Icons/godot_icon.svg" id="11_ujsln"]
-[ext_resource type="Script" uid="uid://bbqj0din761lv" path="res://Scripts/skill_tree.gd" id="12_edv07"]
+[ext_resource type="Script" uid="uid://bbqj0din761lv" path="res://Scripts/Skills/skill_tree.gd" id="12_edv07"]
 [ext_resource type="PackedScene" uid="uid://dpa0nvwc7fayx" path="res://Scenes/UI/skill_tree_node.tscn" id="12_ujsln"]
 [ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="14_0uc32"]
 [ext_resource type="Resource" uid="uid://dfdunhb5aa7w1" path="res://Data/Skills/Fire/fire_flight.tres" id="14_1myk2"]
