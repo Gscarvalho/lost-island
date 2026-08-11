@@ -17,14 +17,15 @@ signal skill_activated(skill: Skills)
 #endregion
 
 #region References
-@onready var cost_badge: TextureRect = $VBoxContainer/CostBadge
-@onready var cost_label: RichTextLabel = %CostLabel
+@onready var circle_bg: TextureRect = $VisualCenter/CircleBG
+@onready var cost_label: RichTextLabel = $VisualCenter/CostLabel
+@onready var focus_ring: TextureProgressBar = $VisualCenter/FocusRing
 @onready var skill_name_label: RichTextLabel = %SkillNameLabel
 #endregion
 
 #region Runtime State
 var focus_tween: Tween
-var badge_tween: Tween
+var ring_tween: Tween
 var tree_color: Color = Color.WHITE
 #endregion
 
@@ -41,6 +42,8 @@ func _ready() -> void:
 	focus_exited.connect(_on_focus_exited)
 	mouse_entered.connect(grab_focus)
 	pressed.connect(_on_pressed)
+	
+	focus_ring.value = 0.0
 	
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:
@@ -78,16 +81,13 @@ func set_tree_color(color: Color) -> void:
 #region Focus Events
 func _on_focus_entered() -> void:
 	skill_focused.emit(skill)
-	_fade_cost_badge(0)
-	cost_label.add_theme_color_override("default_color", tree_color)
+	_set_focus_ring(true)
 	_set_focus_visual(true)
 
 
 func _on_focus_exited() -> void:
-	_fade_cost_badge(1)
-	cost_label.add_theme_color_override("default_color", Color.WHITE)
+	_set_focus_ring(false)
 	_set_focus_visual(false)
-
 
 func _on_pressed() -> void:
 	skill_activated.emit(skill)
@@ -117,23 +117,36 @@ func _set_focus_visual(is_focused: bool) -> void:
 		0.12
 	)
 
-func _fade_cost_badge(target: float) -> void:
-	if badge_tween != null:
-		badge_tween.kill()
+func _set_focus_ring(is_focused: bool) -> void:
+	if ring_tween != null:
+		ring_tween.kill()
 
-	badge_tween = create_tween()
-	badge_tween.set_trans(Tween.TRANS_QUAD)
-	badge_tween.set_ease(Tween.EASE_OUT)
+	var target_value := 0.0
 
-	badge_tween.tween_property(
-		cost_badge,
-		"self_modulate:a",
-		target,
+	if is_focused:
+		target_value = 100.0
+
+	ring_tween = create_tween()
+	ring_tween.set_trans(Tween.TRANS_QUAD)
+	ring_tween.set_ease(Tween.EASE_OUT)
+
+	ring_tween.tween_property(
+		focus_ring,
+		"value",
+		target_value,
 		0.2
 	)
 #endregion
 
 #region Progression Display
 func set_unlocked(unlocked: bool) -> void:
-	cost_badge.visible = not unlocked
+	#circle_bg.visible = not unlocked
+	cost_label.visible = not unlocked
+	if unlocked:
+		circle_bg.scale = Vector2(0.65,0.65)
+	else:
+		circle_bg.scale = Vector2(0.5,0.5)
+
+func set_unlock_visual(unlocked: bool) -> void:
+	pass
 #endregion

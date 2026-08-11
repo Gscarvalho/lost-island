@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://bv6tkpmy8ybc4" path="res://Data/Player/player_progress.tres" id="2_cqrjx"]
 [ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Utilities/camera_controller.tscn" id="3_al8ar"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="4_01b8d"]
-[ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/Utilities/player_ui.tscn" id="4_gy20a"]
+[ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/UI/player_ui.tscn" id="4_gy20a"]
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="5_xccyk"]
 [ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/sword_icon.svg" id="6_h1n2f"]
 [ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="7_dxpk4"]

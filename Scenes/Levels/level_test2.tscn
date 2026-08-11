@@ -25,7 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="22_i3gqt"]
 [ext_resource type="Material" uid="uid://b8ewj6kci467r" path="res://Assets/Materials/knight_skin_mat.tres" id="23_stq3s"]
 [ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Utilities/camera_controller.tscn" id="24_nk1kq"]
-[ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/Utilities/player_ui.tscn" id="25_2rwse"]
+[ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/UI/player_ui.tscn" id="25_2rwse"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
 sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)

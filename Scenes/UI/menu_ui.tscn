@@ -1224,10 +1224,10 @@ background_icon = ExtResource("5_o1rl0")
 
 [node name="FireFlight" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
-offset_left = 113.0
-offset_top = 194.0
-offset_right = -1071.0
-offset_bottom = -430.0
+offset_left = 80.0
+offset_top = 180.0
+offset_right = -1100.0
+offset_bottom = -440.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath("../Flare")
@@ -1236,10 +1236,10 @@ skill = ExtResource("14_1myk2")
 
 [node name="FireJump" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
-offset_left = 44.0
-offset_top = 348.0
-offset_right = -1140.0
-offset_bottom = -276.0
+offset_left = 50.0
+offset_top = 350.0
+offset_right = -1130.0
+offset_bottom = -270.0
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../FireFlight")
 focus_neighbor_right = NodePath("../Flamethrower")
@@ -1248,9 +1248,9 @@ skill = ExtResource("15_fjin3")
 
 [node name="Flamethrower" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
-offset_left = 512.0
-offset_top = 444.0
-offset_right = -672.0
+offset_left = 520.0
+offset_top = 440.0
+offset_right = -660.0
 offset_bottom = -180.0
 focus_neighbor_left = NodePath("../FireJump")
 focus_neighbor_top = NodePath("../Flare")
@@ -1260,10 +1260,10 @@ skill = ExtResource("16_7q1ka")
 
 [node name="Flare" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
-offset_left = 512.0
-offset_top = 283.0
-offset_right = -672.0
-offset_bottom = -341.0
+offset_left = 500.0
+offset_top = 280.0
+offset_right = -680.0
+offset_bottom = -340.0
 focus_neighbor_left = NodePath("../FireFlight")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -1273,9 +1273,9 @@ skill = ExtResource("17_8aa3k")
 [node name="Fireball" parent="SkillTreeOverlay/FireTree" instance=ExtResource("12_ujsln")]
 layout_mode = 1
 offset_left = 390.0
-offset_top = 570.0
-offset_right = -794.0
-offset_bottom = -54.0
+offset_top = 560.0
+offset_right = -790.0
+offset_bottom = -60.0
 focus_neighbor_left = NodePath("../FireJump")
 focus_neighbor_top = NodePath("../Flamethrower")
 focus_neighbor_right = NodePath("../Flamethrower")
