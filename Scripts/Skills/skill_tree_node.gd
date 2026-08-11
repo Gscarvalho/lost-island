@@ -26,6 +26,7 @@ signal skill_activated(skill: Skills)
 #region Runtime State
 var focus_tween: Tween
 var ring_tween: Tween
+var unlock_tween: Tween
 var tree_color: Color = Color.WHITE
 #endregion
 
@@ -140,13 +141,26 @@ func _set_focus_ring(is_focused: bool) -> void:
 
 #region Progression Display
 func set_unlocked(unlocked: bool) -> void:
-	#circle_bg.visible = not unlocked
 	cost_label.visible = not unlocked
-	if unlocked:
-		circle_bg.scale = Vector2(0.65,0.65)
-	else:
-		circle_bg.scale = Vector2(0.5,0.5)
+	set_unlock_visual(unlocked)
 
 func set_unlock_visual(unlocked: bool) -> void:
-	pass
+	if unlock_tween != null:
+		unlock_tween.kill()
+
+	var target_scale := Vector2(0.5, 0.5)
+
+	if unlocked:
+		target_scale = Vector2(0.65, 0.65)
+
+	unlock_tween = create_tween()
+	unlock_tween.set_trans(Tween.TRANS_BACK)
+	unlock_tween.set_ease(Tween.EASE_OUT)
+
+	unlock_tween.tween_property(
+		circle_bg,
+		"scale",
+		target_scale,
+		0.2
+	)
 #endregion
