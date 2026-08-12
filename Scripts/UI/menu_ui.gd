@@ -62,6 +62,18 @@ enum MenuPage {
 @onready var fire_tree: SkillTree = %FireTree
 #endregion
 
+#region Loadout Popup References
+@onready var loadout_popup: Control = %LoadoutPopup
+@onready var loadout_skill_name: RichTextLabel = %LoadoutSkillName
+
+@onready var slot_x_button: LoadoutSlotButton = %SlotX
+@onready var slot_y_button: LoadoutSlotButton = %SlotY
+@onready var slot_b_button: LoadoutSlotButton = %SlotB
+@onready var slot_lt_x_button: LoadoutSlotButton = %SlotLTX
+@onready var slot_lt_y_button: LoadoutSlotButton = %SlotLTY
+@onready var slot_lt_b_button: LoadoutSlotButton = %SlotLTB
+#endregion
+
 #region Runtime State
 var player_controller: Player
 var character: PlayerCharacter
@@ -76,6 +88,10 @@ var skill_tree_open := false
 var menu_tween: Tween
 var skill_tree_tween: Tween
 var page_tween: Tween
+
+var loadout_popup_open := false
+var selected_loadout_skill: Skills
+var last_skill_focus: Control
 #endregion
 
 #region Lifecycle
@@ -116,6 +132,42 @@ func _connect_signals() -> void:
 
 	master_volume_slider.value_changed.connect(
 		_on_master_volume_changed
+	)
+
+	slot_x_button.pressed.connect(
+		_on_loadout_slot_pressed.bind(
+			SkillLoadout.Slot.X
+		)
+	)
+
+	slot_y_button.pressed.connect(
+		_on_loadout_slot_pressed.bind(
+			SkillLoadout.Slot.Y
+		)
+	)
+
+	slot_b_button.pressed.connect(
+		_on_loadout_slot_pressed.bind(
+			SkillLoadout.Slot.B
+		)
+	)
+
+	slot_lt_x_button.pressed.connect(
+		_on_loadout_slot_pressed.bind(
+			SkillLoadout.Slot.LT_X
+		)
+	)
+
+	slot_lt_y_button.pressed.connect(
+		_on_loadout_slot_pressed.bind(
+			SkillLoadout.Slot.LT_Y
+		)
+	)
+
+	slot_lt_b_button.pressed.connect(
+		_on_loadout_slot_pressed.bind(
+			SkillLoadout.Slot.LT_B
+		)
 	)
 
 func _configure_focus_navigation() -> void:
@@ -638,7 +690,7 @@ func _on_tree_skill_activated(
 	)
 
 	if progression.is_skill_unlocked(skill):
-		_update_skill_action_text(skill)
+		_open_loadout_popup(skill)
 		return
 
 	if progression.try_unlock_skill(skill):
@@ -756,6 +808,123 @@ func _update_skill_action_text(
 	)
 #endregion
 
+#region Loadout Popup
+func _open_loadout_popup(skill: Skills) -> void:
+	if skill == null:
+		return
+
+	var loadout := (
+		player_controller.progression.skill_loadout
+	)
+
+	if loadout == null:
+		return
+
+	selected_loadout_skill = skill
+
+	last_skill_focus = (
+		get_viewport().gui_get_focus_owner()
+		as Control
+	)
+
+	loadout_popup_open = true
+	loadout_popup.visible = true
+
+	_refresh_loadout_popup()
+
+	slot_x_button.grab_focus()
+
+func _close_loadout_popup() -> void:
+	if not loadout_popup_open:
+		return
+
+	loadout_popup_open = false
+	loadout_popup.visible = false
+	selected_loadout_skill = null
+
+	if (
+		last_skill_focus != null
+		and is_instance_valid(last_skill_focus)
+	):
+		last_skill_focus.grab_focus()
+
+func _refresh_loadout_popup() -> void:
+	if selected_loadout_skill == null:
+		return
+
+	loadout_skill_name.text = (
+		selected_loadout_skill.skill_name.to_upper()
+	)
+
+	_update_loadout_button(
+		slot_x_button,
+		SkillLoadout.Slot.X
+	)
+
+	_update_loadout_button(
+		slot_y_button,
+		SkillLoadout.Slot.Y
+	)
+
+	_update_loadout_button(
+		slot_b_button,
+		SkillLoadout.Slot.B
+	)
+
+	_update_loadout_button(
+		slot_lt_x_button,
+		SkillLoadout.Slot.LT_X
+	)
+
+	_update_loadout_button(
+		slot_lt_y_button,
+		SkillLoadout.Slot.LT_Y
+	)
+
+	_update_loadout_button(
+		slot_lt_b_button,
+		SkillLoadout.Slot.LT_B
+	)
+
+func _update_loadout_button(
+	button: LoadoutSlotButton,
+	slot: int
+) -> void:
+	var loadout := (
+		player_controller.progression.skill_loadout
+	)
+
+	var assigned_skill := loadout.get_skill(slot)
+
+	button.set_skill_display(
+		assigned_skill,
+		assigned_skill == selected_loadout_skill
+	)
+
+func _on_loadout_slot_pressed(
+	slot: int
+) -> void:
+	if selected_loadout_skill == null:
+		return
+
+	var skill := selected_loadout_skill
+
+	var loadout := (
+		player_controller.progression.skill_loadout
+	)
+
+	loadout.assign_skill(
+		skill,
+		slot
+	)
+
+	_close_loadout_popup()
+
+	_update_skill_action_text(
+		skill
+	)
+#endregion
+
 #region Settings
 func _on_master_volume_changed(value: float) -> void:
 	var master_bus := AudioServer.get_bus_index("Master")
@@ -781,7 +950,12 @@ func _on_exit_game_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
+	if loadout_popup_open:
+		if event.is_action_pressed("ui_cancel"):
+			_close_loadout_popup()
+			get_viewport().set_input_as_handled()
 
+		return
 	if skill_tree_open:
 		_handle_skill_tree_input(event)
 		return

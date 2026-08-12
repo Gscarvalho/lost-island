@@ -1,17 +1,17 @@
-[gd_scene load_steps=22 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=29 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/UI/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
 [ext_resource type="Texture2D" uid="uid://bc2wps3tp6ait" path="res://Assets/Images/UI/bar_line.svg" id="3_n8txd"]
-[ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="3_prqvn"]
+[ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/Prototype/circle_full_icon.svg" id="3_prqvn"]
 [ext_resource type="PackedScene" uid="uid://cyba446df5nc6" path="res://Scenes/Characters/Skins/menu_avatar.tscn" id="4_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="5_jlchu"]
-[ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/fire_icon.png" id="5_o1rl0"]
+[ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/Prototype/fire_icon.png" id="5_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://ddh5torayetl2" path="res://Data/Theme/Styles/disabled_grabber.tres" id="9_fjin3"]
-[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/water_icon.svg" id="9_uf2rm"]
-[ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/sun_icon.svg" id="10_o1rl0"]
-[ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/snowflake_icon.svg" id="10_ujsln"]
-[ext_resource type="Texture2D" uid="uid://cbp5radrdej4e" path="res://Assets/Images/Icons/godot_icon.svg" id="11_ujsln"]
+[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="9_uf2rm"]
+[ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/Prototype/sun_icon.svg" id="10_o1rl0"]
+[ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/Prototype/snowflake_icon.svg" id="10_ujsln"]
+[ext_resource type="Texture2D" uid="uid://cbp5radrdej4e" path="res://Assets/Images/Icons/Prototype/godot_icon.svg" id="11_ujsln"]
 [ext_resource type="Script" uid="uid://bbqj0din761lv" path="res://Scripts/Skills/skill_tree.gd" id="12_edv07"]
 [ext_resource type="PackedScene" uid="uid://dpa0nvwc7fayx" path="res://Scenes/UI/skill_tree_node.tscn" id="12_ujsln"]
 [ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="14_0uc32"]
@@ -19,6 +19,12 @@
 [ext_resource type="Resource" uid="uid://b6tvfeksugqay" path="res://Data/Skills/Fire/fire_jump.tres" id="15_fjin3"]
 [ext_resource type="Resource" uid="uid://1m3a8boffpvd" path="res://Data/Skills/Fire/flamethrower.tres" id="16_7q1ka"]
 [ext_resource type="Resource" uid="uid://d0cd0kfwgpuxy" path="res://Data/Skills/Fire/flare.tres" id="17_8aa3k"]
+[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="20_w61pg"]
+[ext_resource type="PackedScene" uid="uid://cdbke7a6rymuo" path="res://Scenes/UI/loadout_slot_button.tscn" id="21_aa3vm"]
+[ext_resource type="Texture2D" uid="uid://xi0e1rqrg55i" path="res://Assets/Images/Icons/Input Retro/T_X_X_White_Retro.png" id="22_8eyqk"]
+[ext_resource type="Texture2D" uid="uid://by2ro8m5dd2ai" path="res://Assets/Images/Icons/Input Retro/T_X_Y_White_Retro.png" id="23_21gkc"]
+[ext_resource type="Texture2D" uid="uid://cj01mnwjwpfca" path="res://Assets/Images/Icons/Input Retro/T_X_B_White_Retro.png" id="24_ipr0g"]
+[ext_resource type="Texture2D" uid="uid://clklaxtbqb7g" path="res://Assets/Images/Icons/Input Retro/T_X_LT_Retro.png" id="25_rj5fu"]
 
 [sub_resource type="Gradient" id="Gradient_ehti2"]
 colors = PackedColorArray(0.7058824, 0.7058824, 0.7058824, 1, 0.2, 0.2, 0.2, 1)
@@ -27,6 +33,13 @@ metadata/_snap_enabled = true
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5sxxi"]
 gradient = SubResource("Gradient_ehti2")
 width = 1280
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w61pg"]
+bg_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+corner_radius_top_left = 500
+corner_radius_top_right = 500
+corner_radius_bottom_right = 500
+corner_radius_bottom_left = 500
 
 [node name="Menu" type="Control"]
 custom_minimum_size = Vector2(1280, 720)
@@ -80,12 +93,12 @@ alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="AvatarBG" type="TextureRect" parent="Main/Seperator/Player/Anim"]
-custom_minimum_size = Vector2(300, 300)
+[node name="AvatarBG" type="Panel" parent="Main/Seperator/Player/Anim"]
+custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+size_flags_horizontal = 4
+theme = ExtResource("20_w61pg")
+theme_override_styles/panel = SubResource("StyleBoxFlat_w61pg")
 
 [node name="Current" type="VBoxContainer" parent="Main/Seperator/Player"]
 z_index = 2
@@ -212,14 +225,12 @@ focus_neighbor_bottom = NodePath("../ManaWater")
 focus_mode = 2
 alignment = 1
 
-[node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaFire"]
+[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaFire"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+theme = ExtResource("20_w61pg")
 
 [node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaFire/ManBG"]
 self_modulate = Color(1, 0.54901963, 0, 1)
@@ -260,14 +271,12 @@ focus_neighbor_bottom = NodePath("../ManaLight")
 focus_mode = 2
 alignment = 1
 
-[node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaWater"]
+[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaWater"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+theme = ExtResource("20_w61pg")
 
 [node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaWater/ManBG"]
 self_modulate = Color(0, 0.7490196, 1, 1)
@@ -308,14 +317,12 @@ focus_neighbor_bottom = NodePath("../ManaFire")
 focus_mode = 2
 alignment = 1
 
-[node name="ManBG" type="TextureRect" parent="Main/Seperator/Mana/ManaLight"]
+[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaLight"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("3_prqvn")
-expand_mode = 3
-stretch_mode = 5
+theme = ExtResource("20_w61pg")
 
 [node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaLight/ManBG"]
 self_modulate = Color(1, 0.84313726, 0, 1)
@@ -906,40 +913,13 @@ size_flags_vertical = 3
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_right = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop"]
-visible = false
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="SkillNameL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
-theme_override_font_sizes/normal_font_size = 48
-text = "Fireball"
-vertical_alignment = 2
-
-[node name="SkillDescriptionL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Luanch a ball a fire,"
-
-[node name="SkillInputL" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Skill unassigned."
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop"]
+[node name="SkillInfoContainer" type="VBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="SkillName" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
+[node name="SkillName" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -951,14 +931,14 @@ fit_content = true
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="SkillPowerBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
+[node name="SkillPowerBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox"]
+[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillPowerBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -970,7 +950,7 @@ texture_under = ExtResource("2_cuj2c")
 texture_progress = ExtResource("2_cuj2c")
 tint_progress = Color(0.3529412, 1, 1, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox/SkillBar"]
+[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillPowerBox/SkillBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -979,7 +959,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 24
 
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox/SkillBar/MarginContainer"]
+[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillPowerBox/SkillBar/MarginContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 20
@@ -988,7 +968,7 @@ fit_content = true
 scroll_active = false
 vertical_alignment = 1
 
-[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox"]
+[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillPowerBox"]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -1005,7 +985,7 @@ grow_vertical = 2
 texture = ExtResource("5_jlchu")
 expand_mode = 3
 
-[node name="SkillPowerValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillPowerBox/ValueBG"]
+[node name="SkillPowerValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillPowerBox/ValueBG"]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
@@ -1025,14 +1005,14 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SkillManaCostBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
+[node name="SkillManaCostBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox"]
+[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1044,7 +1024,7 @@ texture_under = ExtResource("2_cuj2c")
 texture_progress = ExtResource("2_cuj2c")
 tint_progress = Color(0.3529412, 1, 1, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox/SkillBar"]
+[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/SkillBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1053,7 +1033,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 24
 
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox/SkillBar/MarginContainer"]
+[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/SkillBar/MarginContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 20
@@ -1062,7 +1042,7 @@ fit_content = true
 scroll_active = false
 vertical_alignment = 1
 
-[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox"]
+[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox"]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -1079,7 +1059,7 @@ grow_vertical = 2
 texture = ExtResource("5_jlchu")
 expand_mode = 3
 
-[node name="SkillManaCostValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillManaCostBox/ValueBG"]
+[node name="SkillManaCostValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/ValueBG"]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
@@ -1099,14 +1079,14 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SkillRangeBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
+[node name="SkillRangeBox" type="Control" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer"]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox"]
+[node name="SkillBar" type="TextureProgressBar" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillRangeBox"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1118,7 +1098,7 @@ texture_under = ExtResource("2_cuj2c")
 texture_progress = ExtResource("2_cuj2c")
 tint_progress = Color(0.3529412, 1, 1, 1)
 
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox/SkillBar"]
+[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillRangeBox/SkillBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1127,7 +1107,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 24
 
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox/SkillBar/MarginContainer"]
+[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillRangeBox/SkillBar/MarginContainer"]
 layout_mode = 2
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/normal_font_size = 20
@@ -1136,7 +1116,7 @@ fit_content = true
 scroll_active = false
 vertical_alignment = 1
 
-[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox"]
+[node name="ValueBG" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillRangeBox"]
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 1
 anchors_preset = 6
@@ -1153,7 +1133,7 @@ grow_vertical = 2
 texture = ExtResource("5_jlchu")
 expand_mode = 3
 
-[node name="SkillRangeValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/SkillRangeBox/ValueBG"]
+[node name="SkillRangeValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillRangeBox/ValueBG"]
 unique_name_in_owner = true
 clip_contents = false
 layout_mode = 1
@@ -1173,11 +1153,11 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 150
 
-[node name="SkillDescription" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2/MarginContainer"]
+[node name="SkillDescription" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -1188,7 +1168,7 @@ scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="SkillInput" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/VBoxContainer2"]
+[node name="SkillInput" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -1316,3 +1296,142 @@ fit_content = true
 scroll_active = false
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="LoadoutPopup" type="Control" parent="SkillTreeOverlay"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="DimBG" type="ColorRect" parent="SkillTreeOverlay/LoadoutPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.78431374)
+
+[node name="CenterContainer" type="CenterContainer" parent="SkillTreeOverlay/LoadoutPopup/DimBG"]
+custom_minimum_size = Vector2(700, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -550.0
+offset_right = -50.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer"]
+custom_minimum_size = Vector2(500, 550)
+layout_mode = 2
+theme = ExtResource("20_w61pg")
+
+[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PopupTitle" type="RichTextLabel" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("20_w61pg")
+theme_override_font_sizes/normal_font_size = 20
+text = "ASSIGN SKILL"
+vertical_alignment = 1
+
+[node name="LoadoutSkillName" type="RichTextLabel" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("20_w61pg")
+theme_override_colors/default_color = Color(1, 0.54901963, 0, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "Fireball"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SlotX" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SlotLTB")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SlotY")
+focus_next = NodePath("../SlotY")
+focus_previous = NodePath("../SlotLTB")
+primary_input_icon = ExtResource("22_8eyqk")
+
+[node name="SlotY" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SlotX")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SlotB")
+focus_next = NodePath("../SlotB")
+focus_previous = NodePath("../SlotX")
+primary_input_icon = ExtResource("23_21gkc")
+
+[node name="SlotB" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SlotY")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SlotLTX")
+focus_next = NodePath("../SlotLTX")
+focus_previous = NodePath("../SlotY")
+primary_input_icon = ExtResource("24_ipr0g")
+
+[node name="SlotLTX" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SlotB")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SlotLTY")
+focus_next = NodePath("../SlotLTY")
+focus_previous = NodePath("../SlotB")
+primary_input_icon = ExtResource("25_rj5fu")
+secondary_input_icon = ExtResource("22_8eyqk")
+
+[node name="SlotLTY" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SlotLTX")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SlotLTB")
+focus_next = NodePath("../SlotLTB")
+focus_previous = NodePath("../SlotLTX")
+primary_input_icon = ExtResource("25_rj5fu")
+secondary_input_icon = ExtResource("23_21gkc")
+
+[node name="SlotLTB" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../SlotLTY")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../SlotX")
+focus_next = NodePath("../SlotX")
+focus_previous = NodePath("../SlotLTY")
+primary_input_icon = ExtResource("25_rj5fu")
+secondary_input_icon = ExtResource("24_ipr0g")

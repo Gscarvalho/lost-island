@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dyug41y66l56v"
-path="res://.godot/imported/sword_dual_icon.svg-cf6b5fa67e41fceb5a5e8d3351206bd3.ctex"
+uid="uid://dcfechgm2lri4"
+path="res://.godot/imported/Indicator_Retro_GSC.png-1c2dca8d52700e06cb57633b293574c6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/Icons/sword_dual_icon.svg"
-dest_files=["res://.godot/imported/sword_dual_icon.svg-cf6b5fa67e41fceb5a5e8d3351206bd3.ctex"]
+source_file="res://Assets/Images/Icons/Input Retro/Indicator_Retro_GSC.png"
+dest_files=["res://.godot/imported/Indicator_Retro_GSC.png-1c2dca8d52700e06cb57633b293574c6.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

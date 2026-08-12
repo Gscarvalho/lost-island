@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cbp5radrdej4e"
-path="res://.godot/imported/godot_icon.svg-27e8d3ff9569921e5911c6545f55b970.ctex"
+uid="uid://bgvcvup503esn"
+path="res://.godot/imported/T_X_Dpad_Right_Retro.png-863ffcd6505de356fef6a62176a216d4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/Icons/godot_icon.svg"
-dest_files=["res://.godot/imported/godot_icon.svg-27e8d3ff9569921e5911c6545f55b970.ctex"]
+source_file="res://Assets/Images/Icons/Input Retro/T_X_Dpad_Right_Retro.png"
+dest_files=["res://.godot/imported/T_X_Dpad_Right_Retro.png-863ffcd6505de356fef6a62176a216d4.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dpa0nvwc7fayx"]
 
 [ext_resource type="Script" uid="uid://45d37y6ljqpr" path="res://Scripts/Skills/skill_tree_node.gd" id="1_8sbre"]
-[ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/circle_full_icon.svg" id="2_55nba"]
+[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="2_55nba"]
 [ext_resource type="Texture2D" uid="uid://dy15xf6smaddf" path="res://Assets/Images/UI/circle_line.svg" id="3_55nba"]
 
 [node name="SkillTreeNode" type="TextureButton"]
@@ -27,7 +27,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CircleBG" type="TextureRect" parent="VisualCenter"]
+[node name="CircleBG" type="Panel" parent="VisualCenter"]
 self_modulate = Color(1, 0.54901963, 0, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -39,10 +39,7 @@ scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(50, 50)
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.0
-mouse_filter = 2
-texture = ExtResource("2_55nba")
-expand_mode = 3
-stretch_mode = 5
+theme = ExtResource("2_55nba")
 
 [node name="CostLabel" type="RichTextLabel" parent="VisualCenter"]
 unique_name_in_owner = true

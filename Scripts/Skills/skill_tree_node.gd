@@ -17,7 +17,7 @@ signal skill_activated(skill: Skills)
 #endregion
 
 #region References
-@onready var circle_bg: TextureRect = $VisualCenter/CircleBG
+@onready var circle_bg: Panel = $VisualCenter/CircleBG
 @onready var cost_label: RichTextLabel = $VisualCenter/CostLabel
 @onready var focus_ring: TextureProgressBar = $VisualCenter/FocusRing
 @onready var skill_name_label: RichTextLabel = %SkillNameLabel

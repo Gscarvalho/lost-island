@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxfb5w24r20um"
-path="res://.godot/imported/circle_full_icon.svg-cbb046153ccd125ad811d05c6716ed21.ctex"
+uid="uid://c3b765tb6apl1"
+path="res://.godot/imported/T_X_X_Color_Retro.png-97424ad8fd4921d710a2f8f12e0eb2ec.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/Icons/circle_full_icon.svg"
-dest_files=["res://.godot/imported/circle_full_icon.svg-cbb046153ccd125ad811d05c6716ed21.ctex"]
+source_file="res://Assets/Images/Icons/Input Retro/T_X_X_Color_Retro.png"
+dest_files=["res://.godot/imported/T_X_X_Color_Retro.png-97424ad8fd4921d710a2f8f12e0eb2ec.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

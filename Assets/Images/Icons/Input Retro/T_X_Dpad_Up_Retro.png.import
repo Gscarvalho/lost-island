@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ctb8tq0cld2dk"
-path="res://.godot/imported/sword_icon.svg-16b30c212083df9a8c912faa49be4fdc.ctex"
+uid="uid://biju6bvmp1ska"
+path="res://.godot/imported/T_X_Dpad_Up_Retro.png-b3e771e485220c5e66b499c8ad977f9d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/Icons/sword_icon.svg"
-dest_files=["res://.godot/imported/sword_icon.svg-16b30c212083df9a8c912faa49be4fdc.ctex"]
+source_file="res://Assets/Images/Icons/Input Retro/T_X_Dpad_Up_Retro.png"
+dest_files=["res://.godot/imported/T_X_Dpad_Up_Retro.png-b3e771e485220c5e66b499c8ad977f9d.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

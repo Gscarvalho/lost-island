@@ -15,6 +15,10 @@ enum RegenType {
 	Stamina,
 	Mana
 }
+enum CostType {
+	PerUse,
+	PerSecond
+}
 #endregion
 
 #region Identity
@@ -44,6 +48,7 @@ var unlock_cost: int = 1
 @export var skill_anim_name: String
 @export var skill_type: SkillType
 @export var skill_cost: float
+@export var cost_type: CostType = CostType.PerUse
 #endregion
 
 #region Regeneration
