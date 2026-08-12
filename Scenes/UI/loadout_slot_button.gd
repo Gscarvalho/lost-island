@@ -24,11 +24,11 @@ func set_skill_display(
 	is_current: bool
 ) -> void:
 	if skill == null:
-		skill_name_label.text = "EMPTY"
+		skill_name_label.text = "--"
 	else:
 		skill_name_label.text = skill.skill_name.to_upper()
 
-	current_indicator.self_modulate = (
+	current_indicator.modulate = (
 		active_indicator_color
 		if is_current
 		else inactive_indicator_color

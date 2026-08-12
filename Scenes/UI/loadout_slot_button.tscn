@@ -8,6 +8,7 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqgq3"]
 bg_color = Color(0.2, 0.2, 0.2, 1)
+border_color = Color(0.2, 0.2, 0.2, 0.3764706)
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
@@ -27,8 +28,8 @@ grow_vertical = 2
 theme = ExtResource("1_wjyhq")
 theme_override_styles/normal = SubResource("StyleBoxFlat_hqgq3")
 script = ExtResource("2_hqgq3")
-active_indicator_color = Color(18.187868, 18.187868, 18.187868, 1)
-inactive_indicator_color = Color(3.6794968, 3.6794968, 3.6794968, 0)
+active_indicator_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+inactive_indicator_color = Color(1, 1, 1, 0)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -38,23 +39,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_wjyhq")
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+theme = ExtResource("1_wjyhq")
 alignment = 1
 
 [node name="InputIcons" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 0
 
 [node name="PrimaryIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/InputIcons"]
 unique_name_in_owner = true
 clip_contents = true
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(45, 45)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -65,7 +68,7 @@ stretch_mode = 5
 [node name="SecondaryIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/InputIcons"]
 unique_name_in_owner = true
 clip_contents = true
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(45, 45)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -81,7 +84,6 @@ size_flags_stretch_ratio = 3.0
 theme = ExtResource("1_wjyhq")
 theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
 text = "Flamethrower"
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="CurrentIndicator" type="Panel" parent="MarginContainer/HBoxContainer"]

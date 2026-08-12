@@ -10,7 +10,7 @@ enum MenuPage {
 #endregion
 
 #region Main Menu References
-@onready var screen: TextureRect = $MenuBG
+@onready var screen: ColorRect = $MenuBG
 @onready var main: MarginContainer = $Main
 @onready var inventory_page: Control = $InventoryPage
 @onready var settings_page: Control = $SettingsPage
@@ -907,21 +907,19 @@ func _on_loadout_slot_pressed(
 	if selected_loadout_skill == null:
 		return
 
-	var skill := selected_loadout_skill
-
 	var loadout := (
 		player_controller.progression.skill_loadout
 	)
 
 	loadout.assign_skill(
-		skill,
+		selected_loadout_skill,
 		slot
 	)
 
-	_close_loadout_popup()
+	_refresh_loadout_popup()
 
 	_update_skill_action_text(
-		skill
+		selected_loadout_skill
 	)
 #endregion
 

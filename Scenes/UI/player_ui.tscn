@@ -1,13 +1,16 @@
-[gd_scene load_steps=9 format=3 uid="uid://krfjlcxyplgw"]
+[gd_scene load_steps=12 format=3 uid="uid://krfjlcxyplgw"]
 
 [ext_resource type="Script" uid="uid://cobymstmjcomy" path="res://Scripts/UI/player_ui.gd" id="1_njokc"]
 [ext_resource type="Texture2D" uid="uid://cxfb5w24r20um" path="res://Assets/Images/Icons/Prototype/circle_full_icon.svg" id="2_kkctp"]
-[ext_resource type="Texture2D" uid="uid://dxwf0q22n2ggm" path="res://Assets/Images/Icons/Prototype/fire_icon.svg" id="3_1csck"]
+[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="2_nwg7q"]
+[ext_resource type="Texture2D" uid="uid://dcfechgm2lri4" path="res://Assets/Images/Icons/Input Retro/Indicator_Retro_GSC.png" id="3_6nfne"]
+[ext_resource type="Texture2D" uid="uid://by2ro8m5dd2ai" path="res://Assets/Images/Icons/Input Retro/T_X_Y_White_Retro.png" id="3_axtvl"]
 [ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="3_uswer"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="4_1csck"]
-[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="4_mwh7w"]
-[ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/Prototype/sun_icon.svg" id="5_mrpqa"]
+[ext_resource type="Texture2D" uid="uid://xi0e1rqrg55i" path="res://Assets/Images/Icons/Input Retro/T_X_X_White_Retro.png" id="4_onufr"]
+[ext_resource type="Texture2D" uid="uid://cj01mnwjwpfca" path="res://Assets/Images/Icons/Input Retro/T_X_B_White_Retro.png" id="5_plo7s"]
 [ext_resource type="Texture2D" uid="uid://dy15xf6smaddf" path="res://Assets/Images/UI/circle_line.svg" id="7_mwh7w"]
+[ext_resource type="Texture2D" uid="uid://clklaxtbqb7g" path="res://Assets/Images/Icons/Input Retro/T_X_LT_Retro.png" id="7_we3k3"]
 
 [node name="PlayerUI" type="Control"]
 layout_mode = 3
@@ -17,192 +20,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_njokc")
-icons = Array[Texture2D]([ExtResource("3_uswer"), ExtResource("3_1csck"), ExtResource("4_mwh7w"), ExtResource("5_mrpqa")])
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(700, 200)
+[node name="VitalsHUD" type="HBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.13900001
-anchor_top = 0.72200006
-anchor_right = 0.86
-anchor_bottom = 1.0
-offset_left = -77.92001
-offset_top = 0.15997314
-offset_right = 79.19995
-grow_horizontal = 2
-grow_vertical = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 627.0
+offset_bottom = 165.0
 pivot_offset = Vector2(500, 100)
-theme_override_constants/separation = 20
-alignment = 1
+theme = ExtResource("2_nwg7q")
+alignment = 2
 
-[node name="ManaSlots" type="HBoxContainer" parent="HBoxContainer"]
-custom_minimum_size = Vector2(450, 40)
-layout_direction = 3
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 15
-
-[node name="SkillSlot7" type="CenterContainer" parent="HBoxContainer/ManaSlots"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="SlotBackground" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot7"]
-modulate = Color(0, 0.8235294, 0.9490196, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SlotCenterImage" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot7"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SkillSlot6" type="CenterContainer" parent="HBoxContainer/ManaSlots"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="SlotBackground" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot6"]
-modulate = Color(0, 0.8235294, 0.9490196, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SlotCenterImage" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot6"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SkillSlot5" type="CenterContainer" parent="HBoxContainer/ManaSlots"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="SlotBackground" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot5"]
-modulate = Color(0, 0.8235294, 0.9490196, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SlotCenterImage" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot5"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SkillSlot4" type="CenterContainer" parent="HBoxContainer/ManaSlots"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="SlotBackground" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot4"]
-modulate = Color(0, 0.8235294, 0.9490196, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SlotCenterImage" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot4"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SkillSlot3" type="CenterContainer" parent="HBoxContainer/ManaSlots"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="SlotBackground" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot3"]
-modulate = Color(0, 0.8235294, 0.9490196, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SlotCenterImage" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot3"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SkillSlot2" type="CenterContainer" parent="HBoxContainer/ManaSlots"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="SlotBackground" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot2"]
-modulate = Color(0, 0.8235294, 0.9490196, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SlotCenterImage" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot2"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SkillSlot1" type="CenterContainer" parent="HBoxContainer/ManaSlots"]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="SlotBackground" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot1"]
-modulate = Color(0, 0.8235294, 0.9490196, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SlotCenterImage" type="TextureRect" parent="HBoxContainer/ManaSlots/SkillSlot1"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 2
-texture = ExtResource("2_kkctp")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="Weapon" type="CenterContainer" parent="HBoxContainer"]
+[node name="Weapon" type="CenterContainer" parent="VitalsHUD"]
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.5
 
-[node name="Control" type="Control" parent="HBoxContainer/Weapon"]
+[node name="Control" type="Control" parent="VitalsHUD/Weapon"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 
-[node name="WeaponIconBackground" type="TextureRect" parent="HBoxContainer/Weapon/Control"]
+[node name="WeaponIconBackground" type="TextureRect" parent="VitalsHUD/Weapon/Control"]
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
 anchors_preset = 15
@@ -219,7 +59,7 @@ texture = ExtResource("2_kkctp")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="WeaponIconImage" type="TextureRect" parent="HBoxContainer/Weapon/Control"]
+[node name="WeaponIconImage" type="TextureRect" parent="VitalsHUD/Weapon/Control"]
 modulate = Color(0.3647059, 1, 1, 1)
 custom_minimum_size = Vector2(70, 70)
 layout_mode = 1
@@ -239,7 +79,7 @@ texture = ExtResource("3_uswer")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CircleTimer" type="TextureProgressBar" parent="HBoxContainer/Weapon"]
+[node name="CircleTimer" type="TextureProgressBar" parent="VitalsHUD/Weapon"]
 custom_minimum_size = Vector2(115, 115)
 layout_mode = 2
 max_value = 3.0
@@ -250,7 +90,7 @@ texture_under = ExtResource("7_mwh7w")
 texture_progress = ExtResource("7_mwh7w")
 tint_progress = Color(0.5019608, 0.5019608, 0.5019608, 1)
 
-[node name="HUD" type="VBoxContainer" parent="HBoxContainer"]
+[node name="HUD" type="VBoxContainer" parent="VitalsHUD"]
 custom_minimum_size = Vector2(450, 40)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -258,7 +98,7 @@ size_flags_vertical = 4
 size_flags_stretch_ratio = 2.0
 alignment = 1
 
-[node name="Hitpoints" type="TextureProgressBar" parent="HBoxContainer/HUD"]
+[node name="Hitpoints" type="TextureProgressBar" parent="VitalsHUD/HUD"]
 custom_minimum_size = Vector2(400, 20)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -269,7 +109,7 @@ texture_under = ExtResource("4_1csck")
 texture_progress = ExtResource("4_1csck")
 tint_progress = Color(0.3647059, 1, 0.62352943, 1)
 
-[node name="Info" type="RichTextLabel" parent="HBoxContainer/HUD/Hitpoints"]
+[node name="Info" type="RichTextLabel" parent="VitalsHUD/HUD/Hitpoints"]
 custom_minimum_size = Vector2(400, 30)
 layout_mode = 1
 anchors_preset = 15
@@ -287,7 +127,7 @@ text = "Name, Date, Time, Weather"
 scroll_active = false
 vertical_alignment = 2
 
-[node name="Stamina" type="TextureProgressBar" parent="HBoxContainer/HUD"]
+[node name="Stamina" type="TextureProgressBar" parent="VitalsHUD/HUD"]
 custom_minimum_size = Vector2(300, 10)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -297,3 +137,362 @@ nine_patch_stretch = true
 texture_under = ExtResource("4_1csck")
 texture_progress = ExtResource("4_1csck")
 tint_progress = Color(0.3647059, 1, 1, 1)
+
+[node name="LoadoutHUD" type="HBoxContainer" parent="."]
+layout_direction = 3
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -192.5
+offset_top = -150.0
+offset_right = 192.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = -25
+
+[node name="InputsRight" type="VBoxContainer" parent="LoadoutHUD"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = -10
+
+[node name="LoudoutSlotY" type="MarginContainer" parent="LoadoutHUD/InputsRight"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUD/InputsRight/LoudoutSlotY"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="SkillName" type="RichTextLabel" parent="LoadoutHUD/InputsRight/LoudoutSlotY/HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("2_nwg7q")
+theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "Fire Flight"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUD/InputsRight/LoudoutSlotY/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_axtvl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoudoutSlotX" type="MarginContainer" parent="LoadoutHUD/InputsRight"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUD/InputsRight/LoudoutSlotX"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="SkillName" type="RichTextLabel" parent="LoadoutHUD/InputsRight/LoudoutSlotX/HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("2_nwg7q")
+theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "Fireball
+"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUD/InputsRight/LoudoutSlotX/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_onufr")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoudoutSlotB" type="MarginContainer" parent="LoadoutHUD/InputsRight"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUD/InputsRight/LoudoutSlotB"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="SkillName" type="RichTextLabel" parent="LoadoutHUD/InputsRight/LoudoutSlotB/HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("2_nwg7q")
+theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "Fire Jump"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUD/InputsRight/LoudoutSlotB/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_plo7s")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="CenterGraphic" type="VBoxContainer" parent="LoadoutHUD"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_nwg7q")
+alignment = 1
+
+[node name="SkillCircleBG" type="Panel" parent="LoadoutHUD/CenterGraphic"]
+modulate = Color(0.9607843, 0.9607843, 0.9607843, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+
+[node name="IndicatorRing" type="TextureProgressBar" parent="LoadoutHUD/CenterGraphic/SkillCircleBG"]
+modulate = Color(18.187868, 18.187868, 18.187868, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.5
+offset_top = -32.5
+offset_right = 32.5
+offset_bottom = 32.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(25, 25)
+theme = ExtResource("2_nwg7q")
+value = 100.0
+fill_mode = 4
+nine_patch_stretch = true
+texture_progress = ExtResource("3_6nfne")
+
+[node name="InputsLeft" type="VBoxContainer" parent="LoadoutHUD"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = -10
+alignment = 2
+
+[node name="LoudoutSlotY" type="MarginContainer" parent="LoadoutHUD/InputsLeft"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUD/InputsLeft/LoudoutSlotY"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUD/InputsLeft/LoudoutSlotY/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUD/InputsLeft/LoudoutSlotY/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_axtvl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InputIconLT" type="TextureRect" parent="LoadoutHUD/InputsLeft/LoudoutSlotY/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_we3k3")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="SkillName" type="RichTextLabel" parent="LoadoutHUD/InputsLeft/LoudoutSlotY/HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("2_nwg7q")
+theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "Flare"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LoudoutSlotX" type="MarginContainer" parent="LoadoutHUD/InputsLeft"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUD/InputsLeft/LoudoutSlotX"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="LoadoutHUD/InputsLeft/LoudoutSlotX/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUD/InputsLeft/LoudoutSlotX/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_onufr")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InputIconLT" type="TextureRect" parent="LoadoutHUD/InputsLeft/LoudoutSlotX/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_we3k3")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="SkillName" type="RichTextLabel" parent="LoadoutHUD/InputsLeft/LoudoutSlotX/HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("2_nwg7q")
+theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "Flamethrower"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LoudoutSlotB" type="MarginContainer" parent="LoadoutHUD/InputsLeft"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUD/InputsLeft/LoudoutSlotB"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 5
+alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="LoadoutHUD/InputsLeft/LoudoutSlotB/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUD/InputsLeft/LoudoutSlotB/HBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_plo7s")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InputIconLT" type="TextureRect" parent="LoadoutHUD/InputsLeft/LoudoutSlotB/HBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_we3k3")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="SkillName" type="RichTextLabel" parent="LoadoutHUD/InputsLeft/LoudoutSlotB/HBoxContainer"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 6
+theme = ExtResource("2_nwg7q")
+theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+theme_override_font_sizes/normal_font_size = 12
+text = "Emberstrike
+"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1

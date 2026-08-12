@@ -201,20 +201,11 @@ func _attacks_logic() -> void:
 	if StateManager.current_state != StateManager.State.PLAY:
 		return
 
-	var attack_index := _get_attack_input_index()
-
-	if attack_index == -1:
+	if character.physical_mode_active:
+		_handle_physical_attack()
 		return
 
-	var attack_list := _get_current_attack_list()
-
-	if attack_list.is_empty():
-		return
-
-	_try_attack(
-		attack_list,
-		attack_index
-	)
+	_handle_loadout_skill()
 
 func _try_attack(
 	attack_list: Array[Skills],
@@ -238,17 +229,6 @@ func _try_attack(
 
 	character.attack(selected_attack)
 
-func _get_current_attack_list() -> Array[Skills]:
-	if character.physical_mode_active:
-		if not character.has_equipped_weapon():
-			return []
-
-		return character.attacks
-
-	return character.skill_book.get_skills_for_type(
-		character.get_current_skill_type()
-	)
-
 func _get_attack_input_index() -> int:
 	var index_offset := (
 		2
@@ -263,6 +243,86 @@ func _get_attack_input_index() -> int:
 		return index_offset + 1
 
 	return -1
+
+func _handle_physical_attack() -> void:
+	if not character.has_equipped_weapon():
+		return
+
+	var attack_index := (
+		_get_attack_input_index()
+	)
+
+	if attack_index == -1:
+		return
+
+	_try_attack(
+		character.attacks,
+		attack_index
+	)
+
+
+func _handle_loadout_skill() -> void:
+	var slot := (
+		_get_loadout_input_slot()
+	)
+
+	if slot == -1:
+		return
+
+	_try_loadout_skill(slot)
+
+func _try_loadout_skill(slot: int) -> void:
+	var loadout := (
+		progression.skill_loadout
+	)
+
+	if loadout == null:
+		return
+
+	var selected_skill := (
+		loadout.get_skill(slot)
+	)
+
+	if selected_skill == null:
+		print("No skill assigned.")
+		return
+
+	if character.is_action_animation_playing():
+		print("Attack already in progress.")
+		return
+
+	character.attack(
+		selected_skill
+	)
+
+func _get_loadout_input_slot() -> int:
+	var modifier_active := (
+		Input.is_action_pressed("aim")
+	)
+
+	if Input.is_action_just_pressed("attack"):
+		return (
+			SkillLoadout.Slot.LT_X
+			if modifier_active
+			else SkillLoadout.Slot.X
+		)
+
+	if Input.is_action_just_pressed("skill"):
+		return (
+			SkillLoadout.Slot.LT_Y
+			if modifier_active
+			else SkillLoadout.Slot.Y
+		)
+
+	if Input.is_action_just_pressed("combat_b"):
+		return (
+			SkillLoadout.Slot.LT_B
+			if modifier_active
+			else SkillLoadout.Slot.B
+		)
+
+	return -1
+
 #endregion
 
 #region Movement
