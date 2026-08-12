@@ -84,6 +84,7 @@ size_flags_stretch_ratio = 3.0
 theme = ExtResource("1_wjyhq")
 theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
 text = "Flamethrower"
+scroll_active = false
 vertical_alignment = 1
 
 [node name="CurrentIndicator" type="Panel" parent="MarginContainer/HBoxContainer"]

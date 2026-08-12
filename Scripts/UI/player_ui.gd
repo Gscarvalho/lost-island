@@ -2,44 +2,61 @@
 class_name PlayerHUD
 extends Control
 
-#region Configuration
-@export_category("Loadout Icons")
-
-@export var physical_icon: Texture2D
-@export var fire_icon: Texture2D
-@export var water_icon: Texture2D
-@export var light_icon: Texture2D
-#endregion
-
 #region References
+@onready var player: Player = (
+	get_parent() as Player
+)
+
 @onready var character: PlayerCharacter = (
-	get_parent().get_node("Character")
+	player.get_node("Character")
+	as PlayerCharacter
 )
 
 @onready var hitpoints: TextureProgressBar = (
-	$HBoxContainer/HUD/Hitpoints
+	%Hitpoints
 )
 
 @onready var stamina: TextureProgressBar = (
-	$HBoxContainer/HUD/Stamina
+	%Stamina
 )
 
 @onready var weapon_icon_image: TextureRect = (
-	$HBoxContainer/Weapon/Control/WeaponIconImage
-)
-
-@onready var mana_slots: HBoxContainer = (
-	$HBoxContainer/ManaSlots
+	%WeaponIconImage
 )
 
 @onready var circle_timer: TextureProgressBar = (
-	$HBoxContainer/Weapon/CircleTimer
+	%CircleTimer
 )
 
 @onready var weapon_choice_timer: Timer = (
 	$"../Timers/WeaponChoiceTimer"
 )
+
+@onready var loadout_name_x: RichTextLabel = (
+	%LoadoutNameX
+)
+
+@onready var loadout_name_y: RichTextLabel = (
+	%LoadoutNameY
+)
+
+@onready var loadout_name_b: RichTextLabel = (
+	%LoadoutNameB
+)
+
+@onready var loadout_name_lt_x: RichTextLabel = (
+	%LoadoutNameLTX
+)
+
+@onready var loadout_name_lt_y: RichTextLabel = (
+	%LoadoutNameLTY
+)
+
+@onready var loadout_name_lt_b: RichTextLabel = (
+	%LoadoutNameLTB
+)
 #endregion
+
 
 #region Lifecycle
 func _ready() -> void:
@@ -48,11 +65,16 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if StateManager.current_state == StateManager.State.WEAPON:
-		circle_timer.value = (
-			weapon_choice_timer.time_left
-		)
+	if StateManager.current_state != StateManager.State.WEAPON:
+		return
 
+	circle_timer.value = (
+		weapon_choice_timer.time_left
+	)
+#endregion
+
+
+#region Setup
 func _connect_signals() -> void:
 	StateManager.state_changed.connect(
 		_on_state_changed
@@ -66,13 +88,12 @@ func _connect_signals() -> void:
 		_on_stamina_changed
 	)
 
-	character.mana_changed.connect(
-		_on_mana_changed
-	)
+	var loadout := _get_skill_loadout()
 
-	character.loadout_changed.connect(
-		update_slots
-	)
+	if loadout != null:
+		loadout.loadout_changed.connect(
+			_refresh_loadout_hud
+		)
 
 
 func _initialize_display() -> void:
@@ -88,10 +109,9 @@ func _initialize_display() -> void:
 		character.current_stamina
 	)
 
-	update_slots(
-		character.get_current_skill_type()
-	)
+	_refresh_loadout_hud()
 #endregion
+
 
 #region Signal Handlers
 func _on_state_changed(
@@ -114,20 +134,8 @@ func _on_stamina_changed(
 	_maximum: float
 ) -> void:
 	update_stamina(value)
-
-
-func _on_mana_changed(
-	skill_type: Skills.SkillType,
-	_amount: float
-) -> void:
-	if (
-		skill_type
-		!= character.get_current_skill_type()
-	):
-		return
-
-	update_slots(skill_type)
 #endregion
+
 
 #region Resource Bars
 func update_health(value: float) -> void:
@@ -140,6 +148,7 @@ func update_health(value: float) -> void:
 		0.4
 	)
 
+
 func update_stamina(value: float) -> void:
 	var tween := create_tween()
 
@@ -151,78 +160,87 @@ func update_stamina(value: float) -> void:
 	)
 #endregion
 
-#region Loadout Display
-func update_slots(
-	value: Skills.SkillType
-) -> void:
-	match value:
-		Skills.SkillType.Physical:
-			_hide_mana()
 
-			weapon_icon_image.texture = physical_icon
-			weapon_icon_image.modulate = Color.LIGHT_BLUE
+#region Loadout HUD
+func _get_skill_loadout() -> SkillLoadout:
+	if player.progression == null:
+		return null
 
-		Skills.SkillType.Water:
-			_show_mana(
-				character.get_mana_amount(
-					Skills.SkillType.Water
-				),
-				Color.DEEP_SKY_BLUE,
-				water_icon
-			)
+	return player.progression.skill_loadout
 
-		Skills.SkillType.Fire:
-			_show_mana(
-				character.get_mana_amount(
-					Skills.SkillType.Fire
-				),
-				Color.DARK_ORANGE,
-				fire_icon
-			)
 
-		Skills.SkillType.Light:
-			_show_mana(
-				character.get_mana_amount(
-					Skills.SkillType.Light
-				),
-				Color.GOLD,
-				light_icon
-			)
+func _refresh_loadout_hud() -> void:
+	var loadout := _get_skill_loadout()
 
-func _show_mana(
-	amount: float,
-	color: Color,
-	icon: Texture2D
-) -> void:
-	for child in mana_slots.get_children():
-		var slot_icon := (
-			child.get_child(0)
-			as CanvasItem
+	if loadout == null:
+		return
+
+	_set_loadout_name(
+		loadout_name_x,
+		loadout.get_skill(
+			SkillLoadout.Slot.X
 		)
+	)
 
-		if child.get_index() < amount:
-			slot_icon.modulate = color
-		else:
-			slot_icon.modulate.a = 0.0
-
-	weapon_icon_image.texture = icon
-	weapon_icon_image.modulate = color
-
-func _hide_mana() -> void:
-	for child in mana_slots.get_children():
-		var slot_icon := (
-			child.get_child(0)
-			as CanvasItem
+	_set_loadout_name(
+		loadout_name_y,
+		loadout.get_skill(
+			SkillLoadout.Slot.Y
 		)
+	)
 
-		slot_icon.modulate.a = 0.0
+	_set_loadout_name(
+		loadout_name_b,
+		loadout.get_skill(
+			SkillLoadout.Slot.B
+		)
+	)
+
+	_set_loadout_name(
+		loadout_name_lt_x,
+		loadout.get_skill(
+			SkillLoadout.Slot.LT_X
+		)
+	)
+
+	_set_loadout_name(
+		loadout_name_lt_y,
+		loadout.get_skill(
+			SkillLoadout.Slot.LT_Y
+		)
+	)
+
+	_set_loadout_name(
+		loadout_name_lt_b,
+		loadout.get_skill(
+			SkillLoadout.Slot.LT_B
+		)
+	)
+
+
+func _set_loadout_name(
+	label: RichTextLabel,
+	skill: Skills
+) -> void:
+	if skill == null:
+		label.text = "--"
+		return
+
+	label.text = skill.skill_name
 #endregion
+
 
 #region Weapon Choice Timer
 func show_timer_ui(reveal: bool) -> void:
 	if reveal:
-		circle_timer.max_value = weapon_choice_timer.wait_time
-		circle_timer.value = weapon_choice_timer.time_left
+		circle_timer.max_value = (
+			weapon_choice_timer.wait_time
+		)
+
+		circle_timer.value = (
+			weapon_choice_timer.time_left
+		)
+
 	else:
 		circle_timer.value = 0.0
 #endregion
