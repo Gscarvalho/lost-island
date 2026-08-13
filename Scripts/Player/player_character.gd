@@ -18,8 +18,13 @@ signal mana_changed(
 	amount: float
 )
 
-signal loadout_changed(
-	skill_type: Skills.SkillType
+enum CombatMode {
+	PHYSICAL,
+	ELEMENTAL,
+}
+
+signal combat_mode_changed(
+	mode: CombatMode
 )
 #endregion
 
@@ -42,11 +47,33 @@ var current_stats: Stats
 #endregion
 
 #region Equipment State
-var physical_mode_active := true:
-	set(value):
-		physical_mode_active = value
-		handslot_r.visible = value
-		_refresh_equipment_stats()
+var combat_mode: CombatMode = CombatMode.PHYSICAL
+
+
+func is_physical_mode() -> bool:
+	return (
+		combat_mode
+		== CombatMode.PHYSICAL
+	)
+
+
+func set_combat_mode(
+	mode: CombatMode
+) -> void:
+	if combat_mode == mode:
+		return
+
+	combat_mode = mode
+
+	handslot_r.visible = (
+		is_physical_mode()
+	)
+
+	_refresh_equipment_stats()
+
+	combat_mode_changed.emit(
+		combat_mode
+	)
 #endregion
 
 #region Mana
@@ -55,30 +82,6 @@ var mana_inventory: Array[float] = [
 	7.0,
 	7.0,
 ]
-
-var mana_types := [
-	Skills.SkillType.Physical,
-	Skills.SkillType.Water,
-	Skills.SkillType.Fire,
-	Skills.SkillType.Light,
-]
-
-var current_mana_type: int = 0:
-	set(value):
-		current_mana_type = value
-
-		physical_mode_active = (
-			value == 0
-		)
-
-		loadout_changed.emit(
-			mana_types[value]
-		)
-
-
-func get_current_skill_type() -> Skills.SkillType:
-	return mana_types[current_mana_type]
-
 
 func get_mana_amount(
 	skill_type: Skills.SkillType
@@ -91,7 +94,6 @@ func get_mana_amount(
 		return 0.0
 
 	return mana_inventory[mana_index]
-
 
 func change_mana(
 	skill_type: Skills.SkillType,
@@ -153,7 +155,9 @@ var current_stamina := 1.0:
 func _ready() -> void:
 	current_stats = base_stats.duplicate()
 	attacks = attacks.duplicate()
-
+	handslot_r.visible = (
+		is_physical_mode()
+	)
 	_refresh_equipment_stats()
 
 	await get_tree().create_timer(0.5).timeout
@@ -279,7 +283,7 @@ func _refresh_equipment_stats() -> void:
 
 	if (
 		current_weapon != null
-		and physical_mode_active
+		and is_physical_mode()
 	):
 		current_weapon.user = (
 			get_parent() as CharacterBody3D

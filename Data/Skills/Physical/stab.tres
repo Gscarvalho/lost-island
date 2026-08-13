@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://csyf6gt01a8q4"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_jny26"]
+[ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="2_1qyiu"]
+
+[resource]
+script = ExtResource("1_jny26")
+skill_id = &"stab"
+skill_name = "Stab"
+skill_icon = ExtResource("2_1qyiu")
+unlock_cost = 0
+skill_power = 80.0
+skill_anim_name = "1H_Melee_Attack_Stab"
+skill_cost = 20.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

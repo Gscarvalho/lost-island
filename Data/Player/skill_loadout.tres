@@ -1,9 +1,7 @@
-[gd_resource type="Resource" script_class="SkillLoadout" load_steps=3 format=3 uid="uid://t4uugwo1dyb1"]
+[gd_resource type="Resource" script_class="SkillLoadout" load_steps=2 format=3 uid="uid://t4uugwo1dyb1"]
 
 [ext_resource type="Script" uid="uid://5vxi6cmich0g" path="res://Scripts/Skills/skill_loadout.gd" id="1_ktkon"]
-[ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="2_lwed3"]
 
 [resource]
 script = ExtResource("1_ktkon")
-x_skill = ExtResource("2_lwed3")
 metadata/_custom_type_script = "uid://5vxi6cmich0g"

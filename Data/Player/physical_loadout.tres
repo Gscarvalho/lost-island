@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillLoadout" load_steps=4 format=3 uid="uid://cugo8yv632wx"]
+
+[ext_resource type="Script" uid="uid://5vxi6cmich0g" path="res://Scripts/Skills/skill_loadout.gd" id="1_wi4lq"]
+[ext_resource type="Resource" uid="uid://dh216odqe2sh5" path="res://Data/Skills/Physical/slice.tres" id="2_v2pf2"]
+[ext_resource type="Resource" uid="uid://csyf6gt01a8q4" path="res://Data/Skills/Physical/stab.tres" id="3_yr4uc"]
+
+[resource]
+script = ExtResource("1_wi4lq")
+x_skill = ExtResource("2_v2pf2")
+y_skill = ExtResource("3_yr4uc")
+metadata/_custom_type_script = "uid://5vxi6cmich0g"

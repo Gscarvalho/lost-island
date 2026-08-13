@@ -256,26 +256,102 @@ func _toggle_menu(state: StateManager.State) -> void:
 		)
 
 		main.modulate.a = 0.0
+		settings_page.modulate.a = 0.0
+		inventory_page.modulate.a = 0.0
+		avatar_viewport_layer.modulate.a = 0.0
 		screen.modulate.a = 0.0
 		menu_avatar.sync_loadout(
-			character.physical_mode_active
+			character.is_physical_mode()
 			and character.has_equipped_weapon()
 		)
 		_set_stats()
 
 		menu_tween = create_tween()
 		menu_tween.set_parallel(true)
-		menu_tween.tween_property(screen, "modulate:a", 1.0, 0.1)
-		menu_tween.tween_property(main, "modulate:a", 1.0, 0.3)
+		menu_tween.tween_property(
+			screen,
+			"modulate:a",
+			1.0,
+			0.1
+		)
 
+		menu_tween.tween_property(
+			main,
+			"modulate:a",
+			1.0,
+			0.2
+		)
+
+		menu_tween.tween_property(
+			settings_page,
+			"modulate:a",
+			1.0,
+			0.2
+		)
+
+		menu_tween.tween_property(
+			inventory_page,
+			"modulate:a",
+			1.0,
+			0.2
+		)
+
+		menu_tween.tween_property(
+			avatar_viewport_layer,
+			"modulate:a",
+			1.0,
+			0.2
+		)
 	else:
 		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		menu_avatar.set_rotation_enabled(false)
+
+		menu_avatar.set_rotation_enabled(
+			false
+		)
+
 		menu_tween = create_tween()
 		menu_tween.set_parallel(true)
-		menu_tween.tween_property(main, "modulate:a", 0.0, 0.1)
-		menu_tween.tween_property(screen, "modulate:a", 0.0, 0.1)
-		menu_tween.finished.connect(_finish_hiding_menu)
+
+		# Page contents disappear slightly before
+		# the background finishes fading.
+		menu_tween.tween_property(
+			main,
+			"modulate:a",
+			0.0,
+			0.08
+		)
+
+		menu_tween.tween_property(
+			settings_page,
+			"modulate:a",
+			0.0,
+			0.08
+		)
+
+		menu_tween.tween_property(
+			inventory_page,
+			"modulate:a",
+			0.0,
+			0.08
+		)
+
+		menu_tween.tween_property(
+			avatar_viewport_layer,
+			"modulate:a",
+			0.0,
+			0.08
+		)
+
+		menu_tween.tween_property(
+			screen,
+			"modulate:a",
+			0.0,
+			0.12
+		)
+
+		menu_tween.finished.connect(
+			_finish_hiding_menu
+		)
 
 func _finish_hiding_menu() -> void:
 	if StateManager.current_state != StateManager.State.MENU:
@@ -948,22 +1024,32 @@ func _on_exit_game_pressed() -> void:
 func _input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
 		return
+		
 	if loadout_popup_open:
 		if event.is_action_pressed("ui_cancel"):
 			_close_loadout_popup()
 			get_viewport().set_input_as_handled()
-
+		
 		return
+		
 	if skill_tree_open:
 		_handle_skill_tree_input(event)
 		return
-
+		
+	if event.is_action_pressed("ui_cancel"):
+		StateManager.set_state(
+			StateManager.State.PLAY
+		)
+		
+		get_viewport().set_input_as_handled()
+		return
+		
 	if current_page == MenuPage.CHARACTER:
 		if event.is_action_pressed("ui_accept"):
 			_open_focused_skill_tree()
-
+		
 		return
-
+		
 	if current_page == MenuPage.SETTINGS:
 		_handle_settings_boundary_input(event)
 

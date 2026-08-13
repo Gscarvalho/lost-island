@@ -55,8 +55,22 @@ extends Control
 @onready var loadout_name_lt_b: RichTextLabel = (
 	%LoadoutNameLTB
 )
+
+@onready var inputs: VBoxContainer = (
+	%Inputs
+)
+
+@onready var inputs_lt: VBoxContainer = (
+	%InputsLT
+)
+@onready var timer_indicator: MarginContainer = (
+	%TimerIndicator
+)
 #endregion
 
+#region Runtime State
+var timer_tween: Tween
+#endregion
 
 #region Lifecycle
 func _ready() -> void:
@@ -65,6 +79,8 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	_update_input_layer()
+
 	if StateManager.current_state != StateManager.State.WEAPON:
 		return
 
@@ -88,15 +104,33 @@ func _connect_signals() -> void:
 		_on_stamina_changed
 	)
 
-	var loadout := _get_skill_loadout()
+	character.combat_mode_changed.connect(
+		_on_combat_mode_changed
+	)
 
-	if loadout != null:
-		loadout.loadout_changed.connect(
+	var elemental_loadout := (
+		player.progression.skill_loadout
+	)
+
+	if elemental_loadout != null:
+		elemental_loadout.loadout_changed.connect(
+			_refresh_loadout_hud
+		)
+
+	var physical_loadout := (
+		player.progression.physical_loadout
+	)
+
+	if physical_loadout != null:
+		physical_loadout.loadout_changed.connect(
 			_refresh_loadout_hud
 		)
 
 
 func _initialize_display() -> void:
+	timer_indicator.visible = false
+	timer_indicator.modulate.a = 0.0
+	
 	_on_state_changed(
 		StateManager.current_state
 	)
@@ -134,6 +168,11 @@ func _on_stamina_changed(
 	_maximum: float
 ) -> void:
 	update_stamina(value)
+
+func _on_combat_mode_changed(
+	_mode: PlayerCharacter.CombatMode
+) -> void:
+	_refresh_loadout_hud()
 #endregion
 
 
@@ -162,15 +201,18 @@ func update_stamina(value: float) -> void:
 
 
 #region Loadout HUD
-func _get_skill_loadout() -> SkillLoadout:
+func _get_active_loadout() -> SkillLoadout:
 	if player.progression == null:
 		return null
+
+	if character.is_physical_mode():
+		return player.progression.physical_loadout
 
 	return player.progression.skill_loadout
 
 
 func _refresh_loadout_hud() -> void:
-	var loadout := _get_skill_loadout()
+	var loadout := _get_active_loadout()
 
 	if loadout == null:
 		return
@@ -223,15 +265,28 @@ func _set_loadout_name(
 	skill: Skills
 ) -> void:
 	if skill == null:
-		label.text = "--"
+		label.text = "  --"
 		return
 
-	label.text = skill.skill_name
+	label.text = " " + skill.skill_name
+
+func _update_input_layer() -> void:
+	var lt_active := (
+		StateManager.current_state
+		== StateManager.State.PLAY
+		and Input.is_action_pressed("aim")
+	)
+
+	inputs.visible = not lt_active
+	inputs_lt.visible = lt_active
 #endregion
 
 
 #region Weapon Choice Timer
 func show_timer_ui(reveal: bool) -> void:
+	if timer_tween != null:
+		timer_tween.kill()
+
 	if reveal:
 		circle_timer.max_value = (
 			weapon_choice_timer.wait_time
@@ -241,6 +296,33 @@ func show_timer_ui(reveal: bool) -> void:
 			weapon_choice_timer.time_left
 		)
 
-	else:
-		circle_timer.value = 0.0
+		timer_indicator.visible = true
+		timer_indicator.modulate.a = 0.0
+
+		timer_tween = create_tween()
+
+		timer_tween.tween_property(
+			timer_indicator,
+			"modulate:a",
+			1.0,
+			0.03
+		)
+
+		return
+
+	timer_tween = create_tween()
+
+	timer_tween.tween_property(
+		timer_indicator,
+		"modulate:a",
+		0.0,
+		0.03
+	)
+
+	timer_tween.tween_callback(
+		_hide_timer_indicator
+	)
+
+func _hide_timer_indicator() -> void:
+	timer_indicator.visible = false
 #endregion

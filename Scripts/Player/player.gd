@@ -25,8 +25,8 @@ extends CharacterBody3D
 	$Timers/WeaponChoiceTimer
 )
 
-@onready var menu_delay_timer: Timer = (
-	$Timers/MenuDelayTimer
+@onready var weapon_choice_cooldown_timer: Timer = (
+	$Timers/WeaponChoiceCooldownTimer
 )
 
 @onready var menu_transition_timer: Timer = (
@@ -63,6 +63,12 @@ var jump_time_to_descent: float = 0.3
 var movement_input := Vector2.ZERO
 var is_running := false
 var stamina_depleted_delay_active := false
+
+@export_range(0.1, 0.5, 0.01)
+var weapon_choice_hold_threshold: float = 0.2
+
+var swap_hold_time: float = 0.0
+var swap_press_consumed := false
 #endregion
 
 #region Lifecycle
@@ -86,7 +92,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_menu_logic()
-	_equip_logic()
+	_equip_logic(delta)
 	_move_logic(delta)
 	_jump_logic(delta)
 	_attacks_logic()
@@ -123,40 +129,61 @@ func _menu_logic() -> void:
 #endregion
 
 #region Weapon Selection
-func _equip_logic() -> void:
+func _equip_logic(delta: float) -> void:
+	if (
+		Input.is_action_just_pressed("swap")
+		and StateManager.current_state == StateManager.State.PLAY
+	):
+		swap_hold_time = 0.0
+		swap_press_consumed = false
+
 	if (
 		Input.is_action_pressed("swap")
 		and StateManager.current_state == StateManager.State.PLAY
-		and menu_delay_timer.is_stopped()
+		and not swap_press_consumed
 	):
-		_open_weapon_choice()
+		swap_hold_time += delta
 
-	elif (
-		Input.is_action_just_released("swap")
-		and StateManager.current_state == StateManager.State.WEAPON
-	):
-		_close_weapon_choice()
+		var can_open_selector := (
+			swap_hold_time
+			>= weapon_choice_hold_threshold
+			and weapon_choice_cooldown_timer.is_stopped()
+		)
+
+		if can_open_selector:
+			swap_press_consumed = true
+			_open_weapon_choice()
+
+	if Input.is_action_just_released("swap"):
+		if StateManager.current_state == StateManager.State.WEAPON:
+			_close_weapon_choice()
+
+		elif (
+			StateManager.current_state == StateManager.State.PLAY
+			and not swap_press_consumed
+			and swap_hold_time
+			< weapon_choice_hold_threshold
+		):
+			_toggle_combat_mode()
+
+		swap_hold_time = 0.0
+		swap_press_consumed = false
 
 	if StateManager.current_state != StateManager.State.WEAPON:
 		return
 
-	var left := Input.is_action_just_pressed("menu_left")
-	var right := Input.is_action_just_pressed("menu_right")
-
-	if left:
-		character.current_mana_type = wrapi(
-			character.current_mana_type - 1,
-			0,
-			character.mana_types.size()
+	var cycle_combat_mode := (
+		Input.is_action_just_pressed(
+			"menu_left"
 		)
-
-	elif right:
-		character.current_mana_type = wrapi(
-			character.current_mana_type + 1,
-			0,
-			character.mana_types.size()
+		or Input.is_action_just_pressed(
+			"menu_right"
 		)
+	)
 
+	if cycle_combat_mode:
+		_toggle_combat_mode()
+		
 func _open_weapon_choice() -> void:
 	weapon_choice_timer.start()
 
@@ -175,6 +202,18 @@ func _open_weapon_choice() -> void:
 		0.3
 	)
 
+func _toggle_combat_mode() -> void:
+	match character.combat_mode:
+		PlayerCharacter.CombatMode.PHYSICAL:
+			character.set_combat_mode(
+				PlayerCharacter.CombatMode.ELEMENTAL
+			)
+
+		PlayerCharacter.CombatMode.ELEMENTAL:
+			character.set_combat_mode(
+				PlayerCharacter.CombatMode.PHYSICAL
+			)
+
 func _close_weapon_choice() -> void:
 	if StateManager.current_state != StateManager.State.WEAPON:
 		return
@@ -187,13 +226,14 @@ func _close_weapon_choice() -> void:
 
 	Engine.time_scale = 1.0
 	ui.show_timer_ui(false)
+	
+	weapon_choice_cooldown_timer.start()
 
 func _on_weapon_choice_timer_timeout() -> void:
 	if StateManager.current_state != StateManager.State.WEAPON:
 		return
 
 	_close_weapon_choice()
-	menu_delay_timer.start()
 #endregion
 
 #region Combat
@@ -201,11 +241,24 @@ func _attacks_logic() -> void:
 	if StateManager.current_state != StateManager.State.PLAY:
 		return
 
-	if character.physical_mode_active:
-		_handle_physical_attack()
+	var slot := (
+		_get_loadout_input_slot()
+	)
+
+	if slot == -1:
 		return
 
-	_handle_loadout_skill()
+	var loadout := (
+		_get_active_combat_loadout()
+	)
+
+	if loadout == null:
+		return
+
+	_try_loadout_skill(
+		loadout,
+		slot
+	)
 
 func _try_attack(
 	attack_list: Array[Skills],
@@ -260,25 +313,26 @@ func _handle_physical_attack() -> void:
 		attack_index
 	)
 
+func _get_active_combat_loadout() -> SkillLoadout:
+	if character.is_physical_mode():
+		return progression.physical_loadout
 
-func _handle_loadout_skill() -> void:
-	var slot := (
-		_get_loadout_input_slot()
-	)
+	return progression.skill_loadout
 
-	if slot == -1:
-		return
+#func _handle_loadout_skill() -> void:
+	#var slot := (
+		#_get_loadout_input_slot()
+	#)
+#
+	#if slot == -1:
+		#return
+#
+	#_try_loadout_skill(slot)
 
-	_try_loadout_skill(slot)
-
-func _try_loadout_skill(slot: int) -> void:
-	var loadout := (
-		progression.skill_loadout
-	)
-
-	if loadout == null:
-		return
-
+func _try_loadout_skill(
+	loadout: SkillLoadout,
+	slot: int
+) -> void:
 	var selected_skill := (
 		loadout.get_skill(slot)
 	)

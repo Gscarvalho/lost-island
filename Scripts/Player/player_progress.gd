@@ -12,6 +12,7 @@ var skill_points: int = 10
 @export var unlocked_skill_ids: Array[StringName] = []
 
 @export var skill_loadout: SkillLoadout
+@export var physical_loadout: SkillLoadout
 
 func is_skill_unlocked(skill: Skills) -> bool:
 	if not _has_valid_skill_id(skill):
