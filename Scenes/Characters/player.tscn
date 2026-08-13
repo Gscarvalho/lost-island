@@ -82,8 +82,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 shape = SubResource("CapsuleShape3D_40svl")
 
 [node name="CameraController" parent="." instance=ExtResource("3_al8ar")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
-spring_length = 7.0
+transform = Transform3D(-1, 7.619397e-09, -8.709011e-08, 0, 0.9961947, 0.08715574, 8.742278e-08, 0.08715574, -0.9961947, 0, 2, -0.5)
+spring_length = 7.5
+margin = 0.0
 
 [node name="PlayerUI" parent="." instance=ExtResource("4_gy20a")]
 

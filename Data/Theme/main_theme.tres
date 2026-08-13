@@ -29,10 +29,10 @@ corner_radius_bottom_left = 150
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d77mw"]
 bg_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
-corner_radius_top_left = 50
-corner_radius_top_right = 50
-corner_radius_bottom_right = 50
-corner_radius_bottom_left = 50
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
 
 [resource]
 default_font_size = 24
@@ -50,6 +50,11 @@ MarginContainer/constants/margin_right = 20
 MarginContainer/constants/margin_top = 20
 Panel/styles/panel = SubResource("StyleBoxFlat_fxkvi")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_d77mw")
-RichTextLabel/colors/default_color = Color(0.2, 0.2, 0.2, 1)
+RichTextLabel/colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+RichTextLabel/colors/font_outline_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 0.11764706)
+RichTextLabel/constants/shadow_offset_x = 0
+RichTextLabel/constants/shadow_offset_y = 0
+RichTextLabel/constants/shadow_outline_size = 14
 RichTextLabel/font_sizes/normal_font_size = 28
 VBoxContainer/constants/separation = 12

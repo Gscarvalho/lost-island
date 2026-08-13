@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://krfjlcxyplgw"]
+[gd_scene load_steps=16 format=3 uid="uid://krfjlcxyplgw"]
 
 [ext_resource type="Script" uid="uid://cobymstmjcomy" path="res://Scripts/UI/player_ui.gd" id="1_njokc"]
 [ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="2_nwg7q"]
@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="4_1csck"]
 [ext_resource type="Texture2D" uid="uid://xi0e1rqrg55i" path="res://Assets/Images/Icons/Input Retro/T_X_X_White_Retro.png" id="4_onufr"]
 [ext_resource type="Texture2D" uid="uid://cj01mnwjwpfca" path="res://Assets/Images/Icons/Input Retro/T_X_B_White_Retro.png" id="5_plo7s"]
+[ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/Prototype/fire_icon.png" id="5_we3k3"]
+[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="6_uxa4k"]
+[ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/Prototype/sun_icon.svg" id="7_8wddj"]
 [ext_resource type="Texture2D" uid="uid://dy15xf6smaddf" path="res://Assets/Images/UI/circle_line.svg" id="7_mwh7w"]
 [ext_resource type="Texture2D" uid="uid://clklaxtbqb7g" path="res://Assets/Images/Icons/Input Retro/T_X_LT_Retro.png" id="7_we3k3"]
 
@@ -18,6 +21,13 @@ corner_radius_top_right = 500
 corner_radius_bottom_right = 500
 corner_radius_bottom_left = 500
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_plo7s"]
+bg_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
 [node name="PlayerUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -25,10 +35,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_nwg7q")
 script = ExtResource("1_njokc")
+metadata/_edit_horizontal_guides_ = [360.0]
+metadata/_edit_vertical_guides_ = [640.0]
 
 [node name="HUDBG" type="Panel" parent="."]
+visible = false
 custom_minimum_size = Vector2(1100, 200)
 layout_mode = 1
 anchors_preset = 7
@@ -54,22 +66,56 @@ grow_vertical = 2
 theme = ExtResource("2_nwg7q")
 alignment = 1
 
-[node name="LoadoutHUD" type="HBoxContainer" parent="HUDBG/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="HUDBG/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 0
+
+[node name="LoadoutHUB" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -110.0
+offset_right = 300.0
+offset_bottom = 110.0
+grow_vertical = 2
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="LoadoutHUB"]
+self_modulate = Color(0.2, 0.2, 0.2, 0.11764706)
+layout_mode = 2
+theme = ExtResource("2_nwg7q")
+
+[node name="MarginContainer" type="MarginContainer" parent="LoadoutHUB/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
-theme_override_constants/separation = -25
-alignment = 1
+theme_override_constants/separation = 0
 
-[node name="InputsLT" type="VBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD"]
+[node name="InputsLT" type="VBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = -10
 
-[node name="LoudoutSlotLY" type="MarginContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT"]
+[node name="LoudoutSlotLY" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -79,7 +125,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLY"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -88,7 +134,34 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="LoadoutNameLTY" type="RichTextLabel" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLY/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="InputIconLT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_we3k3")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_axtvl")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoadoutNameLTY" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -98,47 +171,19 @@ theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
 theme_override_font_sizes/normal_font_size = 18
 text = "Flare"
 scroll_active = false
-horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLY/HBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_nwg7q")
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="InputIconLT" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_we3k3")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="InputIcon" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("3_axtvl")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="LoudoutSlotLX" type="MarginContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT"]
+[node name="LoudoutSlotLX" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 50
+theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLX"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -147,7 +192,34 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="LoadoutNameLTX" type="RichTextLabel" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLX/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="InputIconLT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_we3k3")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_onufr")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoadoutNameLTX" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -157,37 +229,9 @@ theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
 theme_override_font_sizes/normal_font_size = 18
 text = "Flamethrower"
 scroll_active = false
-horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLX/HBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_nwg7q")
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="InputIconLT" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_we3k3")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="InputIcon" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("4_onufr")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="LoudoutSlotLB" type="MarginContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT"]
+[node name="LoudoutSlotLB" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -197,7 +241,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLB"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -206,7 +250,34 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="LoadoutNameLTB" type="RichTextLabel" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLB/HBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="InputIconLT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_we3k3")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_plo7s")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoadoutNameLTB" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
@@ -217,74 +288,17 @@ theme_override_font_sizes/normal_font_size = 18
 text = "Emberstrike
 "
 scroll_active = false
-horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLB/HBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+[node name="Inputs" type="VBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_nwg7q")
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="InputIconLT" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_we3k3")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="InputIcon" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/InputsLT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("5_plo7s")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="CenterGraphic" type="VBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD"]
-layout_mode = 2
-theme = ExtResource("2_nwg7q")
-alignment = 1
-
-[node name="SkillCircleBG" type="Panel" parent="HUDBG/HBoxContainer/LoadoutHUD/CenterGraphic"]
-modulate = Color(0.9607843, 0.9607843, 0.9607843, 1)
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("2_nwg7q")
-
-[node name="IndicatorRing" type="TextureProgressBar" parent="HUDBG/HBoxContainer/LoadoutHUD/CenterGraphic/SkillCircleBG"]
-modulate = Color(18.187868, 18.187868, 18.187868, 1)
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(1.5, 1.5)
-pivot_offset = Vector2(35, 35)
-theme = ExtResource("2_nwg7q")
-value = 100.0
-fill_mode = 4
-nine_patch_stretch = true
-texture_progress = ExtResource("3_6nfne")
-
-[node name="Inputs" type="VBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD"]
-layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = -10
 
-[node name="LoudoutSlotY" type="MarginContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs"]
+[node name="LoudoutSlotY" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -294,7 +308,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotY"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotY"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -303,7 +317,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="InputIcon" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotY/HBoxContainer"]
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotY/HBoxContainer"]
 custom_minimum_size = Vector2(25, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -312,29 +326,28 @@ texture = ExtResource("3_axtvl")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="LoadoutNameY" type="RichTextLabel" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotY/HBoxContainer"]
+[node name="LoadoutNameY" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotY/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_nwg7q")
-theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
 theme_override_font_sizes/normal_font_size = 18
-text = "Fire Flight"
+text = "Flamethrower Runner"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="LoudoutSlotX" type="MarginContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs"]
+[node name="LoudoutSlotX" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
-theme_override_constants/margin_left = 50
+theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
+theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotX"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotX"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -343,7 +356,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="InputIcon" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotX/HBoxContainer"]
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotX/HBoxContainer"]
 custom_minimum_size = Vector2(25, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -352,20 +365,18 @@ texture = ExtResource("4_onufr")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="LoadoutNameX" type="RichTextLabel" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotX/HBoxContainer"]
+[node name="LoadoutNameX" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotX/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_nwg7q")
-theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
 theme_override_font_sizes/normal_font_size = 18
-text = "Fireball
-"
+text = "Flamethrower Runner"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="LoudoutSlotB" type="MarginContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs"]
+[node name="LoudoutSlotB" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -375,7 +386,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotB"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotB"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -384,7 +395,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="InputIcon" type="TextureRect" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotB/HBoxContainer"]
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotB/HBoxContainer"]
 custom_minimum_size = Vector2(25, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -393,33 +404,49 @@ texture = ExtResource("5_plo7s")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="LoadoutNameB" type="RichTextLabel" parent="HUDBG/HBoxContainer/LoadoutHUD/Inputs/LoudoutSlotB/HBoxContainer"]
+[node name="LoadoutNameB" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/Inputs/LoudoutSlotB/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_nwg7q")
-theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
 theme_override_font_sizes/normal_font_size = 18
-text = "Fire Jump"
+text = "Flamethrower Runner"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="HUDBG/HBoxContainer"]
+[node name="VitalsHUD" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -225.0
+offset_top = -84.0
+offset_right = 225.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="VitalsHUD"]
+self_modulate = Color(0.2, 0.2, 0.2, 0.11764706)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_plo7s")
+
+[node name="MarginContainer" type="MarginContainer" parent="VitalsHUD/PanelContainer"]
 layout_mode = 2
 theme = ExtResource("2_nwg7q")
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 10
 
-[node name="VitalsHUD" type="HBoxContainer" parent="HUDBG/HBoxContainer/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 10
-theme = ExtResource("2_nwg7q")
-alignment = 2
-
-[node name="HUD" type="VBoxContainer" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD"]
+[node name="HUD" type="VBoxContainer" parent="VitalsHUD/PanelContainer/MarginContainer"]
 custom_minimum_size = Vector2(450, 40)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -427,29 +454,9 @@ size_flags_vertical = 4
 size_flags_stretch_ratio = 2.0
 alignment = 1
 
-[node name="Hitpoints" type="TextureProgressBar" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD/HUD"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 20)
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 4
-value = 70.0
-fill_mode = 1
-nine_patch_stretch = true
-texture_under = ExtResource("4_1csck")
-texture_progress = ExtResource("4_1csck")
-tint_progress = Color(0.3647059, 1, 0.62352943, 1)
-
-[node name="Info" type="RichTextLabel" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD/HUD/Hitpoints"]
+[node name="Info" type="RichTextLabel" parent="VitalsHUD/PanelContainer/MarginContainer/HUD"]
 custom_minimum_size = Vector2(400, 30)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -35.0
-offset_bottom = -25.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_colors/default_color = Color(1, 1, 1, 1)
@@ -459,31 +466,52 @@ scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="Stamina" type="TextureProgressBar" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD/HUD"]
+[node name="Hitpoints" type="TextureProgressBar" parent="VitalsHUD/PanelContainer/MarginContainer/HUD"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+value = 70.0
+nine_patch_stretch = true
+texture_under = ExtResource("4_1csck")
+texture_progress = ExtResource("4_1csck")
+tint_progress = Color(0.3647059, 1, 0.62352943, 1)
+
+[node name="Stamina" type="TextureProgressBar" parent="VitalsHUD/PanelContainer/MarginContainer/HUD"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 10)
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 4
 size_flags_vertical = 4
 value = 40.0
-fill_mode = 1
 nine_patch_stretch = true
 texture_under = ExtResource("4_1csck")
 texture_progress = ExtResource("4_1csck")
 tint_progress = Color(0.3647059, 1, 1, 1)
 
-[node name="Weapon" type="CenterContainer" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 2
+[node name="TimerIndicator" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(115, 115)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -57.5
+offset_right = 57.5
+offset_bottom = 115.0
+grow_horizontal = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.5
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_top = 200
 
-[node name="Control" type="Control" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD/Weapon"]
+[node name="Control" type="Control" parent="TimerIndicator"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 
-[node name="WeaponIconBackground" type="Panel" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD/Weapon/Control"]
+[node name="WeaponIconBackground" type="Panel" parent="TimerIndicator/Control"]
+visible = false
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
 anchors_preset = 15
@@ -498,7 +526,7 @@ grow_vertical = 2
 pivot_offset = Vector2(50, 50)
 theme = ExtResource("2_nwg7q")
 
-[node name="WeaponIconImage" type="TextureRect" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD/Weapon/Control"]
+[node name="WeaponIconImage" type="TextureRect" parent="TimerIndicator/Control"]
 unique_name_in_owner = true
 modulate = Color(0.3647059, 1, 1, 1)
 custom_minimum_size = Vector2(70, 70)
@@ -519,7 +547,7 @@ texture = ExtResource("3_uswer")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="CircleTimer" type="TextureProgressBar" parent="HUDBG/HBoxContainer/MarginContainer/VitalsHUD/Weapon"]
+[node name="CircleTimer" type="TextureProgressBar" parent="TimerIndicator"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(115, 115)
 layout_mode = 2
@@ -530,3 +558,294 @@ nine_patch_stretch = true
 texture_under = ExtResource("7_mwh7w")
 texture_progress = ExtResource("7_mwh7w")
 tint_progress = Color(0.5019608, 0.5019608, 0.5019608, 1)
+
+[node name="ManaHUD" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -115.0
+offset_bottom = 115.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_nwg7q")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 30
+
+[node name="ManaHUD" type="VBoxContainer" parent="ManaHUD"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+theme = ExtResource("2_nwg7q")
+theme_override_constants/separation = 30
+alignment = 2
+
+[node name="Indicator" type="TextureRect" parent="ManaHUD/ManaHUD"]
+visible = false
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("2_nwg7q")
+texture = ExtResource("3_6nfne")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ManaCircleBG" type="Panel" parent="ManaHUD/ManaHUD/Indicator"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ManaIcon" type="Panel" parent="ManaHUD/ManaHUD"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ManaIcon" type="TextureRect" parent="ManaHUD/ManaHUD/ManaIcon"]
+self_modulate = Color(0, 0.7490196, 1, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_uxa4k")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="ManaShadow" type="Panel" parent="ManaHUD/ManaHUD/ManaIcon"]
+visible = false
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+z_index = -1
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ManaCounterBG" type="Panel" parent="ManaHUD/ManaHUD/ManaIcon"]
+self_modulate = Color(0.7058824, 0.7058824, 0.7058824, 1)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -10.0
+offset_right = 15.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ManaCounterLabel" type="RichTextLabel" parent="ManaHUD/ManaHUD/ManaIcon/ManaCounterBG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_nwg7q")
+theme_override_constants/shadow_outline_size = 0
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/normal_font_size = 20
+text = "1"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ManaIcon2" type="Panel" parent="ManaHUD/ManaHUD"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ManaIcon" type="TextureRect" parent="ManaHUD/ManaHUD/ManaIcon2"]
+self_modulate = Color(0.7058824, 0.7058824, 0.7058824, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_8wddj")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ManaShadow" type="Panel" parent="ManaHUD/ManaHUD/ManaIcon2"]
+visible = false
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+z_index = -1
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ManaCounterBG" type="Panel" parent="ManaHUD/ManaHUD/ManaIcon2"]
+self_modulate = Color(0.7058824, 0.7058824, 0.7058824, 1)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -10.0
+offset_right = 15.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ManaCounterLabel" type="RichTextLabel" parent="ManaHUD/ManaHUD/ManaIcon2/ManaCounterBG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_nwg7q")
+theme_override_constants/shadow_outline_size = 0
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/normal_font_size = 20
+text = "1"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ManaIcon3" type="Panel" parent="ManaHUD/ManaHUD"]
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ManaIcon" type="TextureRect" parent="ManaHUD/ManaHUD/ManaIcon3"]
+self_modulate = Color(1, 0.54901963, 0, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_we3k3")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ManaShadow" type="Panel" parent="ManaHUD/ManaHUD/ManaIcon3"]
+visible = false
+self_modulate = Color(0.2, 0.2, 0.2, 1)
+z_index = -1
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -27.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ManaCounterBG" type="Panel" parent="ManaHUD/ManaHUD/ManaIcon3"]
+self_modulate = Color(0.7058824, 0.7058824, 0.7058824, 1)
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -10.0
+offset_right = 15.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ManaCounterLabel" type="RichTextLabel" parent="ManaHUD/ManaHUD/ManaIcon3/ManaCounterBG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_nwg7q")
+theme_override_constants/shadow_outline_size = 0
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/normal_font_size = 20
+text = "1"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
