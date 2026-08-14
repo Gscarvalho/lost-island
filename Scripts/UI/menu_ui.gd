@@ -49,7 +49,7 @@ enum MenuPage {
 @onready var skill_mana_cost_value: RichTextLabel = %SkillManaCostValue
 @onready var skill_range_value: RichTextLabel = %SkillRangeValue
 @onready var skill_description: RichTextLabel = %SkillDescription
-@onready var skill_input: RichTextLabel = %SkillInput
+@onready var action_input: RichTextLabel = %ActionInput
 
 @onready var skill_power_box: Control = %SkillPowerBox
 @onready var skill_mana_cost_box: Control = %SkillManaCostBox
@@ -669,7 +669,7 @@ func _open_skill_tree(
 	skill_description.text = (
 		"Use D-Pad to select a skill."
 	)
-	skill_input.text = ""
+	action_input.text = ""
 
 	skill_power_box.modulate.a = 0.0
 	skill_mana_cost_box.modulate.a = 0.0
@@ -816,10 +816,10 @@ func _apply_skill_tree_visuals(tree: SkillTree) -> void:
 	skill_tree_bg_icon.texture = tree.background_icon
 	skill_tree_bg_icon.self_modulate = tree.tree_color
 
-	skill_name.add_theme_color_override(
-		"default_color",
-		tree.tree_color
-	)
+	#skill_name.add_theme_color_override(
+		#"default_color",
+		#tree.tree_color
+	#)
 
 	var power_bg := (
 		skill_power_value.get_parent_control()
@@ -827,7 +827,7 @@ func _apply_skill_tree_visuals(tree: SkillTree) -> void:
 	)
 
 	var mana_bg := (
-		skill_mana_cost_value.get_parent_control()
+		skill_mana_cost_value.get_parent_control().get_parent_control()
 		as TextureRect
 	)
 
@@ -854,9 +854,9 @@ func _update_skill_action_text(
 	)
 
 	if progression.is_skill_unlocked(skill):
-		skill_input.text = "EQUIP"
+		action_input.text = "EQUIP"
 	else:
-		skill_input.text = "UNLOCK"
+		action_input.text = "UNLOCK"
 
 func _update_skill_stat_text(
 	skill: Skills

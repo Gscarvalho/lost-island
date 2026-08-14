@@ -11,6 +11,7 @@ unlock_cost = 2
 skill_power = 80.0
 skill_anim_name = "Spellcast_Long"
 skill_type = 1
+skill_range = 1
 skill_cost = 2.0
 cost_type = 1
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"

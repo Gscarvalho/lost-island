@@ -17,7 +17,7 @@
 [ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="14_0uc32"]
 [ext_resource type="Resource" uid="uid://dfdunhb5aa7w1" path="res://Data/Skills/Fire/fire_flight.tres" id="14_1myk2"]
 [ext_resource type="Texture2D" uid="uid://i1usgg2bmuhi" path="res://Assets/Images/Icons/Input Retro/T_X_A_White_Retro.png" id="14_8eyqk"]
-[ext_resource type="Texture2D" uid="uid://dsujcfxraoodm" path="res://Assets/Images/Icons/UI Essentials_time_clock.svg" id="14_21gkc"]
+[ext_resource type="Texture2D" uid="uid://dh6ouotd0502" path="res://Assets/Images/Icons/UI_time_icon.png" id="14_21gkc"]
 [ext_resource type="Resource" uid="uid://b6tvfeksugqay" path="res://Data/Skills/Fire/fire_jump.tres" id="15_fjin3"]
 [ext_resource type="Resource" uid="uid://1m3a8boffpvd" path="res://Data/Skills/Fire/flamethrower.tres" id="16_7q1ka"]
 [ext_resource type="Resource" uid="uid://d0cd0kfwgpuxy" path="res://Data/Skills/Fire/flare.tres" id="17_8aa3k"]
@@ -935,6 +935,8 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 theme = ExtResource("20_w61pg")
 theme_override_colors/default_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
+theme_override_constants/shadow_outline_size = 15
+theme_override_constants/shadow_offset_y = 5
 theme_override_font_sizes/normal_font_size = 52
 text = "Fireball"
 fit_content = true
@@ -968,9 +970,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 24
 
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillPowerBox/SkillBar/MarginContainer"]
+[node name="PowerTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillPowerBox/SkillBar/MarginContainer"]
 layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme = ExtResource("20_w61pg")
+theme_override_colors/default_color = Color(0.2, 0.2, 0.2, 1)
 theme_override_font_sizes/normal_font_size = 20
 text = "POWER"
 fit_content = true
@@ -1007,7 +1010,7 @@ offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/normal_font_size = 20
 text = "locked"
 fit_content = true
 scroll_active = false
@@ -1042,9 +1045,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 24
 
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/SkillBar/MarginContainer"]
+[node name="ManaCostTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/SkillBar/MarginContainer"]
 layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme = ExtResource("20_w61pg")
+theme_override_colors/default_color = Color(0.2, 0.2, 0.2, 1)
 theme_override_font_sizes/normal_font_size = 20
 text = "MANA COST"
 fit_content = true
@@ -1069,17 +1073,19 @@ grow_vertical = 2
 texture = ExtResource("5_jlchu")
 expand_mode = 3
 
-[node name="SkillManaCostValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/ValueBG"]
-unique_name_in_owner = true
-clip_contents = false
+[node name="HBoxContainer" type="HBoxContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/ValueBG"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -9.0
-offset_bottom = 6.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
+
+[node name="SkillManaCostValue" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/ValueBG/HBoxContainer"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 2
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 20
 text = "locked"
@@ -1089,22 +1095,12 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SkillManaRateIcon" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/ValueBG"]
+[node name="SkillManaRateIcon" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillManaCostBox/ValueBG/HBoxContainer"]
 unique_name_in_owner = true
 visible = false
+self_modulate = Color(1.4164544, 1.4164544, 1.4164544, 1)
 custom_minimum_size = Vector2(20, 20)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -25.0
-offset_top = -10.0
-offset_right = -5.0
-offset_bottom = 10.0
-grow_horizontal = 0
-grow_vertical = 2
+layout_mode = 2
 texture = ExtResource("14_21gkc")
 expand_mode = 1
 stretch_mode = 5
@@ -1136,9 +1132,10 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 24
 
-[node name="SkillTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillRangeBox/SkillBar/MarginContainer"]
+[node name="RangeTitle" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/SkillRangeBox/SkillBar/MarginContainer"]
 layout_mode = 2
-theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme = ExtResource("20_w61pg")
+theme_override_colors/default_color = Color(0.2, 0.2, 0.2, 1)
 theme_override_font_sizes/normal_font_size = 20
 text = "RANGE"
 fit_content = true
@@ -1206,18 +1203,19 @@ size_flags_vertical = 4
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/ActionsBox"]
+[node name="ActionIcon" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/ActionsBox"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 texture = ExtResource("14_8eyqk")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="SkillInput" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/ActionsBox"]
+[node name="ActionInput" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/ActionsBox"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("20_w61pg")
 text = "Skill unassigned."
 fit_content = true
 vertical_alignment = 1
