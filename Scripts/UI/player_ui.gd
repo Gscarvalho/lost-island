@@ -66,6 +66,27 @@ extends Control
 @onready var timer_indicator: MarginContainer = (
 	%TimerIndicator
 )
+@onready var water_mana: Panel = (
+	%WaterMana
+)
+@onready var water_mana_amount: RichTextLabel = (
+	%WaterManaAmount
+)
+@onready var light_mana: Panel = (
+	%LightMana
+)
+@onready var light_mana_amount: RichTextLabel = (
+	%LightManaAmount
+)
+@onready var fire_mana: Panel = (
+	%FireMana
+)
+@onready var fire_mana_amount: RichTextLabel = (
+	%FireManaAmount
+)
+
+
+
 #endregion
 
 #region Runtime State
@@ -107,6 +128,10 @@ func _connect_signals() -> void:
 	character.combat_mode_changed.connect(
 		_on_combat_mode_changed
 	)
+	
+	character.mana_changed.connect(
+		_on_mana_changed
+	)
 
 	var elemental_loadout := (
 		player.progression.skill_loadout
@@ -144,6 +169,27 @@ func _initialize_display() -> void:
 	)
 
 	_refresh_loadout_hud()
+	
+	_update_mana_display(
+		Skills.SkillType.Water,
+		character.get_mana_amount(
+			Skills.SkillType.Water
+		)
+	)
+
+	_update_mana_display(
+		Skills.SkillType.Light,
+		character.get_mana_amount(
+			Skills.SkillType.Light
+		)
+	)
+
+	_update_mana_display(
+		Skills.SkillType.Fire,
+		character.get_mana_amount(
+			Skills.SkillType.Fire
+		)
+	)
 #endregion
 
 
@@ -281,6 +327,41 @@ func _update_input_layer() -> void:
 	inputs_lt.visible = lt_active
 #endregion
 
+#region Mana HUD
+func _on_mana_changed(
+	skill_type: Skills.SkillType,
+	amount: float
+) -> void:
+	_update_mana_display(
+		skill_type,
+		amount
+	)
+
+
+func _update_mana_display(
+	skill_type: Skills.SkillType,
+	amount: float
+) -> void:
+	var amount_text := (
+		str(amount).pad_decimals(0)
+	)
+
+	match skill_type:
+		Skills.SkillType.Water:
+			water_mana_amount.text = (
+				amount_text
+			)
+
+		Skills.SkillType.Light:
+			light_mana_amount.text = (
+				amount_text
+			)
+
+		Skills.SkillType.Fire:
+			fire_mana_amount.text = (
+				amount_text
+			)
+#endregion
 
 #region Weapon Choice Timer
 func show_timer_ui(reveal: bool) -> void:

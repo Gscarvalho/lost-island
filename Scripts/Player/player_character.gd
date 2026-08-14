@@ -18,6 +18,11 @@ signal mana_changed(
 	amount: float
 )
 
+signal mana_maximum_changed(
+	skill_type: Skills.SkillType,
+	maximum: float
+)
+
 enum CombatMode {
 	PHYSICAL,
 	ELEMENTAL,
@@ -29,10 +34,17 @@ signal combat_mode_changed(
 #endregion
 
 #region References
-@onready var attack_state_machine = $AnimationTree.get("parameters/AttackStateMachine/playback") as AnimationNodeStateMachinePlayback
-@onready var magic_state_machine = $AnimationTree.get("parameters/MagicStateMachine/playback") as AnimationNodeStateMachinePlayback
-@onready var handslot_r: BoneAttachment3D = $Rig/Skeleton3D/handslot_r
-
+@onready var attack_state_machine = (
+	$AnimationTree.get("parameters/AttackStateMachine/playback")
+	as AnimationNodeStateMachinePlayback
+)
+@onready var magic_state_machine = (
+	$AnimationTree.get("parameters/MagicStateMachine/playback")
+	as AnimationNodeStateMachinePlayback
+)
+@onready var handslot_r: BoneAttachment3D = (
+	$Rig/Skeleton3D/handslot_r
+)
 @onready var stamina_regen_timer: Timer = (
 	$"../Timers/StaminaRegenTimer"
 )
@@ -77,6 +89,16 @@ func set_combat_mode(
 #endregion
 
 #region Mana
+@export_category("Mana")
+
+@export var mana_maximum_enabled := true
+
+@export var mana_maximums: Array[float] = [
+	10.0,
+	10.0,
+	10.0,
+]
+
 var mana_inventory: Array[float] = [
 	7.0,
 	7.0,
@@ -95,9 +117,24 @@ func get_mana_amount(
 
 	return mana_inventory[mana_index]
 
-func change_mana(
+func get_mana_maximum(
+	skill_type: Skills.SkillType
+) -> float:
+	var mana_index := _get_mana_index(
+		skill_type
+	)
+
+	if mana_index == -1:
+		return 0.0
+
+	if mana_index >= mana_maximums.size():
+		return 0.0
+
+	return mana_maximums[mana_index]
+
+func set_mana_maximum(
 	skill_type: Skills.SkillType,
-	amount: float
+	maximum: float
 ) -> void:
 	var mana_index := _get_mana_index(
 		skill_type
@@ -106,14 +143,75 @@ func change_mana(
 	if mana_index == -1:
 		return
 
-	mana_inventory[mana_index] = maxf(
-		mana_inventory[mana_index] + amount,
+	if mana_index >= mana_maximums.size():
+		return
+
+	mana_maximums[mana_index] = maxf(
+		maximum,
 		0.0
+	)
+
+	mana_maximum_changed.emit(
+		skill_type,
+		mana_maximums[mana_index]
+	)
+
+func change_mana(
+	skill_type: Skills.SkillType,
+	amount: float,
+	respect_maximum := true
+) -> void:
+	var mana_index := _get_mana_index(
+		skill_type
+	)
+
+	if mana_index == -1:
+		return
+
+	if mana_index >= mana_inventory.size():
+		return
+
+	var current_amount := (
+		mana_inventory[mana_index]
+	)
+
+	var new_amount := maxf(
+		current_amount + amount,
+		0.0
+	)
+
+	var should_limit_gain := (
+		amount > 0.0
+		and mana_maximum_enabled
+		and respect_maximum
+	)
+
+	if should_limit_gain:
+		var maximum := get_mana_maximum(
+			skill_type
+		)
+
+		if current_amount >= maximum:
+			return
+
+		new_amount = minf(
+			new_amount,
+			maximum
+		)
+
+	if is_equal_approx(
+		current_amount,
+		new_amount
+	):
+		return
+
+	mana_inventory[mana_index] = (
+		new_amount
 	)
 
 	mana_changed.emit(
 		skill_type,
-		mana_inventory[mana_index]
+		new_amount
 	)
 #endregion
 

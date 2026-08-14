@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bx4plrqqed8sa"]
+
+[ext_resource type="Script" uid="uid://bhufmwjx2mjgi" path="res://Scripts/Pickups/mana_pickup.gd" id="1_76eqy"]
+[ext_resource type="Texture2D" uid="uid://cun73k8jdmr4e" path="res://addons/proton_scatter/icons/add.svg" id="2_76eqy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4lmnn"]
+
+[node name="ManaPickup" type="Area3D"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+collision_layer = 0
+script = ExtResource("1_76eqy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_4lmnn")
+
+[node name="Visual" type="Sprite3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+modulate = Color(1, 0.54901963, 0, 1)
+billboard = 1
+texture = ExtResource("2_76eqy")

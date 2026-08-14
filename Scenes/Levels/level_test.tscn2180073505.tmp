@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=27 format=3 uid="uid://df6prq4xcpyx3"]
 
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Characters/player.tscn" id="1_vflva"]
 [ext_resource type="Material" uid="uid://cl6e3woev4yo6" path="res://Assets/Materials/ground_mat.tres" id="1_xawdm"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bvu5sm6v7t1s2" path="res://addons/proton_scatter/src/scatter_shape.gd" id="12_fk2v1"]
 [ext_resource type="Script" uid="uid://c68s2472h76yi" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="13_k1ht2"]
 [ext_resource type="PackedScene" uid="uid://bx4plrqqed8sa" path="res://Scenes/Pickups/mana_pickup.tscn" id="15_oerva"]
+[ext_resource type="PackedScene" uid="uid://c7cun65u8mgn2" path="res://Scenes/Environment/grass.tscn" id="15_tu8bo"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
 sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)
@@ -37,41 +38,41 @@ volumetric_fog_gi_inject = 0.2
 volumetric_fog_sky_affect = 0.1
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_p361o"]
-size = Vector2(200, 200)
+size = Vector2(70, 200)
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fjvvq"]
-points = PackedVector3Array(-100, 0, 100, 100, 0, 100, 100, 0, -100, -100, 0, -100)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_oerva"]
+data = PackedVector3Array(35, 0, 100, -35, 0, 100, 35, 0, -100, -35, 0, 100, -35, 0, -100, 35, 0, -100)
 
-[sub_resource type="Resource" id="Resource_fjvvq"]
+[sub_resource type="Resource" id="Resource_t2ggk"]
 script = ExtResource("7_g1i77")
-amount = 30000
+amount = 10000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_oerva"]
+[sub_resource type="Resource" id="Resource_x7ba5"]
 script = ExtResource("8_q55b2")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
-scale = Vector3(1, 1, 1)
+scale = Vector3(0.5, 0.5, 0.5)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_t2ggk"]
+[sub_resource type="Resource" id="Resource_g1i77"]
 script = ExtResource("9_hwde3")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_x7ba5"]
+[sub_resource type="Resource" id="Resource_q55b2"]
 script = ExtResource("10_btpkh")
 ray_length = 5.0
 ray_offset = 5.0
 remove_points_on_miss = false
 collision_mask = 16
 
-[sub_resource type="Resource" id="Resource_g1i77"]
+[sub_resource type="Resource" id="Resource_hwde3"]
 script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_fjvvq"), SubResource("Resource_oerva"), SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5")])
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5"), SubResource("Resource_g1i77"), SubResource("Resource_q55b2")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
@@ -106,40 +107,43 @@ collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/Ground/Floor1/StaticBody3D"]
-shape = SubResource("ConvexPolygonShape3D_fjvvq")
+shape = SubResource("ConcavePolygonShape3D_oerva")
 
-[node name="Grass" type="Node3D" parent="World/Ground"]
+[node name="ProtonScatter" type="Node3D" parent="World/Ground"]
 script = ExtResource("4_oerva")
-modifier_stack = SubResource("Resource_g1i77")
+render_mode = 2
+modifier_stack = SubResource("Resource_hwde3")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"
 
-[node name="ScatterItem" type="Node3D" parent="World/Ground/Grass"]
+[node name="ScatterItem" type="Node3D" parent="World/Ground/ProtonScatter"]
 script = ExtResource("11_m1fqf")
 source_scale_multiplier = 0.5
 override_cast_shadow = 0
 path = "uid://c7cun65u8mgn2"
 
-[node name="ScatterShape" type="Node3D" parent="World/Ground/Grass"]
+[node name="ScatterShape" type="Node3D" parent="World/Ground/ProtonScatter"]
 script = ExtResource("12_fk2v1")
 shape = SubResource("Resource_d1w1t")
 
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8084929, -8.842709)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.842709)
+
+[node name="Grass" parent="." instance=ExtResource("15_tu8bo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7884899, 0.047736127, -1.285165)
 
 [node name="Pickups" type="Node3D" parent="."]
 
 [node name="ManaPickup" parent="Pickups" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8566198, 2.061078, -3.0618553)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8566198, 0.017103195, 4.598238)
 
 [node name="ManaPickup2" parent="Pickups" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.510234, 2.0610776, 1.9181681)
-mana_amount = 20.0
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.510234, 0.017102718, -3.3800573)
+mana_amount = 3.0
 
 [node name="ManaPickup3" parent="Pickups" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.889501, 2.0610776, 12.695286)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.889501, 0.017102718, 5.283922)
 mana_amount = 3.0
-respect_mana_maximum = false
