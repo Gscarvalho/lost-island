@@ -1,7 +1,6 @@
 class_name Weapon
 extends Node3D
 
-
 @export var weapon_name: String = ""
 @export var stats_boost: StatModifiers
 
@@ -10,18 +9,26 @@ extends Node3D
 )
 
 var user: CharacterBody3D
-var damage_active: bool = false
 
 
-func _on_collider_body_entered(
-	_body: Node3D
+func prepare_attack(
+	skill: Skills,
+	damage: float
 ) -> void:
-	# TODO: Connect weapon collision to the damage system.
-	# The weapon scene currently connects its body_entered signal here.
-	pass
+	if skill == null:
+		return
 
-func _activate() -> void:
+	hitbox.deactivate()
+
+	hitbox.configure_attack(
+		self,
+		skill,
+		damage
+	)
+
+func start_damage_window() -> void:
 	hitbox.activate()
 
-func _deactivate() -> void:
-	hitbox.activate()
+
+func end_damage_window() -> void:
+	hitbox.deactivate()

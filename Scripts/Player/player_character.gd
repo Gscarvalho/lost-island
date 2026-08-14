@@ -343,6 +343,21 @@ func attack(skill: Skills) -> void:
 
 		return
 
+	if skill.skill_type == Skills.SkillType.Physical:
+		var weapon := get_equipped_weapon()
+
+		if weapon != null:
+			var damage := (
+				calculate_skill_damage(
+					skill
+				)
+			)
+			
+			weapon.prepare_attack(
+				skill,
+				damage
+			)
+
 	_pay_skill_cost(skill)
 	_apply_skill_effect(skill)
 	_play_skill_animation(skill)
@@ -369,6 +384,23 @@ func _play_skill_animation(skill: Skills) -> void:
 			"parameters/MagicOneShot/request",
 			AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 		)
+
+func start_weapon_damage_window() -> void:
+	var weapon := get_equipped_weapon()
+
+	if weapon == null:
+		return
+
+	weapon.start_damage_window()
+
+
+func end_weapon_damage_window() -> void:
+	var weapon := get_equipped_weapon()
+
+	if weapon == null:
+		return
+
+	weapon.end_damage_window()
 #endregion
 
 #region Equipment
@@ -404,4 +436,29 @@ func get_equipped_weapon() -> Weapon:
 
 func has_equipped_weapon() -> bool:
 	return get_equipped_weapon() != null
+#endregion
+
+#region Damage Calculation
+func calculate_skill_damage(
+	skill: Skills
+) -> float:
+	if skill == null:
+		return 0.0
+
+	var offensive_stat: float
+
+	if skill.skill_type == Skills.SkillType.Physical:
+		offensive_stat = current_stats.attack
+	else:
+		offensive_stat = current_stats.m_attack
+
+	var stat_multiplier := (
+		1.0
+		+ offensive_stat / 100.0
+	)
+
+	return (
+		skill.skill_power
+		* stat_multiplier
+	)
 #endregion

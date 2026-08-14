@@ -7,6 +7,9 @@ extends Area3D
 
 var active := false
 
+var source_skill: Skills
+var source_node: Node
+
 var already_hit: Array[Hurtbox] = []
 
 
@@ -15,16 +18,42 @@ func _ready() -> void:
 		_on_area_entered
 	)
 
+
+func configure_attack(
+	source: Node,
+	skill: Skills,
+	damage_amount: float
+) -> void:
+	source_node = source
+	source_skill = skill
+
+	damage = maxf(
+		damage_amount,
+		0.0
+	)
+
+
 func activate() -> void:
 	active = true
-
 	already_hit.clear()
+
+	# Catch Hurtboxes that were already overlapping
+	# when the damage window opened.
+	for area in get_overlapping_areas():
+		_try_hit(area)
+
 
 func deactivate() -> void:
 	active = false
 
 
 func _on_area_entered(
+	area: Area3D
+) -> void:
+	_try_hit(area)
+
+
+func _try_hit(
 	area: Area3D
 ) -> void:
 	if not active:
