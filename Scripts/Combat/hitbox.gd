@@ -10,7 +10,7 @@ var active := false
 var source_skill: Skills
 var source_node: Node
 
-var already_hit: Array[Hurtbox] = []
+var already_hit: Array[Node] = []
 
 
 func _ready() -> void:
@@ -30,6 +30,16 @@ func configure_attack(
 	damage = maxf(
 		damage_amount,
 		0.0
+	)
+
+func create_damage_data() -> DamageData:
+	var weapon := source_node as Weapon
+
+	return DamageData.new(
+		damage,
+		source_node,
+		source_skill,
+		weapon
 	)
 
 
@@ -64,11 +74,17 @@ func _try_hit(
 	if hurtbox == null:
 		return
 
-	if already_hit.has(hurtbox):
+	var damage_receiver := (
+		hurtbox.get_damage_receiver()
+	)
+
+	if already_hit.has(
+		damage_receiver
+	):
 		return
 
 	already_hit.append(
-		hurtbox
+		damage_receiver
 	)
 
 	hurtbox.receive_hit(
