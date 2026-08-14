@@ -14,15 +14,11 @@ func _ready() -> void:
 	area_entered.connect(
 		_on_area_entered
 	)
-	
-	activate()
-
 
 func activate() -> void:
 	active = true
 
 	already_hit.clear()
-
 
 func deactivate() -> void:
 	active = false

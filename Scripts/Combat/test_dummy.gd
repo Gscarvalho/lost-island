@@ -29,11 +29,17 @@ func _ready() -> void:
 		_update_ui
 	)
 	
-	_update_ui()
+	_update_ui(
+		current_health,
+		maximum_health
+	)
 
-func _update_ui() -> void:
-	dummy_health.value = current_health
-	dummy_health.max_value = maximum_health
+func _update_ui(
+	current: float,
+	maximum: float
+) -> void:
+	dummy_health.value = current
+	dummy_health.max_value = maximum
 
 func _on_hurtbox_hit_received(
 	hitbox: Hitbox
