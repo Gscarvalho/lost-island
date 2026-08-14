@@ -181,6 +181,7 @@ combat_b={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
+textures/canvas_textures/default_texture_repeat=2
+textures/lossless_compression/force_png=true
 textures/decals/filter=0
 textures/light_projectors/filter=0

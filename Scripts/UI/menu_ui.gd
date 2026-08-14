@@ -53,7 +53,9 @@ enum MenuPage {
 
 @onready var skill_power_box: Control = %SkillPowerBox
 @onready var skill_mana_cost_box: Control = %SkillManaCostBox
+@onready var skill_mana_rate_icon: TextureRect = %SkillManaRateIcon
 @onready var skill_range_box: Control = %SkillRangeBox
+@onready var actions_box: HBoxContainer = %ActionsBox
 
 @onready var skill_points_label: RichTextLabel = (
 	%SkillPointsLabel
@@ -672,6 +674,7 @@ func _open_skill_tree(
 	skill_power_box.modulate.a = 0.0
 	skill_mana_cost_box.modulate.a = 0.0
 	skill_range_box.modulate.a = 0.0
+	actions_box.modulate.a = 0.0
 
 	active_skill_tree.refresh_unlock_states(
 		player_controller.progression
@@ -748,12 +751,21 @@ func _on_tree_skill_focused(skill: Skills) -> void:
 	if skill == null:
 		return
 
-	skill_name.text = skill.skill_name.to_upper()
-	skill_description.text = skill.skill_description
+	skill_name.text = (
+		skill.skill_name.to_upper()
+	)
+
+	skill_description.text = (
+		skill.skill_description
+	)
+
 	_update_skill_action_text(skill)
+	_update_skill_stat_text(skill)
+
 	skill_power_box.modulate.a = 1.0
 	skill_mana_cost_box.modulate.a = 1.0
 	skill_range_box.modulate.a = 1.0
+	actions_box.modulate.a = 1.0
 
 func _on_tree_skill_activated(
 	skill: Skills
@@ -775,6 +787,7 @@ func _on_tree_skill_activated(
 		)
 
 		_update_skill_action_text(skill)
+		_update_skill_stat_text(skill)
 
 		print(
 			"Unlocked ",
@@ -841,46 +854,52 @@ func _update_skill_action_text(
 	)
 
 	if progression.is_skill_unlocked(skill):
-		var assigned_slot: int = -1
+		skill_input.text = "EQUIP"
+	else:
+		skill_input.text = "UNLOCK"
 
-		if progression.skill_loadout != null:
-			assigned_slot = (
-				progression.skill_loadout.get_skill_slot(
-					skill
-				)
-			)
-
-		if assigned_slot == -1:
-			skill_input.text = (
-				"UNLOCKED • INPUT: UNASSIGNED"
-			)
-		else:
-			skill_input.text = (
-				"UNLOCKED • INPUT: "
-				+ progression.skill_loadout.get_slot_name(
-					assigned_slot
-				)
-			)
-
-		return
-
-	if progression.can_unlock_skill(skill):
-		skill_input.text = (
-			"A: UNLOCK • COST: "
-			+ str(skill.unlock_cost)
-		)
-		return
-
-	var missing_points: int = maxi(
-		skill.unlock_cost
-		- progression.skill_points,
-		0
+func _update_skill_stat_text(
+	skill: Skills
+) -> void:
+	var progression := (
+		player_controller.progression
 	)
 
-	skill_input.text = (
-		"NEED "
-		+ str(missing_points)
-		+ " MORE POINTS"
+	if not progression.is_skill_unlocked(skill):
+		skill_power_value.text = "LOCKED"
+		skill_mana_cost_value.text = "LOCKED"
+		skill_range_value.text = "LOCKED"
+		
+		skill_mana_rate_icon.visible = false
+		return
+
+	skill_power_value.text = (
+		str(skill.skill_power).pad_decimals(0)
+	)
+
+	skill_mana_cost_value.text = (
+		str(skill.skill_cost).pad_decimals(0)
+	)
+
+	skill_mana_rate_icon.visible = (
+		skill.cost_type
+		== Skills.CostType.PerSecond
+	)
+
+	skill_range_value.text = (
+		_get_range_text(
+			skill.skill_range
+		)
+	)
+
+func _get_range_text(
+	range_type: Skills.RangeType
+) -> String:
+	return (
+		Skills.RangeType.keys()[
+			range_type
+		].to_upper()
+		+ "-RANGE"
 	)
 #endregion
 
