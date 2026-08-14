@@ -178,6 +178,8 @@ combat_b={
 3d_physics/layer_3="Projectiles"
 3d_physics/layer_5="Ground"
 3d_physics/layer_6="Impassable"
+3d_physics/layer_9="Hurtbox"
+3d_physics/layer_10="Hitbox"
 
 [rendering]
 

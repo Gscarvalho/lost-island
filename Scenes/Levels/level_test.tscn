@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=27 format=3 uid="uid://df6prq4xcpyx3"]
 
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Characters/player.tscn" id="1_vflva"]
 [ext_resource type="Material" uid="uid://cl6e3woev4yo6" path="res://Assets/Materials/ground_mat.tres" id="1_xawdm"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bvu5sm6v7t1s2" path="res://addons/proton_scatter/src/scatter_shape.gd" id="12_fk2v1"]
 [ext_resource type="Script" uid="uid://c68s2472h76yi" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="13_k1ht2"]
 [ext_resource type="PackedScene" uid="uid://bx4plrqqed8sa" path="res://Scenes/Pickups/mana_pickup.tscn" id="15_oerva"]
+[ext_resource type="PackedScene" uid="uid://d3cd1spae7vfj" path="res://Scenes/Combat/test_dummy.tscn" id="15_t2ggk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
 sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)
@@ -42,36 +43,36 @@ size = Vector2(200, 200)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fjvvq"]
 points = PackedVector3Array(-100, 0, 100, 100, 0, 100, 100, 0, -100, -100, 0, -100)
 
-[sub_resource type="Resource" id="Resource_fjvvq"]
+[sub_resource type="Resource" id="Resource_oerva"]
 script = ExtResource("7_g1i77")
 amount = 30000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_oerva"]
+[sub_resource type="Resource" id="Resource_t2ggk"]
 script = ExtResource("8_q55b2")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
 scale = Vector3(1, 1, 1)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_t2ggk"]
+[sub_resource type="Resource" id="Resource_x7ba5"]
 script = ExtResource("9_hwde3")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_x7ba5"]
+[sub_resource type="Resource" id="Resource_g1i77"]
 script = ExtResource("10_btpkh")
 ray_length = 5.0
 ray_offset = 5.0
 remove_points_on_miss = false
 collision_mask = 16
 
-[sub_resource type="Resource" id="Resource_g1i77"]
+[sub_resource type="Resource" id="Resource_q55b2"]
 script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_fjvvq"), SubResource("Resource_oerva"), SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5")])
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_oerva"), SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5"), SubResource("Resource_g1i77")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
@@ -110,7 +111,7 @@ shape = SubResource("ConvexPolygonShape3D_fjvvq")
 
 [node name="Grass" type="Node3D" parent="World/Ground"]
 script = ExtResource("4_oerva")
-modifier_stack = SubResource("Resource_g1i77")
+modifier_stack = SubResource("Resource_q55b2")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"
@@ -129,6 +130,9 @@ shape = SubResource("Resource_d1w1t")
 
 [node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8084929, -8.842709)
+
+[node name="TestDummy" parent="Entities" instance=ExtResource("15_t2ggk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9984562, -4.7683716e-07, 2.467464)
 
 [node name="Pickups" type="Node3D" parent="."]
 
