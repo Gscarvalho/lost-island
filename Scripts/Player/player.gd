@@ -9,6 +9,10 @@ extends CharacterBody3D
 	%CameraController.get_node("SpringArm3D/Camera3D")
 )
 
+@onready var camera_controller: PlayerCamera = (
+	$CameraController
+)
+
 @onready var character: PlayerCharacter = (
 	$Character
 )
@@ -95,6 +99,8 @@ func _physics_process(delta: float) -> void:
 	_equip_logic(delta)
 	_move_logic(delta)
 	_jump_logic(delta)
+	
+	_aim_logic()
 	_update_projectile_aim_point()
 	_attacks_logic()
 
@@ -286,14 +292,20 @@ func _try_attack(
 func _get_attack_input_index() -> int:
 	var index_offset := (
 		2
-		if Input.is_action_pressed("aim")
+		if Input.is_action_pressed(
+			"loadout_modifier"
+		)
 		else 0
 	)
 
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed(
+			"attack"
+		):
 		return index_offset
 
-	if Input.is_action_just_pressed("skill"):
+	if Input.is_action_just_pressed(
+			"skill"
+		):
 		return index_offset + 1
 
 	return -1
@@ -352,7 +364,9 @@ func _try_loadout_skill(
 
 func _get_loadout_input_slot() -> int:
 	var modifier_active := (
-		Input.is_action_pressed("aim")
+		Input.is_action_pressed(
+			"loadout_modifier"
+		)
 	)
 
 	if Input.is_action_just_pressed("attack"):
@@ -381,6 +395,19 @@ func _get_loadout_input_slot() -> int:
 #endregion
 
 #region Aim
+func _aim_logic() -> void:
+	var should_aim := (
+		StateManager.current_state
+		== StateManager.State.PLAY
+		and Input.is_action_pressed(
+			"aim"
+		)
+	)
+
+	camera_controller.set_aiming(
+		should_aim
+	)
+
 func _update_projectile_aim_point() -> void:
 	var screen_center := (
 		get_viewport().get_visible_rect().size

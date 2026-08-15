@@ -7,12 +7,12 @@
 [ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="3_uswer"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="4_1csck"]
 [ext_resource type="Texture2D" uid="uid://xi0e1rqrg55i" path="res://Assets/Images/Icons/Input Retro/T_X_X_White_Retro.png" id="4_onufr"]
+[ext_resource type="Texture2D" uid="uid://n0nit41e2kec" path="res://Assets/Images/Icons/Input Retro/T_X_RT_Retro.png" id="4_plo7s"]
 [ext_resource type="Texture2D" uid="uid://cj01mnwjwpfca" path="res://Assets/Images/Icons/Input Retro/T_X_B_White_Retro.png" id="5_plo7s"]
 [ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/Prototype/fire_icon.png" id="5_we3k3"]
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="6_uxa4k"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/Prototype/sun_icon.svg" id="7_8wddj"]
 [ext_resource type="Texture2D" uid="uid://dy15xf6smaddf" path="res://Assets/Images/UI/circle_line.svg" id="7_mwh7w"]
-[ext_resource type="Texture2D" uid="uid://clklaxtbqb7g" path="res://Assets/Images/Icons/Input Retro/T_X_LT_Retro.png" id="7_we3k3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcbsq"]
 bg_color = Color(0.2, 0.2, 0.2, 0.5882353)
@@ -108,7 +108,7 @@ size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 0
 
-[node name="InputsLT" type="VBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer"]
+[node name="InputsRT" type="VBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
@@ -116,7 +116,7 @@ size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = -10
 
-[node name="LoudoutSlotLY" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT"]
+[node name="LoudoutSlotLY" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -126,7 +126,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLY"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -135,7 +135,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLY/HBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -144,16 +144,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="InputIconLT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_we3k3")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(45, 45)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -162,7 +153,16 @@ texture = ExtResource("3_axtvl")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="LoadoutNameLTY" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLY/HBoxContainer"]
+[node name="InputIconRT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLY/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_plo7s")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoadoutNameLTY" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLY/HBoxContainer"]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(150, 0)
@@ -175,7 +175,7 @@ text = "Flare"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="LoudoutSlotLX" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT"]
+[node name="LoudoutSlotLX" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -185,7 +185,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLX"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -194,7 +194,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLX/HBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -203,16 +203,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="InputIconLT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_we3k3")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
 custom_minimum_size = Vector2(45, 45)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -221,7 +212,16 @@ texture = ExtResource("4_onufr")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="LoadoutNameLTX" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLX/HBoxContainer"]
+[node name="InputIconRT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLX/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_plo7s")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoadoutNameLTX" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLX/HBoxContainer"]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(150, 0)
@@ -234,7 +234,7 @@ text = "Flamethrower"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="LoudoutSlotLB" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT"]
+[node name="LoudoutSlotLB" type="MarginContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -244,7 +244,7 @@ theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB"]
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLB"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -253,7 +253,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 5
 alignment = 2
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLB/HBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -262,16 +262,7 @@ theme = ExtResource("2_nwg7q")
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="InputIconLT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
-custom_minimum_size = Vector2(25, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("7_we3k3")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
+[node name="InputIcon" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
 custom_minimum_size = Vector2(45, 45)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -280,7 +271,16 @@ texture = ExtResource("5_plo7s")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="LoadoutNameLTB" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsLT/LoudoutSlotLB/HBoxContainer"]
+[node name="InputIconRT" type="TextureRect" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLB/HBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(25, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_plo7s")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoadoutNameLTB" type="RichTextLabel" parent="LoadoutHUB/PanelContainer/MarginContainer/VBoxContainer/InputsRT/LoudoutSlotLB/HBoxContainer"]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(150, 0)

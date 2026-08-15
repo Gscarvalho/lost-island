@@ -61,7 +61,7 @@ extends Control
 )
 
 @onready var inputs_lt: VBoxContainer = (
-	%InputsLT
+	%InputsRT
 )
 @onready var timer_indicator: MarginContainer = (
 	%TimerIndicator
@@ -320,7 +320,9 @@ func _update_input_layer() -> void:
 	var lt_active := (
 		StateManager.current_state
 		== StateManager.State.PLAY
-		and Input.is_action_pressed("aim")
+		and Input.is_action_pressed(
+			"loadout_modifier"
+		)
 	)
 
 	inputs.visible = not lt_active

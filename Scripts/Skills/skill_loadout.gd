@@ -159,13 +159,13 @@ func get_slot_name(slot: int) -> String:
 			return "B"
 
 		Slot.LT_X:
-			return "LT + X"
+			return "RT + X"
 
 		Slot.LT_Y:
-			return "LT + Y"
+			return "RT + Y"
 
 		Slot.LT_B:
-			return "LT + B"
+			return "RT + B"
 
 		_:
 			return "UNASSIGNED"
