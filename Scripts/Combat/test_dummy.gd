@@ -90,14 +90,12 @@ func calculate_received_damage(
 
 	var defense_value := 0.0
 
-	if (
-		damage_data.source_skill != null
-		and damage_data.source_skill.skill_type
-		== Skills.SkillType.Physical
-	):
-		defense_value = stats.defense
-	else:
-		defense_value = stats.m_defense
+	match damage_data.damage_type:
+		DamageData.DamageType.PHYSICAL:
+			defense_value = stats.defense
+
+		_:
+			defense_value = stats.m_defense
 
 	defense_value = maxf(
 		defense_value,

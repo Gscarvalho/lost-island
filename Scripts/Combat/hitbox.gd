@@ -37,6 +37,7 @@ func create_damage_data() -> DamageData:
 
 	return DamageData.new(
 		damage,
+		_get_damage_type(),
 		source_node,
 		source_skill,
 		weapon
@@ -90,3 +91,20 @@ func _try_hit(
 	hurtbox.receive_hit(
 		self
 	)
+
+func _get_damage_type() -> DamageData.DamageType:
+	if source_skill == null:
+		return DamageData.DamageType.PHYSICAL
+
+	match source_skill.skill_type:
+		Skills.SkillType.Fire:
+			return DamageData.DamageType.FIRE
+
+		Skills.SkillType.Water:
+			return DamageData.DamageType.WATER
+
+		Skills.SkillType.Light:
+			return DamageData.DamageType.LIGHT
+
+		_:
+			return DamageData.DamageType.PHYSICAL
