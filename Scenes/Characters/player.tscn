@@ -76,15 +76,17 @@ progression = ExtResource("2_cqrjx")
 base_stats = SubResource("Resource_6htn1")
 attacks = Array[ExtResource("5_xccyk")]([SubResource("Resource_ehxue"), SubResource("Resource_kmsq5")])
 skill_book = SubResource("Resource_gx0ld")
+mana_maximum_enabled = false
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 shape = SubResource("CapsuleShape3D_40svl")
 
 [node name="CameraController" parent="." instance=ExtResource("3_al8ar")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2, -0.5)
-spring_length = 7.5
-margin = 0.0
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+min_limit_x = -0.7
+max_limit_x = 0.2
 
 [node name="PlayerUI" parent="." instance=ExtResource("4_gy20a")]
 

@@ -48,6 +48,9 @@ signal combat_mode_changed(
 @onready var stamina_regen_timer: Timer = (
 	$"../Timers/StaminaRegenTimer"
 )
+@onready var projectile_spawn: Marker3D = (
+	%ProjectileSpawn
+)
 #endregion
 
 #region Character Data
@@ -56,6 +59,8 @@ signal combat_mode_changed(
 @export var skill_book: Skillbook
 
 var current_stats: Stats
+var pending_projectile_skill: Skills
+var pending_projectile_damage := 0.0
 #endregion
 
 #region Equipment State
@@ -352,10 +357,22 @@ func attack(skill: Skills) -> void:
 					skill
 				)
 			)
-			
+
 			weapon.prepare_attack(
 				skill,
 				damage
+			)
+
+	else:
+		if skill.projectile_scene != null:
+			pending_projectile_skill = (
+				skill
+			)
+
+			pending_projectile_damage = (
+				calculate_skill_damage(
+					skill
+				)
 			)
 
 	_pay_skill_cost(skill)
@@ -393,7 +410,6 @@ func start_weapon_damage_window() -> void:
 
 	weapon.start_damage_window()
 
-
 func end_weapon_damage_window() -> void:
 	var weapon := get_equipped_weapon()
 
@@ -401,6 +417,55 @@ func end_weapon_damage_window() -> void:
 		return
 
 	weapon.end_damage_window()
+
+func release_projectile() -> void:
+	if pending_projectile_skill == null:
+		return
+
+	if (
+		pending_projectile_skill.projectile_scene
+		== null
+	):
+		return
+
+	var projectile := (
+		pending_projectile_skill.projectile_scene.instantiate()
+		as SkillProjectile
+	)
+
+	if projectile == null:
+		return
+
+	get_tree().current_scene.add_child(
+		projectile
+	)
+
+	projectile.global_transform = (
+		projectile_spawn.global_transform
+	)
+
+	var player := (
+		get_parent() as Player
+	)
+
+	if player == null:
+		return
+
+	var travel_direction := (
+		player.get_projectile_aim_point()
+		- projectile_spawn.global_position
+	).normalized()
+	
+	projectile.setup(
+		self,
+		pending_projectile_skill,
+		pending_projectile_damage,
+		travel_direction
+	)
+
+	pending_projectile_skill = null
+	pending_projectile_damage = 0.0
+
 #endregion
 
 #region Equipment

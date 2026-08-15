@@ -1,6 +1,10 @@
 class_name Hitbox
 extends Area3D
 
+signal hit_confirmed(
+	hurtbox: Hurtbox
+)
+
 @export_category("Damage")
 
 @export var damage: float = 10.0
@@ -91,6 +95,10 @@ func _try_hit(
 	hurtbox.receive_hit(
 		self
 	)
+
+	hit_confirmed.emit(
+	hurtbox
+)
 
 func _get_damage_type() -> DamageData.DamageType:
 	if source_skill == null:

@@ -6,7 +6,7 @@ extends CharacterBody3D
 @export var progression: PlayerProgress
 
 @onready var camera: Camera3D = (
-	$CameraController/Camera3D
+	%CameraController.get_node("SpringArm3D/Camera3D")
 )
 
 @onready var character: PlayerCharacter = (
@@ -95,6 +95,7 @@ func _physics_process(delta: float) -> void:
 	_equip_logic(delta)
 	_move_logic(delta)
 	_jump_logic(delta)
+	_update_projectile_aim_point()
 	_attacks_logic()
 
 	move_and_slide()
@@ -377,6 +378,68 @@ func _get_loadout_input_slot() -> int:
 
 	return -1
 
+#endregion
+
+#region Aim
+func _update_projectile_aim_point() -> void:
+	var screen_center := (
+		get_viewport().get_visible_rect().size
+		* 0.5
+	)
+
+	var ray_origin := (
+		camera.project_ray_origin(
+			screen_center
+		)
+	)
+
+	var ray_direction := (
+		camera.project_ray_normal(
+			screen_center
+		).normalized()
+	)
+
+	var ray_end := (
+		ray_origin
+		+ ray_direction
+		* projectile_aim_distance
+	)
+
+	var query := (
+		PhysicsRayQueryParameters3D.create(
+			ray_origin,
+			ray_end
+		)
+	)
+
+	query.exclude = [
+		get_rid()
+	]
+
+	var result := (
+		get_world_3d()
+		.direct_space_state
+		.intersect_ray(query)
+	)
+
+	if result.is_empty():
+		projectile_aim_point = ray_end
+		return
+
+	projectile_aim_point = (
+		result["position"]
+	)
+
+
+func get_projectile_aim_point() -> Vector3:
+	return projectile_aim_point
+#endregion
+
+#region Aim Configuration
+@export_range(1.0, 500.0, 1.0)
+var projectile_aim_distance: float = 100.0
+
+var projectile_aim_point := Vector3.ZERO
 #endregion
 
 #region Movement

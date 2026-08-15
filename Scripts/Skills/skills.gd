@@ -33,6 +33,10 @@ enum RangeType {
 @export var skill_name: String
 @export_multiline var skill_description: String
 @export var skill_icon: Texture2D
+
+@export_category("Delivery")
+
+@export var projectile_scene: PackedScene
 #endregion
 
 #region Progression
