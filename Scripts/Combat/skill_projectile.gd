@@ -6,11 +6,6 @@ extends Node3D
 @export var speed: float = 12.0
 @export var lifetime: float = 5.0
 
-@export_category("Impact Effect")
-@export var effects_enabled: bool = true
-@export var intensity: float = 0.35
-@export var duration: float = 0.12
-
 @onready var hitbox: Hitbox = (
 	$Hitbox
 )
@@ -70,11 +65,8 @@ func _physics_process(
 func _on_hit_confirmed(
 		_hurtbox: Hurtbox
 	) -> void:
-		if effects_enabled: (
-			CameraEffects.shake(
-				0.35,
-				0.12
-			)
+		CombatEffects.apply_impact(
+			hitbox.source_skill
 		)
 
 		queue_free()

@@ -7,7 +7,7 @@ extends CharacterBody3D
 
 @onready var camera: Camera3D = (
 	%PlayerCamera.get_node(
-		"SpringArm3D/ShakePivot/Camera3D"
+		"SpringArm3D/CameraMount/ShakePivot/Camera3D"
 	)
 )
 
@@ -45,6 +45,13 @@ var walk_speed: float = 5.5
 var run_speed: float = 8.5
 var speed_modifier: float = 1.0
 var stamina_cost_reduction: float = 1.0
+
+var movement_velocity := Vector2.ZERO
+
+var burst_velocity := Vector3.ZERO
+var burst_start_speed := 0.0
+var burst_duration := 0.0
+var burst_time_left := 0.0
 #endregion
 
 #region Jump Configuration
@@ -97,13 +104,31 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	
+	if Input.is_physical_key_pressed(
+		KEY_P
+	):
+		if burst_time_left <= 0.0:
+			push_movement_direction(
+				18.0,
+				0.18
+			)
+	
 	_menu_logic()
 	_equip_logic(delta)
 	_move_logic(delta)
+	_burst_logic(delta)
+	_apply_horizontal_velocity()
+
 	_jump_logic(delta)
 	
 	_aim_logic()
 	_update_projectile_aim_point()
+	
+	character.update_skill_usage_state(
+		is_on_floor()
+	)
+	
 	_attacks_logic()
 
 	move_and_slide()
@@ -345,24 +370,27 @@ func _get_active_combat_loadout() -> SkillLoadout:
 	#_try_loadout_skill(slot)
 
 func _try_loadout_skill(
-	loadout: SkillLoadout,
-	slot: int
-) -> void:
-	var selected_skill := (
-		loadout.get_skill(slot)
-	)
+		loadout: SkillLoadout,
+		slot: int
+	) -> void:
+		var selected_skill := (
+			loadout.get_skill(slot)
+		)
 
-	if selected_skill == null:
-		print("No skill assigned.")
-		return
+		if selected_skill == null:
+			print("No skill assigned.")
+			return
 
-	if character.is_action_animation_playing():
-		print("Attack already in progress.")
-		return
+		if character.is_action_animation_playing():
+			if not selected_skill.can_interrupt_actions:
+				print("Attack already in progress.")
+				return
 
-	character.attack(
-		selected_skill
-	)
+			character.interrupt_action_animation()
+
+		character.attack(
+			selected_skill
+		)
 
 func _get_loadout_input_slot() -> int:
 	var modifier_active := (
@@ -394,6 +422,40 @@ func _get_loadout_input_slot() -> int:
 
 	return -1
 
+func apply_skill_movement(
+		skill: Skills
+	) -> void:
+		if skill == null:
+			return
+
+		var direction := Vector3.ZERO
+
+		match skill.movement_direction:
+			Skills.MovementDirection.InputOrFacing:
+				direction = get_movement_direction()
+
+			Skills.MovementDirection.Facing:
+				direction = get_facing_direction()
+
+			Skills.MovementDirection.None:
+				pass
+
+		if (
+			direction != Vector3.ZERO
+			and skill.movement_speed > 0.0
+			and skill.movement_duration > 0.0
+		):
+			push(
+				direction,
+				skill.movement_speed,
+				skill.movement_duration
+			)
+
+		if skill.movement_vertical_speed > 0.0:
+			velocity.y = maxf(
+				velocity.y,
+				skill.movement_vertical_speed
+			)
 #endregion
 
 #region Aim
@@ -516,9 +578,8 @@ func _move_logic(delta: float) -> void:
 		-camera.global_rotation.y
 	)
 
-	var horizontal_velocity := Vector2(
-		velocity.x,
-		velocity.z
+	var horizontal_velocity := (
+		movement_velocity
 	)
 
 	if is_on_floor():
@@ -549,52 +610,159 @@ func _move_logic(delta: float) -> void:
 			walk_speed * 8.0
 		)
 
-	velocity.x = horizontal_velocity.x
-	velocity.z = horizontal_velocity.y
+	movement_velocity = (
+		horizontal_velocity
+	)
 	
 	_update_character_facing(
 		delta
 	)
 
 func _update_character_facing(
-	delta: float
-) -> void:
-	var aim_active := (
-		Input.is_action_pressed(
-			"aim"
+		delta: float
+	) -> void:
+		var aim_active := (
+			Input.is_action_pressed(
+				"aim"
+			)
 		)
-	)
 
-	if aim_active:
-		var aim_angle := (
-			camera.global_rotation.y
-			+ PI
+		if aim_active:
+			var aim_angle := (
+				camera.global_rotation.y
+				+ PI
+			)
+
+			character.rotation.y = (
+				rotate_toward(
+					character.rotation.y,
+					aim_angle,
+					10.0 * delta
+				)
+			)
+
+			return
+
+		if movement_input == Vector2.ZERO:
+			return
+
+		var movement_angle := (
+			-movement_input.angle()
+			+ PI / 2.0
 		)
 
 		character.rotation.y = (
 			rotate_toward(
 				character.rotation.y,
-				aim_angle,
-				10.0 * delta
+				movement_angle,
+				6.0 * delta
 			)
 		)
 
-		return
-
-	if movement_input == Vector2.ZERO:
-		return
-
-	var movement_angle := (
-		-movement_input.angle()
-		+ PI / 2.0
+func get_facing_direction() -> Vector3:
+	var direction := (
+		character.global_transform.basis.z
 	)
 
-	character.rotation.y = (
-		rotate_toward(
-			character.rotation.y,
-			movement_angle,
-			6.0 * delta
+	direction.y = 0.0
+
+	return direction.normalized()
+
+func get_local_movement_direction() -> Vector3:
+	var world_direction := (
+		get_movement_direction()
+	)
+
+	return (
+		character.global_transform.basis.inverse()
+		* world_direction
+	).normalized()
+
+func get_movement_direction() -> Vector3:
+	if movement_input == Vector2.ZERO:
+		return get_facing_direction()
+
+	return Vector3(
+		movement_input.x,
+		0.0,
+		movement_input.y
+	).normalized()
+
+func push_movement_direction(
+		speed: float,
+		duration: float
+	) -> void:
+		push(
+			get_movement_direction(),
+			speed,
+			duration
 		)
+
+func push(
+		direction: Vector3,
+		speed: float,
+		duration: float
+	) -> void:
+		var horizontal_direction := Vector3(
+			direction.x,
+			0.0,
+			direction.z
+		)
+
+		if horizontal_direction.is_zero_approx():
+			return
+
+		if speed <= 0.0:
+			return
+
+		if duration <= 0.0:
+			return
+
+		burst_start_speed = speed
+		burst_duration = duration
+		burst_time_left = duration
+
+		burst_velocity = (
+			horizontal_direction.normalized()
+			* speed
+		)
+
+func _burst_logic(
+		delta: float
+	) -> void:
+		if burst_time_left <= 0.0:
+			burst_velocity = Vector3.ZERO
+			return
+
+		burst_time_left = maxf(
+			burst_time_left - delta,
+			0.0
+		)
+
+		var remaining_ratio := (
+			burst_time_left
+			/ burst_duration
+		)
+
+		var current_speed := (
+			burst_start_speed
+			* remaining_ratio
+		)
+
+		burst_velocity = (
+			burst_velocity.normalized()
+			* current_speed
+		)
+
+func _apply_horizontal_velocity() -> void:
+	velocity.x = (
+		movement_velocity.x
+		+ burst_velocity.x
+	)
+
+	velocity.z = (
+		movement_velocity.y
+		+ burst_velocity.z
 	)
 
 func _jump_logic(delta: float) -> void:

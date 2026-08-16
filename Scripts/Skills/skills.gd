@@ -24,6 +24,20 @@ enum RangeType {
 	Mid,
 	High
 }
+enum AirUseRule {
+	Disabled,
+	OncePerAirtime,
+	Unlimited,
+}
+enum MovementDirection {
+	None,
+	InputOrFacing,
+	Facing,
+}
+enum AnimationChannel {
+	Automatic,
+	Mobility,
+}
 #endregion
 
 #region Identity
@@ -54,11 +68,23 @@ var unlock_cost: int = 1
 @export_category("Gameplay")
 
 @export var skill_power: float
-@export var skill_anim_name: String
 @export var skill_type: SkillType
 @export var skill_range: RangeType
 @export var skill_cost: float
 @export var cost_type: CostType = CostType.PerUse
+
+@export_category("Animation")
+@export var skill_anim_name: String
+@export var animation_channel: AnimationChannel = (
+	AnimationChannel.Automatic
+)
+
+@export var directional_animation := false
+
+@export var animation_forward: StringName
+@export var animation_back: StringName
+@export var animation_left: StringName
+@export var animation_right: StringName
 #endregion
 
 #region Regeneration
@@ -66,4 +92,45 @@ var unlock_cost: int = 1
 
 @export var skill_regen_type: RegenType
 @export var skill_regen_power: float
+#endregion
+
+#region Movement
+@export_category("Movement")
+
+@export var movement_direction: MovementDirection = (
+	MovementDirection.None
+)
+
+@export var movement_speed: float = 0.0
+
+@export var movement_duration: float = 0.0
+
+@export var movement_vertical_speed: float = 0.0
+#endregion
+
+#region Usage
+@export_category("Usage")
+
+@export var can_use_on_ground := true
+@export var can_interrupt_actions := false
+@export var air_use_rule: AirUseRule = (
+	AirUseRule.Unlimited
+)
+#endregion
+
+
+#region Impact
+@export_category("Impact")
+
+@export_range(0.0, 1.0, 0.05)
+var impact_shake_intensity := 0.0
+
+@export_range(0.0, 1.0, 0.01)
+var impact_shake_duration := 0.0
+
+@export_range(0.0, 0.25, 0.005)
+var impact_hit_stop_duration := 0.0
+
+@export_range(0.01, 1.0, 0.01)
+var impact_hit_stop_time_scale := 0.05
 #endregion

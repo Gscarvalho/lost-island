@@ -106,7 +106,7 @@ data = PackedVector3Array(0.0911, 5.4185, -0.0338, 0.15079999, 5.4185, -0.0338, 
 
 [node name="Sword" type="Node3D"]
 script = ExtResource("1_dgvbj")
-weapon_name = "Sw0rd"
+weapon_name = "Sword"
 stats_boost = SubResource("Resource_shmom")
 
 [node name="SwordBig" type="MeshInstance3D" parent="."]

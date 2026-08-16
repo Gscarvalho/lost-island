@@ -51,6 +51,12 @@ signal combat_mode_changed(
 @onready var projectile_spawn: Marker3D = (
 	%ProjectileSpawn
 )
+@onready var mobility_state_machine = (
+	$AnimationTree.get(
+		"parameters/MobilityStateMachine/playback"
+	)
+	as AnimationNodeStateMachinePlayback
+)
 #endregion
 
 #region Character Data
@@ -61,6 +67,8 @@ signal combat_mode_changed(
 var current_stats: Stats
 var pending_projectile_skill: Skills
 var pending_projectile_damage := 0.0
+
+var air_used_skill_ids: Array[StringName] = []
 #endregion
 
 #region Equipment State
@@ -279,7 +287,15 @@ func is_action_animation_playing() -> bool:
 		"parameters/MagicOneShot/active"
 	)
 
-	return attack_active or magic_active
+	var mobility_active: bool = $AnimationTree.get(
+		"parameters/MobilityOneShot/active"
+	)
+
+	return (
+		attack_active
+		or magic_active
+		or mobility_active
+	)
 #endregion
 
 #region Resource Costs
@@ -333,13 +349,92 @@ func _apply_skill_effect(skill: Skills) -> void:
 				skill.skill_type,
 				skill.skill_regen_power
 			)
+
+func _apply_skill_movement(
+		skill: Skills
+	) -> void:
+		var player := (
+			get_parent() as Player
+		)
+
+		if player == null:
+			return
+
+		player.apply_skill_movement(
+			skill
+		)
+
+func update_skill_usage_state(
+		is_grounded: bool
+	) -> void:
+		if is_grounded:
+			air_used_skill_ids.clear()
+
+func _can_use_skill_here(
+		skill: Skills
+	) -> bool:
+		var player := (
+			get_parent() as Player
+		)
+
+		if player == null:
+			return true
+
+		if player.is_on_floor():
+			return skill.can_use_on_ground
+
+		match skill.air_use_rule:
+			Skills.AirUseRule.Disabled:
+				return false
+
+			Skills.AirUseRule.OncePerAirtime:
+				return not air_used_skill_ids.has(
+					skill.skill_id
+				)
+
+			Skills.AirUseRule.Unlimited:
+				return true
+
+		return true
+
+func _record_air_skill_use(
+		skill: Skills
+	) -> void:
+		var player := (
+			get_parent() as Player
+		)
+
+		if player == null:
+			return
+
+		if player.is_on_floor():
+			return
+
+		if (
+			skill.air_use_rule
+			!= Skills.AirUseRule.OncePerAirtime
+		):
+			return
+
+		if air_used_skill_ids.has(
+			skill.skill_id
+		):
+			return
+
+		air_used_skill_ids.append(
+			skill.skill_id
+		)
 #endregion
 
 #region Combat Execution
 func attack(skill: Skills) -> void:
 	if skill == null:
 		return
-
+	if not _can_use_skill_here(skill):
+		print(
+			"Skill cannot be used here."
+		)
+		return
 	if not _can_afford_skill(skill):
 		if skill.skill_type == Skills.SkillType.Physical:
 			print("Not enough stamina.")
@@ -348,7 +443,11 @@ func attack(skill: Skills) -> void:
 
 		return
 
-	if skill.skill_type == Skills.SkillType.Physical:
+	if (
+		skill.skill_type
+		== Skills.SkillType.Physical
+		and skill.skill_power > 0.0
+	):
 		var weapon := get_equipped_weapon()
 
 		if weapon != null:
@@ -377,30 +476,117 @@ func attack(skill: Skills) -> void:
 
 	_pay_skill_cost(skill)
 	_apply_skill_effect(skill)
+	_apply_skill_movement(skill)
+	_record_air_skill_use(skill)
 	_play_skill_animation(skill)
 
 	print(skill.skill_name)
 
-func _play_skill_animation(skill: Skills) -> void:
-	if skill.skill_type == Skills.SkillType.Physical:
-		attack_state_machine.travel(
+func _play_skill_animation(
+		skill: Skills
+	) -> void:
+		if (
+			skill.animation_channel
+			== Skills.AnimationChannel.Mobility
+		):
+			_play_mobility_animation(
+				skill
+			)
+
+			return
+
+		if skill.skill_anim_name.is_empty():
+			return
+
+		if skill.skill_type == Skills.SkillType.Physical:
+			attack_state_machine.travel(
+				skill.skill_anim_name
+			)
+
+			$AnimationTree.set(
+				"parameters/AttackOneShot/request",
+				AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+			)
+
+		else:
+			magic_state_machine.travel(
+				skill.skill_anim_name
+			)
+
+			$AnimationTree.set(
+				"parameters/MagicOneShot/request",
+				AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+			)
+
+func _play_mobility_animation(
+		skill: Skills
+	) -> void:
+		var animation_name := StringName(
 			skill.skill_anim_name
 		)
 
+		if skill.directional_animation:
+			animation_name = (
+				_get_directional_animation(
+					skill
+				)
+			)
+
+		if animation_name.is_empty():
+			return
+
+		mobility_state_machine.travel(
+			animation_name
+		)
+
 		$AnimationTree.set(
-			"parameters/AttackOneShot/request",
+			"parameters/MobilityOneShot/request",
 			AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 		)
 
-	else:
-		magic_state_machine.travel(
-			skill.skill_anim_name
+func _get_directional_animation(
+		skill: Skills
+	) -> StringName:
+		var player := (
+			get_parent() as Player
 		)
 
-		$AnimationTree.set(
-			"parameters/MagicOneShot/request",
-			AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+		if player == null:
+			return skill.animation_forward
+
+		var local_direction := (
+			player.get_local_movement_direction()
 		)
+
+		if (
+			absf(local_direction.x)
+			> absf(local_direction.z)
+		):
+			if local_direction.x > 0.0:
+				return skill.animation_right
+
+			return skill.animation_left
+
+		if local_direction.z < 0.0:
+			return skill.animation_back
+
+		return skill.animation_forward
+
+func interrupt_action_animation() -> void:
+	$AnimationTree.set(
+		"parameters/AttackOneShot/request",
+		AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT
+	)
+
+	$AnimationTree.set(
+		"parameters/MagicOneShot/request",
+		AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT
+	)
+
+	end_weapon_damage_window()
+
+	pending_projectile_skill = null
+	pending_projectile_damage = 0.0
 
 func start_weapon_damage_window() -> void:
 	var weapon := get_equipped_weapon()

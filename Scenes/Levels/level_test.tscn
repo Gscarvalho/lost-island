@@ -194,10 +194,19 @@ shape = SubResource("BoxShape3D_k1ht2")
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8084929, -8.842709)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -25.163445)
 
 [node name="TestDummy" parent="Entities" instance=ExtResource("15_t2ggk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9984562, 0.5, 2.467464)
+
+[node name="TestDummy3" parent="Entities" instance=ExtResource("15_t2ggk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.71408, 0.5, 15.034891)
+
+[node name="TestDummy4" parent="Entities" instance=ExtResource("15_t2ggk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.106966734, 0.5, -6.2912536)
+
+[node name="TestDummy5" parent="Entities" instance=ExtResource("15_t2ggk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.36546, 0.5, 12.430433)
 
 [node name="TestDummy2" parent="Entities" instance=ExtResource("15_t2ggk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.928036, 0.5, 2.1062932)
@@ -206,6 +215,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.928036, 0.5, 2.1062932)
 
 [node name="ManaPickup" parent="Pickups" instance=ExtResource("15_oerva")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8566198, 2.061078, -3.0618553)
+mana_amount = 999.0
 
 [node name="ManaPickup2" parent="Pickups" instance=ExtResource("15_oerva")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.510234, 2.0610776, 1.9181681)

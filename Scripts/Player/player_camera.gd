@@ -13,11 +13,11 @@ extends Node3D
 )
 
 @onready var shake_pivot: Node3D = (
-	$SpringArm3D/ShakePivot
+	$SpringArm3D/CameraMount/ShakePivot
 )
 
 @onready var camera: Camera3D = (
-	$SpringArm3D/ShakePivot/Camera3D
+	$SpringArm3D/CameraMount/ShakePivot/Camera3D
 )
 
 var normal_spring_length: float

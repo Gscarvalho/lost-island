@@ -26,6 +26,8 @@ shader_parameter/color_gradient = SubResource("GradientTexture2D_an0y3")
 shader_parameter/fresnel_gradient = SubResource("GradientTexture2D_ws04i")
 
 [sub_resource type="SphereMesh" id="SphereMesh_mdo4f"]
+radius = 0.25
+height = 0.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 
