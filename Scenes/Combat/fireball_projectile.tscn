@@ -31,6 +31,7 @@ shader_parameter/fresnel_gradient = SubResource("GradientTexture2D_ws04i")
 
 [node name="FireballProjectile" type="Node3D"]
 script = ExtResource("1_qqkdr")
+speed = 25.0
 
 [node name="Visual" type="MeshInstance3D" parent="."]
 material_override = SubResource("ShaderMaterial_xgfhm")

@@ -7,9 +7,9 @@ enum Slot {
 	X,
 	Y,
 	B,
-	LT_X,
-	LT_Y,
-	LT_B,
+	RT_X,
+	RT_Y,
+	RT_B,
 }
 
 @export_category("Skill Slots")
@@ -18,9 +18,9 @@ enum Slot {
 @export var y_skill: Skills
 @export var b_skill: Skills
 
-@export var lt_x_skill: Skills
-@export var lt_y_skill: Skills
-@export var lt_b_skill: Skills
+@export var rt_x_skill: Skills
+@export var rt_y_skill: Skills
+@export var rt_b_skill: Skills
 
 
 func get_skill(slot: int) -> Skills:
@@ -34,14 +34,14 @@ func get_skill(slot: int) -> Skills:
 		Slot.B:
 			return b_skill
 
-		Slot.LT_X:
-			return lt_x_skill
+		Slot.RT_X:
+			return rt_x_skill
 
-		Slot.LT_Y:
-			return lt_y_skill
+		Slot.RT_Y:
+			return rt_y_skill
 
-		Slot.LT_B:
-			return lt_b_skill
+		Slot.RT_B:
+			return rt_b_skill
 
 		_:
 			return null
@@ -60,14 +60,14 @@ func get_skill_slot(skill: Skills) -> int:
 	if b_skill == skill:
 		return Slot.B
 
-	if lt_x_skill == skill:
-		return Slot.LT_X
+	if rt_x_skill == skill:
+		return Slot.RT_X
 
-	if lt_y_skill == skill:
-		return Slot.LT_Y
+	if rt_y_skill == skill:
+		return Slot.RT_Y
 
-	if lt_b_skill == skill:
-		return Slot.LT_B
+	if rt_b_skill == skill:
+		return Slot.RT_B
 
 	return -1
 
@@ -132,16 +132,25 @@ func auto_assign(skill: Skills) -> bool:
 		assign_skill(skill, Slot.B)
 		return true
 
-	if lt_x_skill == null:
-		assign_skill(skill, Slot.LT_X)
+	if rt_x_skill == null:
+		assign_skill(
+			skill, 
+			Slot.RT_X
+		)
 		return true
 
-	if lt_y_skill == null:
-		assign_skill(skill, Slot.LT_Y)
+	if rt_y_skill == null:
+		assign_skill(
+			skill, 
+			Slot.RT_Y
+		)
 		return true
 
-	if lt_b_skill == null:
-		assign_skill(skill, Slot.LT_B)
+	if rt_b_skill == null:
+		assign_skill(
+			skill,
+			Slot.RT_B
+		)
 		return true
 
 	return false
@@ -158,13 +167,13 @@ func get_slot_name(slot: int) -> String:
 		Slot.B:
 			return "B"
 
-		Slot.LT_X:
+		Slot.RT_X:
 			return "RT + X"
 
-		Slot.LT_Y:
+		Slot.RT_Y:
 			return "RT + Y"
 
-		Slot.LT_B:
+		Slot.RT_B:
 			return "RT + B"
 
 		_:
@@ -185,11 +194,11 @@ func _set_skill(
 		Slot.B:
 			b_skill = skill
 
-		Slot.LT_X:
-			lt_x_skill = skill
+		Slot.RT_X:
+			rt_x_skill = skill
 
-		Slot.LT_Y:
-			lt_y_skill = skill
+		Slot.RT_Y:
+			rt_y_skill = skill
 
-		Slot.LT_B:
-			lt_b_skill = skill
+		Slot.RT_B:
+			rt_b_skill = skill

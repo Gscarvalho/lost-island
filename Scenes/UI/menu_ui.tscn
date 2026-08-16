@@ -1414,11 +1414,11 @@ vertical_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
-focus_neighbor_top = NodePath("../SlotLTB")
+focus_neighbor_top = NodePath("../SlotRTB")
 focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../SlotY")
 focus_next = NodePath("../SlotY")
-focus_previous = NodePath("../SlotLTB")
+focus_previous = NodePath("../SlotRTB")
 primary_input_icon = ExtResource("22_8eyqk")
 
 [node name="SlotY" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
@@ -1438,43 +1438,43 @@ layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../SlotY")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../SlotLTX")
-focus_next = NodePath("../SlotLTX")
+focus_neighbor_bottom = NodePath("../SlotRTX")
+focus_next = NodePath("../SlotRTX")
 focus_previous = NodePath("../SlotY")
 primary_input_icon = ExtResource("24_ipr0g")
 
-[node name="SlotLTX" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+[node name="SlotRTX" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../SlotB")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../SlotLTY")
-focus_next = NodePath("../SlotLTY")
+focus_neighbor_bottom = NodePath("../SlotRTY")
+focus_next = NodePath("../SlotRTY")
 focus_previous = NodePath("../SlotB")
 primary_input_icon = ExtResource("25_rj5fu")
 secondary_input_icon = ExtResource("22_8eyqk")
 
-[node name="SlotLTY" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+[node name="SlotRTY" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
-focus_neighbor_top = NodePath("../SlotLTX")
+focus_neighbor_top = NodePath("../SlotRTX")
 focus_neighbor_right = NodePath(".")
-focus_neighbor_bottom = NodePath("../SlotLTB")
-focus_next = NodePath("../SlotLTB")
-focus_previous = NodePath("../SlotLTX")
+focus_neighbor_bottom = NodePath("../SlotRTB")
+focus_next = NodePath("../SlotRTB")
+focus_previous = NodePath("../SlotRTX")
 primary_input_icon = ExtResource("25_rj5fu")
 secondary_input_icon = ExtResource("23_21gkc")
 
-[node name="SlotLTB" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
+[node name="SlotRTB" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
-focus_neighbor_top = NodePath("../SlotLTY")
+focus_neighbor_top = NodePath("../SlotRTY")
 focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../SlotX")
 focus_next = NodePath("../SlotX")
-focus_previous = NodePath("../SlotLTY")
+focus_previous = NodePath("../SlotRTY")
 primary_input_icon = ExtResource("25_rj5fu")
 secondary_input_icon = ExtResource("24_ipr0g")

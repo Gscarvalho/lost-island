@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=40 format=3 uid="uid://df6prq4xcpyx3"]
 
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Characters/player.tscn" id="1_vflva"]
 [ext_resource type="Material" uid="uid://cl6e3woev4yo6" path="res://Assets/Materials/ground_mat.tres" id="1_xawdm"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://cv2ul8v4grwu0" path="res://addons/proton_scatter/src/scatter_item.gd" id="11_m1fqf"]
 [ext_resource type="Script" uid="uid://bvu5sm6v7t1s2" path="res://addons/proton_scatter/src/scatter_shape.gd" id="12_fk2v1"]
 [ext_resource type="Script" uid="uid://c68s2472h76yi" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="13_k1ht2"]
+[ext_resource type="Shader" uid="uid://ugjry0x16wga" path="res://Assets/Shaders/ground_shader.gdshader" id="13_x7ba5"]
 [ext_resource type="PackedScene" uid="uid://bx4plrqqed8sa" path="res://Scenes/Pickups/mana_pickup.tscn" id="15_oerva"]
 [ext_resource type="PackedScene" uid="uid://d3cd1spae7vfj" path="res://Scenes/Combat/test_dummy.tscn" id="15_t2ggk"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="15_x7ba5"]
@@ -44,41 +45,69 @@ size = Vector2(200, 200)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fjvvq"]
 points = PackedVector3Array(-100, 0, 100, 100, 0, 100, 100, 0, -100, -100, 0, -100)
 
-[sub_resource type="Resource" id="Resource_t2ggk"]
+[sub_resource type="Resource" id="Resource_x7ba5"]
 script = ExtResource("7_g1i77")
 amount = 30000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_x7ba5"]
+[sub_resource type="Resource" id="Resource_g1i77"]
 script = ExtResource("8_q55b2")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
 scale = Vector3(1, 1, 1)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_g1i77"]
+[sub_resource type="Resource" id="Resource_q55b2"]
 script = ExtResource("9_hwde3")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_q55b2"]
+[sub_resource type="Resource" id="Resource_hwde3"]
 script = ExtResource("10_btpkh")
 ray_length = 5.0
 ray_offset = 5.0
 remove_points_on_miss = false
 collision_mask = 16
 
-[sub_resource type="Resource" id="Resource_hwde3"]
+[sub_resource type="Resource" id="Resource_btpkh"]
 script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5"), SubResource("Resource_g1i77"), SubResource("Resource_q55b2")])
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_x7ba5"), SubResource("Resource_g1i77"), SubResource("Resource_q55b2"), SubResource("Resource_hwde3")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
 size = Vector3(60, 1, 190)
 metadata/_custom_type_script = "uid://c68s2472h76yi"
+
+[sub_resource type="Gradient" id="Gradient_fk2v1"]
+offsets = PackedFloat32Array(0.603912, 0.606357)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_k1ht2"]
+gradient = SubResource("Gradient_fk2v1")
+
+[sub_resource type="Gradient" id="Gradient_tu8bo"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2rbid"]
+gradient = SubResource("Gradient_tu8bo")
+fill_from = Vector2(0, 0.5)
+fill_to = Vector2(0, 0.5)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kxg02"]
+render_priority = 0
+shader = ExtResource("13_x7ba5")
+shader_parameter/albedo = Color(0.47281986, 0.26705217, 0.091417946, 1)
+shader_parameter/color_gradient = SubResource("GradientTexture2D_k1ht2")
+shader_parameter/fresnel_gradient = SubResource("GradientTexture2D_2rbid")
+
+[sub_resource type="BoxMesh" id="BoxMesh_v6cxb"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m1fqf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fk2v1"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k1ht2"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_fk2v1"]
 
@@ -116,7 +145,7 @@ shape = SubResource("ConvexPolygonShape3D_fjvvq")
 
 [node name="Grass" type="Node3D" parent="World/Ground"]
 script = ExtResource("4_oerva")
-modifier_stack = SubResource("Resource_hwde3")
+modifier_stack = SubResource("Resource_btpkh")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(15, 15, 15)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"
@@ -130,6 +159,42 @@ path = "uid://c7cun65u8mgn2"
 [node name="ScatterShape" type="Node3D" parent="World/Ground/Grass"]
 script = ExtResource("12_fk2v1")
 shape = SubResource("Resource_d1w1t")
+
+[node name="WallBig" type="MeshInstance3D" parent="World"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 1, 0, 5.1061516, 13)
+material_override = SubResource("ShaderMaterial_kxg02")
+mesh = SubResource("BoxMesh_v6cxb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/WallBig"]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/WallBig/StaticBody3D"]
+shape = SubResource("BoxShape3D_m1fqf")
+
+[node name="WallNarrow" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1.6730325, 2.5881906, 0.4829629, -0.44828773, 9.659258, -0.12940952, -1, 0, 0.8660254, 11, 2.1061516, 7)
+material_override = SubResource("ShaderMaterial_kxg02")
+mesh = SubResource("BoxMesh_v6cxb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/WallNarrow"]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/WallNarrow/StaticBody3D"]
+shape = SubResource("BoxShape3D_fk2v1")
+
+[node name="WallSmall" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1.3322825, -0.66987306, -0.9615163, -1.1207194, 9.659258, -0.12940952, 4.687111, 2.5, 0.24236242, -3.035469, 4.1061516, -6)
+material_override = SubResource("ShaderMaterial_kxg02")
+mesh = SubResource("BoxMesh_v6cxb")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="World/WallSmall"]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/WallSmall/StaticBody3D"]
+shape = SubResource("BoxShape3D_k1ht2")
 
 [node name="Entities" type="Node3D" parent="."]
 

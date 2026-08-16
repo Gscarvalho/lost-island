@@ -44,23 +44,23 @@ extends Control
 	%LoadoutNameB
 )
 
-@onready var loadout_name_lt_x: RichTextLabel = (
-	%LoadoutNameLTX
+@onready var loadout_name_rt_x: RichTextLabel = (
+	%LoadoutNameRTX
 )
 
-@onready var loadout_name_lt_y: RichTextLabel = (
-	%LoadoutNameLTY
+@onready var loadout_name_rt_y: RichTextLabel = (
+	%LoadoutNameRTY
 )
 
-@onready var loadout_name_lt_b: RichTextLabel = (
-	%LoadoutNameLTB
+@onready var loadout_name_rt_b: RichTextLabel = (
+	%LoadoutNameRTB
 )
 
 @onready var inputs: VBoxContainer = (
 	%Inputs
 )
 
-@onready var inputs_lt: VBoxContainer = (
+@onready var inputs_rt: VBoxContainer = (
 	%InputsRT
 )
 @onready var timer_indicator: MarginContainer = (
@@ -84,7 +84,9 @@ extends Control
 @onready var fire_mana_amount: RichTextLabel = (
 	%FireManaAmount
 )
-
+@onready var aim_crosshair: Control = (
+	%AimCrosshair
+)
 
 
 #endregion
@@ -285,23 +287,23 @@ func _refresh_loadout_hud() -> void:
 	)
 
 	_set_loadout_name(
-		loadout_name_lt_x,
+		loadout_name_rt_x,
 		loadout.get_skill(
-			SkillLoadout.Slot.LT_X
+			SkillLoadout.Slot.RT_X
 		)
 	)
 
 	_set_loadout_name(
-		loadout_name_lt_y,
+		loadout_name_rt_y,
 		loadout.get_skill(
-			SkillLoadout.Slot.LT_Y
+			SkillLoadout.Slot.RT_Y
 		)
 	)
 
 	_set_loadout_name(
-		loadout_name_lt_b,
+		loadout_name_rt_b,
 		loadout.get_skill(
-			SkillLoadout.Slot.LT_B
+			SkillLoadout.Slot.RT_B
 		)
 	)
 
@@ -317,7 +319,7 @@ func _set_loadout_name(
 	label.text = " " + skill.skill_name
 
 func _update_input_layer() -> void:
-	var lt_active := (
+	var modifier_active := (
 		StateManager.current_state
 		== StateManager.State.PLAY
 		and Input.is_action_pressed(
@@ -325,8 +327,25 @@ func _update_input_layer() -> void:
 		)
 	)
 
-	inputs.visible = not lt_active
-	inputs_lt.visible = lt_active
+	var aim_active := (
+		StateManager.current_state
+		== StateManager.State.PLAY
+		and Input.is_action_pressed(
+			"aim"
+		)
+	)
+
+	inputs.visible = (
+		not modifier_active
+	)
+
+	inputs_rt.visible = (
+		modifier_active
+	)
+
+	aim_crosshair.visible = (
+		aim_active
+	)
 #endregion
 
 #region Mana HUD

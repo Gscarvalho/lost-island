@@ -19,30 +19,64 @@ enum MenuPage {
 #endregion
 
 #region Character Page References
-@onready var attack_value: RichTextLabel = %ATKValue
-@onready var defense_value: RichTextLabel = %DEFValue
-@onready var magic_attack_value: RichTextLabel = %MATKValue
-@onready var magic_defense_value: RichTextLabel = %MDEFValue
-@onready var speed_value: RichTextLabel = %SPDValue
-@onready var mana_fire: VBoxContainer = %ManaFire
-@onready var mana_water: VBoxContainer = %ManaWater
-@onready var mana_light: VBoxContainer = %ManaLight
+@onready var attack_value: RichTextLabel = (
+	%ATKValue
+)
+@onready var defense_value: RichTextLabel = (
+	%DEFValue
+)
+@onready var magic_attack_value: RichTextLabel = (
+	%MATKValue
+)
+@onready var magic_defense_value: RichTextLabel = (
+	%MDEFValue
+)
+@onready var speed_value: RichTextLabel = (
+	%SPDValue
+)
+@onready var mana_fire: VBoxContainer = (
+	%ManaFire
+)
+@onready var mana_water: VBoxContainer = (
+	%ManaWater
+)
+@onready var mana_light: VBoxContainer = (
+	%ManaLight
+)
 
-@onready var menu_health_bar: TextureProgressBar = %MenuHealthBar
-@onready var menu_health_label: RichTextLabel = %MenuHealthLabel
-@onready var menu_stamina_bar: TextureProgressBar = %MenuStaminaBar
-@onready var menu_stamina_label: RichTextLabel = %MenuStaminaLabel
+@onready var menu_health_bar: TextureProgressBar = (
+	%MenuHealthBar
+)
+@onready var menu_health_label: RichTextLabel = (
+	%MenuHealthLabel
+)
+@onready var menu_stamina_bar: TextureProgressBar = (
+	%MenuStaminaBar
+)
+@onready var menu_stamina_label: RichTextLabel = (
+	%MenuStaminaLabel
+)
 #endregion
 
 #region Settings References
-@onready var master_volume_slider: HSlider = %MasterVolumeSlider
-@onready var exit_game_button: TextureButton = %ExitGameButton
+@onready var master_volume_slider: HSlider = (
+	%MasterVolumeSlider
+)
+@onready var exit_game_button: TextureButton = (
+	%ExitGameButton
+)
 #endregion
 
 #region Skill Tree References
-@onready var skill_tree_bg_icon: TextureRect = $SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon/BGIcon
-@onready var skill_tree_overlay: Control = $SkillTreeOverlay
-@onready var skill_tree_title: Label = $SkillTreeOverlay/TitleContainer/SkillTreeTitle
+@onready var skill_tree_bg_icon: TextureRect = (
+	$SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon/BGIcon
+)
+@onready var skill_tree_overlay: Control = (
+	$SkillTreeOverlay
+)
+@onready var skill_tree_title: Label = (
+	$SkillTreeOverlay/TitleContainer/SkillTreeTitle
+)
 
 @onready var skill_name: RichTextLabel = %SkillName
 @onready var skill_power_value: RichTextLabel = %SkillPowerValue
@@ -71,9 +105,9 @@ enum MenuPage {
 @onready var slot_x_button: LoadoutSlotButton = %SlotX
 @onready var slot_y_button: LoadoutSlotButton = %SlotY
 @onready var slot_b_button: LoadoutSlotButton = %SlotB
-@onready var slot_lt_x_button: LoadoutSlotButton = %SlotLTX
-@onready var slot_lt_y_button: LoadoutSlotButton = %SlotLTY
-@onready var slot_lt_b_button: LoadoutSlotButton = %SlotLTB
+@onready var slot_rt_x_button: LoadoutSlotButton = %SlotRTX
+@onready var slot_rt_y_button: LoadoutSlotButton = %SlotRTY
+@onready var slot_rt_b_button: LoadoutSlotButton = %SlotRTB
 #endregion
 
 #region Runtime State
@@ -154,21 +188,21 @@ func _connect_signals() -> void:
 		)
 	)
 
-	slot_lt_x_button.pressed.connect(
+	slot_rt_x_button.pressed.connect(
 		_on_loadout_slot_pressed.bind(
-			SkillLoadout.Slot.LT_X
+			SkillLoadout.Slot.RT_X
 		)
 	)
 
-	slot_lt_y_button.pressed.connect(
+	slot_rt_y_button.pressed.connect(
 		_on_loadout_slot_pressed.bind(
-			SkillLoadout.Slot.LT_Y
+			SkillLoadout.Slot.RT_Y
 		)
 	)
 
-	slot_lt_b_button.pressed.connect(
+	slot_rt_b_button.pressed.connect(
 		_on_loadout_slot_pressed.bind(
-			SkillLoadout.Slot.LT_B
+			SkillLoadout.Slot.RT_B
 		)
 	)
 
@@ -967,18 +1001,18 @@ func _refresh_loadout_popup() -> void:
 	)
 
 	_update_loadout_button(
-		slot_lt_x_button,
-		SkillLoadout.Slot.LT_X
+		slot_rt_x_button,
+		SkillLoadout.Slot.RT_X
 	)
 
 	_update_loadout_button(
-		slot_lt_y_button,
-		SkillLoadout.Slot.LT_Y
+		slot_rt_y_button,
+		SkillLoadout.Slot.RT_Y
 	)
 
 	_update_loadout_button(
-		slot_lt_b_button,
-		SkillLoadout.Slot.LT_B
+		slot_rt_b_button,
+		SkillLoadout.Slot.RT_B
 	)
 
 func _update_loadout_button(

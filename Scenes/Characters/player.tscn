@@ -85,8 +85,6 @@ shape = SubResource("CapsuleShape3D_40svl")
 [node name="CameraController" parent="." instance=ExtResource("3_al8ar")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
-min_limit_x = -0.7
-max_limit_x = 0.2
 
 [node name="PlayerUI" parent="." instance=ExtResource("4_gy20a")]
 

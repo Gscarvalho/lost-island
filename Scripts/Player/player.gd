@@ -371,21 +371,21 @@ func _get_loadout_input_slot() -> int:
 
 	if Input.is_action_just_pressed("attack"):
 		return (
-			SkillLoadout.Slot.LT_X
+			SkillLoadout.Slot.RT_X
 			if modifier_active
 			else SkillLoadout.Slot.X
 		)
 
 	if Input.is_action_just_pressed("skill"):
 		return (
-			SkillLoadout.Slot.LT_Y
+			SkillLoadout.Slot.RT_Y
 			if modifier_active
 			else SkillLoadout.Slot.Y
 		)
 
 	if Input.is_action_just_pressed("combat_b"):
 		return (
-			SkillLoadout.Slot.LT_B
+			SkillLoadout.Slot.RT_B
 			if modifier_active
 			else SkillLoadout.Slot.B
 		)
@@ -438,7 +438,9 @@ func _update_projectile_aim_point() -> void:
 			ray_end
 		)
 	)
-
+	
+	query.collide_with_areas = true
+	
 	query.exclude = [
 		get_rid()
 	]
@@ -453,8 +455,30 @@ func _update_projectile_aim_point() -> void:
 		projectile_aim_point = ray_end
 		return
 
-	projectile_aim_point = (
+	var hit_position: Vector3 = (
 		result["position"]
+	)
+
+	var hit_distance := (
+		ray_origin.distance_to(
+			hit_position
+		)
+	)
+
+	if (
+		hit_distance
+		< minimum_projectile_aim_distance
+	):
+		projectile_aim_point = (
+			ray_origin
+			+ ray_direction
+			* minimum_projectile_aim_distance
+		)
+
+		return
+
+	projectile_aim_point = (
+		hit_position
 	)
 
 
@@ -467,6 +491,9 @@ func get_projectile_aim_point() -> Vector3:
 var projectile_aim_distance: float = 100.0
 
 var projectile_aim_point := Vector3.ZERO
+
+@export_range(1.0, 50.0, 0.5)
+var minimum_projectile_aim_distance: float = 8.0
 #endregion
 
 #region Movement
@@ -514,17 +541,6 @@ func _move_logic(delta: float) -> void:
 			* speed_modifier
 		)
 
-		var target_angle := (
-			-movement_input.angle()
-			+ PI / 2.0
-		)
-
-		character.rotation.y = rotate_toward(
-			character.rotation.y,
-			target_angle,
-			6.0 * delta
-		)
-
 	else:
 		horizontal_velocity = horizontal_velocity.move_toward(
 			Vector2.ZERO,
@@ -533,6 +549,51 @@ func _move_logic(delta: float) -> void:
 
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.y
+	
+	_update_character_facing(
+		delta
+	)
+
+func _update_character_facing(
+	delta: float
+) -> void:
+	var aim_active := (
+		Input.is_action_pressed(
+			"aim"
+		)
+	)
+
+	if aim_active:
+		var aim_angle := (
+			camera.global_rotation.y
+			+ PI
+		)
+
+		character.rotation.y = (
+			rotate_toward(
+				character.rotation.y,
+				aim_angle,
+				10.0 * delta
+			)
+		)
+
+		return
+
+	if movement_input == Vector2.ZERO:
+		return
+
+	var movement_angle := (
+		-movement_input.angle()
+		+ PI / 2.0
+	)
+
+	character.rotation.y = (
+		rotate_toward(
+			character.rotation.y,
+			movement_angle,
+			6.0 * delta
+		)
+	)
 
 func _jump_logic(delta: float) -> void:
 	if StateManager.current_state != StateManager.State.PLAY:

@@ -6,14 +6,18 @@
 
 [node name="CameraController" type="Node3D"]
 script = ExtResource("1_q81a4")
-aim_horizontal_offset = -1.25
+aim_spring_length = 3.0
+aim_horizontal_offset = -1.2
+min_limit_x = -0.9
+max_limit_x = 0.8
 
 [node name="SpringArm3D" type="SpringArm3D" parent="."]
 collision_mask = 49
 shape = SubResource("SphereShape3D_q81a4")
-spring_length = 6.0
+spring_length = 4.0
 
 [node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
 h_offset = -0.8
-v_offset = 0.3
+v_offset = 0.5
 current = true
+fov = 80.0
