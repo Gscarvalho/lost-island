@@ -12,8 +12,12 @@ extends Node3D
 	$SpringArm3D
 )
 
+@onready var shake_pivot: Node3D = (
+	$SpringArm3D/ShakePivot
+)
+
 @onready var camera: Camera3D = (
-	$SpringArm3D/Camera3D
+	$SpringArm3D/ShakePivot/Camera3D
 )
 
 var normal_spring_length: float
@@ -27,6 +31,16 @@ var aim_tween: Tween
 @export var vertical_acceration := 1.0
 @export var min_limit_x := -1.0
 @export var max_limit_x := 1.0
+
+@export_category("Screen Shake")
+
+@export var max_shake_offset := 0.12
+@export var max_shake_roll := 0.035
+
+var shake_intensity := 0.0
+var shake_duration := 0.0
+var shake_time_left := 0.0
+
 var look_direction := Vector2.ZERO
 
 
@@ -40,15 +54,41 @@ func _ready() -> void:
 	)
 
 	normal_fov = camera.fov
+	
+	CameraEffects.shake_requested.connect(
+		_on_shake_requested
+	)
 
 func _process(delta: float) -> void:
-	if StateManager.current_state == StateManager.State.PLAY or StateManager.current_state == StateManager.State.WEAPON:
-		look_direction = Input.get_vector("look_left","look_right","look_up","look_down")
-		rotate_from_vector2(look_direction * delta * Vector2(horizontal_acceration,vertical_acceration))
+	if (
+		StateManager.current_state
+		== StateManager.State.PLAY
+		or StateManager.current_state
+		== StateManager.State.WEAPON
+	):
+		look_direction = Input.get_vector(
+			"look_left",
+			"look_right",
+			"look_up",
+			"look_down"
+		)
+
+		rotate_from_vector2(
+			look_direction
+			* delta
+			* Vector2(
+				horizontal_acceration,
+				vertical_acceration
+			)
+		)
+
+	_update_shake(
+		delta
+	)
 
 func rotate_from_vector2(
 	v: Vector2
-) -> void:
+	) -> void:
 	if v.length() == 0:
 		return
 
@@ -61,10 +101,9 @@ func rotate_from_vector2(
 		max_limit_x
 	)
 
-
 func set_aiming(
 	aiming: bool
-) -> void:
+	) -> void:
 	if is_aiming == aiming:
 		return
 
@@ -114,4 +153,58 @@ func set_aiming(
 		"fov",
 		target_fov,
 		aim_transition_time
+	)
+
+func _on_shake_requested(
+	intensity: float,
+	duration: float
+	) -> void:
+	shake_intensity = intensity
+	shake_duration = duration
+	shake_time_left = duration
+
+func _update_shake(
+	delta: float
+	) -> void:
+	if shake_time_left <= 0.0:
+		shake_pivot.position = Vector3.ZERO
+		shake_pivot.rotation = Vector3.ZERO
+		return
+
+	shake_time_left = maxf(
+		shake_time_left - delta,
+		0.0
+	)
+
+	var falloff := (
+		shake_time_left
+		/ maxf(
+			shake_duration,
+			0.001
+		)
+	)
+
+	var strength := (
+		shake_intensity
+		* falloff
+	)
+
+	shake_pivot.position = Vector3(
+		randf_range(-1.0, 1.0)
+		* max_shake_offset
+		* strength,
+
+		randf_range(-1.0, 1.0)
+		* max_shake_offset
+		* strength,
+
+		0.0
+	)
+
+	shake_pivot.rotation = Vector3(
+		0.0,
+		0.0,
+		randf_range(-1.0, 1.0)
+		* max_shake_roll
+		* strength
 	)

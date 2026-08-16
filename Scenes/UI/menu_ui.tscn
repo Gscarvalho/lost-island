@@ -682,7 +682,8 @@ texture = ExtResource("5_o1rl0")
 expand_mode = 3
 stretch_mode = 5
 
-[node name="FireManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaFire"]
+[node name="FireManaAmount" type="RichTextLabel" parent="Main/Seperator/Mana/ManaFire"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -728,7 +729,8 @@ texture = ExtResource("9_uf2rm")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="WaterManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaWater"]
+[node name="WaterManaAmount" type="RichTextLabel" parent="Main/Seperator/Mana/ManaWater"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -774,7 +776,8 @@ texture = ExtResource("10_o1rl0")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="LightManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaLight"]
+[node name="LightManaAmount" type="RichTextLabel" parent="Main/Seperator/Mana/ManaLight"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 50)
 layout_mode = 2
 size_flags_horizontal = 3

@@ -58,6 +58,20 @@ enum MenuPage {
 @onready var menu_stamina_label: RichTextLabel = (
 	%MenuStaminaLabel
 )
+@onready var fire_mana_amount: RichTextLabel = (
+	%FireManaAmount
+)
+@onready var water_mana_amount: RichTextLabel = (
+	%WaterManaAmount
+)
+@onready var light_mana_amount: RichTextLabel = (
+	%LightManaAmount
+)
+
+
+
+
+
 #endregion
 
 #region Settings References

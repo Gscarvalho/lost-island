@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3csq11psgdpd"]
 
-[ext_resource type="Script" uid="uid://dbfcmtv8fj7r4" path="res://Scripts/Player/player_camera.gd" id="1_q81a4"]
+[ext_resource type="Script" uid="uid://dbfcmtv8fj7r4" path="res://Scripts/Player/player_camera.gd" id="1_hubco"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_q81a4"]
 
-[node name="CameraController" type="Node3D"]
-script = ExtResource("1_q81a4")
+[node name="PlayerCamera" type="Node3D"]
+script = ExtResource("1_hubco")
 aim_spring_length = 3.0
 aim_horizontal_offset = -1.2
 min_limit_x = -0.9
@@ -16,8 +16,9 @@ collision_mask = 49
 shape = SubResource("SphereShape3D_q81a4")
 spring_length = 4.0
 
-[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]
+[node name="ShakePivot" type="Node3D" parent="SpringArm3D"]
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D/ShakePivot"]
 h_offset = -0.8
 v_offset = 0.5
 current = true
-fov = 80.0

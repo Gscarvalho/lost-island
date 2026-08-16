@@ -6,11 +6,13 @@ extends CharacterBody3D
 @export var progression: PlayerProgress
 
 @onready var camera: Camera3D = (
-	%CameraController.get_node("SpringArm3D/Camera3D")
+	%PlayerCamera.get_node(
+		"SpringArm3D/ShakePivot/Camera3D"
+	)
 )
 
 @onready var camera_controller: PlayerCamera = (
-	$CameraController
+	%PlayerCamera
 )
 
 @onready var character: PlayerCharacter = (

@@ -18,6 +18,7 @@ config/icon="res://Assets/Images/Icons/Prototype/godot_icon.svg"
 [autoload]
 
 StateManager="*res://Scripts/Core/state_manager.gd"
+CameraEffects="*res://Scripts/Core/camera_effects.gd"
 
 [display]
 

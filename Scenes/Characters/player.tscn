@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ctshhk3eb7d2h" path="res://Scripts/Player/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://c7hpgqo2k5244" path="res://Scenes/Characters/Skins/player_character.tscn" id="2_40svl"]
 [ext_resource type="Resource" uid="uid://bv6tkpmy8ybc4" path="res://Data/Player/player_progress.tres" id="2_cqrjx"]
-[ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Utilities/camera_controller.tscn" id="3_al8ar"]
+[ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Utilities/player_camera.tscn" id="3_al8ar"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="4_01b8d"]
 [ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/UI/player_ui.tscn" id="4_gy20a"]
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="5_xccyk"]
@@ -82,7 +82,7 @@ mana_maximum_enabled = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
 shape = SubResource("CapsuleShape3D_40svl")
 
-[node name="CameraController" parent="." instance=ExtResource("3_al8ar")]
+[node name="PlayerCamera" parent="." instance=ExtResource("3_al8ar")]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
