@@ -68,7 +68,6 @@ pivot_offset = Vector2(640, 360)
 color = Color(0.7058824, 0.7058824, 0.7058824, 1)
 
 [node name="Main" type="MarginContainer" parent="."]
-modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -88,278 +87,6 @@ theme_override_constants/margin_bottom = 24
 [node name="Seperator" type="HBoxContainer" parent="Main"]
 layout_mode = 2
 alignment = 1
-
-[node name="Player" type="VBoxContainer" parent="Main/Seperator"]
-custom_minimum_size = Vector2(200, 300)
-layout_mode = 2
-size_flags_horizontal = 5
-size_flags_vertical = 4
-theme_override_constants/separation = 30
-alignment = 1
-
-[node name="Anim" type="MarginContainer" parent="Main/Seperator/Player"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="AvatarBG" type="Panel" parent="Main/Seperator/Player/Anim"]
-custom_minimum_size = Vector2(500, 500)
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("20_w61pg")
-theme_override_styles/panel = SubResource("StyleBoxFlat_w61pg")
-
-[node name="Current" type="VBoxContainer" parent="Main/Seperator/Player"]
-z_index = 2
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="MenuHealthBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 30)
-layout_mode = 2
-size_flags_horizontal = 4
-value = 10.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_cuj2c")
-texture_progress = ExtResource("2_cuj2c")
-tint_under = Color(1, 1, 1, 0)
-tint_progress = Color(0.3647059, 1, 0.62352943, 1)
-
-[node name="MenuHealthLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuHealthBar"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = -8.0
-offset_right = 25.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 32
-text = "50/100"
-scroll_active = false
-vertical_alignment = 3
-justification_flags = 161
-
-[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuHealthBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_n8txd")
-expand_mode = 1
-
-[node name="MenuStaminaBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 30)
-layout_mode = 2
-size_flags_horizontal = 4
-value = 10.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_cuj2c")
-texture_progress = ExtResource("2_cuj2c")
-tint_under = Color(1, 1, 1, 0)
-tint_progress = Color(0.3647059, 1, 1, 1)
-
-[node name="MenuStaminaLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = -8.0
-offset_right = 25.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 32
-text = "50/100"
-scroll_active = false
-vertical_alignment = 3
-justification_flags = 161
-
-[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_n8txd")
-expand_mode = 1
-
-[node name="Equips" type="VBoxContainer" parent="Main/Seperator/Player"]
-z_index = 2
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="ColorRect" type="NinePatchRect" parent="Main/Seperator/Player/Equips"]
-custom_minimum_size = Vector2(200, 20)
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("2_cuj2c")
-axis_stretch_horizontal = 2
-
-[node name="ColorRect2" type="NinePatchRect" parent="Main/Seperator/Player/Equips"]
-custom_minimum_size = Vector2(200, 20)
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("2_cuj2c")
-axis_stretch_horizontal = 2
-
-[node name="Mana" type="VBoxContainer" parent="Main/Seperator"]
-z_index = 2
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 10
-alignment = 1
-
-[node name="ManaFire" type="VBoxContainer" parent="Main/Seperator/Mana"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-size_flags_vertical = 4
-focus_neighbor_top = NodePath("../ManaLight")
-focus_neighbor_bottom = NodePath("../ManaWater")
-focus_mode = 2
-alignment = 1
-
-[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaFire"]
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("20_w61pg")
-
-[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaFire/ManBG"]
-self_modulate = Color(1, 0.54901963, 0, 1)
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_o1rl0")
-expand_mode = 3
-stretch_mode = 5
-
-[node name="FireManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaFire"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_font_sizes/normal_font_size = 32
-text = "9996"
-fit_content = true
-horizontal_alignment = 1
-
-[node name="ManaWater" type="VBoxContainer" parent="Main/Seperator/Mana"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-size_flags_vertical = 4
-focus_neighbor_top = NodePath("../ManaFire")
-focus_neighbor_bottom = NodePath("../ManaLight")
-focus_mode = 2
-alignment = 1
-
-[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaWater"]
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("20_w61pg")
-
-[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaWater/ManBG"]
-self_modulate = Color(0, 0.7490196, 1, 1)
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("9_uf2rm")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="WaterManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaWater"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_font_sizes/normal_font_size = 32
-text = "999"
-fit_content = true
-horizontal_alignment = 1
-
-[node name="ManaLight" type="VBoxContainer" parent="Main/Seperator/Mana"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 200)
-layout_mode = 2
-size_flags_vertical = 4
-focus_neighbor_top = NodePath("../ManaWater")
-focus_neighbor_bottom = NodePath("../ManaFire")
-focus_mode = 2
-alignment = 1
-
-[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaLight"]
-custom_minimum_size = Vector2(150, 150)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("20_w61pg")
-
-[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaLight/ManBG"]
-self_modulate = Color(1, 0.84313726, 0, 1)
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -50.0
-offset_right = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("10_o1rl0")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="LightManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaLight"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_font_sizes/normal_font_size = 32
-text = "999"
-fit_content = true
-horizontal_alignment = 1
 
 [node name="Stats" type="VBoxContainer" parent="Main/Seperator"]
 z_index = 2
@@ -756,6 +483,307 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Player" type="VBoxContainer" parent="Main/Seperator"]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 4
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Anim" type="MarginContainer" parent="Main/Seperator/Player"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="AvatarBG" type="Panel" parent="Main/Seperator/Player/Anim"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("20_w61pg")
+theme_override_styles/panel = SubResource("StyleBoxFlat_w61pg")
+
+[node name="AvatarViewportLayer" type="SubViewportContainer" parent="Main/Seperator/Player/Anim/AvatarBG"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Main/Seperator/Player/Anim/AvatarBG/AvatarViewportLayer"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="MenuAvatar" parent="Main/Seperator/Player/Anim/AvatarBG/AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
+unique_name_in_owner = true
+
+[node name="Current" type="VBoxContainer" parent="Main/Seperator/Player"]
+z_index = 2
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MenuHealthBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_under = Color(1, 1, 1, 0)
+tint_progress = Color(0.3647059, 1, 0.62352943, 1)
+
+[node name="MenuHealthLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuHealthBar"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = -8.0
+offset_right = 25.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "50/100"
+scroll_active = false
+vertical_alignment = 3
+justification_flags = 161
+
+[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuHealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_n8txd")
+expand_mode = 1
+
+[node name="MenuStaminaBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_under = Color(1, 1, 1, 0)
+tint_progress = Color(0.3647059, 1, 1, 1)
+
+[node name="MenuStaminaLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = -8.0
+offset_right = 25.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "50/100"
+scroll_active = false
+vertical_alignment = 3
+justification_flags = 161
+
+[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_n8txd")
+expand_mode = 1
+
+[node name="Equips" type="VBoxContainer" parent="Main/Seperator/Player"]
+z_index = 2
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ColorRect" type="NinePatchRect" parent="Main/Seperator/Player/Equips"]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
+
+[node name="ColorRect2" type="NinePatchRect" parent="Main/Seperator/Player/Equips"]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
+
+[node name="Mana" type="VBoxContainer" parent="Main/Seperator"]
+z_index = 2
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ManaFire" type="VBoxContainer" parent="Main/Seperator/Mana"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ManaLight")
+focus_neighbor_bottom = NodePath("../ManaWater")
+focus_mode = 2
+alignment = 1
+
+[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaFire"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("20_w61pg")
+
+[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaFire/ManBG"]
+self_modulate = Color(1, 0.54901963, 0, 1)
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_o1rl0")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="FireManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaFire"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 32
+text = "9996"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="ManaWater" type="VBoxContainer" parent="Main/Seperator/Mana"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ManaFire")
+focus_neighbor_bottom = NodePath("../ManaLight")
+focus_mode = 2
+alignment = 1
+
+[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaWater"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("20_w61pg")
+
+[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaWater/ManBG"]
+self_modulate = Color(0, 0.7490196, 1, 1)
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_uf2rm")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="WaterManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaWater"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 32
+text = "999"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="ManaLight" type="VBoxContainer" parent="Main/Seperator/Mana"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../ManaWater")
+focus_neighbor_bottom = NodePath("../ManaFire")
+focus_mode = 2
+alignment = 1
+
+[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaLight"]
+custom_minimum_size = Vector2(150, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("20_w61pg")
+
+[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaLight/ManBG"]
+self_modulate = Color(1, 0.84313726, 0, 1)
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_o1rl0")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LightManaLevel" type="RichTextLabel" parent="Main/Seperator/Mana/ManaLight"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 32
+text = "999"
+fit_content = true
+horizontal_alignment = 1
+
 [node name="InventoryPage" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -835,28 +863,6 @@ texture_hover = ExtResource("10_ujsln")
 texture_focused = ExtResource("11_ujsln")
 ignore_texture_size = true
 stretch_mode = 5
-
-[node name="AvatarViewportLayer" type="SubViewportContainer" parent="."]
-z_index = 1
-custom_minimum_size = Vector2(1280, 720)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="AvatarViewportLayer"]
-own_world_3d = true
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1280, 720)
-render_target_update_mode = 4
-
-[node name="MenuAvatar" parent="AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
-unique_name_in_owner = true
 
 [node name="SkillTreeOverlay" type="Control" parent="."]
 visible = false

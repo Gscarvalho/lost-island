@@ -14,8 +14,11 @@ signal health_changed(
 @onready var head_hurtbox: Hurtbox = (
 	$HeadHurtbox
 )
-@onready var torso_hurtbox: Hurtbox = (
-	$TorsoHurtbox
+@onready var body_hurtbox: Hurtbox = (
+	$BodyHurtbox
+)
+@onready var legs_hurtbox: Hurtbox = (
+	$LegsHurtbox
 )
 @onready var dummy_health: TextureProgressBar = (
 	%dummy_health
@@ -29,7 +32,10 @@ func _ready() -> void:
 		_on_hurtbox_hit_received
 	)
 	
-	torso_hurtbox.hit_received.connect(
+	body_hurtbox.hit_received.connect(
+		_on_hurtbox_hit_received
+	)
+	legs_hurtbox.hit_received.connect(
 		_on_hurtbox_hit_received
 	)
 

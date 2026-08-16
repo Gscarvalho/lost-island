@@ -14,7 +14,9 @@ enum MenuPage {
 @onready var main: MarginContainer = $Main
 @onready var inventory_page: Control = $InventoryPage
 @onready var settings_page: Control = $SettingsPage
-@onready var avatar_viewport_layer: SubViewportContainer = $AvatarViewportLayer
+@onready var avatar_viewport_layer: SubViewportContainer = (
+	%AvatarViewportLayer
+)
 @onready var menu_avatar: MenuAvatar = %MenuAvatar
 #endregion
 

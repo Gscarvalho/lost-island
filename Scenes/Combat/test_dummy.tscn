@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d3cd1spae7vfj"]
+[gd_scene load_steps=10 format=3 uid="uid://d3cd1spae7vfj"]
 
 [ext_resource type="Script" uid="uid://cffuvjru1hsu0" path="res://Scripts/Combat/test_dummy.gd" id="1_at8mp"]
 [ext_resource type="Material" uid="uid://djo80ucamk643" path="res://addons/proton_scatter/demos/assets/materials/m_leaves.tres" id="1_lq6mg"]
@@ -6,9 +6,13 @@
 [ext_resource type="Resource" uid="uid://ddhimkcgqjdi4" path="res://Data/Enemies/test_dummy_stats.tres" id="2_ncyk3"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="4_rkvq4"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_at8mp"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ncyk3"]
+radius = 0.4
+height = 2.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_rkvq4"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_at8mp"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_ncyk3"]
 viewport_path = NodePath("UI/SubViewport")
@@ -17,15 +21,13 @@ viewport_path = NodePath("UI/SubViewport")
 script = ExtResource("1_at8mp")
 stats = ExtResource("2_ncyk3")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-material_override = ExtResource("1_lq6mg")
-mesh = SubResource("SphereMesh_at8mp")
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+collision_layer = 2
+collision_mask = 53
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.2, 0)
-material_override = ExtResource("1_lq6mg")
-mesh = SubResource("SphereMesh_at8mp")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ncyk3")
 
 [node name="HeadHurtbox" type="Area3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.2, 0)
@@ -39,26 +41,54 @@ metadata/_custom_type_script = "uid://bw2tr5xfe80sr"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HeadHurtbox"]
 shape = SubResource("SphereShape3D_rkvq4")
 
-[node name="TorsoHurtbox" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="HeadVisual" type="MeshInstance3D" parent="HeadHurtbox"]
+material_override = ExtResource("1_lq6mg")
+mesh = SubResource("SphereMesh_at8mp")
+skeleton = NodePath("../..")
+
+[node name="BodyHurtbox" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 collision_layer = 256
 collision_mask = 0
 script = ExtResource("1_n6jnl")
-hurtbox_id = &"torso"
+hurtbox_id = &"tough_spot"
+damage_multiplier = 0.5
 metadata/_custom_type_script = "uid://bw2tr5xfe80sr"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TorsoHurtbox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyHurtbox"]
 shape = SubResource("SphereShape3D_rkvq4")
 
+[node name="BodyVisual" type="MeshInstance3D" parent="BodyHurtbox"]
+material_override = ExtResource("1_lq6mg")
+mesh = SubResource("SphereMesh_at8mp")
+skeleton = NodePath("../..")
+
+[node name="LegsHurtbox" type="Area3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+collision_layer = 256
+collision_mask = 0
+script = ExtResource("1_n6jnl")
+hurtbox_id = &"weak_point"
+damage_multiplier = 2.0
+metadata/_custom_type_script = "uid://bw2tr5xfe80sr"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LegsHurtbox"]
+shape = SubResource("SphereShape3D_rkvq4")
+
+[node name="LegsVisual" type="MeshInstance3D" parent="LegsHurtbox"]
+material_override = ExtResource("1_lq6mg")
+mesh = SubResource("SphereMesh_at8mp")
+skeleton = NodePath("../..")
+
 [node name="UI" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_ncyk3")
 
 [node name="SubViewport" type="SubViewport" parent="UI"]
 disable_3d = true
 transparent_bg = true
-size = Vector2i(100, 15)
+size = Vector2i(125, 25)
 size_2d_override_stretch = true
 
 [node name="dummy_health" type="TextureProgressBar" parent="UI/SubViewport"]
