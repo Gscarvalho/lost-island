@@ -2,6 +2,11 @@
 class_name PlayerCharacter
 extends Node3D
 
+enum CombatMode {
+	PHYSICAL,
+	ELEMENTAL,
+}
+
 #region Signals
 signal health_changed(
 	current: float,
@@ -23,11 +28,6 @@ signal mana_maximum_changed(
 	maximum: float
 )
 
-enum CombatMode {
-	PHYSICAL,
-	ELEMENTAL,
-}
-
 signal combat_mode_changed(
 	mode: CombatMode
 )
@@ -35,11 +35,15 @@ signal combat_mode_changed(
 
 #region References
 @onready var attack_state_machine = (
-	$AnimationTree.get("parameters/AttackStateMachine/playback")
+	$AnimationTree.get(
+		"parameters/AttackStateMachine/playback"
+	)
 	as AnimationNodeStateMachinePlayback
 )
 @onready var magic_state_machine = (
-	$AnimationTree.get("parameters/MagicStateMachine/playback")
+	$AnimationTree.get(
+		"parameters/MagicStateMachine/playback"
+	)
 	as AnimationNodeStateMachinePlayback
 )
 @onready var handslot_r: BoneAttachment3D = (
@@ -57,18 +61,25 @@ signal combat_mode_changed(
 	)
 	as AnimationNodeStateMachinePlayback
 )
+@onready var player_hurtbox: Hurtbox = (
+	$Hurtboxes/PlayerHurtbox
+)
 #endregion
 
 #region Character Data
 @export var base_stats: Stats
 @export var attacks: Array[Skills]
 @export var skill_book: Skillbook
+@export var starting_mana: float = 100.0
 
 var current_stats: Stats
 var pending_projectile_skill: Skills
 var pending_projectile_damage := 0.0
 
 var air_used_skill_ids: Array[StringName] = []
+
+var current_action_skill: Skills
+var current_action_time := 0.0
 #endregion
 
 #region Equipment State
@@ -83,22 +94,22 @@ func is_physical_mode() -> bool:
 
 
 func set_combat_mode(
-	mode: CombatMode
-) -> void:
-	if combat_mode == mode:
-		return
+		mode: CombatMode
+	) -> void:
+		if combat_mode == mode:
+			return
 
-	combat_mode = mode
+		combat_mode = mode
 
-	handslot_r.visible = (
-		is_physical_mode()
-	)
+		handslot_r.visible = (
+			is_physical_mode()
+		)
 
-	_refresh_equipment_stats()
+		_refresh_equipment_stats()
 
-	combat_mode_changed.emit(
-		combat_mode
-	)
+		combat_mode_changed.emit(
+			combat_mode
+		)
 #endregion
 
 #region Mana
@@ -113,9 +124,9 @@ func set_combat_mode(
 ]
 
 var mana_inventory: Array[float] = [
-	7.0,
-	7.0,
-	7.0,
+	starting_mana,
+	starting_mana,
+	starting_mana
 ]
 
 func get_mana_amount(
@@ -264,6 +275,9 @@ var current_stamina := 1.0:
 
 #region Lifecycle
 func _ready() -> void:
+	player_hurtbox.hit_received.connect(
+		_on_hurtbox_hit_received
+	)
 	current_stats = base_stats.duplicate()
 	attacks = attacks.duplicate()
 	handslot_r.visible = (
@@ -275,6 +289,17 @@ func _ready() -> void:
 
 	current_hp = current_stats.max_hp
 	current_stamina = 100.0
+
+func _process(
+		delta: float
+	) -> void:
+		if current_action_skill == null:
+			return
+
+		if not is_action_animation_playing():
+			return
+
+		current_action_time += delta
 #endregion
 
 #region Action State
@@ -296,6 +321,51 @@ func is_action_animation_playing() -> bool:
 		or magic_active
 		or mobility_active
 	)
+
+func can_interrupt_with(
+		next_skill: Skills
+	) -> bool:
+		if next_skill == null:
+			return false
+
+		if not next_skill.can_interrupt_actions:
+			return false
+
+		if current_action_skill == null:
+			return true
+
+		var speed_stat := 0.0
+
+		if current_stats != null:
+			speed_stat = maxf(
+				current_stats.speed,
+				0.0
+			)
+
+		var speed_multiplier := (
+			1.0
+			+ speed_stat / 100.0
+		)
+
+		var required_time := (
+			current_action_skill.interrupt_lock_time
+			/ speed_multiplier
+		)
+
+		required_time = maxf(
+			required_time,
+			current_action_skill.interrupt_lock_floor
+		)
+
+		required_time = maxf(
+			required_time,
+			next_skill.interrupt_requirement
+		)
+
+		return (
+			current_action_time
+			>= required_time
+		)
 #endregion
 
 #region Resource Costs
@@ -473,7 +543,9 @@ func attack(skill: Skills) -> void:
 					skill
 				)
 			)
-
+	current_action_skill = skill
+	current_action_time = 0.0
+	
 	_pay_skill_cost(skill)
 	_apply_skill_effect(skill)
 	_apply_skill_movement(skill)
@@ -580,6 +652,11 @@ func interrupt_action_animation() -> void:
 
 	$AnimationTree.set(
 		"parameters/MagicOneShot/request",
+		AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT
+	)
+	
+	$AnimationTree.set(
+		"parameters/MobilityOneShot/request",
 		AnimationNodeOneShot.ONE_SHOT_REQUEST_FADE_OUT
 	)
 
@@ -689,7 +766,7 @@ func has_equipped_weapon() -> bool:
 	return get_equipped_weapon() != null
 #endregion
 
-#region Damage Calculation
+#region Outgoing Damage Calculation
 func calculate_skill_damage(
 	skill: Skills
 ) -> float:
@@ -712,4 +789,62 @@ func calculate_skill_damage(
 		skill.skill_power
 		* stat_multiplier
 	)
+#endregion
+
+#region Incoming Damage
+func _on_hurtbox_hit_received(
+		damage_data: DamageData
+	) -> void:
+		var final_damage := (
+			calculate_received_damage(
+				damage_data
+			)
+		)
+
+		take_damage(
+			final_damage
+		)
+
+
+func take_damage(
+		damage: float
+	) -> void:
+		if damage <= 0.0:
+			return
+
+		current_hp -= damage
+
+
+func calculate_received_damage(
+		damage_data: DamageData
+	) -> float:
+		if damage_data == null:
+			return 0.0
+
+		if current_stats == null:
+			return damage_data.amount
+
+		var defense_value := 0.0
+
+		match damage_data.damage_type:
+			DamageData.DamageType.PHYSICAL:
+				defense_value = (
+					current_stats.defense
+				)
+
+			_:
+				defense_value = (
+					current_stats.m_defense
+				)
+
+		defense_value = maxf(
+			defense_value,
+			0.0
+		)
+
+		return (
+			damage_data.amount
+			* 100.0
+			/ (100.0 + defense_value)
+		)
 #endregion

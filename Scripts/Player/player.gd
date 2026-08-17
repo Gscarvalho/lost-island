@@ -382,8 +382,12 @@ func _try_loadout_skill(
 			return
 
 		if character.is_action_animation_playing():
-			if not selected_skill.can_interrupt_actions:
-				print("Attack already in progress.")
+			if not character.can_interrupt_with(
+				selected_skill
+			):
+				print(
+					"Action cannot be interrupted yet."
+				)
 				return
 
 			character.interrupt_action_animation()

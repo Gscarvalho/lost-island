@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Stats" load_steps=2 format=3 uid="uid://d36lrcp4pfu0u"]
+
+[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="1_uetft"]
+
+[resource]
+script = ExtResource("1_uetft")
+max_hp = 200.0
+attack = 20.0
+m_attack = 0.0
+metadata/_custom_type_script = "uid://baaxbte0f7aus"

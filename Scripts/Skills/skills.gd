@@ -112,10 +112,20 @@ var unlock_cost: int = 1
 @export_category("Usage")
 
 @export var can_use_on_ground := true
-@export var can_interrupt_actions := false
 @export var air_use_rule: AirUseRule = (
 	AirUseRule.Unlimited
 )
+@export_category("Interrupt")
+@export var can_interrupt_actions := false
+
+@export_range(0.0, 2.0, 0.01)
+var interrupt_lock_time := 0.25
+
+@export_range(0.0, 2.0, 0.01)
+var interrupt_lock_floor := 0.05
+
+@export_range(0.0, 2.0, 0.01)
+var interrupt_requirement := 0.0
 #endregion
 
 
