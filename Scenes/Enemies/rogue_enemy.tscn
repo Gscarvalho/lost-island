@@ -1,20 +1,19 @@
-[gd_scene load_steps=22 format=4 uid="uid://ca5iqknoky5b7"]
+[gd_scene load_steps=23 format=4 uid="uid://b6og5145jgic5"]
 
-[ext_resource type="Texture2D" uid="uid://dr4yp6ftt003s" path="res://Imports/KayKit_Adventurers_2.0_FREE/Characters/gltf/Rogue_Hooded_rogue_texture.png" id="1_glf31"]
-[ext_resource type="ArrayMesh" uid="uid://ofjwhkqhal7u" path="res://Imports/KayKit_Adventurers_2.0_FREE/Assets/obj/sword_1handed.obj" id="1_ln7vj"]
-[ext_resource type="Animation" uid="uid://c4jnbgpg8qxc" path="res://Assets/Animations/Rig_Medium/Idle_A.res" id="2_ln7vj"]
-[ext_resource type="Animation" uid="uid://ch2qe0c3yy85o" path="res://Assets/Animations/Rig_Medium/Walking_A.res" id="3_bomb2"]
-[ext_resource type="Animation" uid="uid://ciqew831p3kej" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Raise.res" id="4_kw8hk"]
-[ext_resource type="Animation" uid="uid://cgqyfsdbw1wuq" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Shoot.res" id="5_phdr1"]
-[ext_resource type="Animation" uid="uid://bumxvghyego75" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Spellcasting.res" id="6_g7m4f"]
-[ext_resource type="Animation" uid="uid://2twr3qdp6app" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Spellcasting_Long.res" id="7_kmi4n"]
-[ext_resource type="Animation" uid="uid://c2hbx5mi54dw6" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Summon.res" id="8_36n53"]
-[ext_resource type="Animation" uid="uid://bj6fuo0smwavd" path="res://Assets/Animations/Rig_Medium/Melee_Dualwield_Attack_Slice.res" id="10_bomb2"]
+[ext_resource type="Texture2D" uid="uid://dr4yp6ftt003s" path="res://Imports/KayKit_Adventurers_2.0_FREE/Characters/gltf/Rogue_Hooded_rogue_texture.png" id="1_3enca"]
+[ext_resource type="Animation" uid="uid://c4jnbgpg8qxc" path="res://Assets/Animations/Rig_Medium/Idle_A.res" id="2_qmm4d"]
+[ext_resource type="Animation" uid="uid://ciqew831p3kej" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Raise.res" id="3_1y704"]
+[ext_resource type="Animation" uid="uid://cgqyfsdbw1wuq" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Shoot.res" id="4_7eoau"]
+[ext_resource type="Animation" uid="uid://bumxvghyego75" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Spellcasting.res" id="5_hv31o"]
+[ext_resource type="Animation" uid="uid://2twr3qdp6app" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Spellcasting_Long.res" id="6_17n6f"]
+[ext_resource type="Animation" uid="uid://c2hbx5mi54dw6" path="res://Assets/Animations/Rig_Medium/Ranged_Magic_Summon.res" id="7_kftis"]
+[ext_resource type="Animation" uid="uid://ch2qe0c3yy85o" path="res://Assets/Animations/Rig_Medium/Walking_A.res" id="8_ra6lb"]
+[ext_resource type="Animation" uid="uid://bt8fdndi7itbd" path="res://Assets/Animations/Rig_Medium/Melee_Dualwield_Attack_Chop.res" id="9_qmm4d"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xvxnh"]
 resource_name = "rogue"
 cull_mode = 2
-albedo_texture = ExtResource("1_glf31")
+albedo_texture = ExtResource("1_3enca")
 roughness = 0.5
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_7bt4c"]
@@ -252,15 +251,24 @@ blend_shape_mode = 0
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_8nxdk"]
 _data = {
-&"Idle_A": ExtResource("2_ln7vj"),
-&"Melee_Dualwield_Attack_Slice": ExtResource("10_bomb2"),
-&"Ranged_Magic_Raise": ExtResource("4_kw8hk"),
-&"Ranged_Magic_Shoot": ExtResource("5_phdr1"),
-&"Ranged_Magic_Spellcasting": ExtResource("6_g7m4f"),
-&"Ranged_Magic_Spellcasting_Long": ExtResource("7_kmi4n"),
-&"Ranged_Magic_Summon": ExtResource("8_36n53"),
-&"Walking_A": ExtResource("3_bomb2")
+&"Attack": ExtResource("9_qmm4d"),
+&"Idle": ExtResource("2_qmm4d"),
+&"Move": ExtResource("8_ra6lb"),
+&"Ranged_Magic_Raise": ExtResource("3_1y704"),
+&"Ranged_Magic_Shoot": ExtResource("4_7eoau"),
+&"Ranged_Magic_Spellcasting": ExtResource("5_hv31o"),
+&"Ranged_Magic_Spellcasting_Long": ExtResource("6_17n6f"),
+&"Ranged_Magic_Summon": ExtResource("7_kftis")
 }
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3enca"]
+animation = &"rogue/Idle_A"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3enca"]
+graph_offset = Vector2(0.769989, 40.329376)
+nodes/BasicAnimations/node = SubResource("AnimationNodeAnimation_3enca")
+nodes/BasicAnimations/position = Vector2(80, 140)
+node_connections = [&"output", 0, &"BasicAnimations"]
 
 [node name="RogueEnemy" type="Node3D"]
 
@@ -316,7 +324,7 @@ bones/6/parent = 1
 bones/6/rest = Transform3D(1, 1.496114e-07, -6.08626e-08, 1.4740667e-07, -0.9993962, -0.034741182, -6.6023446e-08, 0.034741133, -0.9993976, -0.17094506, 0.11358726, 1.3923272e-08)
 bones/6/enabled = true
 bones/6/position = Vector3(-0.17094505, 0.11358729, 1.7414205e-08)
-bones/6/rotation = Quaternion(0.9973222, -0.029457362, 0.03152927, 0.059048567)
+bones/6/rotation = Quaternion(0.99732214, -0.02945736, 0.031529266, 0.059048563)
 bones/6/scale = Vector3(1, 0.9999998, 1.0000012)
 bones/7/name = "lowerleg.r"
 bones/7/parent = 6
@@ -365,7 +373,7 @@ bones/13/parent = 11
 bones/13/rest = Transform3D(0.057284202, 0.9983573, -4.5386042e-07, -3.8742996e-07, 4.768369e-07, 0.99999976, 0.9983573, -0.057284202, 4.1410917e-07, 0.21200737, 0.13413215, 8.402462e-08)
 bones/13/enabled = true
 bones/13/position = Vector3(0.21200734, 0.13413203, 8.330719e-08)
-bones/13/rotation = Quaternion(-0.5599063, -0.06088014, -0.6439747, 0.5177792)
+bones/13/rotation = Quaternion(-0.5599063, -0.06088022, -0.64397454, 0.5177793)
 bones/13/scale = Vector3(0.99999934, 0.99999934, 0.99999976)
 bones/14/name = "lowerarm.l"
 bones/14/parent = 13
@@ -400,7 +408,7 @@ bones/18/parent = 11
 bones/18/rest = Transform3D(0.05728419, -0.99835724, 4.4361707e-07, 5.6624367e-07, 4.7683673e-07, 0.99999976, -0.99835724, -0.05728419, 5.9262936e-07, -0.21200737, 0.13413215, 8.402462e-08)
 bones/18/enabled = true
 bones/18/position = Vector3(-0.21200736, 0.13413203, 8.889513e-08)
-bones/18/rotation = Quaternion(-0.61824405, 0.08072871, 0.61801153, 0.47887257)
+bones/18/rotation = Quaternion(-0.61824405, 0.08072872, 0.61801153, 0.47887266)
 bones/18/scale = Vector3(0.9999993, 0.9999993, 0.99999976)
 bones/19/name = "lowerarm.r"
 bones/19/parent = 18
@@ -430,24 +438,6 @@ bones/22/enabled = true
 bones/22/position = Vector3(1.2813075e-08, 0.096125126, -0.057500053)
 bones/22/rotation = Quaternion(-8.8561185e-09, -1.2217315e-08, 0.7071068, 0.7071067)
 bones/22/scale = Vector3(0.99999994, 1, 0.99999994)
-
-[node name="handslot_l" type="BoneAttachment3D" parent="Rig_Medium/Skeleton3D"]
-transform = Transform3D(1.0369614e-06, 0.26286292, 0.9648326, 0.99999917, -2.9802325e-07, -5.912929e-07, 3.3326728e-07, 0.96483254, -0.262863, 0.50776786, 0.6367048, -0.018521145)
-bone_name = "handslot.l"
-bone_idx = 17
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Rig_Medium/Skeleton3D/handslot_l"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = ExtResource("1_ln7vj")
-
-[node name="handslot_r" type="BoneAttachment3D" parent="Rig_Medium/Skeleton3D"]
-transform = Transform3D(6.6288476e-07, -0.14989461, -0.9887014, -0.99999917, 5.0663937e-07, -5.0188595e-07, 2.3635913e-07, 0.9887013, -0.14989474, -0.49106082, 0.6410295, 0.10659559)
-bone_name = "handslot.r"
-bone_idx = 22
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Rig_Medium/Skeleton3D/handslot_r"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-mesh = ExtResource("1_ln7vj")
 
 [node name="RogueHooded_ArmLeft" type="MeshInstance3D" parent="Rig_Medium/Skeleton3D"]
 mesh = SubResource("ArrayMesh_7bt4c")
@@ -485,3 +475,7 @@ skin = SubResource("Skin_t2oe1")
 libraries = {
 &"rogue": SubResource("AnimationLibrary_8nxdk")
 }
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeBlendTree_3enca")
+anim_player = NodePath("../AnimationPlayer")
