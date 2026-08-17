@@ -772,13 +772,13 @@ func _jump_logic(delta: float) -> void:
 	var can_jump := (
 		Input.is_action_just_pressed("jump")
 		and is_on_floor()
-		and character.current_stamina >= 10.0
+		and character.current_stamina >= 1.0
 	)
 
 	if can_jump:
 		velocity.y = -jump_velocity
 		character.current_stamina -= (
-			10.0 * stamina_cost_reduction
+			1.0 * stamina_cost_reduction
 		)
 		stamina_regen_timer.start()
 
