@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://beb7kp3qi1167"
-path="res://.godot/imported/rogue_texture.png-775a858c7f96a85e8c4ff0c31cf78dcd.ctex"
+uid="uid://cqafwwf2ea23v"
+path="res://.godot/imported/barbarian_texture.png-83c252ae204cd1a058a0880ea9e25f72.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Imports/KayKit_Adventurers_2.0_FREE/Textures/rogue_texture.png"
-dest_files=["res://.godot/imported/rogue_texture.png-775a858c7f96a85e8c4ff0c31cf78dcd.ctex"]
+source_file="res://Assets/Textures/barbarian_texture.png"
+dest_files=["res://.godot/imported/barbarian_texture.png-83c252ae204cd1a058a0880ea9e25f72.ctex"]
 
 [params]
 

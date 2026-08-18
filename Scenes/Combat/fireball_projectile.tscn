@@ -1,33 +1,21 @@
-[gd_scene load_steps=11 format=3 uid="uid://dkfwe34arf1td"]
+[gd_scene load_steps=7 format=3 uid="uid://dkfwe34arf1td"]
 
-[ext_resource type="Shader" uid="uid://vd25su214kbv" path="res://Assets/Shaders/fireball.gdshader" id="1_1gx53"]
 [ext_resource type="Script" uid="uid://y6livvl7t3qf" path="res://Scripts/Combat/skill_projectile.gd" id="1_qqkdr"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="2_qqkdr"]
-
-[sub_resource type="Gradient" id="Gradient_ryes3"]
-colors = PackedColorArray(0.43529412, 0, 0, 1, 1, 0, 0.8862745, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_an0y3"]
-gradient = SubResource("Gradient_ryes3")
-
-[sub_resource type="Gradient" id="Gradient_ppfqg"]
-colors = PackedColorArray(0.07058824, 0.52156866, 1, 1, 1, 0.72156864, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_ws04i"]
-gradient = SubResource("Gradient_ppfqg")
-fill_from = Vector2(0.2, 0.7)
-fill_to = Vector2(0.1, 0.7)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xgfhm"]
-render_priority = 0
-shader = ExtResource("1_1gx53")
-shader_parameter/albedo = Color(1, 0.3372549, 0, 1)
-shader_parameter/color_gradient = SubResource("GradientTexture2D_an0y3")
-shader_parameter/fresnel_gradient = SubResource("GradientTexture2D_ws04i")
+[ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_ryes3"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_mdo4f"]
 radius = 0.25
 height = 0.5
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_an0y3"]
+render_priority = 0
+shader = ExtResource("2_ryes3")
+shader_parameter/base_color = Color(1, 0.07058824, 0, 1)
+shader_parameter/use_albedo_texture = false
+shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
+shader_parameter/shadow_threshold = 0.2
+shader_parameter/shadow_softness = 0.02
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 
@@ -36,8 +24,8 @@ script = ExtResource("1_qqkdr")
 speed = 25.0
 
 [node name="Visual" type="MeshInstance3D" parent="."]
-material_override = SubResource("ShaderMaterial_xgfhm")
 mesh = SubResource("SphereMesh_mdo4f")
+surface_material_override/0 = SubResource("ShaderMaterial_an0y3")
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 512

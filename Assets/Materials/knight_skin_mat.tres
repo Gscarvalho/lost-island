@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://b8ewj6kci467r"]
 
-[ext_resource type="Shader" uid="uid://cw5jkssrochks" path="res://Assets/Shaders/knight_skin.gdshader" id="1_2uj3t"]
+[ext_resource type="Shader" uid="uid://u85srmfwl4ka" path="res://Assets/Shaders/toon_surface_by_texture.gdshader" id="1_qxayk"]
 [ext_resource type="Texture2D" uid="uid://d0jsyt0r8jcqa" path="res://Assets/Images/Textures/knight_texture.png" id="2_qxayk"]
 
 [sub_resource type="Gradient" id="Gradient_42bwj"]
@@ -17,7 +17,7 @@ gradient = SubResource("Gradient_ehxue")
 
 [resource]
 render_priority = 0
-shader = ExtResource("1_2uj3t")
+shader = ExtResource("1_qxayk")
 shader_parameter/albedo = Color(1, 1, 1, 1)
 shader_parameter/texture_albedo = ExtResource("2_qxayk")
 shader_parameter/albedo_texture_size = Vector2i(1024, 1024)

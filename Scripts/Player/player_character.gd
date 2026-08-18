@@ -743,9 +743,7 @@ func _refresh_equipment_stats() -> void:
 		current_weapon != null
 		and is_physical_mode()
 	):
-		current_weapon.user = (
-			get_parent() as CharacterBody3D
-		)
+		current_weapon.user = self
 
 		if current_weapon.stats_boost != null:
 			current_weapon.stats_boost.apply_to(

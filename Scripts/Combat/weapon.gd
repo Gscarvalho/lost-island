@@ -9,7 +9,7 @@ extends Node3D
 	$Hitbox
 )
 
-var user: CharacterBody3D
+var user: Node
 
 func _ready() -> void:
 	hitbox.hit_confirmed.connect(
@@ -28,7 +28,8 @@ func prepare_attack(
 		hitbox.configure_attack(
 			self,
 			skill,
-			damage
+			damage,
+			user
 		)
 
 func _on_hit_confirmed(

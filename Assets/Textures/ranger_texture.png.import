@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjoq0jh7jtvbb"
-path="res://.godot/imported/knight_texture.png-edb20748e11f7ebe7e638ad6d3c0fb25.ctex"
+uid="uid://bnbg3q0e85xfe"
+path="res://.godot/imported/ranger_texture.png-83a9c97941962350437dae171f3f0d92.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Imports/KayKit_Adventurers_2.0_FREE/Textures/knight_texture.png"
-dest_files=["res://.godot/imported/knight_texture.png-edb20748e11f7ebe7e638ad6d3c0fb25.ctex"]
+source_file="res://Assets/Textures/ranger_texture.png"
+dest_files=["res://.godot/imported/ranger_texture.png-83a9c97941962350437dae171f3f0d92.ctex"]
 
 [params]
 
