@@ -11,6 +11,7 @@ enum DamageType {
 var amount: float = 0.0
 
 var source: Node
+var source_actor: Node
 var source_skill: Skills
 var source_weapon: Weapon
 var hurtbox_id: StringName = &""
@@ -21,17 +22,27 @@ var damage_type: DamageType = (
 
 
 func _init(
-	damage_amount: float,
-	type: DamageType,
-	damage_source: Node = null,
-	skill: Skills = null,
-	weapon: Weapon = null
-) -> void:
-	amount = maxf(
-		damage_amount,
-		0.0
-	)
-	damage_type = type
-	source = damage_source
-	source_skill = skill
-	source_weapon = weapon
+		damage_amount: float,
+		type: DamageType,
+		damage_source: Node = null,
+		skill: Skills = null,
+		weapon: Weapon = null,
+		actor: Node = null
+	) -> void:
+		amount = maxf(
+			damage_amount,
+			0.0
+		)
+
+		damage_type = type
+
+		source = damage_source
+
+		source_actor = (
+			actor
+			if actor != null
+			else damage_source
+		)
+
+		source_skill = skill
+		source_weapon = weapon

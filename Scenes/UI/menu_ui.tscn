@@ -44,6 +44,7 @@ gradient = SubResource("Gradient_ehti2")
 width = 1280
 
 [node name="Menu" type="Control"]
+process_mode = 3
 custom_minimum_size = Vector2(1280, 720)
 layout_mode = 3
 anchors_preset = 15

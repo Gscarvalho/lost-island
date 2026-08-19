@@ -7,11 +7,14 @@ extends Node
 @export var detection_range := 12.0
 @export var preferred_distance := 1.3
 
+@export var memory_duration := 4.0
+
 
 @export_category("Movement")
 
 @export var move_speed := 3.0
 @export var turn_speed := 8.0
+
 
 @export_category("Attack")
 
@@ -23,7 +26,7 @@ var enemy: Enemy
 var navigation_agent: NavigationAgent3D
 
 var attack_cooldown_left := 0.0
-
+var investigating_player_attack := false
 
 func _ready() -> void:
 	enemy = get_parent() as Enemy
@@ -33,6 +36,10 @@ func _ready() -> void:
 			"MeleeEnemyBehavior requires an Enemy parent."
 		)
 		return
+	
+	enemy.player_attack_received.connect(
+		_on_player_attack_received
+	)
 
 	navigation_agent = (
 		enemy.get_node_or_null(
@@ -50,53 +57,70 @@ func _ready() -> void:
 
 
 func _physics_process(
-	delta: float
-) -> void:
-	if enemy == null:
-		return
-
-	if navigation_agent == null:
-		return
-
-	_update_attack_cooldown(
-		delta
-	)
-
-	if not enemy.has_target():
-		_find_target()
-
-		if not enemy.has_target():
-			_stop()
+		delta: float
+	) -> void:
+		if enemy == null:
 			return
 
-	var to_target := (
-		enemy.target.global_position
-		- enemy.global_position
-	)
+		if navigation_agent == null:
+			return
 
-	to_target.y = 0.0
-
-	var distance := to_target.length()
-
-	if distance > detection_range:
-		_stop()
-		return
-
-	if distance <= preferred_distance:
-		_stop()
-
-		_face_target(
+		enemy.memory.update_time(
 			delta
 		)
 
-		if attack_cooldown_left <= 0.0:
-			_attack()
+		_update_attack_cooldown(
+			delta
+		)
 
-		return
+		if not enemy.has_target():
+			_find_target()
 
-	_move_toward_target(
-		delta
-	)
+			if enemy.has_target():
+				investigating_player_attack = false
+
+			elif investigating_player_attack:
+				_investigate_player_attack(
+					delta
+				)
+
+				return
+
+			else:
+				_stop()
+				return
+
+		var can_see_target := (
+			enemy.has_line_of_sight_to(
+				enemy.target
+			)
+		)
+
+		if can_see_target:
+			enemy.memory.remember_player_seen(
+				enemy.target.global_position
+			)
+
+		elif (
+			enemy.memory.time_since_player_seen
+			> memory_duration
+		):
+			enemy.clear_target()
+
+			_stop()
+
+			return
+
+		if can_see_target:
+			_handle_visible_target(
+				delta
+			)
+
+			return
+
+		_follow_last_seen_position(
+			delta
+		)
 
 
 func _find_target() -> void:
@@ -106,21 +130,147 @@ func _find_target() -> void:
 		) as Node3D
 	)
 
-	if player != null:
-		enemy.set_target(
+	if player == null:
+		return
+
+	var to_player := (
+		player.global_position
+		- enemy.global_position
+	)
+
+	to_player.y = 0.0
+
+	var distance := (
+		to_player.length()
+	)
+
+	if distance > detection_range:
+		return
+
+	if not enemy.has_line_of_sight_to(
+		player
+	):
+		return
+
+	enemy.set_target(
+		player
+	)
+
+	enemy.memory.remember_player_seen(
+		player.global_position
+	)
+
+	investigating_player_attack = false
+
+func _on_player_attack_received(
+		player: Node3D
+	) -> void:
+		if player == null:
+			return
+
+		if enemy.has_line_of_sight_to(
 			player
+		):
+			enemy.set_target(
+				player
+			)
+
+			enemy.memory.remember_player_seen(
+				player.global_position
+			)
+
+			investigating_player_attack = false
+
+			return
+
+		investigating_player_attack = true
+
+func _investigate_player_attack(
+		delta: float
+	) -> void:
+		if not enemy.memory.has_player_attack_position:
+			investigating_player_attack = false
+
+			_stop()
+
+			return
+
+		var attack_position := (
+			enemy.memory.last_player_attack_position
 		)
 
+		var distance := (
+			enemy.global_position.distance_to(
+				attack_position
+			)
+		)
 
-func _move_toward_target(
+		if distance <= 0.75:
+			investigating_player_attack = false
+
+			_stop()
+
+			return
+
+		_move_toward_position(
+			attack_position,
+			delta
+		)
+
+func _handle_visible_target(
 		delta: float
 	) -> void:
 		if not enemy.has_target():
+			return
+
+		var to_target := (
+			enemy.target.global_position
+			- enemy.global_position
+		)
+
+		to_target.y = 0.0
+
+		var distance := (
+			to_target.length()
+		)
+
+		if distance <= preferred_distance:
+			_stop()
+
+			_face_target(
+				delta
+			)
+
+			if attack_cooldown_left <= 0.0:
+				_attack()
+
+			return
+
+		_move_toward_position(
+			enemy.target.global_position,
+			delta
+		)
+
+
+func _follow_last_seen_position(
+		delta: float
+	) -> void:
+		if not enemy.memory.has_seen_player:
 			_stop()
 			return
 
+		_move_toward_position(
+			enemy.memory.last_seen_player_position,
+			delta
+		)
+
+
+func _move_toward_position(
+		target_position: Vector3,
+		delta: float
+	) -> void:
 		navigation_agent.target_position = (
-			enemy.target.global_position
+			target_position
 		)
 
 		if navigation_agent.is_navigation_finished():

@@ -103,18 +103,7 @@ func _ready() -> void:
 	)
 
 
-func _physics_process(delta: float) -> void:
-	
-	if Input.is_physical_key_pressed(
-		KEY_P
-	):
-		if burst_time_left <= 0.0:
-			push_movement_direction(
-				18.0,
-				0.18
-			)
-	
-	_menu_logic()
+func _physics_process(delta: float) -> void:	
 	_equip_logic(delta)
 	_move_logic(delta)
 	_burst_logic(delta)
@@ -143,23 +132,6 @@ func _on_state_changed(state: StateManager.State) -> void:
 
 		if regen_timer != null:
 			regen_timer.paused = should_pause_regen
-
-func _menu_logic() -> void:
-	if (
-	Input.is_action_just_pressed("menu")
-	and menu_transition_timer.is_stopped()
-	):
-		menu_transition_timer.start()
-		if StateManager.current_state == StateManager.State.PLAY:
-			StateManager.set_state(StateManager.State.MENU)
-		
-		elif StateManager.current_state == StateManager.State.TITLE:
-			StateManager.set_state(StateManager.State.MENU)			
-		
-		elif StateManager.current_state == StateManager.State.MENU:
-			StateManager.set_state(StateManager.State.PLAY)			
-		
-		velocity = Vector3.ZERO
 #endregion
 
 #region Weapon Selection

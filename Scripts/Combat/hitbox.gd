@@ -52,7 +52,8 @@ func create_damage_data() -> DamageData:
 		_get_damage_type(),
 		source_node,
 		source_skill,
-		weapon
+		weapon,
+		source_actor
 	)
 
 
@@ -71,45 +72,45 @@ func deactivate() -> void:
 
 
 func _on_area_entered(
-	area: Area3D
-) -> void:
-	_try_hit(area)
+		area: Area3D
+	) -> void:
+		_try_hit(area)
 
 
 func _try_hit(
-	area: Area3D
-) -> void:
-	if not active:
-		return
+		area: Area3D
+	) -> void:
+		if not active:
+			return
 
-	var hurtbox := area as Hurtbox
+		var hurtbox := area as Hurtbox
 
-	if hurtbox == null:
-		return
+		if hurtbox == null:
+			return
 
-	var damage_receiver := (
-		hurtbox.get_damage_receiver()
+		var damage_receiver := (
+			hurtbox.get_damage_receiver()
+		)
+		
+		if damage_receiver == source_actor:
+			return
+
+		if already_hit.has(
+			damage_receiver
+		):
+			return
+
+		already_hit.append(
+			damage_receiver
+		)
+
+		hurtbox.receive_hit(
+			self
+		)
+
+		hit_confirmed.emit(
+		hurtbox
 	)
-	
-	if damage_receiver == source_actor:
-		return
-
-	if already_hit.has(
-		damage_receiver
-	):
-		return
-
-	already_hit.append(
-		damage_receiver
-	)
-
-	hurtbox.receive_hit(
-		self
-	)
-
-	hit_confirmed.emit(
-	hurtbox
-)
 
 func _get_damage_type() -> DamageData.DamageType:
 	if source_skill == null:

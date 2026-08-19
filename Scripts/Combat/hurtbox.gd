@@ -23,27 +23,27 @@ func get_damage_receiver() -> Node:
 
 
 func receive_hit(
-	hitbox: Hitbox
-) -> void:
-	if hitbox == null:
-		return
+		hitbox: Hitbox
+	) -> void:
+		if hitbox == null:
+			return
 
-	var damage_data := (
-		hitbox.create_damage_data()
-	)
+		var damage_data := (
+			hitbox.create_damage_data()
+		)
 
-	damage_data.hurtbox_id = (
-		hurtbox_id
-	)
+		damage_data.hurtbox_id = (
+			hurtbox_id
+		)
 
-	damage_data.hurtbox_multiplier = (
-		damage_multiplier
-	)
+		damage_data.hurtbox_multiplier = (
+			damage_multiplier
+		)
 
-	damage_data.amount *= (
-		damage_multiplier
-	)
+		damage_data.amount *= (
+			damage_multiplier
+		)
 
-	hit_received.emit(
-		damage_data
-	)
+		hit_received.emit(
+			damage_data
+		)

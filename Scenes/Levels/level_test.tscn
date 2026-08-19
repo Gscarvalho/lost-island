@@ -252,12 +252,13 @@ collision_mask = 0
 shape = SubResource("BoxShape3D_k1ht2")
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="World"]
+visible = false
 navigation_mesh = SubResource("NavigationMesh_t2ggk")
 
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -25.163445)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.62986)
 
 [node name="EnemyGroup1" type="Node3D" parent="Entities"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 57.993866)
@@ -281,7 +282,7 @@ transform = Transform3D(-0.84121835, 0, -0.54069555, 0, 1, 0, 0.54069555, 0, -0.
 [node name="EnemyGroup2" type="Node3D" parent="Entities"]
 
 [node name="MeleeEnemy" parent="Entities/EnemyGroup2" instance=ExtResource("16_btpkh")]
-transform = Transform3D(0.97381353, 0, -0.22734816, 0, 1, 0, 0.22734816, 0, 0.97381353, -0.1517973, 0, 21.858557)
+transform = Transform3D(0.97381353, 0, -0.22734816, 0, 1, 0, 0.22734816, 0, 0.97381353, -0.1517973, 0, 15.153854)
 
 [node name="MeleeEnemy2" parent="Entities/EnemyGroup2" instance=ExtResource("16_btpkh")]
 transform = Transform3D(0.9493048, 0, 0.31435692, 0, 1, 0, -0.31435692, 0, 0.9493048, -19.526402, 0, -47.524117)
@@ -296,7 +297,6 @@ transform = Transform3D(0.9493048, 0, 0.31435692, 0, 1, 0, -0.31435692, 0, 0.949
 transform = Transform3D(0.9493048, 0, 0.31435692, 0, 1, 0, -0.31435692, 0, 0.9493048, -21.313091, -1.9073486e-06, 21.242193)
 
 [node name="Pickups" type="Node3D" parent="."]
-visible = false
 
 [node name="ManaPickup" parent="Pickups" instance=ExtResource("15_oerva")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8566198, 2.061078, -3.0618553)
