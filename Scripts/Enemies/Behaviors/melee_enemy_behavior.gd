@@ -11,7 +11,7 @@ extends Node
 @export_category("Movement")
 
 @export var move_speed := 3.0
-
+@export var turn_speed := 8.0
 
 @export_category("Attack")
 
@@ -20,6 +20,7 @@ extends Node
 
 
 var enemy: Enemy
+var navigation_agent: NavigationAgent3D
 
 var attack_cooldown_left := 0.0
 
@@ -33,52 +34,69 @@ func _ready() -> void:
 		)
 		return
 
+	navigation_agent = (
+		enemy.get_node_or_null(
+			"NavigationAgent3D"
+		) as NavigationAgent3D
+	)
+
+	if navigation_agent == null:
+		push_error(
+			"MeleeEnemyBehavior requires a NavigationAgent3D."
+		)
+		return
+
 	_find_target()
 
 
 func _physics_process(
-		delta: float
-	) -> void:
-		if enemy == null:
+	delta: float
+) -> void:
+	if enemy == null:
+		return
+
+	if navigation_agent == null:
+		return
+
+	_update_attack_cooldown(
+		delta
+	)
+
+	if not enemy.has_target():
+		_find_target()
+
+		if not enemy.has_target():
+			_stop()
 			return
 
-		_update_attack_cooldown(
+	var to_target := (
+		enemy.target.global_position
+		- enemy.global_position
+	)
+
+	to_target.y = 0.0
+
+	var distance := to_target.length()
+
+	if distance > detection_range:
+		_stop()
+		return
+
+	if distance <= preferred_distance:
+		_stop()
+
+		_face_target(
 			delta
 		)
 
-		if not enemy.has_target():
-			_find_target()
+		if attack_cooldown_left <= 0.0:
+			_attack()
 
-			if not enemy.has_target():
-				_stop()
-				return
+		return
 
-		var to_target := (
-			enemy.target.global_position
-			- enemy.global_position
-		)
-
-		to_target.y = 0.0
-
-		var distance := to_target.length()
-
-		if distance > detection_range:
-			_stop()
-			return
-
-		_face_target()
-
-		if distance <= preferred_distance:
-			_stop()
-
-			if attack_cooldown_left <= 0.0:
-				_attack()
-
-			return
-
-		_move_toward_target(
-			to_target
-		)
+	_move_toward_target(
+		delta
+	)
 
 
 func _find_target() -> void:
@@ -95,14 +113,42 @@ func _find_target() -> void:
 
 
 func _move_toward_target(
-		direction: Vector3
+		delta: float
 	) -> void:
+		if not enemy.has_target():
+			_stop()
+			return
+
+		navigation_agent.target_position = (
+			enemy.target.global_position
+		)
+
+		if navigation_agent.is_navigation_finished():
+			_stop()
+			return
+
+		var next_path_position := (
+			navigation_agent.get_next_path_position()
+		)
+
+		var direction := (
+			next_path_position
+			- enemy.global_position
+		)
+
+		direction.y = 0.0
+
 		if direction.is_zero_approx():
 			_stop()
 			return
 
 		var move_direction := (
 			direction.normalized()
+		)
+
+		_face_position(
+			next_path_position,
+			delta
 		)
 
 		enemy.velocity.x = (
@@ -157,17 +203,47 @@ func _update_attack_cooldown(
 		)
 
 
-func _face_target() -> void:
-	if not enemy.has_target():
-		return
+func _face_target(
+		delta: float
+	) -> void:
+		if not enemy.has_target():
+			return
 
-	var target_position := Vector3(
-		enemy.target.global_position.x,
-		enemy.global_position.y,
-		enemy.target.global_position.z
-	)
+		_face_position(
+			enemy.target.global_position,
+			delta
+		)
 
-	enemy.look_at(
-		target_position,
-		Vector3.UP
-	)
+
+func _face_position(
+		world_position: Vector3,
+		delta: float
+	) -> void:
+		var direction := (
+			world_position
+			- enemy.global_position
+		)
+
+		direction.y = 0.0
+
+		if direction.length_squared() <= 0.0001:
+			return
+
+		var target_yaw := atan2(
+			-direction.x,
+			-direction.z
+		)
+
+		var current_rotation := (
+			enemy.rotation
+		)
+
+		current_rotation.y = rotate_toward(
+			current_rotation.y,
+			target_yaw,
+			turn_speed * delta
+		)
+
+		enemy.rotation = (
+			current_rotation
+		)

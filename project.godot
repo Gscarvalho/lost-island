@@ -36,6 +36,7 @@ enabled=PackedStringArray("res://addons/proton_scatter/plugin.cfg")
 
 Menu=""
 Player=""
+navigation_source=""
 
 [input]
 
