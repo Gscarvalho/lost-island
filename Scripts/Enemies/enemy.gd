@@ -51,7 +51,12 @@ var animation_state: AnimationNodeStateMachinePlayback
 func _ready() -> void:
 	if stats != null:
 		current_health = stats.max_hp
-
+	
+	health_changed.emit(
+		current_health,
+		get_max_health()
+	)
+	
 	body_hurtbox.damage_receiver = self
 
 	body_hurtbox.hit_received.connect(
@@ -216,7 +221,9 @@ func _on_hurtbox_hit_received(
 			final_damage
 		)
 		
-		ui._display_damage_for_seconds(final_damage)
+		ui.display_damage(
+			final_damage
+		)
 
 func take_damage(
 		damage: float
