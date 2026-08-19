@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cigxyfvp78sq4"]
+[gd_scene load_steps=9 format=3 uid="uid://cigxyfvp78sq4"]
 
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_ytf8r"]
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="2_3bsiw"]
 [ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/rogue_enemy.tscn" id="3_3bsiw"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="3_ytf8r"]
+[ext_resource type="Script" uid="uid://c0r7bklbuw6y2" path="res://Scripts/Enemies/Behaviors/melee_enemy_behavior.gd" id="5_xxn7r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6p2ka"]
 
@@ -42,3 +43,6 @@ script = ExtResource("3_ytf8r")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AttackHitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1)
 shape = SubResource("SphereShape3D_6p2ka")
+
+[node name="Behavior" type="Node" parent="."]
+script = ExtResource("5_xxn7r")

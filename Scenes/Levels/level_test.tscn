@@ -50,9 +50,13 @@ render_priority = 0
 shader = ExtResource("2_hwde3")
 shader_parameter/base_color = Color(0.35696116, 0.5386752, 3.85046e-07, 1)
 shader_parameter/use_albedo_texture = false
+shader_parameter/use_color_gradient = true
 shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
 shader_parameter/shadow_threshold = 0.5000000712500001
 shader_parameter/shadow_softness = 0.02
+shader_parameter/use_fresnel = true
+shader_parameter/fresnel_power = 4.0
+shader_parameter/fresnel_strength = 0.25
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fjvvq"]
 points = PackedVector3Array(-100, 0, 100, 100, 0, 100, 100, 0, -100, -100, 0, -100)
@@ -100,9 +104,13 @@ render_priority = 0
 shader = ExtResource("2_hwde3")
 shader_parameter/base_color = Color(0.24705882, 0.34509805, 0.44705883, 1)
 shader_parameter/use_albedo_texture = false
+shader_parameter/use_color_gradient = true
 shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
 shader_parameter/shadow_threshold = 0.2
 shader_parameter/shadow_softness = 0.02
+shader_parameter/use_fresnel = true
+shader_parameter/fresnel_power = 4.0
+shader_parameter/fresnel_strength = 0.25
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m1fqf"]
 
@@ -123,6 +131,7 @@ data = PackedVector3Array(0.0297, 5.6523, -0.0585, 0.101799995, 5.6537, -0.0414,
 
 [node name="Sun" type="DirectionalLight3D" parent="Weather"]
 transform = Transform3D(-0.90107703, -0.18327229, 0.39302868, 0, 0.9063078, 0.4226183, -0.43365914, 0.38081163, -0.81665313, 0, 100, 0)
+light_energy = 0.5
 shadow_enabled = true
 
 [node name="Sky" type="WorldEnvironment" parent="Weather"]
@@ -223,7 +232,7 @@ transform = Transform3D(-0.84121835, 0, -0.54069555, 0, 1, 0, 0.54069555, 0, -0.
 [node name="EnemyGroup2" type="Node3D" parent="Entities"]
 
 [node name="MeleeEnemy" parent="Entities/EnemyGroup2" instance=ExtResource("16_btpkh")]
-transform = Transform3D(-0.98724484, 0, -0.15920922, 0, 1, 0, 0.15920922, 0, -0.98724484, 1.746952, 0, -18.258673)
+transform = Transform3D(-0.98724484, 0, -0.15920922, 0, 1, 0, 0.15920922, 0, -0.98724484, 1.746952, 0, 3.7960148)
 
 [node name="Pickups" type="Node3D" parent="."]
 
