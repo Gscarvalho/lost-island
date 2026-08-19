@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://cvdlm4ds3r5t5"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_8e3xr"]
+[ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="2_gl2fo"]
+
+[resource]
+script = ExtResource("1_8e3xr")
+skill_id = &"rogue_dual_chop"
+skill_name = "Double Chop"
+skill_icon = ExtResource("2_gl2fo")
+unlock_cost = 0
+skill_power = 30.0
+skill_cost = 5.0
+skill_anim_name = "rogue/Attack"
+impact_shake_intensity = 0.2
+impact_shake_duration = 0.07
+impact_hit_stop_duration = 0.04
+impact_hit_stop_time_scale = 0.08
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

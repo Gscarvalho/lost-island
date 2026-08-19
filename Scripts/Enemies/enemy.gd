@@ -71,14 +71,14 @@ func _setup_animation() -> void:
 
 
 func play_animation_state(
-	state_name: StringName
-) -> void:
-	if animation_state == null:
-		return
+		state_name: StringName
+	) -> void:
+		if animation_state == null:
+			return
 
-	animation_state.travel(
-		state_name
-	)
+		animation_state.travel(
+			state_name
+		)
 #endregion
 
 
@@ -181,4 +181,91 @@ func die() -> void:
 	died.emit()
 
 	queue_free()
+#endregion
+
+
+#region Weapons
+func get_equipped_weapons() -> Array[Weapon]:
+	var weapons: Array[Weapon] = []
+
+	if visual == null:
+		return weapons
+
+	var found_nodes := visual.find_children(
+		"*",
+		"",
+		true,
+		false
+	)
+
+	for node in found_nodes:
+		var weapon := node as Weapon
+
+		if weapon == null:
+			continue
+
+		weapons.append(
+			weapon
+		)
+
+	return weapons
+
+
+func prepare_weapon_attack(
+		skill: Skills
+	) -> void:
+		if skill == null:
+			return
+
+		var damage := calculate_skill_damage(
+			skill
+		)
+
+		for weapon in get_equipped_weapons():
+			weapon.user = self
+
+			weapon.prepare_attack(
+				skill,
+				damage
+			)
+
+
+func calculate_skill_damage(
+		skill: Skills
+	) -> float:
+		if skill == null:
+			return 0.0
+
+		if stats == null:
+			return skill.skill_power
+
+		var offensive_stat: float
+
+		if (
+			skill.skill_type
+			== Skills.SkillType.Physical
+		):
+			offensive_stat = stats.attack
+		else:
+			offensive_stat = stats.m_attack
+
+		var stat_multiplier := (
+			1.0
+			+ offensive_stat / 100.0
+		)
+
+		return (
+			skill.skill_power
+			* stat_multiplier
+		)
+
+
+func start_weapon_damage_window() -> void:
+	for weapon in get_equipped_weapons():
+		weapon.start_damage_window()
+
+
+func end_weapon_damage_window() -> void:
+	for weapon in get_equipped_weapons():
+		weapon.end_damage_window()
 #endregion

@@ -13,7 +13,15 @@ extends Node
 @export var move_speed := 3.0
 
 
+@export_category("Attack")
+
+@export var attack_skill: Skills
+@export var attack_cooldown := 1.0
+
+
 var enemy: Enemy
+
+var attack_cooldown_left := 0.0
 
 
 func _ready() -> void:
@@ -21,7 +29,7 @@ func _ready() -> void:
 
 	if enemy == null:
 		push_error(
-			"RangedEnemyBehavior requires an Enemy parent."
+			"MeleeEnemyBehavior requires an Enemy parent."
 		)
 		return
 
@@ -29,10 +37,14 @@ func _ready() -> void:
 
 
 func _physics_process(
-		_delta: float
+		delta: float
 	) -> void:
 		if enemy == null:
 			return
+
+		_update_attack_cooldown(
+			delta
+		)
 
 		if not enemy.has_target():
 			_find_target()
@@ -58,6 +70,10 @@ func _physics_process(
 
 		if distance <= preferred_distance:
 			_stop()
+
+			if attack_cooldown_left <= 0.0:
+				_attack()
+
 			return
 
 		_move_toward_target(
@@ -113,6 +129,32 @@ func _stop() -> void:
 	enemy.play_animation_state(
 		&"Idle"
 	)
+
+
+func _attack() -> void:
+	if attack_skill == null:
+		return
+
+	enemy.prepare_weapon_attack(
+		attack_skill
+	)
+
+	enemy.play_animation_state(
+		&"Attack_Melee"
+	)
+
+	attack_cooldown_left = (
+		attack_cooldown
+	)
+
+
+func _update_attack_cooldown(
+		delta: float
+	) -> void:
+		attack_cooldown_left = maxf(
+			attack_cooldown_left - delta,
+			0.0
+		)
 
 
 func _face_target() -> void:
