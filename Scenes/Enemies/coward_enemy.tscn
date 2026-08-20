@@ -1,17 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://cigxyfvp78sq4"]
+[gd_scene load_steps=15 format=3 uid="uid://cjq7hahxt7xec"]
 
-[ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_ytf8r"]
-[ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="2_3bsiw"]
-[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_yxfb2"]
-[ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/rogue_enemy.tscn" id="3_3bsiw"]
-[ext_resource type="Script" uid="uid://c0r7bklbuw6y2" path="res://Scripts/Enemies/Behaviors/melee_enemy_behavior.gd" id="5_xxn7r"]
-[ext_resource type="Resource" uid="uid://cvdlm4ds3r5t5" path="res://Data/Skills/Physical/dual_chop.tres" id="6_0u8ws"]
-[ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="7_vrdla"]
-[ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="8_eyhix"]
-[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="9_qowee"]
+[ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_tqyjx"]
+[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_vh4hg"]
+[ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="3_u8kvh"]
+[ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="4_gjrrs"]
+[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="5_x58t5"]
+[ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/rogue_enemy.tscn" id="6_lqnk0"]
+[ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="7_6256j"]
+[ext_resource type="Script" uid="uid://b1lwdwsv15ian" path="res://Scripts/Enemies/Behaviors/coward_enemy_behavior.gd" id="8_n2dxf"]
 
 [sub_resource type="Resource" id="Resource_ptuny"]
-script = ExtResource("2_yxfb2")
+script = ExtResource("2_vh4hg")
 max_hp = 200.0
 attack = 12.0
 defense = 8.0
@@ -37,10 +36,10 @@ corner_radius_bottom_left = 25
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dtw0f"]
 height = 1.0
 
-[node name="MeleeEnemy" type="CharacterBody3D"]
+[node name="CowardEnemy" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 50
-script = ExtResource("1_ytf8r")
+script = ExtResource("1_tqyjx")
 stats = SubResource("Resource_ptuny")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -53,7 +52,7 @@ debug_path_custom_point_size = 6.55
 
 [node name="UI" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-script = ExtResource("7_vrdla")
+script = ExtResource("3_u8kvh")
 
 [node name="HealthBar" type="Sprite3D" parent="UI"]
 billboard = 1
@@ -74,7 +73,7 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
 nine_patch_stretch = true
-texture_progress = ExtResource("8_eyhix")
+texture_progress = ExtResource("4_gjrrs")
 tint_progress = Color(0.1882353, 0.7490196, 0, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI/HealthBar/SubViewport"]
@@ -113,7 +112,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("9_qowee")
+theme = ExtResource("5_x58t5")
 theme_override_styles/panel = SubResource("StyleBoxFlat_wynxd")
 
 [node name="DamageLabel" type="RichTextLabel" parent="UI/DamagePopup/SubViewport/Panel"]
@@ -124,7 +123,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("9_qowee")
+theme = ExtResource("5_x58t5")
 theme_override_font_sizes/normal_font_size = 30
 fit_content = true
 scroll_active = false
@@ -136,7 +135,7 @@ vertical_alignment = 1
 [node name="SightOrigin" type="Marker3D" parent="Markers"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="Visual" parent="." instance=ExtResource("3_3bsiw")]
+[node name="Visual" parent="." instance=ExtResource("6_lqnk0")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -145,14 +144,14 @@ shape = SubResource("CapsuleShape3D_6p2ka")
 [node name="BodyHurtbox" type="Area3D" parent="." node_paths=PackedStringArray("damage_receiver")]
 collision_layer = 256
 collision_mask = 0
-script = ExtResource("2_3bsiw")
+script = ExtResource("7_6256j")
 damage_receiver = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyHurtbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 shape = SubResource("CapsuleShape3D_dtw0f")
 
-[node name="MeleeBehavior" type="Node" parent="."]
-script = ExtResource("5_xxn7r")
-turn_speed = 3.0
-attack_skill = ExtResource("6_0u8ws")
+[node name="CowardBehavior" type="Node" parent="."]
+script = ExtResource("8_n2dxf")
+desired_safe_distance = 25.0
+flee_step_distance = 10.0

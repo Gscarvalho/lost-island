@@ -4,8 +4,8 @@ extends Node
 
 @export_category("Detection")
 
-@export var detection_range := 12.0
-@export var preferred_distance := 5.0
+@export var detection_range := 20.0
+@export var preferred_distance := 15.0
 
 
 @export_category("Movement")
