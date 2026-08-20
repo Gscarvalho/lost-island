@@ -40,6 +40,7 @@ height = 1.0
 [node name="MeleeEnemy" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 50
+floor_max_angle = 0.87266463
 script = ExtResource("1_ytf8r")
 stats = SubResource("Resource_ptuny")
 
@@ -136,7 +137,7 @@ vertical_alignment = 1
 [node name="SightOrigin" type="Marker3D" parent="Markers"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="Visual" parent="." instance=ExtResource("3_3bsiw")]
+[node name="Visual*CHANGE THIS" parent="." instance=ExtResource("3_3bsiw")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -148,10 +149,10 @@ collision_mask = 0
 script = ExtResource("2_3bsiw")
 damage_receiver = NodePath("..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BodyHurtbox"]
+[node name="CollisionShape3D*CHANGE THIS" type="CollisionShape3D" parent="BodyHurtbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 shape = SubResource("CapsuleShape3D_dtw0f")
 
-[node name="MeleeBehavior" type="Node" parent="."]
+[node name="MeleeBehavior*CHANGE THIS" type="Node" parent="."]
 script = ExtResource("5_xxn7r")
 attack_skill = ExtResource("6_0u8ws")
