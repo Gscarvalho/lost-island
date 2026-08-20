@@ -7,9 +7,8 @@ extends Node
 @export var detection_range := 12.0
 @export var preferred_distance := 1.3
 
-@export var memory_duration := 4.0
-
-@export var look_around_speed := 5.0
+@export var look_around_duration := 5.0
+@export var last_seen_arrival_distance := 0.75
 
 @export_category("Movement")
 
@@ -28,6 +27,8 @@ var navigation_agent: NavigationAgent3D
 
 var attack_cooldown_left := 0.0
 var investigating_player_attack := false
+var is_looking_around := false
+var look_around_tween: Tween
 
 func _ready() -> void:
 	enemy = get_parent() as Enemy
@@ -73,7 +74,11 @@ func _physics_process(
 		_update_attack_cooldown(
 			delta
 		)
-
+		
+		if is_looking_around:
+			_update_look_around()
+			return
+			
 		if not enemy.has_target():
 			_find_target()
 
@@ -102,17 +107,6 @@ func _physics_process(
 				enemy.target.global_position
 			)
 
-		elif (
-			enemy.memory.time_since_player_seen
-			> memory_duration
-		):
-			enemy.clear_target()
-
-			_stop()
-
-			return
-
-		if can_see_target:
 			_handle_visible_target(
 				delta
 			)
@@ -255,16 +249,36 @@ func _handle_visible_target(
 
 
 func _follow_last_seen_position(
-		delta: float
-	) -> void:
-		if not enemy.memory.has_seen_player:
-			_stop()
-			return
+	delta: float
+) -> void:
+	if not enemy.memory.has_seen_player:
+		enemy.clear_target()
 
-		_move_toward_position(
-			enemy.memory.last_seen_player_position,
-			delta
-		)
+		_stop()
+		return
+
+	var last_seen_position := (
+		enemy.memory.last_seen_player_position
+	)
+
+	var to_last_seen := (
+		last_seen_position
+		- enemy.global_position
+	)
+
+	to_last_seen.y = 0.0
+
+	if (
+		to_last_seen.length()
+		<= last_seen_arrival_distance
+	):
+		_start_look_around()
+		return
+
+	_move_toward_position(
+		last_seen_position,
+		delta
+	)
 
 
 func _move_toward_position(
@@ -319,20 +333,96 @@ func _move_toward_position(
 
 		enemy.move_and_slide()
 
-func _look_around() -> void:
-	var sight_orgin = enemy.sight_origin as Marker3D
-	var tween = create_tween()
-	
-	tween.tween_property(
-			sight_orgin,
-			"rotation_degrees",
-			360,
-			look_around_speed
-		)
-	
+func _start_look_around() -> void:
+	if is_looking_around:
+		return
+
+	is_looking_around = true
+
+	enemy.clear_target()
+
+	enemy.velocity.x = 0.0
+	enemy.velocity.z = 0.0
+
+	enemy.sight_origin.rotation = (
+		Vector3.ZERO
+	)
+
 	enemy.play_animation_state(
 		&"Look_Around"
 	)
+
+	var end_rotation := (
+		enemy.sight_origin.rotation_degrees
+	)
+
+	end_rotation.y += 360.0
+
+	look_around_tween = create_tween()
+
+	look_around_tween.set_trans(
+		Tween.TRANS_LINEAR
+	)
+
+	look_around_tween.tween_property(
+		enemy.sight_origin,
+		"rotation_degrees",
+		end_rotation,
+		look_around_duration
+	)
+
+	look_around_tween.finished.connect(
+		_on_look_around_finished
+	)
+
+
+func _update_look_around() -> void:
+	_find_target()
+
+	if not enemy.has_target():
+		return
+
+	_finish_look_around_with_target()
+
+
+func _finish_look_around_with_target() -> void:
+	if not is_looking_around:
+		return
+
+	if (
+		look_around_tween != null
+		and look_around_tween.is_valid()
+	):
+		look_around_tween.kill()
+
+	var sight_yaw := (
+		enemy.sight_origin.rotation.y
+	)
+
+	enemy.rotate_y(
+		sight_yaw
+	)
+
+	enemy.sight_origin.rotation = (
+		Vector3.ZERO
+	)
+
+	is_looking_around = false
+	look_around_tween = null
+
+
+func _on_look_around_finished() -> void:
+	if not is_looking_around:
+		return
+
+	enemy.sight_origin.rotation = (
+		Vector3.ZERO
+	)
+
+	is_looking_around = false
+	look_around_tween = null
+
+	_stop()
 
 func _stop() -> void:
 	enemy.velocity.x = 0.0
@@ -341,7 +431,6 @@ func _stop() -> void:
 	enemy.play_animation_state(
 		&"Idle"
 	)
-
 
 func _attack() -> void:
 	if attack_skill == null:

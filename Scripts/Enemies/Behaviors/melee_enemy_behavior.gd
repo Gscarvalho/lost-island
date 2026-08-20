@@ -9,6 +9,8 @@ extends Node
 
 @export var memory_duration := 4.0
 
+@export var look_around_duration := 8.0
+
 
 @export_category("Movement")
 
@@ -318,6 +320,20 @@ func _move_toward_position(
 
 		enemy.move_and_slide()
 
+func _look_around() -> void:
+	var sight_orgin = enemy.sight_origin as Marker3D
+	var tween = create_tween()
+	
+	tween.tween_property(
+			sight_orgin,
+			"rotation_degrees",
+			360,
+			look_around_duration
+		)
+	
+	enemy.play_animation_state(
+		&"Look_Around"
+	)
 
 func _stop() -> void:
 	enemy.velocity.x = 0.0
