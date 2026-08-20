@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://bh7av4y2lnx4t"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_ig3yg"]
+[ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="2_65cnc"]
+
+[resource]
+script = ExtResource("1_ig3yg")
+skill_id = &"dog_attack"
+skill_name = "Canine Attack"
+skill_icon = ExtResource("2_65cnc")
+skill_anim_name = "Attack"
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

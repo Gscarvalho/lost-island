@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_ytf8r"]
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="2_3bsiw"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_yxfb2"]
-[ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/rogue_enemy.tscn" id="3_3bsiw"]
+[ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/Visuals/rogue_visual.tscn" id="3_3bsiw"]
 [ext_resource type="Script" uid="uid://c0r7bklbuw6y2" path="res://Scripts/Enemies/Behaviors/melee_enemy_behavior.gd" id="5_xxn7r"]
 [ext_resource type="Resource" uid="uid://cvdlm4ds3r5t5" path="res://Data/Skills/Physical/dual_chop.tres" id="6_0u8ws"]
 [ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="7_vrdla"]
@@ -154,5 +154,4 @@ shape = SubResource("CapsuleShape3D_dtw0f")
 
 [node name="MeleeBehavior" type="Node" parent="."]
 script = ExtResource("5_xxn7r")
-turn_speed = 3.0
 attack_skill = ExtResource("6_0u8ws")

@@ -91,7 +91,7 @@ func _physics_process(
 				return
 
 		var can_see_target := (
-			enemy.has_line_of_sight_to(
+			enemy.can_see_target(
 				enemy.target
 			)
 		)
@@ -147,7 +147,7 @@ func _find_target() -> void:
 	if distance > detection_range:
 		return
 
-	if not enemy.has_line_of_sight_to(
+	if not enemy.can_see_target(
 		player
 	):
 		return
@@ -168,7 +168,7 @@ func _on_player_attack_received(
 		if player == null:
 			return
 
-		if enemy.has_line_of_sight_to(
+		if enemy.can_see_target(
 			player
 		):
 			enemy.set_target(

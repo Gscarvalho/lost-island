@@ -20,6 +20,8 @@ signal player_attack_received(
 
 @export_flags_3d_physics var line_of_sight_mask := 49
 @export var target_sight_height := 1.25
+@export_range(1.0, 180.0, 1.0)
+var view_angle := 120.0
 
 var current_health := 0.0
 var target: Node3D
@@ -104,9 +106,9 @@ func play_animation_state(
 
 #region Target
 func set_target(
-	new_target: Node3D
-) -> void:
-	target = new_target
+		new_target: Node3D
+	) -> void:
+		target = new_target
 
 
 func clear_target() -> void:
@@ -159,6 +161,65 @@ func has_line_of_sight_to(
 		return (
 			result["collider"]
 			== target_node
+		)
+
+func is_target_in_view(
+		target_node: Node3D
+	) -> bool:
+		if target_node == null:
+			return false
+
+		if sight_origin == null:
+			return false
+
+		var forward := (
+			-sight_origin.global_transform.basis.z
+		)
+
+		forward.y = 0.0
+
+		if forward.is_zero_approx():
+			return false
+
+		forward = forward.normalized()
+
+		var to_target := (
+			target_node.global_position
+			- sight_origin.global_position
+		)
+
+		to_target.y = 0.0
+
+		if to_target.is_zero_approx():
+			return true
+
+		var target_direction := (
+			to_target.normalized()
+		)
+
+		var minimum_dot := cos(
+			deg_to_rad(
+				view_angle * 0.5
+			)
+		)
+
+		return (
+			forward.dot(
+				target_direction
+			)
+			>= minimum_dot
+		)
+
+func can_see_target(
+		target_node: Node3D
+	) -> bool:
+		if not is_target_in_view(
+			target_node
+		):
+			return false
+
+		return has_line_of_sight_to(
+			target_node
 		)
 #endregion
 

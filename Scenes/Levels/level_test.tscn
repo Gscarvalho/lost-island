@@ -13,9 +13,9 @@
 [ext_resource type="Script" uid="uid://cv2ul8v4grwu0" path="res://addons/proton_scatter/src/scatter_item.gd" id="11_m1fqf"]
 [ext_resource type="Script" uid="uid://bvu5sm6v7t1s2" path="res://addons/proton_scatter/src/scatter_shape.gd" id="12_fk2v1"]
 [ext_resource type="Script" uid="uid://c68s2472h76yi" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="13_k1ht2"]
+[ext_resource type="PackedScene" uid="uid://duph0cuiqslaa" path="res://Scenes/Enemies/rogue_enemy.tscn" id="14_t2ggk"]
 [ext_resource type="PackedScene" uid="uid://bx4plrqqed8sa" path="res://Scenes/Pickups/mana_pickup.tscn" id="15_oerva"]
-[ext_resource type="PackedScene" uid="uid://cjq7hahxt7xec" path="res://Scenes/Enemies/coward_enemy.tscn" id="15_t2ggk"]
-[ext_resource type="PackedScene" uid="uid://cigxyfvp78sq4" path="res://Scenes/Enemies/melee_enemy.tscn" id="16_btpkh"]
+[ext_resource type="PackedScene" uid="uid://bcmvwhaf2lmas" path="res://Scenes/Animals/malinois_dog.tscn" id="15_t2ggk"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
 sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)
@@ -57,36 +57,36 @@ shader_parameter/fresnel_strength = 0.25
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_fjvvq"]
 points = PackedVector3Array(-100, 0, 100, 100, 0, 100, 100, 0, -100, -100, 0, -100)
 
-[sub_resource type="Resource" id="Resource_x7ba5"]
+[sub_resource type="Resource" id="Resource_t2ggk"]
 script = ExtResource("7_g1i77")
 amount = 1000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_g1i77"]
+[sub_resource type="Resource" id="Resource_x7ba5"]
 script = ExtResource("8_q55b2")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
 scale = Vector3(1, 1, 1)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_q55b2"]
+[sub_resource type="Resource" id="Resource_g1i77"]
 script = ExtResource("9_hwde3")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_hwde3"]
+[sub_resource type="Resource" id="Resource_q55b2"]
 script = ExtResource("10_btpkh")
 ray_length = 5.0
 ray_offset = 5.0
 remove_points_on_miss = false
 collision_mask = 16
 
-[sub_resource type="Resource" id="Resource_btpkh"]
+[sub_resource type="Resource" id="Resource_hwde3"]
 script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_x7ba5"), SubResource("Resource_g1i77"), SubResource("Resource_q55b2"), SubResource("Resource_hwde3")])
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5"), SubResource("Resource_g1i77"), SubResource("Resource_q55b2")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
@@ -155,7 +155,7 @@ shape = SubResource("ConvexPolygonShape3D_fjvvq")
 
 [node name="Grass" type="Node3D" parent="World/Ground"]
 script = ExtResource("4_oerva")
-modifier_stack = SubResource("Resource_btpkh")
+modifier_stack = SubResource("Resource_hwde3")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(10, 10, 10)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"
@@ -262,11 +262,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.62986)
 
 [node name="EnemyGroup" type="Node3D" parent="Entities"]
 
-[node name="MeleeEnemy" parent="Entities/EnemyGroup" instance=ExtResource("16_btpkh")]
-transform = Transform3D(0.6842417, 0, 0.7292553, 0, 1, 0, -0.7292553, 0, 0.6842417, 18.406258, 0, -5.7461014)
+[node name="MalinoisDog" parent="Entities/EnemyGroup" instance=ExtResource("15_t2ggk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.6351, 1.9073486e-06, -23.862879)
 
-[node name="CowardEnemy" parent="Entities/EnemyGroup" instance=ExtResource("15_t2ggk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.735132, 0.0020253093, 18.054651)
+[node name="MeleeEnemy" parent="Entities/EnemyGroup" instance=ExtResource("14_t2ggk")]
 
 [node name="Pickups" type="Node3D" parent="."]
 

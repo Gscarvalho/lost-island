@@ -1,7 +1,6 @@
 class_name CowardEnemyBehavior
 extends Node
 
-
 @export_category("Detection")
 
 @export var detection_range := 10.0
@@ -73,7 +72,7 @@ func _physics_process(
 			return
 
 	var can_see_target := (
-		enemy.has_line_of_sight_to(
+		enemy.can_see_target(
 			enemy.target
 		)
 	)
@@ -129,7 +128,7 @@ func _find_threat() -> void:
 	if to_player.length() > detection_range:
 		return
 
-	if not enemy.has_line_of_sight_to(
+	if not enemy.can_see_target(
 		player
 	):
 		return
@@ -163,98 +162,98 @@ func _on_player_attack_received(
 
 
 func _flee_from_position(
-	threat_position: Vector3,
-	delta: float
-) -> void:
-	var away_direction := (
-		enemy.global_position
-		- threat_position
-	)
+		threat_position: Vector3,
+		delta: float
+	) -> void:
+		var away_direction := (
+			enemy.global_position
+			- threat_position
+		)
 
-	away_direction.y = 0.0
+		away_direction.y = 0.0
 
-	if away_direction.is_zero_approx():
-		_stop()
-		return
+		if away_direction.is_zero_approx():
+			_stop()
+			return
 
-	var distance_from_threat := (
-		away_direction.length()
-	)
+		var distance_from_threat := (
+			away_direction.length()
+		)
 
-	if (
-		distance_from_threat
-		>= desired_safe_distance
-	):
-		_stop()
-		return
+		if (
+			distance_from_threat
+			>= desired_safe_distance
+		):
+			_stop()
+			return
 
-	var flee_direction := (
-		away_direction.normalized()
-	)
+		var flee_direction := (
+			away_direction.normalized()
+		)
 
-	var flee_target := (
-		enemy.global_position
-		+ flee_direction
-		* flee_step_distance
-	)
+		var flee_target := (
+			enemy.global_position
+			+ flee_direction
+			* flee_step_distance
+		)
 
-	_move_toward_position(
-		flee_target,
-		delta
-	)
+		_move_toward_position(
+			flee_target,
+			delta
+		)
 
 
 func _move_toward_position(
-	target_position: Vector3,
-	delta: float
-) -> void:
-	navigation_agent.target_position = (
-		target_position
-	)
+		target_position: Vector3,
+		delta: float
+	) -> void:
+		navigation_agent.target_position = (
+			target_position
+		)
 
-	if navigation_agent.is_navigation_finished():
-		_stop()
-		return
+		if navigation_agent.is_navigation_finished():
+			_stop()
+			return
 
-	var next_path_position := (
-		navigation_agent.get_next_path_position()
-	)
+		var next_path_position := (
+			navigation_agent.get_next_path_position()
+		)
 
-	var direction := (
-		next_path_position
-		- enemy.global_position
-	)
+		var direction := (
+			next_path_position
+			- enemy.global_position
+		)
 
-	direction.y = 0.0
+		direction.y = 0.0
 
-	if direction.is_zero_approx():
-		_stop()
-		return
+		if direction.is_zero_approx():
+			_stop()
+			return
 
-	var move_direction := (
-		direction.normalized()
-	)
+		var move_direction := (
+			direction.normalized()
+		)
 
-	_face_position(
-		next_path_position,
-		delta
-	)
+		_face_position(
+			next_path_position,
+			delta
+		)
 
-	enemy.velocity.x = (
-		move_direction.x
-		* move_speed
-	)
+		enemy.velocity.x = (
+			move_direction.x
+			* move_speed
+		)
 
-	enemy.velocity.z = (
-		move_direction.z
-		* move_speed
-	)
+		enemy.velocity.z = (
+			move_direction.z
+			* move_speed
+		)
 
-	enemy.play_animation_state(
-		&"Move"
-	)
+		enemy.play_animation_state(
+			&"Move"
+		)
 
-	enemy.move_and_slide()
+		enemy.move_and_slide()
 
 
 func _stop() -> void:
@@ -267,34 +266,34 @@ func _stop() -> void:
 
 
 func _face_position(
-	world_position: Vector3,
-	delta: float
-) -> void:
-	var direction := (
-		world_position
-		- enemy.global_position
-	)
+		world_position: Vector3,
+		delta: float
+	) -> void:
+		var direction := (
+			world_position
+			- enemy.global_position
+		)
 
-	direction.y = 0.0
+		direction.y = 0.0
 
-	if direction.length_squared() <= 0.0001:
-		return
+		if direction.length_squared() <= 0.0001:
+			return
 
-	var target_yaw := atan2(
-		-direction.x,
-		-direction.z
-	)
+		var target_yaw := atan2(
+			-direction.x,
+			-direction.z
+		)
 
-	var current_rotation := (
-		enemy.rotation
-	)
+		var current_rotation := (
+			enemy.rotation
+		)
 
-	current_rotation.y = rotate_toward(
-		current_rotation.y,
-		target_yaw,
-		turn_speed * delta
-	)
+		current_rotation.y = rotate_toward(
+			current_rotation.y,
+			target_yaw,
+			turn_speed * delta
+		)
 
-	enemy.rotation = (
-		current_rotation
-	)
+		enemy.rotation = (
+			current_rotation
+		)

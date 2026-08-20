@@ -1,15 +1,17 @@
-[gd_scene load_steps=14 format=3 uid="uid://cjq7hahxt7xec"]
+[gd_scene load_steps=17 format=3 uid="uid://bcmvwhaf2lmas"]
 
-[ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_tqyjx"]
-[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_vh4hg"]
-[ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="3_u8kvh"]
-[ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="4_gjrrs"]
-[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="5_x58t5"]
-[ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="7_6256j"]
-[ext_resource type="Script" uid="uid://b1lwdwsv15ian" path="res://Scripts/Enemies/Behaviors/coward_enemy_behavior.gd" id="8_n2dxf"]
+[ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_m4oi8"]
+[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_8j2r7"]
+[ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="3_a67wt"]
+[ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="4_gfqnd"]
+[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="5_vpagm"]
+[ext_resource type="PackedScene" uid="uid://ddh0m7nkwrh4a" path="res://Scenes/Animals/Visuals/malinois_visual.tscn" id="6_u4mhp"]
+[ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="7_8ihxm"]
+[ext_resource type="Script" uid="uid://c0r7bklbuw6y2" path="res://Scripts/Enemies/Behaviors/melee_enemy_behavior.gd" id="8_oqeoi"]
+[ext_resource type="Resource" uid="uid://bh7av4y2lnx4t" path="res://Data/Skills/Beast/dog_attack.tres" id="9_jyjhm"]
 
 [sub_resource type="Resource" id="Resource_ptuny"]
-script = ExtResource("2_vh4hg")
+script = ExtResource("2_8j2r7")
 max_hp = 200.0
 attack = 12.0
 defense = 8.0
@@ -30,15 +32,19 @@ corner_radius_top_right = 25
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 25
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6p2ka"]
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dtw0f"]
-height = 1.0
+radius = 0.55810547
+height = 2.5283203
 
-[node name="CowardEnemy" type="CharacterBody3D"]
-collision_layer = 2
+[sub_resource type="BoxShape3D" id="BoxShape3D_oqeoi"]
+size = Vector3(1, 2.5272217, 1.8083496)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jyjhm"]
+
+[node name="MalinoisDog" type="CharacterBody3D"]
+collision_layer = 8
 collision_mask = 50
-script = ExtResource("1_tqyjx")
+script = ExtResource("1_m4oi8")
 stats = SubResource("Resource_ptuny")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
@@ -50,8 +56,8 @@ debug_path_custom_color = Color(0, 1, 1, 1)
 debug_path_custom_point_size = 6.55
 
 [node name="UI" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-script = ExtResource("3_u8kvh")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -2)
+script = ExtResource("3_a67wt")
 
 [node name="HealthBar" type="Sprite3D" parent="UI"]
 billboard = 1
@@ -72,7 +78,7 @@ grow_horizontal = 2
 grow_vertical = 2
 value = 100.0
 nine_patch_stretch = true
-texture_progress = ExtResource("4_gjrrs")
+texture_progress = ExtResource("4_gfqnd")
 tint_progress = Color(0.1882353, 0.7490196, 0, 1)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="UI/HealthBar/SubViewport"]
@@ -111,7 +117,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("5_x58t5")
+theme = ExtResource("5_vpagm")
 theme_override_styles/panel = SubResource("StyleBoxFlat_wynxd")
 
 [node name="DamageLabel" type="RichTextLabel" parent="UI/DamagePopup/SubViewport/Panel"]
@@ -122,7 +128,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("5_x58t5")
+theme = ExtResource("5_vpagm")
 theme_override_font_sizes/normal_font_size = 30
 fit_content = true
 scroll_active = false
@@ -134,20 +140,31 @@ vertical_alignment = 1
 [node name="SightOrigin" type="Marker3D" parent="Markers"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("CapsuleShape3D_6p2ka")
+[node name="Visual" parent="." instance=ExtResource("6_u4mhp")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="BodyHurtbox" type="Area3D" parent="." node_paths=PackedStringArray("damage_receiver")]
 collision_layer = 256
 collision_mask = 0
-script = ExtResource("7_6256j")
+script = ExtResource("7_8ihxm")
 damage_receiver = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyHurtbox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1.6667206, -0.19647145)
 shape = SubResource("CapsuleShape3D_dtw0f")
 
-[node name="CowardBehavior" type="Node" parent="."]
-script = ExtResource("8_n2dxf")
-desired_safe_distance = 25.0
+[node name="Behavior" type="Node" parent="."]
+script = ExtResource("8_oqeoi")
+detection_range = 20.0
+preferred_distance = 3.5
+memory_duration = 3.0
+move_speed = 4.5
+attack_skill = ExtResource("9_jyjhm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.9336791, -0.2437328)
+shape = SubResource("BoxShape3D_oqeoi")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.74358845, -0.6686375, 0, 0.6686375, -0.74358845, 0, 2.1112566, -1.4492974)
+shape = SubResource("CapsuleShape3D_jyjhm")
