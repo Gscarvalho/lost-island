@@ -404,17 +404,17 @@ func _pay_skill_cost(skill: Skills) -> void:
 #region Skill Effects
 func _apply_skill_effect(skill: Skills) -> void:
 	match skill.skill_regen_type:
-		Skills.RegenType.Health:
+		Player.RegenType.Health:
 			current_hp += (
 				current_stats.max_hp
 				* skill.skill_regen_power
 				/ 100.0
 			)
 
-		Skills.RegenType.Stamina:
+		Player.RegenType.Stamina:
 			current_stamina += skill.skill_regen_power
 
-		Skills.RegenType.Mana:
+		Player.RegenType.Mana:
 			change_mana(
 				skill.skill_type,
 				skill.skill_regen_power

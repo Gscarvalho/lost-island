@@ -9,12 +9,7 @@ enum SkillType {
 	Water,
 	Light
 }
-enum RegenType {
-	None,
-	Health,
-	Stamina,
-	Mana
-}
+
 enum CostType {
 	PerUse,
 	PerSecond
@@ -90,7 +85,7 @@ var unlock_cost: int = 1
 #region Regeneration
 @export_category("Regeneration")
 
-@export var skill_regen_type: RegenType
+@export var skill_regen_type: Player.RegenType
 @export var skill_regen_power: float
 #endregion
 

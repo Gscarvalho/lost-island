@@ -2,6 +2,13 @@
 class_name Player
 extends CharacterBody3D
 
+enum RegenType {
+	None,
+	Health,
+	Stamina,
+	Mana
+}
+
 #region References
 @export var progression: PlayerProgress
 

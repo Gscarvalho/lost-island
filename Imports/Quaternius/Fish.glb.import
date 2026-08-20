@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://cdhof4lpvmqew"
-path="res://.godot/imported/Fish.glb-dd232833aa15b349c81f0c49a640bb60.scn"
+path="res://.godot/imported/Fish.glb-c181d98652b8cb583a0f8329c3c7fc0d.scn"
 
 [deps]
 
-source_file="res://Imports/Characters/Fish.glb"
-dest_files=["res://.godot/imported/Fish.glb-dd232833aa15b349c81f0c49a640bb60.scn"]
+source_file="res://Imports/Quaternius/Fish.glb"
+dest_files=["res://.godot/imported/Fish.glb-c181d98652b8cb583a0f8329c3c7fc0d.scn"]
 
 [params]
 

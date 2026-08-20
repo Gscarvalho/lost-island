@@ -20,43 +20,43 @@ func _ready() -> void:
 
 
 func _on_body_entered(
-	body: Node3D
-) -> void:
-	var player := body as Player
+		body: Node3D
+	) -> void:
+		var player := body as Player
 
-	if player == null:
-		return
+		if player == null:
+			return
 
-	if mana_type == Skills.SkillType.Physical:
-		return
+		if mana_type == Skills.SkillType.Physical:
+			return
 
-	var character := (
-		player.get_node("Character")
-		as PlayerCharacter
-	)
-
-	if character == null:
-		return
-
-	var previous_amount := (
-		character.get_mana_amount(
-			mana_type
+		var character := (
+			player.get_node("Character")
+			as PlayerCharacter
 		)
-	)
 
-	character.change_mana(
-		mana_type,
-		mana_amount,
-		respect_mana_maximum
-	)
+		if character == null:
+			return
 
-	var new_amount := (
-		character.get_mana_amount(
-			mana_type
+		var previous_amount := (
+			character.get_mana_amount(
+				mana_type
+			)
 		)
-	)
 
-	if new_amount <= previous_amount:
-		return
+		character.change_mana(
+			mana_type,
+			mana_amount,
+			respect_mana_maximum
+		)
 
-	queue_free()
+		var new_amount := (
+			character.get_mana_amount(
+				mana_type
+			)
+		)
+
+		if new_amount <= previous_amount:
+			return
+
+		queue_free()

@@ -37,12 +37,12 @@ radius = 0.55810547
 height = 2.5283203
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oqeoi"]
-size = Vector3(1, 2.5272217, 1.8083496)
+size = Vector3(1, 2.7260132, 1.8056335)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jyjhm"]
 
 [node name="MalinoisDog" type="CharacterBody3D"]
-collision_layer = 8
+collision_layer = 2
 collision_mask = 50
 script = ExtResource("1_m4oi8")
 stats = SubResource("Resource_ptuny")
@@ -162,7 +162,7 @@ move_speed = 4.5
 attack_skill = ExtResource("9_jyjhm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.9336791, -0.2437328)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.93503714, -0.34312856)
 shape = SubResource("BoxShape3D_oqeoi")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="."]

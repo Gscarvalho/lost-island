@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://y8fr3cton2j5"
-path="res://.godot/imported/Husky by Quaternius - wcWiuEqwzq.glb-7406e460a6ffdeffd17d5f77903b8047.scn"
+path="res://.godot/imported/Husky by Quaternius - wcWiuEqwzq.glb-c6b4bcaef1550591699617500b29c52d.scn"
 
 [deps]
 
-source_file="res://Imports/Characters/Animals/Husky by Quaternius - wcWiuEqwzq.glb"
-dest_files=["res://.godot/imported/Husky by Quaternius - wcWiuEqwzq.glb-7406e460a6ffdeffd17d5f77903b8047.scn"]
+source_file="res://Imports/Quaternius/Husky by Quaternius - wcWiuEqwzq.glb"
+dest_files=["res://.godot/imported/Husky by Quaternius - wcWiuEqwzq.glb-c6b4bcaef1550591699617500b29c52d.scn"]
 
 [params]
 
