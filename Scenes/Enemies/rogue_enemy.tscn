@@ -7,7 +7,7 @@
 [ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="5_17n6f"]
 [ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/Visuals/rogue_visual.tscn" id="6_kftis"]
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="7_ra6lb"]
-[ext_resource type="Script" uid="uid://c0r7bklbuw6y2" path="res://Scripts/Enemies/Behaviors/melee_enemy_behavior.gd" id="8_egcem"]
+[ext_resource type="Script" uid="uid://cg1324m5q1gfs" path="res://Scripts/Enemies/Behaviors/hunter_enemy_behavior.gd" id="8_3enca"]
 [ext_resource type="Resource" uid="uid://cvdlm4ds3r5t5" path="res://Data/Skills/Physical/dual_chop.tres" id="9_nkuns"]
 
 [sub_resource type="Resource" id="Resource_ptuny"]
@@ -37,7 +37,7 @@ corner_radius_bottom_left = 25
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dtw0f"]
 height = 2.0804443
 
-[node name="MeleeEnemy" type="CharacterBody3D"]
+[node name="RogueEnemy" type="CharacterBody3D"]
 collision_layer = 2
 collision_mask = 50
 script = ExtResource("1_qmm4d")
@@ -152,6 +152,6 @@ damage_receiver = NodePath("..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0616577, 0)
 shape = SubResource("CapsuleShape3D_dtw0f")
 
-[node name="MeleeBehavior" type="Node" parent="."]
-script = ExtResource("8_egcem")
+[node name="Behavior" type="Node" parent="."]
+script = ExtResource("8_3enca")
 attack_skill = ExtResource("9_nkuns")
