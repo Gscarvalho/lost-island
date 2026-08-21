@@ -184,6 +184,8 @@ func _on_player_attack_received(
 
 			return
 
+		enemy.clear_target()
+
 		investigating_player_attack = true
 
 func _investigate_player_attack(
@@ -213,10 +215,17 @@ func _investigate_player_attack(
 
 			return
 
-		_move_toward_position(
-			attack_position,
-			delta
+		var navigation_finished := (
+			_move_toward_position(
+				attack_position,
+				delta
+			)
 		)
+
+		if navigation_finished:
+			investigating_player_attack = false
+
+			_start_look_around()
 
 func _handle_visible_target(
 		delta: float
@@ -252,89 +261,96 @@ func _handle_visible_target(
 			delta
 		)
 
-
 func _follow_last_seen_position(
-		delta: float
-	) -> void:
-		if not enemy.memory.has_seen_player:
-			enemy.clear_target()
+	delta: float
+) -> void:
+	if not enemy.memory.has_seen_player:
+		enemy.clear_target()
 
-			_stop()
-			return
+		_stop()
+		return
 
-		var last_seen_position := (
-			enemy.memory.last_seen_player_position
-		)
+	var last_seen_position := (
+		enemy.memory.last_seen_player_position
+	)
 
-		var to_last_seen := (
-			last_seen_position
-			- enemy.global_position
-		)
+	var to_last_seen := (
+		last_seen_position
+		- enemy.global_position
+	)
 
-		to_last_seen.y = 0.0
+	to_last_seen.y = 0.0
 
-		if (
-			to_last_seen.length()
-			<= last_seen_arrival_distance
-		):
-			_start_look_around()
-			return
+	if (
+		to_last_seen.length()
+		<= last_seen_arrival_distance
+	):
+		_start_look_around()
+		return
 
+	var navigation_finished := (
 		_move_toward_position(
 			last_seen_position,
 			delta
 		)
+	)
+
+	if navigation_finished:
+		_start_look_around()
 
 
 func _move_toward_position(
-		target_position: Vector3,
-		delta: float
-	) -> void:
-		navigation_agent.target_position = (
-			target_position
-		)
+	target_position: Vector3,
+	delta: float
+) -> bool:
+	navigation_agent.target_position = (
+		target_position
+	)
 
-		if navigation_agent.is_navigation_finished():
-			_stop()
-			return
+	if navigation_agent.is_navigation_finished():
+		_stop()
+		return true
 
-		var next_path_position := (
-			navigation_agent.get_next_path_position()
-		)
+	var next_path_position := (
+		navigation_agent.get_next_path_position()
+	)
 
-		var direction := (
-			next_path_position
-			- enemy.global_position
-		)
+	var direction := (
+		next_path_position
+		- enemy.global_position
+	)
 
-		direction.y = 0.0
+	direction.y = 0.0
 
-		if direction.is_zero_approx():
-			_stop()
-			return
+	if direction.is_zero_approx():
+		_stop()
+		return false
 
-		var move_direction := (
-			direction.normalized()
-		)
+	var move_direction := (
+		direction.normalized()
+	)
 
-		_face_position(
-			next_path_position,
-			delta
-		)
+	_face_position(
+		next_path_position,
+		delta
+	)
 
-		enemy.velocity.x = (
-			move_direction.x
-			* move_speed
-		)
+	enemy.velocity.x = (
+		move_direction.x
+		* move_speed
+	)
 
-		enemy.velocity.z = (
-			move_direction.z
-			* move_speed
-		)
+	enemy.velocity.z = (
+		move_direction.z
+		* move_speed
+	)
 
-		enemy.play_animation_state(
-			&"Move"
-		)
+	enemy.play_animation_state(
+		&"Move"
+	)
+
+	return false
+
 
 func _start_look_around() -> void:
 	if is_looking_around:

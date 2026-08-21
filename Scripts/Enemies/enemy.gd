@@ -21,7 +21,7 @@ signal player_attack_received(
 @export_flags_3d_physics var line_of_sight_mask := 49
 @export var target_sight_height := 1.25
 @export_range(1.0, 180.0, 1.0)
-var view_angle := 120.0
+var view_angle := 220.0
 
 @export_category("Movement")
 
