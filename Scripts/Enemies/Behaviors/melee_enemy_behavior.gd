@@ -318,7 +318,6 @@ func _move_toward_position(
 			&"Move"
 		)
 
-		enemy.move_and_slide()
 
 func _look_around() -> void:
 	var sight_orgin = enemy.sight_origin as Marker3D

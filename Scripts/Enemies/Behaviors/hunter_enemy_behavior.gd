@@ -8,6 +8,8 @@ extends Node
 @export var preferred_distance := 1.3
 
 @export var look_around_duration := 5.0
+@export var look_around_pitch := 25.0
+
 @export var last_seen_arrival_distance := 0.75
 
 @export_category("Movement")
@@ -28,7 +30,7 @@ var navigation_agent: NavigationAgent3D
 var attack_cooldown_left := 0.0
 var investigating_player_attack := false
 var is_looking_around := false
-var look_around_tween: Tween
+var look_around_elapsed := 0.0
 
 func _ready() -> void:
 	enemy = get_parent() as Enemy
@@ -76,7 +78,10 @@ func _physics_process(
 		)
 		
 		if is_looking_around:
-			_update_look_around()
+			_update_look_around(
+				delta
+			)
+
 			return
 			
 		if not enemy.has_target():
@@ -201,10 +206,10 @@ func _investigate_player_attack(
 			)
 		)
 
-		if distance <= 0.75:
+		if distance <= last_seen_arrival_distance:
 			investigating_player_attack = false
 
-			_stop()
+			_start_look_around()
 
 			return
 
@@ -249,36 +254,36 @@ func _handle_visible_target(
 
 
 func _follow_last_seen_position(
-	delta: float
-) -> void:
-	if not enemy.memory.has_seen_player:
-		enemy.clear_target()
+		delta: float
+	) -> void:
+		if not enemy.memory.has_seen_player:
+			enemy.clear_target()
 
-		_stop()
-		return
+			_stop()
+			return
 
-	var last_seen_position := (
-		enemy.memory.last_seen_player_position
-	)
+		var last_seen_position := (
+			enemy.memory.last_seen_player_position
+		)
 
-	var to_last_seen := (
-		last_seen_position
-		- enemy.global_position
-	)
+		var to_last_seen := (
+			last_seen_position
+			- enemy.global_position
+		)
 
-	to_last_seen.y = 0.0
+		to_last_seen.y = 0.0
 
-	if (
-		to_last_seen.length()
-		<= last_seen_arrival_distance
-	):
-		_start_look_around()
-		return
+		if (
+			to_last_seen.length()
+			<= last_seen_arrival_distance
+		):
+			_start_look_around()
+			return
 
-	_move_toward_position(
-		last_seen_position,
-		delta
-	)
+		_move_toward_position(
+			last_seen_position,
+			delta
+		)
 
 
 func _move_toward_position(
@@ -331,13 +336,12 @@ func _move_toward_position(
 			&"Move"
 		)
 
-		enemy.move_and_slide()
-
 func _start_look_around() -> void:
 	if is_looking_around:
 		return
 
 	is_looking_around = true
+	look_around_elapsed = 0.0
 
 	enemy.clear_target()
 
@@ -352,49 +356,50 @@ func _start_look_around() -> void:
 		&"Look_Around"
 	)
 
-	var end_rotation := (
-		enemy.sight_origin.rotation_degrees
+
+func _update_look_around(
+	delta: float
+) -> void:
+	look_around_elapsed += delta
+
+	var progress := clampf(
+		look_around_elapsed
+		/ look_around_duration,
+		0.0,
+		1.0
 	)
 
-	end_rotation.y += 360.0
-
-	look_around_tween = create_tween()
-
-	look_around_tween.set_trans(
-		Tween.TRANS_LINEAR
+	var yaw := (
+		progress
+		* TAU
 	)
 
-	look_around_tween.tween_property(
-		enemy.sight_origin,
-		"rotation_degrees",
-		end_rotation,
-		look_around_duration
+	var pitch := deg_to_rad(
+		sin(
+			progress
+			* TAU
+			* 2.0
+		)
+		* look_around_pitch
 	)
 
-	look_around_tween.finished.connect(
-		_on_look_around_finished
+	enemy.sight_origin.rotation = Vector3(
+		pitch,
+		yaw,
+		0.0
 	)
 
-
-func _update_look_around() -> void:
 	_find_target()
 
-	if not enemy.has_target():
+	if enemy.has_target():
+		_finish_look_around_with_target()
 		return
 
-	_finish_look_around_with_target()
+	if progress >= 1.0:
+		_finish_look_around_without_target()
 
 
 func _finish_look_around_with_target() -> void:
-	if not is_looking_around:
-		return
-
-	if (
-		look_around_tween != null
-		and look_around_tween.is_valid()
-	):
-		look_around_tween.kill()
-
 	var sight_yaw := (
 		enemy.sight_origin.rotation.y
 	)
@@ -408,21 +413,19 @@ func _finish_look_around_with_target() -> void:
 	)
 
 	is_looking_around = false
-	look_around_tween = null
+	look_around_elapsed = 0.0
 
 
-func _on_look_around_finished() -> void:
-	if not is_looking_around:
-		return
-
+func _finish_look_around_without_target() -> void:
 	enemy.sight_origin.rotation = (
 		Vector3.ZERO
 	)
 
 	is_looking_around = false
-	look_around_tween = null
+	look_around_elapsed = 0.0
 
 	_stop()
+
 
 func _stop() -> void:
 	enemy.velocity.x = 0.0

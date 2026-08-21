@@ -253,7 +253,6 @@ func _move_toward_position(
 			&"Move"
 		)
 
-		enemy.move_and_slide()
 
 
 func _stop() -> void:

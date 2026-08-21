@@ -23,6 +23,16 @@ signal player_attack_received(
 @export_range(1.0, 180.0, 1.0)
 var view_angle := 120.0
 
+@export_category("Movement")
+
+@export var gravity_scale := 1.0
+
+var gravity_strength := float(
+	ProjectSettings.get_setting(
+		"physics/3d/default_gravity"
+	)
+)
+
 var current_health := 0.0
 var target: Node3D
 
@@ -51,6 +61,8 @@ var animation_state: AnimationNodeStateMachinePlayback
 
 #region Lifecycle
 func _ready() -> void:
+	process_physics_priority = 10
+	
 	if stats != null:
 		current_health = stats.max_hp
 	
@@ -66,6 +78,30 @@ func _ready() -> void:
 	)
 	
 	_setup_animation()
+
+func _physics_process(
+		delta: float
+	) -> void:
+		_apply_gravity(
+			delta
+		)
+
+		move_and_slide()
+
+func _apply_gravity(
+		delta: float
+	) -> void:
+		if is_on_floor():
+			if velocity.y < 0.0:
+				velocity.y = 0.0
+
+			return
+
+		velocity.y -= (
+			gravity_strength
+			* gravity_scale
+			* delta
+		)
 #endregion
 
 
@@ -164,51 +200,52 @@ func has_line_of_sight_to(
 		)
 
 func is_target_in_view(
-		target_node: Node3D
-	) -> bool:
-		if target_node == null:
-			return false
+	target_node: Node3D
+) -> bool:
+	if target_node == null:
+		return false
 
-		if sight_origin == null:
-			return false
+	if sight_origin == null:
+		return false
 
-		var forward := (
-			-sight_origin.global_transform.basis.z
+	var forward := (
+		-sight_origin.global_transform.basis.z
+	)
+
+	if forward.is_zero_approx():
+		return false
+
+	forward = forward.normalized()
+
+	var target_position := (
+		target_node.global_position
+		+ Vector3.UP * target_sight_height
+	)
+
+	var to_target := (
+		target_position
+		- sight_origin.global_position
+	)
+
+	if to_target.is_zero_approx():
+		return true
+
+	var target_direction := (
+		to_target.normalized()
+	)
+
+	var minimum_dot := cos(
+		deg_to_rad(
+			view_angle * 0.5
 		)
+	)
 
-		forward.y = 0.0
-
-		if forward.is_zero_approx():
-			return false
-
-		forward = forward.normalized()
-
-		var to_target := (
-			target_node.global_position
-			- sight_origin.global_position
+	return (
+		forward.dot(
+			target_direction
 		)
-
-		to_target.y = 0.0
-
-		if to_target.is_zero_approx():
-			return true
-
-		var target_direction := (
-			to_target.normalized()
-		)
-
-		var minimum_dot := cos(
-			deg_to_rad(
-				view_angle * 0.5
-			)
-		)
-
-		return (
-			forward.dot(
-				target_direction
-			)
-			>= minimum_dot
-		)
+		>= minimum_dot
+	)
 
 func can_see_target(
 		target_node: Node3D
