@@ -11,6 +11,16 @@ extends Node
 @export var look_around_pitch := 25.0
 
 @export var last_seen_arrival_distance := 0.75
+@export_category("Idle")
+
+@export var idle_time_min := 2.0
+@export var idle_time_max := 5.0
+
+@export var wander_radius := 6.0
+@export var wander_arrival_distance := 0.75
+
+@export_range(0.0, 1.0, 0.05)
+var idle_look_around_chance := 0.25
 
 @export_category("Movement")
 
@@ -31,6 +41,12 @@ var attack_cooldown_left := 0.0
 var investigating_player_attack := false
 var is_looking_around := false
 var look_around_elapsed := 0.0
+
+var wander_center := Vector3.ZERO
+var wander_target := Vector3.ZERO
+
+var is_wandering := false
+var idle_time_left := 0.0
 
 func _ready() -> void:
 	enemy = get_parent() as Enemy
@@ -58,6 +74,11 @@ func _ready() -> void:
 		return
 
 	_find_target()
+	wander_center = (
+		enemy.global_position
+	)
+
+	_reset_idle_timer()
 
 
 func _physics_process(
@@ -77,20 +98,27 @@ func _physics_process(
 			delta
 		)
 		
+		if enemy.is_in_hit_reaction():
+			return
+		
 		if is_looking_around:
 			_update_look_around(
 				delta
 			)
 
 			return
-			
+		
 		if not enemy.has_target():
 			_find_target()
 
 			if enemy.has_target():
 				investigating_player_attack = false
 
+				_cancel_idle_activity()
+
 			elif investigating_player_attack:
+				_cancel_idle_activity()
+
 				_investigate_player_attack(
 					delta
 				)
@@ -98,9 +126,12 @@ func _physics_process(
 				return
 
 			else:
-				_stop()
-				return
+				_update_idle_wander(
+					delta
+				)
 
+				return
+		
 		var can_see_target := (
 			enemy.can_see_target(
 				enemy.target
@@ -162,13 +193,17 @@ func _find_target() -> void:
 	)
 
 	investigating_player_attack = false
+	
+	_cancel_idle_activity()
 
 func _on_player_attack_received(
 		player: Node3D
 	) -> void:
 		if player == null:
 			return
-
+		
+		_cancel_idle_activity()
+		
 		if enemy.can_see_target(
 			player
 		):
@@ -298,6 +333,153 @@ func _follow_last_seen_position(
 	if navigation_finished:
 		_start_look_around()
 
+
+func _update_idle_wander(
+	delta: float
+) -> void:
+	if is_wandering:
+		_update_wandering(
+			delta
+		)
+
+		return
+
+	_stop()
+
+	idle_time_left = maxf(
+		idle_time_left - delta,
+		0.0
+	)
+
+	if idle_time_left > 0.0:
+		return
+
+	if (
+		randf()
+		<= idle_look_around_chance
+	):
+		_start_look_around()
+		return
+
+	if _choose_wander_target():
+		is_wandering = true
+		return
+
+	_reset_idle_timer()
+
+
+func _update_wandering(
+	delta: float
+) -> void:
+	var to_target := (
+		wander_target
+		- enemy.global_position
+	)
+
+	to_target.y = 0.0
+
+	if (
+		to_target.length()
+		<= wander_arrival_distance
+	):
+		_finish_wandering()
+		return
+
+	var navigation_finished := (
+		_move_toward_position(
+			wander_target,
+			delta
+		)
+	)
+
+	if navigation_finished:
+		_finish_wandering()
+
+
+func _choose_wander_target() -> bool:
+	var navigation_map := (
+		navigation_agent.get_navigation_map()
+	)
+
+	if not navigation_map.is_valid():
+		return false
+
+	for attempt in 6:
+		var angle := randf_range(
+			0.0,
+			TAU
+		)
+
+		var distance := randf_range(
+			2.0,
+			wander_radius
+		)
+
+		var offset := Vector3(
+			cos(angle),
+			0.0,
+			sin(angle)
+		) * distance
+
+		var candidate := (
+			wander_center
+			+ offset
+		)
+
+		var navigation_point := (
+			NavigationServer3D
+			.map_get_closest_point(
+				navigation_map,
+				candidate
+			)
+		)
+
+		var to_point := (
+			navigation_point
+			- enemy.global_position
+		)
+
+		to_point.y = 0.0
+
+		if to_point.length() < 1.0:
+			continue
+
+		wander_target = (
+			navigation_point
+		)
+
+		return true
+
+	return false
+
+
+func _finish_wandering() -> void:
+	is_wandering = false
+
+	_stop()
+
+	_reset_idle_timer()
+
+
+func _reset_idle_timer() -> void:
+	var minimum := minf(
+		idle_time_min,
+		idle_time_max
+	)
+
+	var maximum := maxf(
+		idle_time_min,
+		idle_time_max
+	)
+
+	idle_time_left = randf_range(
+		minimum,
+		maximum
+	)
+
+
+func _cancel_idle_activity() -> void:
+	is_wandering = false
 
 func _move_toward_position(
 	target_position: Vector3,
@@ -441,6 +623,8 @@ func _finish_look_around_without_target() -> void:
 	look_around_elapsed = 0.0
 
 	_stop()
+	
+	_reset_idle_timer()
 
 
 func _stop() -> void:

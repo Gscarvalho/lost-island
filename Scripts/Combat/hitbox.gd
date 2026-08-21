@@ -47,7 +47,7 @@ func configure_attack(
 func create_damage_data() -> DamageData:
 	var weapon := source_node as Weapon
 
-	return DamageData.new(
+	var damage_data := DamageData.new(
 		damage,
 		_get_damage_type(),
 		source_node,
@@ -55,6 +55,13 @@ func create_damage_data() -> DamageData:
 		weapon,
 		source_actor
 	)
+
+	if source_skill != null:
+		damage_data.knockback_strength = (
+			source_skill.impact_knockback_strength
+		)
+
+	return damage_data
 
 
 func activate() -> void:

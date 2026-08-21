@@ -63,7 +63,10 @@ func _physics_process(
 	enemy.memory.update_time(
 		delta
 	)
-
+	
+	if enemy.is_in_hit_reaction():
+		return
+	
 	if not enemy.has_target():
 		_find_threat()
 

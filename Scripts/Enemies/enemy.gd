@@ -33,6 +33,17 @@ var gravity_strength := float(
 	)
 )
 
+@export_category("Hit Reaction")
+
+@export var hit_reaction_duration := 0.25
+@export var knockback_deceleration := 18.0
+
+var hit_reaction_left := 0.0
+var knockback_velocity := Vector3.ZERO
+
+var hit_source_position := Vector3.ZERO
+var has_hit_source_position := false
+
 var current_health := 0.0
 var target: Node3D
 
@@ -83,6 +94,10 @@ func _physics_process(
 		delta: float
 	) -> void:
 		_apply_gravity(
+			delta
+		)
+
+		_update_hit_reaction(
 			delta
 		)
 
@@ -301,10 +316,151 @@ func _get_player_from_node(
 		return null
 #endregion
 
+#region Hit Reaction
+func _start_hit_reaction(
+		damage_data: DamageData
+	) -> void:
+		if damage_data == null:
+			return
+
+		var source_node := (
+			_get_damage_source_3d(
+				damage_data
+			)
+		)
+
+		if source_node == null:
+			return
+
+		hit_source_position = (
+			source_node.global_position
+		)
+
+		has_hit_source_position = true
+
+		_face_hit_source()
+
+		var away_direction := (
+			global_position
+			- hit_source_position
+		)
+
+		away_direction.y = 0.0
+
+		if (
+			away_direction.length_squared()
+			<= 0.0001
+		):
+			return
+
+		var strength := maxf(
+			damage_data.knockback_strength,
+			0.0
+		)
+
+		if strength <= 0.0:
+			return
+
+		knockback_velocity = (
+			away_direction.normalized()
+			* strength
+		)
+
+		hit_reaction_left = (
+			hit_reaction_duration
+		)
+
+
+func _update_hit_reaction(
+		delta: float
+	) -> void:
+		if not is_in_hit_reaction():
+			return
+
+		_face_hit_source()
+
+		velocity.x = knockback_velocity.x
+		velocity.z = knockback_velocity.z
+
+		knockback_velocity = (
+			knockback_velocity.move_toward(
+				Vector3.ZERO,
+				knockback_deceleration
+				* delta
+			)
+		)
+
+		hit_reaction_left = maxf(
+			hit_reaction_left - delta,
+			0.0
+		)
+
+		if hit_reaction_left > 0.0:
+			return
+
+		knockback_velocity = Vector3.ZERO
+
+		velocity.x = 0.0
+		velocity.z = 0.0
+
+		has_hit_source_position = false
+
+
+func _face_hit_source() -> void:
+		if not has_hit_source_position:
+			return
+
+		var direction := (
+			hit_source_position
+			- global_position
+		)
+
+		direction.y = 0.0
+
+		if (
+			direction.length_squared()
+			<= 0.0001
+		):
+			return
+
+		rotation.y = atan2(
+			-direction.x,
+			-direction.z
+		)
+
+
+func _get_damage_source_3d(
+		damage_data: DamageData
+	) -> Node3D:
+		var actor := (
+			damage_data.source_actor
+			as Node3D
+		)
+
+		if actor != null:
+			return actor
+
+		return (
+			damage_data.source
+			as Node3D
+		)
+
+
+func is_in_hit_reaction() -> bool:
+		return (
+			hit_reaction_left > 0.0
+		)
+#endregion
+
+
 #region Damage
 func _on_hurtbox_hit_received(
 		damage_data: DamageData
 	) -> void:
+		_start_hit_reaction(
+			damage_data
+		)
+		
 		_record_attack_memory(
 			damage_data
 		)

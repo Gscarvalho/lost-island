@@ -9,6 +9,7 @@ enum DamageType {
 }
 
 var amount: float = 0.0
+var knockback_strength := 0.0
 
 var source: Node
 var source_actor: Node
