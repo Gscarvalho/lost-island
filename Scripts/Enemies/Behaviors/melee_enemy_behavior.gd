@@ -314,7 +314,7 @@ func _move_toward_position(
 			* move_speed
 		)
 
-		enemy.play_animation_state(
+		enemy.play_movement_state(
 			&"Move"
 		)
 
@@ -330,7 +330,7 @@ func _look_around() -> void:
 			look_around_duration
 		)
 	
-	enemy.play_animation_state(
+	enemy.play_movement_state(
 		&"Look_Around"
 	)
 
@@ -338,7 +338,7 @@ func _stop() -> void:
 	enemy.velocity.x = 0.0
 	enemy.velocity.z = 0.0
 
-	enemy.play_animation_state(
+	enemy.play_movement_state(
 		&"Idle"
 	)
 

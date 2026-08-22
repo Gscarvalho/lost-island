@@ -66,7 +66,11 @@ var memory := EnemyMemory.new()
 )
 
 var animation_tree: AnimationTree
-var animation_state: AnimationNodeStateMachinePlayback
+
+var movement_state_machine: AnimationNodeStateMachinePlayback
+
+var attack_state_machine: AnimationNodeStateMachinePlayback
+
 #endregion
 
 
@@ -135,23 +139,66 @@ func _setup_animation() -> void:
 
 	animation_tree.active = true
 
-	animation_state = (
+	movement_state_machine = (
 		animation_tree.get(
-			"parameters/StateMachine/playback"
+			"parameters/MovementStateMachine/playback"
+		)
+		as AnimationNodeStateMachinePlayback
+	)
+
+	attack_state_machine = (
+		animation_tree.get(
+			"parameters/AttackStateMachine/playback"
 		)
 		as AnimationNodeStateMachinePlayback
 	)
 
 
-func play_animation_state(
+func play_movement_state(
 		state_name: StringName
 	) -> void:
-		if animation_state == null:
+		if movement_state_machine == null:
 			return
 
-		animation_state.travel(
+		movement_state_machine.travel(
 			state_name
 		)
+
+func play_attack_state(
+		state_name: StringName
+	) -> void:
+		if attack_state_machine == null:
+			return
+
+		attack_state_machine.travel(
+			state_name
+		)
+
+func play_skill_animation(
+		skill: Skills
+	) -> bool:
+		if skill == null:
+			return false
+
+		if animation_tree == null:
+			return false
+
+		if attack_state_machine == null:
+			return false
+
+		if skill.animation_state_name.is_empty():
+			return false
+
+		attack_state_machine.travel(
+			skill.animation_state_name
+		)
+
+		animation_tree.set(
+			"parameters/AttackOneShot/request",
+			AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+		)
+
+		return true
 #endregion
 
 

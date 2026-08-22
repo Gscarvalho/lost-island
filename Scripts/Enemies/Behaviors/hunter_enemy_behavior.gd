@@ -527,7 +527,7 @@ func _move_toward_position(
 		* move_speed
 	)
 
-	enemy.play_animation_state(
+	enemy.play_movement_state(
 		&"Move"
 	)
 
@@ -550,7 +550,7 @@ func _start_look_around() -> void:
 		Vector3.ZERO
 	)
 
-	enemy.play_animation_state(
+	enemy.play_movement_state(
 		&"Look_Around"
 	)
 
@@ -631,7 +631,7 @@ func _stop() -> void:
 	enemy.velocity.x = 0.0
 	enemy.velocity.z = 0.0
 
-	enemy.play_animation_state(
+	enemy.play_movement_state(
 		&"Idle"
 	)
 
@@ -643,9 +643,10 @@ func _attack() -> void:
 		attack_skill
 	)
 
-	enemy.play_animation_state(
-		&"Attack_Melee"
-	)
+	if not enemy.play_skill_animation(
+		attack_skill
+	):
+		return
 
 	attack_cooldown_left = (
 		attack_cooldown
