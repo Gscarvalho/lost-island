@@ -20,7 +20,6 @@ extends Node
 
 @export_category("Attack")
 
-@export var attack_skill: Skills
 @export var attack_cooldown := 1.0
 
 
@@ -72,7 +71,8 @@ func _physics_process(
 		)
 
 		_update_attack_cooldown(
-			delta
+			delta,
+			null
 		)
 
 		if not enemy.has_target():
@@ -344,15 +344,19 @@ func _stop() -> void:
 
 
 func _attack() -> void:
-	if attack_skill == null:
+	var selected_skill := (
+		enemy.get_default_skill()
+	)
+
+	if selected_skill == null:
 		return
 
 	enemy.prepare_weapon_attack(
-		attack_skill
+		selected_skill
 	)
 
-	enemy.play_animation_state(
-		&"Attack_Melee"
+	enemy.play_skill_animation(
+		selected_skill
 	)
 
 	attack_cooldown_left = (
@@ -361,12 +365,20 @@ func _attack() -> void:
 
 
 func _update_attack_cooldown(
-		delta: float
+		delta: float,
+		skill: Skills
 	) -> void:
-		attack_cooldown_left = maxf(
-			attack_cooldown_left - delta,
-			0.0
-		)
+		if skill == null:
+			attack_cooldown_left = maxf(
+				attack_cooldown_left - delta,
+				0.0
+			)
+		else:
+			attack_cooldown_left = maxf(
+				skill.cooldown_time - delta,
+				0.0
+			)
+			
 
 
 func _face_target(

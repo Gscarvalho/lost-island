@@ -1,10 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://duph0cuiqslaa"]
+[gd_scene load_steps=20 format=3 uid="uid://duph0cuiqslaa"]
 
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_qmm4d"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_1y704"]
 [ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="3_7eoau"]
+[ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="3_hv31o"]
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="4_17n6f"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="4_hv31o"]
 [ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="5_17n6f"]
+[ext_resource type="Resource" uid="uid://cq02rul8xsug0" path="res://Data/Skills/Ranged/crossbow_shot.tres" id="5_hv31o"]
 [ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/Visuals/rogue_visual.tscn" id="6_kftis"]
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="7_ra6lb"]
 [ext_resource type="Script" uid="uid://cg1324m5q1gfs" path="res://Scripts/Enemies/Behaviors/hunter_enemy_behavior.gd" id="8_3enca"]
@@ -18,6 +21,11 @@ defense = 8.0
 m_defense = 12.0
 speed = 15.0
 metadata/_custom_type_script = "uid://baaxbte0f7aus"
+
+[sub_resource type="Resource" id="Resource_kftis"]
+script = ExtResource("3_hv31o")
+skills = Array[ExtResource("4_17n6f")]([ExtResource("9_nkuns"), ExtResource("5_hv31o")])
+metadata/_custom_type_script = "uid://dais1kwarudf6"
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vrdla"]
 viewport_path = NodePath("UI/HealthBar/SubViewport")
@@ -43,6 +51,7 @@ collision_mask = 50
 floor_max_angle = 0.87266463
 script = ExtResource("1_qmm4d")
 stats = SubResource("Resource_ptuny")
+skill_loadout = SubResource("Resource_kftis")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 target_desired_distance = 0.75
@@ -156,5 +165,4 @@ shape = SubResource("CapsuleShape3D_dtw0f")
 script = ExtResource("8_3enca")
 wander_radius = 15.0
 idle_look_around_chance = 0.15
-attack_skill = ExtResource("9_nkuns")
 attack_cooldown = 1.8

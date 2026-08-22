@@ -29,8 +29,6 @@ var idle_look_around_chance := 0.25
 
 
 @export_category("Attack")
-
-@export var attack_skill: Skills
 @export var attack_cooldown := 1.0
 
 
@@ -636,15 +634,19 @@ func _stop() -> void:
 	)
 
 func _attack() -> void:
-	if attack_skill == null:
+	var selected_skill := (
+		enemy.get_default_skill()
+	)
+
+	if selected_skill == null:
 		return
 
 	enemy.prepare_weapon_attack(
-		attack_skill
+		selected_skill
 	)
 
 	if not enemy.play_skill_animation(
-		attack_skill
+		selected_skill
 	):
 		return
 

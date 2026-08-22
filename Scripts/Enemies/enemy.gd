@@ -14,7 +14,10 @@ signal player_attack_received(
 )
 
 #region Data
+@export_category("Combat")
+
 @export var stats: Stats
+@export var skill_loadout: EnemySkillLoadout
 
 @export_category("Perception")
 
@@ -322,6 +325,7 @@ func can_see_target(
 		)
 #endregion
 
+
 #region Memory
 func _record_attack_memory(
 		damage_data: DamageData
@@ -362,6 +366,7 @@ func _get_player_from_node(
 
 		return null
 #endregion
+
 
 #region Hit Reaction
 func _start_hit_reaction(
@@ -672,4 +677,31 @@ func start_weapon_damage_window() -> void:
 func end_weapon_damage_window() -> void:
 	for weapon in get_equipped_weapons():
 		weapon.end_damage_window()
+#endregion
+
+
+#region Skills
+func get_loadout_skills() -> Array[Skills]:
+	if skill_loadout == null:
+		return []
+
+	return skill_loadout.get_valid_skills()
+
+
+func get_loadout_skill(
+	index: int
+) -> Skills:
+	if skill_loadout == null:
+		return null
+
+	return skill_loadout.get_skill(
+		index
+	)
+
+
+func get_default_skill() -> Skills:
+	if skill_loadout == null:
+		return null
+
+	return skill_loadout.get_default_skill()
 #endregion

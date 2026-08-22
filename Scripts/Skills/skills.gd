@@ -67,6 +67,7 @@ var unlock_cost: int = 1
 @export var skill_range: RangeType
 @export var skill_cost: float
 @export var cost_type: CostType = CostType.PerUse
+@export var cooldown_time: float = 1.0
 
 @export_category("Animation")
 @export var animation_state_name: StringName

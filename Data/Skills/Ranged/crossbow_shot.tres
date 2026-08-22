@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://cq02rul8xsug0"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_t3mpw"]
+[ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="2_ica4x"]
+
+[resource]
+script = ExtResource("1_t3mpw")
+skill_id = &"crossbow_shot"
+skill_name = "Crossbow Shot"
+skill_icon = ExtResource("2_ica4x")
+skill_power = 30.0
+skill_range = 2
+animation_state_name = &"Ranged_Shoot"
+impact_knockback_strength = 2.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"
