@@ -69,7 +69,7 @@ var unlock_cost: int = 1
 @export var cost_type: CostType = CostType.PerUse
 
 @export_category("Animation")
-@export var skill_anim_name: String
+@export var animation_state_name: StringName
 @export var animation_channel: AnimationChannel = (
 	AnimationChannel.Automatic
 )

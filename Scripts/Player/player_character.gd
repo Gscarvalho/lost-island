@@ -567,12 +567,12 @@ func _play_skill_animation(
 
 			return
 
-		if skill.skill_anim_name.is_empty():
+		if skill.animation_state_name.is_empty():
 			return
 
 		if skill.skill_type == Skills.SkillType.Physical:
 			attack_state_machine.travel(
-				skill.skill_anim_name
+				skill.animation_state_name
 			)
 
 			$AnimationTree.set(
@@ -582,7 +582,7 @@ func _play_skill_animation(
 
 		else:
 			magic_state_machine.travel(
-				skill.skill_anim_name
+				skill.animation_state_name
 			)
 
 			$AnimationTree.set(
@@ -594,7 +594,7 @@ func _play_mobility_animation(
 		skill: Skills
 	) -> void:
 		var animation_name := StringName(
-			skill.skill_anim_name
+			skill.animation_state_name
 		)
 
 		if skill.directional_animation:

@@ -1,22 +1,23 @@
-[gd_scene load_steps=43 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=44 format=3 uid="uid://dr8i58isvajwn"]
 
-[ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Player/player.tscn" id="1_vflva"]
-[ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_hwde3"]
-[ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/UI/menu_ui.tscn" id="2_qkmes"]
-[ext_resource type="Script" uid="uid://c5iwctc5ytawr" path="res://addons/proton_scatter/src/scatter.gd" id="4_oerva"]
-[ext_resource type="Script" uid="uid://dtlrvtcbtehim" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="5_t2ggk"]
-[ext_resource type="Script" uid="uid://cielkn180j662" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="6_x7ba5"]
-[ext_resource type="Script" uid="uid://cm8jvdgj7j7ev" path="res://addons/proton_scatter/src/modifiers/create_inside_random.gd" id="7_g1i77"]
-[ext_resource type="Script" uid="uid://bqy7fniuvdrtg" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="8_q55b2"]
-[ext_resource type="Script" uid="uid://bcsb3iytyhra7" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="9_hwde3"]
-[ext_resource type="Script" uid="uid://cbltsbmdtiryf" path="res://addons/proton_scatter/src/modifiers/project_on_geometry.gd" id="10_btpkh"]
-[ext_resource type="Script" uid="uid://cv2ul8v4grwu0" path="res://addons/proton_scatter/src/scatter_item.gd" id="11_m1fqf"]
-[ext_resource type="Script" uid="uid://bvu5sm6v7t1s2" path="res://addons/proton_scatter/src/scatter_shape.gd" id="12_fk2v1"]
-[ext_resource type="Script" uid="uid://c68s2472h76yi" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="13_k1ht2"]
-[ext_resource type="PackedScene" uid="uid://duph0cuiqslaa" path="res://Scenes/Enemies/rogue_enemy.tscn" id="14_t2ggk"]
-[ext_resource type="PackedScene" uid="uid://bx4plrqqed8sa" path="res://Scenes/Pickups/mana_pickup.tscn" id="15_oerva"]
-[ext_resource type="PackedScene" uid="uid://bcmvwhaf2lmas" path="res://Scenes/Animals/malinois_dog.tscn" id="15_t2ggk"]
-[ext_resource type="PackedScene" uid="uid://cn4wyrrj5bguh" path="res://Scenes/Pickups/regen_pickup.tscn" id="17_x7ba5"]
+[ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/UI/menu_ui.tscn" id="1_ht1nb"]
+[ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_u7t03"]
+[ext_resource type="Script" uid="uid://c5iwctc5ytawr" path="res://addons/proton_scatter/src/scatter.gd" id="3_sfprw"]
+[ext_resource type="Script" uid="uid://dtlrvtcbtehim" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="4_4lea8"]
+[ext_resource type="Script" uid="uid://cielkn180j662" path="res://addons/proton_scatter/src/modifiers/base_modifier.gd" id="5_pxckf"]
+[ext_resource type="Script" uid="uid://cm8jvdgj7j7ev" path="res://addons/proton_scatter/src/modifiers/create_inside_random.gd" id="6_ydrep"]
+[ext_resource type="Script" uid="uid://bqy7fniuvdrtg" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="7_0cxkw"]
+[ext_resource type="Script" uid="uid://bcsb3iytyhra7" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="8_pjkej"]
+[ext_resource type="Script" uid="uid://cbltsbmdtiryf" path="res://addons/proton_scatter/src/modifiers/project_on_geometry.gd" id="9_qxh32"]
+[ext_resource type="Script" uid="uid://cv2ul8v4grwu0" path="res://addons/proton_scatter/src/scatter_item.gd" id="10_4tlhj"]
+[ext_resource type="Script" uid="uid://bvu5sm6v7t1s2" path="res://addons/proton_scatter/src/scatter_shape.gd" id="11_tr4lj"]
+[ext_resource type="Script" uid="uid://c68s2472h76yi" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="12_ad33q"]
+[ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Player/player.tscn" id="13_njmod"]
+[ext_resource type="PackedScene" uid="uid://bcmvwhaf2lmas" path="res://Scenes/Animals/malinois_dog.tscn" id="14_6n2vr"]
+[ext_resource type="PackedScene" uid="uid://duph0cuiqslaa" path="res://Scenes/Enemies/rogue_enemy.tscn" id="15_cql3k"]
+[ext_resource type="PackedScene" uid="uid://bx4plrqqed8sa" path="res://Scenes/Pickups/mana_pickup.tscn" id="16_j1djk"]
+[ext_resource type="PackedScene" uid="uid://bigscy5kel4iu" path="res://Imports/Mixamo/the_monolith.tscn" id="16_u7t03"]
+[ext_resource type="PackedScene" uid="uid://cn4wyrrj5bguh" path="res://Scenes/Pickups/regen_pickup.tscn" id="17_u4lnj"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
 sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)
@@ -44,7 +45,7 @@ size = Vector2(200, 200)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_btpkh"]
 render_priority = 0
-shader = ExtResource("2_hwde3")
+shader = ExtResource("2_u7t03")
 shader_parameter/base_color = Color(0.35696116, 0.5386752, 3.85046e-07, 1)
 shader_parameter/use_albedo_texture = false
 shader_parameter/use_color_gradient = true
@@ -62,7 +63,7 @@ points = PackedVector3Array(-100, 0, 100, 100, 0, 100, 100, 0, -100, -100, 0, -1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hwde3"]
 render_priority = 0
-shader = ExtResource("2_hwde3")
+shader = ExtResource("2_u7t03")
 shader_parameter/base_color = Color(0.24705882, 0.34509805, 0.44705883, 1)
 shader_parameter/use_albedo_texture = false
 shader_parameter/use_color_gradient = true
@@ -113,40 +114,40 @@ agent_radius = 1.0
 filter_ledge_spans = true
 filter_walkable_low_height_spans = true
 
-[sub_resource type="Resource" id="Resource_x7ba5"]
-script = ExtResource("7_g1i77")
+[sub_resource type="Resource" id="Resource_u7t03"]
+script = ExtResource("6_ydrep")
 amount = 3000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_g1i77"]
-script = ExtResource("8_q55b2")
+[sub_resource type="Resource" id="Resource_sfprw"]
+script = ExtResource("7_0cxkw")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
 scale = Vector3(1, 1, 1)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_q55b2"]
-script = ExtResource("9_hwde3")
+[sub_resource type="Resource" id="Resource_4lea8"]
+script = ExtResource("8_pjkej")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_hwde3"]
-script = ExtResource("10_btpkh")
+[sub_resource type="Resource" id="Resource_pxckf"]
+script = ExtResource("9_qxh32")
 ray_length = 5.0
 ray_offset = 5.0
 align_with_collision_normal = true
 collision_mask = 16
 exclude_mask = 32
 
-[sub_resource type="Resource" id="Resource_btpkh"]
-script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_x7ba5"), SubResource("Resource_g1i77"), SubResource("Resource_q55b2"), SubResource("Resource_hwde3")])
+[sub_resource type="Resource" id="Resource_ydrep"]
+script = ExtResource("4_4lea8")
+stack = Array[ExtResource("5_pxckf")]([SubResource("Resource_u7t03"), SubResource("Resource_sfprw"), SubResource("Resource_4lea8"), SubResource("Resource_pxckf")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
-script = ExtResource("13_k1ht2")
+script = ExtResource("12_ad33q")
 size = Vector3(194.06427, 1, 190)
 metadata/_custom_type_script = "uid://c68s2472h76yi"
 
@@ -154,7 +155,7 @@ metadata/_custom_type_script = "uid://c68s2472h76yi"
 
 [node name="Menus" type="Node" parent="." groups=["Menu"]]
 
-[node name="Menu" parent="Menus" instance=ExtResource("2_qkmes")]
+[node name="Menu" parent="Menus" instance=ExtResource("1_ht1nb")]
 
 [node name="Weather" type="Node" parent="."]
 
@@ -304,141 +305,50 @@ shape = SubResource("ConcavePolygonShape3D_2rbid")
 navigation_mesh = SubResource("NavigationMesh_t2ggk")
 
 [node name="Grass" type="Node3D" parent="World"]
-script = ExtResource("4_oerva")
-modifier_stack = SubResource("Resource_btpkh")
+script = ExtResource("3_sfprw")
+modifier_stack = SubResource("Resource_ydrep")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(10, 10, 10)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"
 
 [node name="ScatterItem" type="Node3D" parent="World/Grass"]
-script = ExtResource("11_m1fqf")
+script = ExtResource("10_4tlhj")
 source_scale_multiplier = 0.5
 source_ignore_scale = false
 override_cast_shadow = 0
 path = "uid://c7cun65u8mgn2"
 
 [node name="ScatterShape" type="Node3D" parent="World/Grass"]
-script = ExtResource("12_fk2v1")
+script = ExtResource("11_tr4lj")
 shape = SubResource("Resource_d1w1t")
 
 [node name="Entities" type="Node3D" parent="."]
 
-[node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
+[node name="Player" parent="Entities" instance=ExtResource("13_njmod")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.4645, 5.3763695, -39.717693)
 
 [node name="EnemyGroup" type="Node3D" parent="Entities"]
 
-[node name="MalinoisDog" parent="Entities/EnemyGroup" instance=ExtResource("15_t2ggk")]
-transform = Transform3D(0.92974436, 0, 0.36820567, 0, 1, 0, -0.36820567, 0, 0.92974436, 31.043648, 1.6271338, -40.84444)
+[node name="MalinoisDog" parent="Entities/EnemyGroup" instance=ExtResource("14_6n2vr")]
+transform = Transform3D(0.92974436, 0, 0.36820567, 0, 1, 0, -0.36820567, 0, 0.92974436, 72.19927, 10.283594, -57.143257)
 
-[node name="RogueEnemy" parent="Entities/EnemyGroup" instance=ExtResource("14_t2ggk")]
+[node name="RogueEnemy" parent="Entities/EnemyGroup" instance=ExtResource("15_cql3k")]
 transform = Transform3D(0.28598937, 0, -0.95823276, 0, 1, 0, 0.95823276, 0, 0.28598937, 54.567154, 5.9166803, -29.431522)
+
+[node name="TheMonolith" parent="Entities" instance=ExtResource("16_u7t03")]
+transform = Transform3D(188.62134, 0, 66.49807, 0, 200, 0, -66.49807, 0, 188.62134, 33.054398, -70.2341, -88.76594)
 
 [node name="Pickups" type="Node3D" parent="."]
 
-[node name="Health" type="Node3D" parent="Pickups"]
+[node name="ManaPickup" parent="Pickups" instance=ExtResource("16_j1djk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.47781, 11.046542, -36.553394)
+mana_amount = 999.0
 
-[node name="HealthPickup" parent="Pickups/Health" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 75.42432, 1.3118393, -20.892874)
+[node name="HealthPickup" parent="Pickups" instance=ExtResource("17_u4lnj")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 51.591965, 8.5649185, 9.272455)
 regen_amount = 100.0
 
-[node name="HealthPickup2" parent="Pickups/Health" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 60.491684, 1.3118393, 14.265291)
-regen_amount = 100.0
-
-[node name="HealthPickup3" parent="Pickups/Health" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 91.12444, 1.3118432, -35.80977)
-regen_amount = 100.0
-
-[node name="HealthPickup4" parent="Pickups/Health" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 15.60598, 1.3118432, -3.2386208)
-regen_amount = 100.0
-
-[node name="HealthPickup5" parent="Pickups/Health" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -14.81778, 1.3118508, -37.656273)
-regen_amount = 100.0
-
-[node name="HealthPickup6" parent="Pickups/Health" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -19.382927, 1.3118432, 6.8100967)
-regen_amount = 100.0
-
-[node name="HealthPickup7" parent="Pickups/Health" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0.7918091, 1.3118432, 18.61713)
-regen_amount = 100.0
-
-[node name="Stamina" type="Node3D" parent="Pickups"]
-
-[node name="StaminaPickup" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 55.391163, 1.6625619, -29.228682)
+[node name="StaminaPickup" parent="Pickups" instance=ExtResource("17_u4lnj")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 55.391163, 9.63247, 9.272455)
 regen_type = 2
 regen_amount = 100.0
-
-[node name="StaminaPickup2" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 3.3779817, -33.02526)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="StaminaPickup3" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 4.1844068, -30.074926)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="StaminaPickup4" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 4.9121556, -27.321281)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="StaminaPickup5" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 5.659573, -24.587305)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="StaminaPickup6" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 6.3462386, -21.747005)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="StaminaPickup7" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 7.095329, -18.65701)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="StaminaPickup8" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 7.469873, -15.535801)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="StaminaPickup9" parent="Pickups/Stamina" instance=ExtResource("17_x7ba5")]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 16.837467, 8.18775, -12.196108)
-regen_type = 2
-regen_amount = 100.0
-
-[node name="Mana" type="Node3D" parent="Pickups"]
-
-[node name="ManaPickup" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.588627, 1.369448, -58.702953)
-mana_amount = 5.0
-
-[node name="ManaPickup2" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.848724, 1.369448, -54.32767)
-mana_amount = 5.0
-
-[node name="ManaPickup3" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.912796, 1.369448, -51.42963)
-mana_amount = 5.0
-
-[node name="ManaPickup4" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.099415, 1.369448, -48.926266)
-mana_amount = 5.0
-
-[node name="ManaPickup5" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.635338, 1.369448, -44.983143)
-mana_amount = 5.0
-
-[node name="ManaPickup6" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.04819, 1.369448, -41.84767)
-mana_amount = 5.0
-
-[node name="ManaPickup7" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.198303, 1.369448, -39.013123)
-mana_amount = 5.0

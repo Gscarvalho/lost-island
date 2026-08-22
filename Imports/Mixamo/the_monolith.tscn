@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bigscy5kel4iu"]
+
+[ext_resource type="PackedScene" uid="uid://hdxwv63elbwt" path="res://Imports/Mixamo/monolith_visual.tscn" id="1_uex6f"]
+
+[node name="TheMonolith" type="Node3D"]
+transform = Transform3D(200, 0, 0, 0, 200, 0, 0, 0, 200, 0, 0, 0)
+
+[node name="MonolithVisual" parent="." instance=ExtResource("1_uex6f")]
