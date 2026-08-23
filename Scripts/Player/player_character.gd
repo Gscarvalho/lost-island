@@ -803,6 +803,39 @@ func _on_hurtbox_hit_received(
 			final_damage
 		)
 
+		_report_damage_result(
+			damage_data,
+			final_damage
+		)
+
+func _report_damage_result(
+		damage_data: DamageData,
+		final_damage: float
+	) -> void:
+		if damage_data == null:
+			return
+
+		if damage_data.source_actor == null:
+			return
+
+		if damage_data.source_skill == null:
+			return
+
+		if not is_instance_valid(
+			damage_data.source_actor
+		):
+			return
+
+		if not damage_data.source_actor.has_method(
+			&"record_skill_damage_result"
+		):
+			return
+
+		damage_data.source_actor.call(
+			&"record_skill_damage_result",
+			damage_data.source_skill,
+			final_damage
+		)
 
 func take_damage(
 		damage: float

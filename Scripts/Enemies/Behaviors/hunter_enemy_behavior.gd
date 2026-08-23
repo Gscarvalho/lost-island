@@ -11,6 +11,12 @@ extends Node
 @export var look_around_pitch := 25.0
 
 @export var last_seen_arrival_distance := 0.75
+
+@export_category("Skill Priority")
+
+@export var priority_profile: EnemySkillPriorityProfile
+
+
 @export_category("Idle")
 
 @export var idle_time_min := 2.0
@@ -267,14 +273,34 @@ func _handle_visible_target(
 			to_target.length()
 		)
 
-		if distance <= preferred_distance:
+		var selected_skill := (
+			enemy.select_best_skill(
+				distance,
+				priority_profile
+			)
+		)
+
+		if selected_skill != null:
 			_stop()
 
 			_face_target(
 				delta
 			)
 
-			_attack()
+			_attack(
+				selected_skill
+			)
+
+			return
+
+		if enemy.has_skill_in_range(
+			distance
+		):
+			_stop()
+
+			_face_target(
+				delta
+			)
 
 			return
 
@@ -622,32 +648,29 @@ func _stop() -> void:
 		&"Idle"
 	)
 
-func _attack() -> void:
-	var selected_skill := (
-		enemy.get_default_skill()
-	)
+func _attack(
+		selected_skill: Skills
+	) -> void:
+		if selected_skill == null:
+			return
 
-	if selected_skill == null:
-		return
+		if not enemy.is_skill_ready(
+			selected_skill
+		):
+			return
 
-	if not enemy.is_skill_ready(
-		selected_skill
-	):
-		return
+		enemy.prepare_weapon_attack(
+			selected_skill
+		)
 
-	enemy.prepare_weapon_attack(
-		selected_skill
-	)
+		if not enemy.play_skill_animation(
+			selected_skill
+		):
+			return
 
-	if not enemy.play_skill_animation(
-		selected_skill
-	):
-		return
-
-	enemy.start_skill_cooldown(
-		selected_skill
-	)
-
+		enemy.commit_skill_use(
+			selected_skill
+		)
 
 func _face_target(
 		delta: float

@@ -1,10 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://duph0cuiqslaa"]
+[gd_scene load_steps=24 format=3 uid="uid://duph0cuiqslaa"]
 
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_qmm4d"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_1y704"]
+[ext_resource type="Script" uid="uid://brvympepo0n" path="res://Scripts/Skills/enemy_skill_option.gd" id="3_1y704"]
 [ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="3_7eoau"]
 [ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="3_hv31o"]
-[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="4_17n6f"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="4_hv31o"]
 [ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="5_17n6f"]
 [ext_resource type="Resource" uid="uid://cq02rul8xsug0" path="res://Data/Skills/Ranged/crossbow_shot.tres" id="5_hv31o"]
@@ -12,19 +12,39 @@
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="7_ra6lb"]
 [ext_resource type="Script" uid="uid://cg1324m5q1gfs" path="res://Scripts/Enemies/Behaviors/hunter_enemy_behavior.gd" id="8_3enca"]
 [ext_resource type="Resource" uid="uid://cvdlm4ds3r5t5" path="res://Data/Skills/Physical/dual_chop.tres" id="9_nkuns"]
+[ext_resource type="Script" uid="uid://bhp6ymh1p4hkv" path="res://Scripts/Enemies/enemy_skill_priority_profile.gd" id="13_17n6f"]
 
 [sub_resource type="Resource" id="Resource_ptuny"]
 script = ExtResource("2_1y704")
-max_hp = 200.0
+max_hp = 2000.0
 attack = 12.0
 defense = 8.0
 m_defense = 12.0
 speed = 15.0
 metadata/_custom_type_script = "uid://baaxbte0f7aus"
 
+[sub_resource type="Resource" id="Resource_hv31o"]
+script = ExtResource("3_1y704")
+skill = ExtResource("9_nkuns")
+hit_pressure_response = 1.0
+preferred_distance_max = 1.0
+use_distance_max = 1.5
+metadata/_custom_type_script = "uid://brvympepo0n"
+
+[sub_resource type="Resource" id="Resource_17n6f"]
+script = ExtResource("3_1y704")
+skill = ExtResource("5_hv31o")
+base_priority = 1.15
+hit_pressure_response = 0.5
+use_distance_min = 4.0
+preferred_distance_min = 6.0
+preferred_distance_max = 14.0
+use_distance_max = 20.0
+metadata/_custom_type_script = "uid://brvympepo0n"
+
 [sub_resource type="Resource" id="Resource_kftis"]
 script = ExtResource("3_hv31o")
-skills = Array[ExtResource("4_17n6f")]([ExtResource("9_nkuns"), ExtResource("5_hv31o")])
+options = Array[ExtResource("3_1y704")]([SubResource("Resource_hv31o"), SubResource("Resource_17n6f")])
 metadata/_custom_type_script = "uid://dais1kwarudf6"
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_vrdla"]
@@ -44,6 +64,11 @@ corner_radius_bottom_left = 25
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dtw0f"]
 height = 2.0804443
+
+[sub_resource type="Resource" id="Resource_ra6lb"]
+script = ExtResource("13_17n6f")
+hit_pressure_weight = 1.3
+metadata/_custom_type_script = "uid://bhp6ymh1p4hkv"
 
 [node name="RogueEnemy" type="CharacterBody3D"]
 collision_layer = 2
@@ -163,5 +188,6 @@ shape = SubResource("CapsuleShape3D_dtw0f")
 
 [node name="Behavior" type="Node" parent="."]
 script = ExtResource("8_3enca")
+priority_profile = SubResource("Resource_ra6lb")
 wander_radius = 15.0
 idle_look_around_chance = 0.15

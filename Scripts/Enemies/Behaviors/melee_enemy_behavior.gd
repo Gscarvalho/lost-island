@@ -353,7 +353,7 @@ func _attack() -> void:
 	):
 		return
 
-	enemy.start_skill_cooldown(
+	enemy.commit_skill_use(
 		selected_skill
 	)
 

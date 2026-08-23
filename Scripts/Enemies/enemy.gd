@@ -20,6 +20,14 @@ signal player_attack_received(
 @export var skill_loadout: EnemySkillLoadout
 var skill_cooldowns: Dictionary = {}
 
+@export_category("Combat Memory")
+
+@export_range(0.0, 1.0, 0.05)
+var hit_pressure_per_hit := 0.35
+
+@export_range(0.0, 1.0, 0.05)
+var hit_pressure_decay_per_second := 0.20
+
 @export_category("Perception")
 
 @export_flags_3d_physics var line_of_sight_mask := 49
@@ -94,6 +102,14 @@ func _ready() -> void:
 
 	body_hurtbox.hit_received.connect(
 		_on_hurtbox_hit_received
+	)
+	
+	memory.hit_pressure_gain = (
+		hit_pressure_per_hit
+	)
+
+	memory.hit_pressure_decay_per_second = (
+		hit_pressure_decay_per_second
 	)
 	
 	_setup_animation()
@@ -761,6 +777,105 @@ func _update_skill_cooldowns(
 				time_left
 			)
 
+
+func select_best_skill(
+		target_distance: float,
+		priority_profile: EnemySkillPriorityProfile
+	) -> Skills:
+		if skill_loadout == null:
+			return null
+
+		if priority_profile == null:
+			return null
+
+		var best_skill: Skills
+		var best_score := -1000000.0
+
+		for option in skill_loadout.get_valid_options():
+			var skill := option.skill
+
+			if not is_skill_ready(
+				skill
+			):
+				continue
+
+			var range_score := (
+				option.get_range_score(
+					target_distance
+				)
+			)
+
+			if range_score <= 0.0:
+				continue
+
+			var pressure_score := (
+				option.hit_pressure_response
+				* memory.hit_pressure
+			)
+			
+			var observed_damage_score := (
+				get_observed_damage_score(
+					skill
+				)
+			)
+
+			var score := (
+				option.base_priority
+				* priority_profile.base_priority_weight
+
+				+ range_score
+				* priority_profile.range_fit_weight
+
+				+ pressure_score
+				* priority_profile.hit_pressure_weight
+				
+				+ observed_damage_score
+				* priority_profile.observed_damage_weight
+			)
+			
+			if score <= best_score:
+				continue
+
+			best_score = score
+			best_skill = skill
+			
+			print(
+				skill.skill_name,
+				" | Range: ",
+				range_score,
+				" | Pressure: ",
+				memory.hit_pressure,
+				" | Avg Damage: ",
+				memory.get_skill_average_final_damage(
+					skill
+				),
+				" | Damage Score: ",
+				observed_damage_score,
+				" | Final Score: ",
+				score
+			)
+
+		return best_skill
+
+
+func has_skill_in_range(
+		target_distance: float
+	) -> bool:
+		if skill_loadout == null:
+			return false
+
+		for option in skill_loadout.get_valid_options():
+			if (
+				option.get_range_score(
+					target_distance
+				)
+				> 0.0
+			):
+				return true
+
+		return false
+
+
 func get_loadout_skills() -> Array[Skills]:
 	if skill_loadout == null:
 		return []
@@ -769,14 +884,14 @@ func get_loadout_skills() -> Array[Skills]:
 
 
 func get_loadout_skill(
-	index: int
-) -> Skills:
-	if skill_loadout == null:
-		return null
+		index: int
+	) -> Skills:
+		if skill_loadout == null:
+			return null
 
-	return skill_loadout.get_skill(
-		index
-	)
+		return skill_loadout.get_skill(
+			index
+		)
 
 
 func get_default_skill() -> Skills:
@@ -784,4 +899,88 @@ func get_default_skill() -> Skills:
 		return null
 
 	return skill_loadout.get_default_skill()
+
+
+func commit_skill_use(
+		skill: Skills
+	) -> void:
+		if skill == null:
+			return
+
+		memory.remember_skill_used(
+			skill
+		)
+
+		start_skill_cooldown(
+			skill
+		)
+
+
+func record_skill_damage_result(
+		skill: Skills,
+		final_damage: float
+	) -> void:
+		if skill == null:
+			return
+
+		memory.remember_skill_final_damage(
+			skill,
+			final_damage
+		)
+
+
+func get_observed_damage_score(
+		skill: Skills
+	) -> float:
+		if skill == null:
+			return 0.5
+
+		if skill_loadout == null:
+			return 0.5
+
+		var best_average := 0.0
+		var has_observed_skill := false
+
+		for option in skill_loadout.get_valid_options():
+			var option_skill := option.skill
+
+			if (
+				memory.get_skill_use_count(
+					option_skill
+				)
+				<= 0
+			):
+				continue
+
+			has_observed_skill = true
+
+			best_average = maxf(
+				best_average,
+				memory.get_skill_average_final_damage(
+					option_skill
+				)
+			)
+
+		if not has_observed_skill:
+			return 0.5
+
+		if (
+			memory.get_skill_use_count(
+				skill
+			)
+			<= 0
+		):
+			return 0.5
+
+		if best_average <= 0.0:
+			return 0.0
+
+		return clampf(
+			memory.get_skill_average_final_damage(
+				skill
+			)
+			/ best_average,
+			0.0,
+			1.0
+		)
 #endregion
