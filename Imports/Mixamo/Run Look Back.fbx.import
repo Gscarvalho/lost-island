@@ -4,12 +4,12 @@ importer="scene"
 importer_version=1
 type="PackedScene"
 uid="uid://njtrokoquqnv"
-path="res://.godot/imported/Run Look Back.fbx-c0ab1ad9c58e4e4b1852bf41b827805d.scn"
+path="res://.godot/imported/Run Look Back.fbx-48c610062bbaa3e2323092a63d38384e.scn"
 
 [deps]
 
-source_file="res://Imports/Run Look Back.fbx"
-dest_files=["res://.godot/imported/Run Look Back.fbx-c0ab1ad9c58e4e4b1852bf41b827805d.scn"]
+source_file="res://Imports/Mixamo/Run Look Back.fbx"
+dest_files=["res://.godot/imported/Run Look Back.fbx-48c610062bbaa3e2323092a63d38384e.scn"]
 
 [params]
 
@@ -41,7 +41,7 @@ _subresources={
 "animations": {
 "mixamo_com": {
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://Assets/Animations/Rig_Medium/mixamo_com.res",
+"save_to_file/fallback_path": "res://Assets/Animations/Rig_Medium/Dash_Look_Back.res",
 "save_to_file/keep_custom_tracks": "",
 "save_to_file/path": "uid://bm77td17p40ni",
 "settings/loop_mode": 0,

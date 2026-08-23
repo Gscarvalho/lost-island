@@ -2,7 +2,7 @@ class_name EnemyUI
 extends Node3D
 
 
-@onready var health_bar: TextureProgressBar = (
+@onready var health_bar: ProgressBar = (
 	%HealthBar
 )
 

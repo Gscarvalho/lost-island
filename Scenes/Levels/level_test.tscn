@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=45 format=3 uid="uid://df6prq4xcpyx3"]
 
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Player/player.tscn" id="1_vflva"]
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_hwde3"]
@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://cqty62oudwfem" path="res://Scenes/Enemies/barbarian_enemy.tscn" id="15_x7ba5"]
 [ext_resource type="PackedScene" uid="uid://cb0vw2ec8h3nb" path="res://Scenes/Enemies/dark_mage_enemy.tscn" id="16_g1i77"]
 [ext_resource type="PackedScene" uid="uid://cn4wyrrj5bguh" path="res://Scenes/Pickups/regen_pickup.tscn" id="17_x7ba5"]
+[ext_resource type="PackedScene" uid="uid://c1jx521ax84qo" path="res://Scenes/Enemies/fish_monster_enemy.tscn" id="19_q55b2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
 sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)
@@ -114,27 +115,27 @@ agent_radius = 1.0
 filter_ledge_spans = true
 filter_walkable_low_height_spans = true
 
-[sub_resource type="Resource" id="Resource_g1i77"]
+[sub_resource type="Resource" id="Resource_q55b2"]
 script = ExtResource("7_g1i77")
 amount = 3000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_q55b2"]
+[sub_resource type="Resource" id="Resource_hwde3"]
 script = ExtResource("8_q55b2")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
 scale = Vector3(1, 1, 1)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_hwde3"]
+[sub_resource type="Resource" id="Resource_btpkh"]
 script = ExtResource("9_hwde3")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_btpkh"]
+[sub_resource type="Resource" id="Resource_m1fqf"]
 script = ExtResource("10_btpkh")
 ray_length = 5.0
 ray_offset = 5.0
@@ -142,9 +143,9 @@ align_with_collision_normal = true
 collision_mask = 16
 exclude_mask = 32
 
-[sub_resource type="Resource" id="Resource_m1fqf"]
+[sub_resource type="Resource" id="Resource_fk2v1"]
 script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_g1i77"), SubResource("Resource_q55b2"), SubResource("Resource_hwde3"), SubResource("Resource_btpkh")])
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_q55b2"), SubResource("Resource_hwde3"), SubResource("Resource_btpkh"), SubResource("Resource_m1fqf")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
@@ -306,7 +307,7 @@ navigation_mesh = SubResource("NavigationMesh_t2ggk")
 
 [node name="Grass" type="Node3D" parent="World"]
 script = ExtResource("4_oerva")
-modifier_stack = SubResource("Resource_m1fqf")
+modifier_stack = SubResource("Resource_fk2v1")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(10, 10, 10)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"
@@ -446,3 +447,6 @@ mana_amount = 5.0
 [node name="ManaPickup7" parent="Pickups/Mana" instance=ExtResource("15_oerva")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.198303, 1.369448, -39.013123)
 mana_amount = 5.0
+
+[node name="FishMonsterEnemy" parent="." instance=ExtResource("19_q55b2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.968538, 0.0033382308, -47.663475)

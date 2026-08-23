@@ -1,7 +1,7 @@
 [gd_scene load_steps=19 format=4 uid="uid://cn4wyrrj5bguh"]
 
 [ext_resource type="Script" uid="uid://by38uqdtf4gsv" path="res://Scripts/Pickups/regen_pickup.gd" id="1_fwyi4"]
-[ext_resource type="Texture2D" uid="uid://d211imsgudtr2" path="res://Imports/Quaternius/Crystal by iPoly3D - SbLlgMXrQ1_texture_1.png" id="2_q6p1d"]
+[ext_resource type="Texture2D" uid="uid://d211imsgudtr2" path="res://Imports/Quaternius/crystal_texture.png" id="2_q6p1d"]
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="3_ggs1b"]
 [ext_resource type="Texture2D" uid="uid://dsu5ldqmy7jb5" path="res://Assets/Colors/gradient_hard_toon_surface.tres" id="4_4xxsl"]
 

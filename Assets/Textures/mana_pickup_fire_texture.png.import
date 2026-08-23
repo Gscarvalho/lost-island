@@ -2,20 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d211imsgudtr2"
-path.s3tc="res://.godot/imported/Crystal by iPoly3D - SbLlgMXrQ1_texture_1.png-bf2b6b53d91fcc0c8ef3f733c65bf2a8.s3tc.ctex"
+uid="uid://usfyavky15nc"
+path.s3tc="res://.godot/imported/mana_pickup_fire_texture.png-c583af8c442a79d58d40f32e8d42527e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
 }
 generator_parameters={
-"md5": "4c7f593d2b080cf54a35bef3f88ab6b8"
+"md5": "b6b1d5843eb67973aacf764f46d2f25b"
 }
 
 [deps]
 
-source_file="res://Imports/Quaternius/Crystal by iPoly3D - SbLlgMXrQ1_texture_1.png"
-dest_files=["res://.godot/imported/Crystal by iPoly3D - SbLlgMXrQ1_texture_1.png-bf2b6b53d91fcc0c8ef3f733c65bf2a8.s3tc.ctex"]
+source_file="res://Assets/Textures/mana_pickup_fire_texture.png"
+dest_files=["res://.godot/imported/mana_pickup_fire_texture.png-c583af8c442a79d58d40f32e8d42527e.s3tc.ctex"]
 
 [params]
 

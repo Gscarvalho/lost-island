@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b7m8rlq8wpggy" path="res://Imports/Mixamo/Walking.fbx" id="1_0kmjt"]
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_0bycq"]
-[ext_resource type="Texture2D" uid="uid://gee4w1ejnxxs" path="res://Imports/Mixamo/Walking_0.png" id="3_gsxk1"]
+[ext_resource type="Texture2D" uid="uid://gee4w1ejnxxs" path="res://Assets/Textures/monolith_texture.png" id="3_gsxk1"]
 
 [sub_resource type="Gradient" id="Gradient_x7goj"]
 offsets = PackedFloat32Array(0.57835823, 0.58208954)

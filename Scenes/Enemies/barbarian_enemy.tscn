@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cqty62oudwfem"]
+[gd_scene load_steps=19 format=3 uid="uid://cqty62oudwfem"]
 
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_buj10"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_k0lqx"]
@@ -6,9 +6,7 @@
 [ext_resource type="Resource" uid="uid://kkvwe3wr2dc2" path="res://Data/Skills/Physical/spin_attack.tres" id="4_buj10"]
 [ext_resource type="Resource" uid="uid://cq6yixodrxrce" path="res://Data/Skills/Physical/heavy_chop.tres" id="5_k0lqx"]
 [ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="6_aairu"]
-[ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="7_i64ma"]
-[ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="8_fyuuu"]
-[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="9_c4pan"]
+[ext_resource type="PackedScene" uid="uid://dgseyagqirx7m" path="res://Scenes/UI/enemy_hud_ui.tscn" id="8_h8kts"]
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="11_y8sys"]
 [ext_resource type="Script" uid="uid://cg1324m5q1gfs" path="res://Scripts/Enemies/Behaviors/hunter_enemy_behavior.gd" id="12_5d7vc"]
 [ext_resource type="PackedScene" uid="uid://7d7i43ukgjf6" path="res://Scenes/Enemies/Visuals/barbarian_visual.tscn" id="13_buj10"]
@@ -27,7 +25,7 @@ metadata/_custom_type_script = "uid://baaxbte0f7aus"
 script = ExtResource("3_a5q5m")
 skill = ExtResource("5_k0lqx")
 base_priority = 1.5
-hit_pressure_response = 0.10000000000000009
+hit_pressure_response = 0.10000000000000007
 preferred_distance_max = 2.2
 metadata/_custom_type_script = "uid://brvympepo0n"
 
@@ -43,19 +41,6 @@ metadata/_custom_type_script = "uid://brvympepo0n"
 script = ExtResource("6_aairu")
 options = Array[ExtResource("3_a5q5m")]([SubResource("Resource_i64ma"), SubResource("Resource_aqwas")])
 metadata/_custom_type_script = "uid://dais1kwarudf6"
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_vrdla"]
-viewport_path = NodePath("UI/HealthBar/SubViewport")
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_eyhix"]
-viewport_path = NodePath("UI/DamagePopup/SubViewport")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wynxd"]
-bg_color = Color(0, 0, 0, 0.5882353)
-corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 100
-corner_radius_bottom_left = 25
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6p2ka"]
 
@@ -87,91 +72,6 @@ debug_use_custom = true
 debug_path_custom_color = Color(0, 1, 1, 1)
 debug_path_custom_point_size = 6.55
 
-[node name="UI" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.7, 0)
-script = ExtResource("7_i64ma")
-
-[node name="HealthBar" type="Sprite3D" parent="UI"]
-billboard = 1
-texture = SubResource("ViewportTexture_vrdla")
-
-[node name="SubViewport" type="SubViewport" parent="UI/HealthBar"]
-disable_3d = true
-transparent_bg = true
-size = Vector2i(125, 25)
-size_2d_override_stretch = true
-
-[node name="HealthBar" type="TextureProgressBar" parent="UI/HealthBar/SubViewport"]
-unique_name_in_owner = true
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-value = 100.0
-nine_patch_stretch = true
-texture_progress = ExtResource("8_fyuuu")
-tint_progress = Color(0.1882353, 0.7490196, 0, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/HealthBar/SubViewport"]
-custom_minimum_size = Vector2(125, 25)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 50.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-text = "559"
-fit_content = true
-scroll_active = false
-
-[node name="DamagePopup" type="Sprite3D" parent="UI"]
-sorting_offset = 0.1
-offset = Vector2(105, 0)
-billboard = 1
-texture = SubResource("ViewportTexture_eyhix")
-
-[node name="SubViewport" type="SubViewport" parent="UI/DamagePopup"]
-disable_3d = true
-transparent_bg = true
-size = Vector2i(80, 40)
-size_2d_override_stretch = true
-
-[node name="Panel" type="Panel" parent="UI/DamagePopup/SubViewport"]
-modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(60, 30)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("9_c4pan")
-theme_override_styles/panel = SubResource("StyleBoxFlat_wynxd")
-
-[node name="DamageLabel" type="RichTextLabel" parent="UI/DamagePopup/SubViewport/Panel"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("9_c4pan")
-theme_override_font_sizes/normal_font_size = 30
-fit_content = true
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Markers" type="Node3D" parent="."]
-
-[node name="SightOrigin" type="Marker3D" parent="Markers"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_6p2ka")
@@ -186,6 +86,16 @@ damage_receiver = NodePath("..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0616577, 0)
 shape = SubResource("CapsuleShape3D_dtw0f")
 
+[node name="Markers" type="Node3D" parent="."]
+
+[node name="SightOrigin" type="Marker3D" parent="Markers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="UI" parent="." instance=ExtResource("8_h8kts")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2.75, 0)
+
+[node name="Visual" parent="." instance=ExtResource("13_buj10")]
+
 [node name="Behavior" type="Node" parent="."]
 script = ExtResource("12_5d7vc")
 detection_range = 14.0
@@ -197,5 +107,3 @@ wander_radius = 7.0
 idle_look_around_chance = 0.05
 move_speed = 2.5
 turn_speed = 10.0
-
-[node name="Visual" parent="." instance=ExtResource("13_buj10")]

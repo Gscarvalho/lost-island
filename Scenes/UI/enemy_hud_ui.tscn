@@ -1,0 +1,99 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgseyagqirx7m"]
+
+[ext_resource type="Script" uid="uid://btae6jrm2u08o" path="res://Scripts/Enemies/enemy_ui.gd" id="1_id72s"]
+[ext_resource type="Theme" uid="uid://cku5q7cxt3kmh" path="res://Data/Theme/main_theme.tres" id="3_avoxn"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_id72s"]
+viewport_path = NodePath("HealthBar/SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_vqjxw"]
+viewport_path = NodePath("DamagePopup/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wynxd"]
+bg_color = Color(0, 0, 0, 0.5882353)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 25
+
+[node name="UI" type="Node3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+script = ExtResource("1_id72s")
+
+[node name="HealthBar" type="Sprite3D" parent="."]
+billboard = 1
+texture = SubResource("ViewportTexture_id72s")
+
+[node name="SubViewport" type="SubViewport" parent="HealthBar"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(125, 25)
+size_2d_override_stretch = true
+
+[node name="HealthBar" type="ProgressBar" parent="HealthBar/SubViewport"]
+unique_name_in_owner = true
+self_modulate = Color(0, 0.7640519, 7.70092e-07, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_avoxn")
+value = 50.0
+show_percentage = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HealthBar/SubViewport"]
+custom_minimum_size = Vector2(125, 25)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+text = "559"
+fit_content = true
+scroll_active = false
+
+[node name="DamagePopup" type="Sprite3D" parent="."]
+sorting_offset = 0.1
+offset = Vector2(105, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_vqjxw")
+
+[node name="SubViewport" type="SubViewport" parent="DamagePopup"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(80, 40)
+size_2d_override_stretch = true
+
+[node name="Panel" type="Panel" parent="DamagePopup/SubViewport"]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(60, 30)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_avoxn")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wynxd")
+
+[node name="DamageLabel" type="RichTextLabel" parent="DamagePopup/SubViewport/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_avoxn")
+theme_override_font_sizes/normal_font_size = 30
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
