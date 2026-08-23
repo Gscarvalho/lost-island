@@ -24,8 +24,10 @@ metadata/_custom_type_script = "uid://baaxbte0f7aus"
 [sub_resource type="Resource" id="Resource_yfemv"]
 script = ExtResource("3_bu26m")
 skill = ExtResource("4_33g7k")
-use_distance_min = 1.0
-preferred_distance_min = 1.5
+use_distance_min = 1.5
+preferred_distance_min = 5.0
+preferred_distance_max = 10.0
+use_distance_max = 15.0
 metadata/_custom_type_script = "uid://brvympepo0n"
 
 [sub_resource type="Resource" id="Resource_flx7b"]
@@ -82,8 +84,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="UI" parent="." instance=ExtResource("10_6ov3t")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 3.25, 0)
 
-[node name="Visual" parent="." instance=ExtResource("12_33g7k")]
-
 [node name="Behavior" type="Node" parent="."]
 script = ExtResource("12_n3whj")
 detection_range = 20.0
@@ -94,3 +94,5 @@ priority_profile = SubResource("Resource_ra6lb")
 idle_time_min = 2.5
 wander_radius = 8.0
 idle_look_around_chance = 0.55
+
+[node name="Visual" parent="." instance=ExtResource("12_33g7k")]

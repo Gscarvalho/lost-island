@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_xsikj"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_vrlml"]
 [ext_resource type="Script" uid="uid://brvympepo0n" path="res://Scripts/Skills/enemy_skill_option.gd" id="3_ru20j"]
-[ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="4_602yv"]
+[ext_resource type="Resource" uid="uid://q60bwcioaa0s" path="res://Data/Skills/Water/aqua_blast.tres" id="4_602yv"]
 [ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="6_ok7rb"]
 [ext_resource type="PackedScene" uid="uid://dgseyagqirx7m" path="res://Scenes/UI/enemy_hud_ui.tscn" id="7_s7oqs"]
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="11_1xrtg"]
@@ -18,6 +18,11 @@ metadata/_custom_type_script = "uid://baaxbte0f7aus"
 [sub_resource type="Resource" id="Resource_de604"]
 script = ExtResource("3_ru20j")
 skill = ExtResource("4_602yv")
+base_priority = 2.0
+use_distance_min = 1.5
+preferred_distance_min = 5.0
+preferred_distance_max = 10.0
+use_distance_max = 20.0
 metadata/_custom_type_script = "uid://brvympepo0n"
 
 [sub_resource type="Resource" id="Resource_xsikj"]
@@ -74,8 +79,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 [node name="UI" parent="." instance=ExtResource("7_s7oqs")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 4, 0)
 
-[node name="Visual" parent="." instance=ExtResource("13_xsikj")]
-
 [node name="Behavior" type="Node" parent="."]
 script = ExtResource("12_symn0")
 detection_range = 15.0
@@ -83,3 +86,5 @@ priority_profile = SubResource("Resource_ra6lb")
 wander_radius = 10.0
 idle_look_around_chance = 0.45
 move_speed = 2.5
+
+[node name="Visual" parent="." instance=ExtResource("13_xsikj")]

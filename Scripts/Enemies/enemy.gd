@@ -25,6 +25,9 @@ signal player_attack_received(
 @export var skill_loadout: EnemySkillLoadout
 var skill_cooldowns: Dictionary = {}
 
+var pending_projectile_skill: Skills
+var pending_projectile_damage := 0.0
+
 @export_category("Combat Memory")
 
 ## Amount of Hit Pressure gained whenever the Player hits this enemy.
@@ -242,6 +245,16 @@ func play_skill_animation(
 		)
 
 		return true
+
+func is_skill_animation_playing() -> bool:
+	if animation_tree == null:
+		return false
+
+	return bool(
+		animation_tree.get(
+			"parameters/AttackOneShot/active"
+		)
+	)
 #endregion
 
 
@@ -904,6 +917,29 @@ func get_default_skill() -> Skills:
 	return skill_loadout.get_default_skill()
 
 
+func prepare_skill_use(
+		skill: Skills
+	) -> void:
+		if skill == null:
+			return
+
+		if skill.projectile_scene != null:
+			pending_projectile_skill = (
+				skill
+			)
+
+			pending_projectile_damage = (
+				calculate_skill_damage(
+					skill
+				)
+			)
+
+			return
+
+		prepare_weapon_attack(
+			skill
+		)
+
 func commit_skill_use(
 		skill: Skills
 	) -> void:
@@ -986,4 +1022,62 @@ func get_observed_damage_score(
 			0.0,
 			1.0
 		)
+
+func release_projectile(
+		spawn_transform: Transform3D
+	) -> void:
+		if pending_projectile_skill == null:
+			return
+
+		if (
+			pending_projectile_skill.projectile_scene
+			== null
+		):
+			return
+
+		var projectile := (
+			pending_projectile_skill
+			.projectile_scene
+			.instantiate()
+			as SkillProjectile
+		)
+
+		if projectile == null:
+			return
+
+		get_tree().current_scene.add_child(
+			projectile
+		)
+
+		projectile.global_transform = (
+			spawn_transform
+		)
+
+		var target_position := (
+			spawn_transform.origin
+			- spawn_transform.basis.z
+			* 10.0
+		)
+
+		if has_target():
+			target_position = (
+				target.global_position
+				+ Vector3.UP
+				* target_sight_height
+			)
+
+		var travel_direction := (
+			target_position
+			- spawn_transform.origin
+		).normalized()
+
+		projectile.setup(
+			self,
+			pending_projectile_skill,
+			pending_projectile_damage,
+			travel_direction
+		)
+
+		pending_projectile_skill = null
+		pending_projectile_damage = 0.0
 #endregion

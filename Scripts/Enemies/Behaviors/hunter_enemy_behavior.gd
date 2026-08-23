@@ -657,12 +657,15 @@ func _attack(
 		if selected_skill == null:
 			return
 
+		if enemy.is_skill_animation_playing():
+			return
+
 		if not enemy.is_skill_ready(
 			selected_skill
 		):
 			return
 
-		enemy.prepare_weapon_attack(
+		enemy.prepare_skill_use(
 			selected_skill
 		)
 

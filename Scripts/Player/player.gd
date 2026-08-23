@@ -59,6 +59,15 @@ var burst_velocity := Vector3.ZERO
 var burst_start_speed := 0.0
 var burst_duration := 0.0
 var burst_time_left := 0.0
+
+@export_category("Knockback")
+
+## How quickly external knockback velocity fades back to zero.
+## Higher values make knockback shorter and sharper.
+## Lower values make the Player slide farther after being hit.
+@export var knockback_deceleration := 18.0
+
+var knockback_velocity := Vector3.ZERO
 #endregion
 
 #region Jump Configuration
@@ -114,6 +123,7 @@ func _physics_process(delta: float) -> void:
 	_equip_logic(delta)
 	_move_logic(delta)
 	_burst_logic(delta)
+	_knockback_logic(delta)
 	_apply_horizontal_velocity()
 
 	_jump_logic(delta)
@@ -737,15 +747,71 @@ func _burst_logic(
 			* current_speed
 		)
 
+func apply_knockback_from_damage(
+		damage_data: DamageData
+	) -> void:
+		if damage_data == null:
+			return
+
+		var strength := maxf(
+			damage_data.knockback_strength,
+			0.0
+		)
+
+		if strength <= 0.0:
+			return
+
+		var source_node := (
+			damage_data.source_actor
+			as Node3D
+		)
+
+		if source_node == null:
+			source_node = (
+				damage_data.source
+				as Node3D
+			)
+
+		if source_node == null:
+			return
+
+		var away_direction := (
+			global_position
+			- source_node.global_position
+		)
+
+		away_direction.y = 0.0
+
+		if away_direction.is_zero_approx():
+			return
+
+		knockback_velocity = (
+			away_direction.normalized()
+			* strength
+		)
+
+func _knockback_logic(
+		delta: float
+	) -> void:
+		knockback_velocity = (
+			knockback_velocity.move_toward(
+				Vector3.ZERO,
+				knockback_deceleration
+				* delta
+			)
+		)
+
 func _apply_horizontal_velocity() -> void:
 	velocity.x = (
 		movement_velocity.x
 		+ burst_velocity.x
+		+ knockback_velocity.x
 	)
 
 	velocity.z = (
 		movement_velocity.y
 		+ burst_velocity.z
+		+ knockback_velocity.z
 	)
 
 func _jump_logic(delta: float) -> void:

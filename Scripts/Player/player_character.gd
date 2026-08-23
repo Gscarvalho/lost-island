@@ -803,9 +803,27 @@ func _on_hurtbox_hit_received(
 			final_damage
 		)
 
+		_apply_knockback(
+			damage_data
+		)
+
 		_report_damage_result(
 			damage_data,
 			final_damage
+		)
+
+func _apply_knockback(
+		damage_data: DamageData
+	) -> void:
+		var player := (
+			get_parent() as Player
+		)
+
+		if player == null:
+			return
+
+		player.apply_knockback_from_damage(
+			damage_data
 		)
 
 func _report_damage_result(

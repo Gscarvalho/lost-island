@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="SkillLoadout" load_steps=4 format=3 uid="uid://t4uugwo1dyb1"]
+[gd_resource type="Resource" script_class="SkillLoadout" load_steps=5 format=3 uid="uid://t4uugwo1dyb1"]
 
 [ext_resource type="Resource" uid="uid://b6tvfeksugqay" path="res://Data/Skills/Fire/fire_jump.tres" id="1_fwpq2"]
 [ext_resource type="Script" uid="uid://5vxi6cmich0g" path="res://Scripts/Skills/skill_loadout.gd" id="1_ktkon"]
 [ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="3_e1r2v"]
+[ext_resource type="Resource" uid="uid://q60bwcioaa0s" path="res://Data/Skills/Water/aqua_blast.tres" id="4_e1r2v"]
 
 [resource]
 script = ExtResource("1_ktkon")
 x_skill = ExtResource("3_e1r2v")
+y_skill = ExtResource("4_e1r2v")
 b_skill = ExtResource("1_fwpq2")
 metadata/_custom_type_script = "uid://5vxi6cmich0g"

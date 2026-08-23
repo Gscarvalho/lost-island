@@ -14,4 +14,6 @@ skill_power = 50.0
 skill_type = 2
 skill_cost = 1.0
 animation_state_name = &"Magic_Shoot"
+interrupt_lock_time = 0.5
+interrupt_lock_floor = 0.5
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"
