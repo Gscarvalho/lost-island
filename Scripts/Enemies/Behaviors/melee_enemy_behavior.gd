@@ -18,15 +18,9 @@ extends Node
 @export var turn_speed := 8.0
 
 
-@export_category("Attack")
-
-@export var attack_cooldown := 1.0
-
-
 var enemy: Enemy
 var navigation_agent: NavigationAgent3D
 
-var attack_cooldown_left := 0.0
 var investigating_player_attack := false
 
 func _ready() -> void:
@@ -68,11 +62,6 @@ func _physics_process(
 
 		enemy.memory.update_time(
 			delta
-		)
-
-		_update_attack_cooldown(
-			delta,
-			null
 		)
 
 		if not enemy.has_target():
@@ -244,8 +233,7 @@ func _handle_visible_target(
 				delta
 			)
 
-			if attack_cooldown_left <= 0.0:
-				_attack()
+			_attack()
 
 			return
 
@@ -351,34 +339,23 @@ func _attack() -> void:
 	if selected_skill == null:
 		return
 
+	if not enemy.is_skill_ready(
+		selected_skill
+	):
+		return
+
 	enemy.prepare_weapon_attack(
 		selected_skill
 	)
 
-	enemy.play_skill_animation(
+	if not enemy.play_skill_animation(
+		selected_skill
+	):
+		return
+
+	enemy.start_skill_cooldown(
 		selected_skill
 	)
-
-	attack_cooldown_left = (
-		attack_cooldown
-	)
-
-
-func _update_attack_cooldown(
-		delta: float,
-		skill: Skills
-	) -> void:
-		if skill == null:
-			attack_cooldown_left = maxf(
-				attack_cooldown_left - delta,
-				0.0
-			)
-		else:
-			attack_cooldown_left = maxf(
-				skill.cooldown_time - delta,
-				0.0
-			)
-			
 
 
 func _face_target(

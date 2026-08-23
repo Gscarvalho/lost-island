@@ -27,15 +27,9 @@ var idle_look_around_chance := 0.25
 @export var move_speed := 3.0
 @export var turn_speed := 8.0
 
-
-@export_category("Attack")
-@export var attack_cooldown := 1.0
-
-
 var enemy: Enemy
 var navigation_agent: NavigationAgent3D
 
-var attack_cooldown_left := 0.0
 var investigating_player_attack := false
 var is_looking_around := false
 var look_around_elapsed := 0.0
@@ -92,10 +86,6 @@ func _physics_process(
 			delta
 		)
 
-		_update_attack_cooldown(
-			delta
-		)
-		
 		if enemy.is_in_hit_reaction():
 			return
 		
@@ -284,8 +274,7 @@ func _handle_visible_target(
 				delta
 			)
 
-			if attack_cooldown_left <= 0.0:
-				_attack()
+			_attack()
 
 			return
 
@@ -641,6 +630,11 @@ func _attack() -> void:
 	if selected_skill == null:
 		return
 
+	if not enemy.is_skill_ready(
+		selected_skill
+	):
+		return
+
 	enemy.prepare_weapon_attack(
 		selected_skill
 	)
@@ -650,18 +644,9 @@ func _attack() -> void:
 	):
 		return
 
-	attack_cooldown_left = (
-		attack_cooldown
+	enemy.start_skill_cooldown(
+		selected_skill
 	)
-
-
-func _update_attack_cooldown(
-		delta: float
-	) -> void:
-		attack_cooldown_left = maxf(
-			attack_cooldown_left - delta,
-			0.0
-		)
 
 
 func _face_target(

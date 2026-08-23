@@ -11,6 +11,7 @@ skill_icon = ExtResource("2_gl2fo")
 unlock_cost = 0
 skill_power = 30.0
 skill_cost = 5.0
+cooldown_time = 5.0
 animation_state_name = &"Dual_Chop"
 impact_shake_intensity = 0.2
 impact_shake_duration = 0.07

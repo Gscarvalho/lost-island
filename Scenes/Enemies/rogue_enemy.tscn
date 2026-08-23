@@ -165,4 +165,3 @@ shape = SubResource("CapsuleShape3D_dtw0f")
 script = ExtResource("8_3enca")
 wander_radius = 15.0
 idle_look_around_chance = 0.15
-attack_cooldown = 1.8

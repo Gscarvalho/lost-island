@@ -18,6 +18,7 @@ signal player_attack_received(
 
 @export var stats: Stats
 @export var skill_loadout: EnemySkillLoadout
+var skill_cooldowns: Dictionary = {}
 
 @export_category("Perception")
 
@@ -100,6 +101,10 @@ func _ready() -> void:
 func _physics_process(
 		delta: float
 	) -> void:
+		_update_skill_cooldowns(
+			delta
+		)
+		
 		_apply_gravity(
 			delta
 		)
@@ -681,6 +686,81 @@ func end_weapon_damage_window() -> void:
 
 
 #region Skills
+func is_skill_ready(
+		skill: Skills
+	) -> bool:
+		if skill == null:
+			return false
+
+		return (
+			get_skill_cooldown_left(
+				skill
+			)
+			<= 0.0
+		)
+
+
+func get_skill_cooldown_left(
+		skill: Skills
+	) -> float:
+		if skill == null:
+			return 0.0
+
+		if not skill_cooldowns.has(
+			skill
+		):
+			return 0.0
+
+		return float(
+			skill_cooldowns[skill]
+		)
+
+
+func start_skill_cooldown(
+		skill: Skills
+	) -> void:
+		if skill == null:
+			return
+
+		var cooldown := maxf(
+			skill.cooldown_time,
+			0.0
+		)
+
+		if cooldown <= 0.0:
+			skill_cooldowns.erase(
+				skill
+			)
+
+			return
+
+		skill_cooldowns[skill] = (
+			cooldown
+		)
+
+
+func _update_skill_cooldowns(
+		delta: float
+	) -> void:
+		for skill in skill_cooldowns.keys():
+			var time_left := maxf(
+				float(
+					skill_cooldowns[skill]
+				) - delta,
+				0.0
+			)
+
+			if time_left <= 0.0:
+				skill_cooldowns.erase(
+					skill
+				)
+
+				continue
+
+			skill_cooldowns[skill] = (
+				time_left
+			)
+
 func get_loadout_skills() -> Array[Skills]:
 	if skill_loadout == null:
 		return []
