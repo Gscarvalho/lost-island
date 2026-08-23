@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=44 format=3 uid="uid://df6prq4xcpyx3"]
 
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Player/player.tscn" id="1_vflva"]
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_hwde3"]
@@ -15,6 +15,8 @@
 [ext_resource type="Script" uid="uid://c68s2472h76yi" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="13_k1ht2"]
 [ext_resource type="PackedScene" uid="uid://duph0cuiqslaa" path="res://Scenes/Enemies/rogue_enemy.tscn" id="14_t2ggk"]
 [ext_resource type="PackedScene" uid="uid://bx4plrqqed8sa" path="res://Scenes/Pickups/mana_pickup.tscn" id="15_oerva"]
+[ext_resource type="PackedScene" uid="uid://cqty62oudwfem" path="res://Scenes/Enemies/barbarian_enemy.tscn" id="15_x7ba5"]
+[ext_resource type="PackedScene" uid="uid://cb0vw2ec8h3nb" path="res://Scenes/Enemies/dark_mage_enemy.tscn" id="16_g1i77"]
 [ext_resource type="PackedScene" uid="uid://cn4wyrrj5bguh" path="res://Scenes/Pickups/regen_pickup.tscn" id="17_x7ba5"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_vflva"]
@@ -112,27 +114,27 @@ agent_radius = 1.0
 filter_ledge_spans = true
 filter_walkable_low_height_spans = true
 
-[sub_resource type="Resource" id="Resource_t2ggk"]
+[sub_resource type="Resource" id="Resource_g1i77"]
 script = ExtResource("7_g1i77")
 amount = 3000
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_x7ba5"]
+[sub_resource type="Resource" id="Resource_q55b2"]
 script = ExtResource("8_q55b2")
 position = Vector3(0.15, 0, 0.15)
 rotation = Vector3(15, 360, 15)
 scale = Vector3(1, 1, 1)
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_g1i77"]
+[sub_resource type="Resource" id="Resource_hwde3"]
 script = ExtResource("9_hwde3")
 iterations = -2
 offset_step = 0.7000000000000028
 consecutive_step_multiplier = 0.480000000000004
 restrict_height = true
 
-[sub_resource type="Resource" id="Resource_q55b2"]
+[sub_resource type="Resource" id="Resource_btpkh"]
 script = ExtResource("10_btpkh")
 ray_length = 5.0
 ray_offset = 5.0
@@ -140,9 +142,9 @@ align_with_collision_normal = true
 collision_mask = 16
 exclude_mask = 32
 
-[sub_resource type="Resource" id="Resource_hwde3"]
+[sub_resource type="Resource" id="Resource_m1fqf"]
 script = ExtResource("5_t2ggk")
-stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_t2ggk"), SubResource("Resource_x7ba5"), SubResource("Resource_g1i77"), SubResource("Resource_q55b2")])
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_g1i77"), SubResource("Resource_q55b2"), SubResource("Resource_hwde3"), SubResource("Resource_btpkh")])
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
@@ -304,7 +306,7 @@ navigation_mesh = SubResource("NavigationMesh_t2ggk")
 
 [node name="Grass" type="Node3D" parent="World"]
 script = ExtResource("4_oerva")
-modifier_stack = SubResource("Resource_hwde3")
+modifier_stack = SubResource("Resource_m1fqf")
 Performance/use_chunks = true
 Performance/chunk_dimensions = Vector3(10, 10, 10)
 metadata/_custom_type_script = "uid://c5iwctc5ytawr"
@@ -323,12 +325,18 @@ shape = SubResource("Resource_d1w1t")
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("1_vflva")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.4645, 5.3763695, -39.717693)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52.4645, 5.3763695, 30.565899)
 
 [node name="EnemyGroup" type="Node3D" parent="Entities"]
 
 [node name="RogueEnemy" parent="Entities/EnemyGroup" instance=ExtResource("14_t2ggk")]
 transform = Transform3D(0.28598937, 0, -0.95823276, 0, 1, 0, 0.95823276, 0, 0.28598937, 54.567154, 5.9166803, -29.431522)
+
+[node name="BarbarianEnemy" parent="Entities/EnemyGroup" instance=ExtResource("15_x7ba5")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="DarkMageEnemy" parent="Entities/EnemyGroup" instance=ExtResource("16_g1i77")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.208042, 5.137018, 2.7006683)
 
 [node name="Pickups" type="Node3D" parent="."]
 

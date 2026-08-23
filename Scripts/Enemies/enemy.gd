@@ -16,15 +16,34 @@ signal player_attack_received(
 #region Data
 @export_category("Combat")
 
+## Core combat stats used for HP, attack, defense and other
+## universal enemy calculations.
 @export var stats: Stats
+
+## The collection of skill options this enemy may choose from.
+## Skill selection is handled by the Behavior's Priority Profile.
 @export var skill_loadout: EnemySkillLoadout
 var skill_cooldowns: Dictionary = {}
 
 @export_category("Combat Memory")
 
+## Amount of Hit Pressure gained whenever the Player hits this enemy.
+##
+## Pressure is clamped between 0 and 1.
+## Higher values make the enemy reach maximum pressure in fewer hits.
+##
+## Example:
+## 0.35 means roughly three rapid hits can nearly maximize pressure.
 @export_range(0.0, 1.0, 0.05)
 var hit_pressure_per_hit := 0.35
 
+## Amount of Hit Pressure removed every second after it has been gained.
+##
+## Higher values make the enemy calm down/recover from pressure faster.
+##
+## Example:
+## 0.20 removes full pressure over roughly five seconds
+## if no additional hits occur.
 @export_range(0.0, 1.0, 0.05)
 var hit_pressure_decay_per_second := 0.20
 
@@ -839,22 +858,6 @@ func select_best_skill(
 			best_score = score
 			best_skill = skill
 			
-			print(
-				skill.skill_name,
-				" | Range: ",
-				range_score,
-				" | Pressure: ",
-				memory.hit_pressure,
-				" | Avg Damage: ",
-				memory.get_skill_average_final_damage(
-					skill
-				),
-				" | Damage Score: ",
-				observed_damage_score,
-				" | Final Score: ",
-				score
-			)
-
 		return best_skill
 
 

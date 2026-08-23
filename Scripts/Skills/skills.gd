@@ -67,6 +67,10 @@ var unlock_cost: int = 1
 @export var skill_range: RangeType
 @export var skill_cost: float
 @export var cost_type: CostType = CostType.PerUse
+## Seconds before this skill may be used again after activation.
+##
+## The Skills resource stores the cooldown duration.
+## Each character/enemy separately tracks its own runtime cooldown timer.
 @export var cooldown_time: float = 1.0
 
 @export_category("Animation")

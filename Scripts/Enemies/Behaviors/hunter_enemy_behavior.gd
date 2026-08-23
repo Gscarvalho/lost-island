@@ -14,6 +14,9 @@ extends Node
 
 @export_category("Skill Priority")
 
+## Controls how strongly this Hunter values different factors when
+## comparing usable skills: base preference, range, hit pressure,
+## and observed final damage.
 @export var priority_profile: EnemySkillPriorityProfile
 
 

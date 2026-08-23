@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://e1dxvvw8vgur"]
 
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="1_vyn7s"]
-[ext_resource type="Texture2D" uid="uid://bjoq0jh7jtvbb" path="res://Assets/Textures/knight_texture.png" id="2_wsdv0"]
+[ext_resource type="Texture2D" uid="uid://jxohh8bqqwlh" path="res://Imports/KayKit_Adventurers_2.0_FREE/Characters/fbx/barbarian_texture.png" id="2_g1rvw"]
 [ext_resource type="Texture2D" uid="uid://dsu5ldqmy7jb5" path="res://Assets/Colors/gradient_hard_toon_surface.tres" id="3_g1rvw"]
 [ext_resource type="Texture2D" uid="uid://2bn31fr53nr4" path="res://Assets/Colors/gradient_soft_toon_surface.tres" id="4_yvqrh"]
 
@@ -10,13 +10,13 @@ render_priority = 0
 shader = ExtResource("1_vyn7s")
 shader_parameter/base_color = Color(1, 1, 1, 1)
 shader_parameter/use_albedo_texture = true
-shader_parameter/albedo_texture = ExtResource("2_wsdv0")
+shader_parameter/albedo_texture = ExtResource("2_g1rvw")
 shader_parameter/use_color_gradient = true
 shader_parameter/color_gradient = ExtResource("3_g1rvw")
 shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
 shader_parameter/shadow_threshold = 0.2
-shader_parameter/shadow_softness = 0.0
+shader_parameter/shadow_softness = 0.02
 shader_parameter/use_fresnel = true
 shader_parameter/fresnel_gradient = ExtResource("4_yvqrh")
-shader_parameter/fresnel_power = 4.0
-shader_parameter/fresnel_strength = 0.25
+shader_parameter/fresnel_power = 0.50000002049012
+shader_parameter/fresnel_strength = 2.0

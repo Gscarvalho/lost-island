@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://kkvwe3wr2dc2"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_25vxl"]
+[ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="2_yfpel"]
+
+[resource]
+script = ExtResource("1_25vxl")
+skill_id = &"spin_attack"
+skill_name = "Spin Attack"
+skill_icon = ExtResource("2_yfpel")
+skill_power = 100.0
+skill_cost = 25.0
+cooldown_time = 3.5
+animation_state_name = &"Spin_Attack"
+impact_hit_stop_time_scale = 0.09999999999999999
+impact_knockback_strength = 7.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

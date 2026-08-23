@@ -1,10 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://c6rjbesajt77w"]
+[gd_scene load_steps=19 format=3 uid="uid://c6rjbesajt77w"]
 
 [ext_resource type="Script" uid="uid://ctshhk3eb7d2h" path="res://Scripts/Player/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://c7hpgqo2k5244" path="res://Scenes/Player/player_character.tscn" id="2_40svl"]
 [ext_resource type="Resource" uid="uid://bv6tkpmy8ybc4" path="res://Data/Player/player_progress.tres" id="2_cqrjx"]
 [ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Utilities/player_camera.tscn" id="3_al8ar"]
-[ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="4_01b8d"]
 [ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/UI/player_ui.tscn" id="4_gy20a"]
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="5_xccyk"]
 [ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="6_h1n2f"]
@@ -14,17 +13,12 @@
 [ext_resource type="Script" uid="uid://bsrbwx2d03seu" path="res://Scripts/Skills/skillbook.gd" id="9_yt1oc"]
 [ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="10_jnx77"]
 
-[sub_resource type="Resource" id="Resource_6htn1"]
-script = ExtResource("4_01b8d")
-metadata/_custom_type_script = "uid://baaxbte0f7aus"
-
 [sub_resource type="Resource" id="Resource_ehxue"]
 script = ExtResource("5_xccyk")
 skill_name = "Slice"
 skill_icon = ExtResource("6_h1n2f")
 skill_power = 60.0
 skill_cost = 10.0
-skill_anim_name = "1H_Melee_Attack_Slice_Diagonal"
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"
 
 [sub_resource type="Resource" id="Resource_kmsq5"]
@@ -33,7 +27,6 @@ skill_name = "Stab"
 skill_icon = ExtResource("6_h1n2f")
 skill_power = 80.0
 skill_cost = 20.0
-skill_anim_name = "1H_Melee_Attack_Stab"
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"
 
 [sub_resource type="Resource" id="Resource_dm2ul"]
@@ -42,7 +35,6 @@ skill_name = "Heal"
 skill_icon = ExtResource("8_15c3i")
 skill_type = 3
 skill_cost = 1.0
-skill_anim_name = "Spellcast_Long"
 skill_regen_type = 1
 skill_regen_power = 50.0
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"
@@ -54,7 +46,6 @@ skill_icon = ExtResource("10_jnx77")
 skill_power = 50.0
 skill_type = 2
 skill_cost = 1.0
-skill_anim_name = "Spellcast_Shoot"
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"
 
 [sub_resource type="Resource" id="Resource_gx0ld"]
@@ -74,7 +65,6 @@ script = ExtResource("1_v0iea")
 progression = ExtResource("2_cqrjx")
 
 [node name="Character" parent="." instance=ExtResource("2_40svl")]
-base_stats = SubResource("Resource_6htn1")
 attacks = Array[ExtResource("5_xccyk")]([SubResource("Resource_ehxue"), SubResource("Resource_kmsq5"), ExtResource("7_01b8d")])
 skill_book = SubResource("Resource_gx0ld")
 mana_maximum_enabled = false

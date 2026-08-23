@@ -4,6 +4,16 @@ extends Resource
 
 @export_category("Skill Options")
 
+## All skills this enemy is allowed to choose from.
+##
+## Each entry is an EnemySkillOption containing:
+## - the actual Skills resource,
+## - its base preference,
+## - pressure response,
+## - and usable/preferred distances.
+##
+## The array order does NOT determine priority.
+## The priority system scores all valid ready options.
 @export var options: Array[EnemySkillOption] = []
 
 
