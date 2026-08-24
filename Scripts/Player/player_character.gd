@@ -729,6 +729,20 @@ func release_projectile() -> void:
 	pending_projectile_skill = null
 	pending_projectile_damage = 0.0
 
+func play_hit_reaction() -> void:
+	interrupt_action_animation()
+
+	current_action_skill = null
+	current_action_time = 0.0
+
+	attack_state_machine.travel(
+		&"Hit"
+	)
+
+	$AnimationTree.set(
+		"parameters/AttackOneShot/request",
+		AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+	)
 #endregion
 
 #region Equipment
@@ -802,6 +816,8 @@ func _on_hurtbox_hit_received(
 		take_damage(
 			final_damage
 		)
+
+		play_hit_reaction()
 
 		_apply_knockback(
 			damage_data

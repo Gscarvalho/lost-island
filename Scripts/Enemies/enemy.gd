@@ -246,6 +246,22 @@ func play_skill_animation(
 
 		return true
 
+func play_hit_animation() -> void:
+	if animation_tree == null:
+		return
+
+	if attack_state_machine == null:
+		return
+
+	attack_state_machine.travel(
+		&"Hit"
+	)
+
+	animation_tree.set(
+		"parameters/AttackOneShot/request",
+		AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+	)
+
 func is_skill_animation_playing() -> bool:
 	if animation_tree == null:
 		return false
@@ -443,6 +459,14 @@ func _start_hit_reaction(
 
 		has_hit_source_position = true
 
+		interrupt_skill_execution()
+
+		play_hit_animation()
+
+		hit_reaction_left = (
+			hit_reaction_duration
+		)
+
 		_face_hit_source()
 
 		var away_direction := (
@@ -469,10 +493,6 @@ func _start_hit_reaction(
 		knockback_velocity = (
 			away_direction.normalized()
 			* strength
-		)
-
-		hit_reaction_left = (
-			hit_reaction_duration
 		)
 
 
@@ -734,6 +754,12 @@ func end_weapon_damage_window() -> void:
 
 
 #region Skills
+func interrupt_skill_execution() -> void:
+	end_weapon_damage_window()
+
+	pending_projectile_skill = null
+	pending_projectile_damage = 0.0
+
 func is_skill_ready(
 		skill: Skills
 	) -> bool:
