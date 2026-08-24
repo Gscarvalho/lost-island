@@ -1,4 +1,4 @@
-[gd_scene load_steps=129 format=4 uid="uid://cyba446df5nc6"]
+[gd_scene load_steps=126 format=4 uid="uid://cyba446df5nc6"]
 
 [ext_resource type="PackedScene" uid="uid://ef86k64qgffe" path="res://Scenes/Weapons/sword_1.tscn" id="1_p150c"]
 [ext_resource type="Script" uid="uid://dka00wfwlrlxq" path="res://Scripts/UI/menu_avatar.gd" id="1_qj666"]
@@ -31211,31 +31211,11 @@ nodes/MovementTimeScale/node = SubResource("AnimationNodeTimeScale_ehxue")
 nodes/MovementTimeScale/position = Vector2(-100, 140)
 node_connections = [&"output", 0, &"MagicOneShot", &"AttackOneShot", 0, &"MovementTimeScale", &"AttackOneShot", 1, &"AttackStateMachine", &"MagicOneShot", 0, &"AttackOneShot", &"MagicOneShot", 1, &"MagicStateMachine", &"MovementTimeScale", 0, &"MovementStateMachine"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iotvc"]
-sky_top_color = Color(3.85046e-07, 0.70131314, 0.89687854, 1)
-sky_horizon_color = Color(1.0800443, 1.3085082, 1.4199688, 1)
-ground_bottom_color = Color(0.4187766, 0.63131994, 0.8815971, 1)
-ground_horizon_color = Color(1.0800443, 1.3085082, 1.4199688, 1)
-
-[sub_resource type="Sky" id="Sky_xawdm"]
-sky_material = SubResource("ProceduralSkyMaterial_iotvc")
-
-[sub_resource type="Environment" id="Environment_iotvc"]
-background_mode = 2
-sky = SubResource("Sky_xawdm")
-tonemap_mode = 2
-ssao_enabled = true
-sdfgi_enabled = true
-glow_enabled = true
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.02
-volumetric_fog_gi_inject = 0.2
-volumetric_fog_sky_affect = 0.1
-
 [node name="MenuAvatar" type="Node3D"]
 script = ExtResource("1_qj666")
 
 [node name="Rig" type="Node3D" parent="."]
+transform = Transform3D(0.7820646, 0, -0.6231974, 0, 1, 0, 0.6231974, 0, 0.7820646, 0, 0, 0)
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Rig"]
 bones/0/name = "root"
@@ -31622,16 +31602,13 @@ parameters/MagicOneShot/request = 0
 parameters/MovementTimeScale/scale = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 3)
-v_offset = -0.4
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, 3)
+h_offset = -0.1
+v_offset = 0.4
 current = true
 
 [node name="Weather" type="Node" parent="."]
 
 [node name="Sun" type="DirectionalLight3D" parent="Weather"]
 transform = Transform3D(-0.5849576, -0.53636616, -0.608388, 0, -0.7501111, 0.66131186, -0.8110639, 0.3868394, 0.4387832, 0, 100, 0)
-light_energy = 0.5
-shadow_enabled = true
-
-[node name="Sky" type="WorldEnvironment" parent="Weather"]
-environment = SubResource("Environment_iotvc")
+light_energy = 0.25

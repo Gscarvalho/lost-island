@@ -185,6 +185,8 @@ func _find_target() -> void:
 		player
 	)
 
+	enemy.enter_combat()
+
 	enemy.memory.remember_player_seen(
 		player.global_position
 	)
@@ -198,6 +200,8 @@ func _on_player_attack_received(
 	) -> void:
 		if player == null:
 			return
+		
+		enemy.enter_combat()
 		
 		_cancel_idle_activity()
 		
@@ -637,6 +641,8 @@ func _finish_look_around_without_target() -> void:
 
 	is_looking_around = false
 	look_around_elapsed = 0.0
+
+	enemy.exit_combat()
 
 	_stop()
 	

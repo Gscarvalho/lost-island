@@ -484,6 +484,25 @@ autowrap_mode = 0
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Equips" type="VBoxContainer" parent="Main/Seperator/Stats"]
+z_index = 2
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ColorRect" type="NinePatchRect" parent="Main/Seperator/Stats/Equips"]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
+
+[node name="ColorRect2" type="NinePatchRect" parent="Main/Seperator/Stats/Equips"]
+custom_minimum_size = Vector2(200, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_cuj2c")
+axis_stretch_horizontal = 2
+
 [node name="Player" type="VBoxContainer" parent="Main/Seperator"]
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
@@ -491,46 +510,6 @@ size_flags_horizontal = 5
 size_flags_vertical = 4
 theme_override_constants/separation = 30
 alignment = 1
-
-[node name="Anim" type="MarginContainer" parent="Main/Seperator/Player"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="AvatarBG" type="Panel" parent="Main/Seperator/Player/Anim"]
-custom_minimum_size = Vector2(500, 500)
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("20_w61pg")
-theme_override_styles/panel = SubResource("StyleBoxFlat_w61pg")
-
-[node name="AvatarViewportLayer" type="SubViewportContainer" parent="Main/Seperator/Player/Anim/AvatarBG"]
-unique_name_in_owner = true
-z_index = 1
-custom_minimum_size = Vector2(1280, 720)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -640.0
-offset_top = -360.0
-offset_right = 640.0
-offset_bottom = 360.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="Main/Seperator/Player/Anim/AvatarBG/AvatarViewportLayer"]
-own_world_3d = true
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1280, 720)
-render_target_update_mode = 4
-
-[node name="MenuAvatar" parent="Main/Seperator/Player/Anim/AvatarBG/AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
-unique_name_in_owner = true
 
 [node name="Current" type="VBoxContainer" parent="Main/Seperator/Player"]
 z_index = 2
@@ -621,24 +600,17 @@ grow_vertical = 2
 texture = ExtResource("3_n8txd")
 expand_mode = 1
 
-[node name="Equips" type="VBoxContainer" parent="Main/Seperator/Player"]
-z_index = 2
+[node name="Anim" type="MarginContainer" parent="Main/Seperator/Player"]
 layout_mode = 2
-size_flags_vertical = 0
+size_flags_vertical = 3
 
-[node name="ColorRect" type="NinePatchRect" parent="Main/Seperator/Player/Equips"]
-custom_minimum_size = Vector2(200, 20)
+[node name="AvatarBG" type="Panel" parent="Main/Seperator/Player/Anim"]
+custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 size_flags_horizontal = 4
-texture = ExtResource("2_cuj2c")
-axis_stretch_horizontal = 2
-
-[node name="ColorRect2" type="NinePatchRect" parent="Main/Seperator/Player/Equips"]
-custom_minimum_size = Vector2(200, 20)
-layout_mode = 2
-size_flags_horizontal = 4
-texture = ExtResource("2_cuj2c")
-axis_stretch_horizontal = 2
+size_flags_vertical = 4
+theme = ExtResource("20_w61pg")
+theme_override_styles/panel = SubResource("StyleBoxFlat_w61pg")
 
 [node name="Mana" type="VBoxContainer" parent="Main/Seperator"]
 z_index = 2
@@ -787,6 +759,24 @@ theme_override_font_sizes/normal_font_size = 32
 text = "999"
 fit_content = true
 horizontal_alignment = 1
+
+[node name="AvatarViewportLayer" type="SubViewportContainer" parent="Main"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 2
+mouse_filter = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Main/AvatarViewportLayer"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
+
+[node name="MenuAvatar" parent="Main/AvatarViewportLayer/SubViewport" instance=ExtResource("4_o1rl0")]
+unique_name_in_owner = true
 
 [node name="InventoryPage" type="Control" parent="."]
 layout_mode = 1

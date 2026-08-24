@@ -7,6 +7,10 @@ signal health_changed(
 	maximum: float
 )
 
+signal combat_engaged_changed(
+	engaged: bool
+)
+
 signal died
 
 signal player_attack_received(
@@ -80,6 +84,7 @@ var has_hit_source_position := false
 
 var current_health := 0.0
 var target: Node3D
+var combat_engaged := false
 
 var memory := EnemyMemory.new()
 #endregion
@@ -135,6 +140,12 @@ func _ready() -> void:
 	)
 	
 	_setup_animation()
+
+func _exit_tree() -> void:
+	if combat_engaged:
+		CombatTracker.unregister_enemy(
+			self
+		)
 
 func _physics_process(
 		delta: float
@@ -434,6 +445,42 @@ func _get_player_from_node(
 			)
 
 		return null
+#endregion
+
+
+#region Combat State
+func enter_combat() -> void:
+	if combat_engaged:
+		return
+
+	combat_engaged = true
+
+	CombatTracker.register_enemy(
+		self
+	)
+
+	combat_engaged_changed.emit(
+		true
+	)
+
+
+func exit_combat() -> void:
+	if not combat_engaged:
+		return
+
+	combat_engaged = false
+
+	CombatTracker.unregister_enemy(
+		self
+	)
+
+	combat_engaged_changed.emit(
+		false
+	)
+
+
+func is_combat_engaged() -> bool:
+	return combat_engaged
 #endregion
 
 

@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://bk3xuqctmt7cc"]
+
+[ext_resource type="Script" uid="uid://b4xbv63gkinex" path="res://Scripts/Core/music_manager.gd" id="1_437gn"]
+[ext_resource type="AudioStream" uid="uid://ulvahbx8tfdf" path="res://Imports/Audio/alex-morgan-game-level-pixel-quest-loop-578505.mp3" id="2_oeqty"]
+[ext_resource type="AudioStream" uid="uid://bnw5xybld76xp" path="res://Imports/Audio/alex-morgan-epic-cinematic-bold-drums-573877.mp3" id="3_3xwro"]
+[ext_resource type="AudioStream" uid="uid://dahq30ot8m6uw" path="res://Imports/Audio/alex-morgan-happy-piano-cheerful-music-583264.mp3" id="4_mwlcj"]
+
+[node name="MusicManager" type="Node"]
+script = ExtResource("1_437gn")
+exploration_track = ExtResource("2_oeqty")
+battle_track = ExtResource("3_3xwro")
+celebration_track = ExtResource("4_mwlcj")
+battle_crossfade_duration = 0.5
+
+[node name="TrackA" type="AudioStreamPlayer" parent="."]
+
+[node name="TrackB" type="AudioStreamPlayer" parent="."]
