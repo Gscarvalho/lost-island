@@ -2,13 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://c4e32saqfakvc" path="res://Scenes/Combat/Projectiles/aqua_blast_projectile.tscn" id="1_h0q4m"]
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="2_towrj"]
-[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="3_k2yor"]
+[ext_resource type="Texture2D" uid="uid://btdwklaitq7vc" path="res://Assets/Images/Icons/Prototype/water_icon.png" id="3_h0q4m"]
 
 [resource]
 script = ExtResource("2_towrj")
 skill_id = &"aqua_blast"
 skill_name = "Aqua Blast"
-skill_icon = ExtResource("3_k2yor")
+skill_icon = ExtResource("3_h0q4m")
 projectile_scene = ExtResource("1_h0q4m")
 skill_power = 50.0
 skill_type = 2

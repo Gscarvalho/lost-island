@@ -10,9 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://n0nit41e2kec" path="res://Assets/Images/Icons/Input Retro/T_X_RT_Retro.png" id="4_plo7s"]
 [ext_resource type="Texture2D" uid="uid://cj01mnwjwpfca" path="res://Assets/Images/Icons/Input Retro/T_X_B_White_Retro.png" id="5_plo7s"]
 [ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/Prototype/fire_icon.png" id="5_we3k3"]
-[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="6_uxa4k"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/Prototype/sun_icon.svg" id="7_8wddj"]
 [ext_resource type="Texture2D" uid="uid://dy15xf6smaddf" path="res://Assets/Images/UI/circle_line.svg" id="7_mwh7w"]
+[ext_resource type="Texture2D" uid="uid://btdwklaitq7vc" path="res://Assets/Images/Icons/Prototype/water_icon.png" id="11_plo7s"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jcbsq"]
 bg_color = Color(0.2, 0.2, 0.2, 0.5882353)
@@ -648,7 +648,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("6_uxa4k")
+texture = ExtResource("11_plo7s")
 expand_mode = 1
 stretch_mode = 5
 flip_h = true

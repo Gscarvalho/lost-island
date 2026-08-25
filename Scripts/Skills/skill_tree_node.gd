@@ -45,6 +45,7 @@ func _ready() -> void:
 	pressed.connect(_on_pressed)
 	
 	focus_ring.value = 0.0
+	focus_ring.tint_progress = tree_color
 	
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:

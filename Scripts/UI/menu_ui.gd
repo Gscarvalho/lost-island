@@ -112,6 +112,7 @@ enum MenuPage {
 )
 
 @onready var fire_tree: SkillTree = %FireTree
+@onready var water_tree: SkillTree = %WaterTree
 #endregion
 
 #region Loadout Popup References
@@ -696,7 +697,8 @@ func _get_skill_tree_for_type(
 	match skill_type:
 		Skills.SkillType.Fire:
 			return fire_tree
-
+		Skills.SkillType.Water:
+			return water_tree
 		_:
 			return null
 

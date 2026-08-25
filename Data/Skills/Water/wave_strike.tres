@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://cvmxm60irvtdh"]
+
+[ext_resource type="PackedScene" uid="uid://c4e32saqfakvc" path="res://Scenes/Combat/Projectiles/aqua_blast_projectile.tscn" id="1_rg3b8"]
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="2_etw54"]
+[ext_resource type="Texture2D" uid="uid://btdwklaitq7vc" path="res://Assets/Images/Icons/Prototype/water_icon.png" id="3_etw54"]
+
+[resource]
+script = ExtResource("2_etw54")
+skill_id = &"wave_strike"
+skill_name = "Wake Strike"
+skill_icon = ExtResource("3_etw54")
+projectile_scene = ExtResource("1_rg3b8")
+skill_power = 50.0
+skill_type = 2
+skill_cost = 1.0
+animation_state_name = &"Magic_Shoot"
+interrupt_lock_time = 0.5
+interrupt_lock_floor = 0.5
+impact_knockback_strength = 20.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

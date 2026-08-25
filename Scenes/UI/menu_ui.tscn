@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=36 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/UI/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
@@ -7,8 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cyba446df5nc6" path="res://Scenes/UI/menu_avatar.tscn" id="4_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://bkogj03aacgui" path="res://Assets/Images/UI/bar_small_fill.svg" id="5_jlchu"]
 [ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/Prototype/fire_icon.png" id="5_o1rl0"]
+[ext_resource type="Texture2D" uid="uid://btdwklaitq7vc" path="res://Assets/Images/Icons/Prototype/water_icon.png" id="7_21gkc"]
 [ext_resource type="Texture2D" uid="uid://ddh5torayetl2" path="res://Data/Theme/Styles/disabled_grabber.tres" id="9_fjin3"]
-[ext_resource type="Texture2D" uid="uid://cyg6hv2g8kccm" path="res://Assets/Images/Icons/Prototype/water_icon.svg" id="9_uf2rm"]
 [ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/Prototype/sun_icon.svg" id="10_o1rl0"]
 [ext_resource type="Texture2D" uid="uid://fnv3aub4gtbp" path="res://Assets/Images/Icons/Prototype/snowflake_icon.svg" id="10_ujsln"]
 [ext_resource type="Texture2D" uid="uid://cbp5radrdej4e" path="res://Assets/Images/Icons/Prototype/godot_icon.svg" id="11_ujsln"]
@@ -25,8 +25,13 @@
 [ext_resource type="PackedScene" uid="uid://cdbke7a6rymuo" path="res://Scenes/UI/loadout_slot_button.tscn" id="21_aa3vm"]
 [ext_resource type="Texture2D" uid="uid://xi0e1rqrg55i" path="res://Assets/Images/Icons/Input Retro/T_X_X_White_Retro.png" id="22_8eyqk"]
 [ext_resource type="Texture2D" uid="uid://by2ro8m5dd2ai" path="res://Assets/Images/Icons/Input Retro/T_X_Y_White_Retro.png" id="23_21gkc"]
+[ext_resource type="Resource" uid="uid://q60bwcioaa0s" path="res://Data/Skills/Water/aqua_blast.tres" id="23_ipr0g"]
+[ext_resource type="Resource" uid="uid://bkykolltj4tsa" path="res://Data/Skills/Water/jet_dash.tres" id="23_kcy7n"]
 [ext_resource type="Texture2D" uid="uid://cj01mnwjwpfca" path="res://Assets/Images/Icons/Input Retro/T_X_B_White_Retro.png" id="24_ipr0g"]
+[ext_resource type="Resource" uid="uid://cjxdcwbppgaca" path="res://Data/Skills/Water/tsunami.tres" id="24_uosdh"]
+[ext_resource type="Resource" uid="uid://cvmxm60irvtdh" path="res://Data/Skills/Water/wave_strike.tres" id="25_jww18"]
 [ext_resource type="Texture2D" uid="uid://clklaxtbqb7g" path="res://Assets/Images/Icons/Input Retro/T_X_LT_Retro.png" id="25_rj5fu"]
+[ext_resource type="Resource" uid="uid://b3h22jf0vul52" path="res://Data/Skills/Water/bubble_shot.tres" id="26_mq557"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w61pg"]
 bg_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
@@ -35,12 +40,11 @@ corner_radius_top_right = 500
 corner_radius_bottom_right = 500
 corner_radius_bottom_left = 500
 
-[sub_resource type="Gradient" id="Gradient_ehti2"]
-colors = PackedColorArray(1, 0.54901963, 0, 1, 0.9607843, 0.9607843, 0.9607843, 1)
-metadata/_snap_enabled = true
+[sub_resource type="Gradient" id="Gradient_21gkc"]
+colors = PackedColorArray(0.39215687, 0.39215687, 0.39215687, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_5sxxi"]
-gradient = SubResource("Gradient_ehti2")
+gradient = SubResource("Gradient_21gkc")
 width = 1280
 
 [node name="Menu" type="Control"]
@@ -629,14 +633,14 @@ focus_neighbor_bottom = NodePath("../ManaWater")
 focus_mode = 2
 alignment = 1
 
-[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaFire"]
+[node name="FireManaBG" type="Panel" parent="Main/Seperator/Mana/ManaFire"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("20_w61pg")
 
-[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaFire/ManBG"]
+[node name="FireManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaFire/FireManaBG"]
 self_modulate = Color(1, 0.54901963, 0, 1)
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
@@ -676,14 +680,14 @@ focus_neighbor_bottom = NodePath("../ManaLight")
 focus_mode = 2
 alignment = 1
 
-[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaWater"]
+[node name="WaterManaBG" type="Panel" parent="Main/Seperator/Mana/ManaWater"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("20_w61pg")
 
-[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaWater/ManBG"]
+[node name="WaterManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaWater/WaterManaBG"]
 self_modulate = Color(0, 0.7490196, 1, 1)
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
@@ -698,7 +702,7 @@ offset_right = 50.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("9_uf2rm")
+texture = ExtResource("7_21gkc")
 expand_mode = 1
 stretch_mode = 5
 
@@ -723,14 +727,14 @@ focus_neighbor_bottom = NodePath("../ManaFire")
 focus_mode = 2
 alignment = 1
 
-[node name="ManBG" type="Panel" parent="Main/Seperator/Mana/ManaLight"]
+[node name="LightManaBG" type="Panel" parent="Main/Seperator/Mana/ManaLight"]
 custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("20_w61pg")
 
-[node name="ManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaLight/ManBG"]
+[node name="LightManaIcon" type="TextureRect" parent="Main/Seperator/Mana/ManaLight/LightManaBG"]
 self_modulate = Color(1, 0.84313726, 0, 1)
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 1
@@ -870,7 +874,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="SkillTreeBG" type="TextureRect" parent="SkillTreeOverlay"]
-self_modulate = Color(1, 0.54901963, 0, 1)
+self_modulate = Color(0, 0.6745098, 1, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -896,7 +900,7 @@ theme_override_constants/margin_bottom = 150
 
 [node name="BGIcon" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillTreeBGIcon"]
 layout_mode = 2
-texture = ExtResource("5_o1rl0")
+texture = ExtResource("7_21gkc")
 expand_mode = 3
 stretch_mode = 5
 
@@ -1235,6 +1239,7 @@ size_flags_horizontal = 3
 
 [node name="FireTree" type="Control" parent="SkillTreeOverlay" node_paths=PackedStringArray("default_skill_node")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1311,6 +1316,92 @@ focus_neighbor_top = NodePath("../Flamethrower")
 focus_neighbor_right = NodePath("../Flamethrower")
 focus_neighbor_bottom = NodePath(".")
 skill = ExtResource("14_0uc32")
+
+[node name="WaterTree" type="Control" parent="SkillTreeOverlay" node_paths=PackedStringArray("default_skill_node")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_neighbor_left = NodePath("Aqua Blast")
+focus_neighbor_top = NodePath("Bubble Shot")
+script = ExtResource("12_edv07")
+default_skill_node = NodePath("Aqua Blast")
+tree_name = "Water"
+tree_color = Color(0, 0.6745098, 1, 1)
+background_icon = ExtResource("7_21gkc")
+
+[node name="Jet Dash" parent="SkillTreeOverlay/WaterTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 80.0
+offset_top = 102.0
+offset_right = -1100.0
+offset_bottom = -518.0
+focus_neighbor_left = NodePath("../Tsunami")
+focus_neighbor_top = NodePath("../Aqua Blast")
+focus_neighbor_right = NodePath("../Tsunami")
+focus_neighbor_bottom = NodePath("../Aqua Blast")
+focus_next = NodePath("../Aqua Blast")
+focus_previous = NodePath("../Tsunami")
+skill = ExtResource("23_kcy7n")
+
+[node name="Tsunami" parent="SkillTreeOverlay/WaterTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 446.0
+offset_top = 83.0
+offset_right = -734.0
+offset_bottom = -537.0
+focus_neighbor_left = NodePath("../Jet Dash")
+focus_neighbor_top = NodePath("../Aqua Blast")
+focus_neighbor_right = NodePath("../Wave Strike")
+focus_neighbor_bottom = NodePath("../Wave Strike")
+focus_next = NodePath("../Wave Strike")
+focus_previous = NodePath("../Aqua Blast")
+skill = ExtResource("24_uosdh")
+
+[node name="Wave Strike" parent="SkillTreeOverlay/WaterTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 540.0
+offset_top = 253.0
+offset_right = -640.0
+offset_bottom = -367.0
+focus_neighbor_left = NodePath("../Jet Dash")
+focus_neighbor_top = NodePath("../Tsunami")
+focus_neighbor_right = NodePath(".")
+focus_neighbor_bottom = NodePath("../Bubble Shot")
+focus_next = NodePath("../Bubble Shot")
+focus_previous = NodePath("../Tsunami")
+skill = ExtResource("25_jww18")
+
+[node name="Bubble Shot" parent="SkillTreeOverlay/WaterTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 550.0
+offset_top = 431.0
+offset_right = -630.0
+offset_bottom = -189.0
+focus_neighbor_left = NodePath("../Aqua Blast")
+focus_neighbor_top = NodePath("../Wave Strike")
+focus_neighbor_right = NodePath("../Wave Strike")
+focus_neighbor_bottom = NodePath("../Aqua Blast")
+focus_next = NodePath("../Aqua Blast")
+focus_previous = NodePath("../Wave Strike")
+skill = ExtResource("26_mq557")
+
+[node name="Aqua Blast" parent="SkillTreeOverlay/WaterTree" instance=ExtResource("12_ujsln")]
+layout_mode = 1
+offset_left = 407.0
+offset_top = 563.0
+offset_right = -773.0
+offset_bottom = -57.0
+focus_neighbor_left = NodePath(".")
+focus_neighbor_top = NodePath("../Bubble Shot")
+focus_neighbor_right = NodePath("../Bubble Shot")
+focus_neighbor_bottom = NodePath("../Tsunami")
+focus_next = NodePath("../Tsunami")
+focus_previous = NodePath("../Bubble Shot")
+skill = ExtResource("23_ipr0g")
 
 [node name="TitleContainer" type="CenterContainer" parent="SkillTreeOverlay"]
 custom_minimum_size = Vector2(0, 50)
