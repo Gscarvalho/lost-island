@@ -197,3 +197,10 @@ textures/canvas_textures/default_texture_repeat=2
 textures/lossless_compression/force_png=true
 textures/decals/filter=0
 textures/light_projectors/filter=0
+
+[shader_globals]
+
+player_grass_position={
+"type": "vec3",
+"value": Vector3(0, 0, 0)
+}

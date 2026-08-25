@@ -1,8 +1,9 @@
 [gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://2bn31fr53nr4"]
 
 [sub_resource type="Gradient" id="Gradient_shmom"]
-offsets = PackedFloat32Array(0.7627907, 0.9255814, 0.97209305)
-colors = PackedColorArray(0, 0, 0, 1, 0.7058824, 0.7058824, 0.7058824, 1, 0.9607843, 0.9607843, 0.9607843, 1)
+offsets = PackedFloat32Array(0.7, 0.9, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.7058824, 0.7058824, 0.7058824, 1, 1, 1, 1, 1)
+metadata/_snap_enabled = true
 
 [resource]
 gradient = SubResource("Gradient_shmom")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://df6prq4xcpyx3"]
+[gd_scene load_steps=63 format=3 uid="uid://df6prq4xcpyx3"]
 
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Player/player.tscn" id="1_vflva"]
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_hwde3"]
@@ -117,7 +117,7 @@ filter_walkable_low_height_spans = true
 
 [sub_resource type="Resource" id="Resource_q55b2"]
 script = ExtResource("7_g1i77")
-amount = 3000
+amount = 10000
 restrict_height = true
 reference_frame = 1
 
@@ -149,8 +149,116 @@ stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_q55b2"), SubResourc
 
 [sub_resource type="Resource" id="Resource_d1w1t"]
 script = ExtResource("13_k1ht2")
-size = Vector3(194.06427, 1, 190)
+size = Vector3(100, 1, 100)
 metadata/_custom_type_script = "uid://c68s2472h76yi"
+
+[sub_resource type="Resource" id="Resource_k1ht2"]
+script = ExtResource("7_g1i77")
+amount = 10000
+restrict_height = true
+reference_frame = 1
+
+[sub_resource type="Resource" id="Resource_tu8bo"]
+script = ExtResource("8_q55b2")
+position = Vector3(0.15, 0, 0.15)
+rotation = Vector3(15, 360, 15)
+scale = Vector3(1, 1, 1)
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_2rbid"]
+script = ExtResource("9_hwde3")
+iterations = -2
+offset_step = 0.7000000000000028
+consecutive_step_multiplier = 0.480000000000004
+restrict_height = true
+
+[sub_resource type="Resource" id="Resource_kxg02"]
+script = ExtResource("10_btpkh")
+ray_length = 5.0
+ray_offset = 5.0
+align_with_collision_normal = true
+collision_mask = 16
+exclude_mask = 32
+
+[sub_resource type="Resource" id="Resource_v6cxb"]
+script = ExtResource("5_t2ggk")
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_k1ht2"), SubResource("Resource_tu8bo"), SubResource("Resource_2rbid"), SubResource("Resource_kxg02")])
+
+[sub_resource type="Resource" id="Resource_gljck"]
+script = ExtResource("13_k1ht2")
+size = Vector3(100, 1, 100)
+
+[sub_resource type="Resource" id="Resource_gokht"]
+script = ExtResource("7_g1i77")
+amount = 10000
+restrict_height = true
+reference_frame = 1
+
+[sub_resource type="Resource" id="Resource_k0c0j"]
+script = ExtResource("8_q55b2")
+position = Vector3(0.15, 0, 0.15)
+rotation = Vector3(15, 360, 15)
+scale = Vector3(1, 1, 1)
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_sqhsv"]
+script = ExtResource("9_hwde3")
+iterations = -2
+offset_step = 0.7000000000000028
+consecutive_step_multiplier = 0.480000000000004
+restrict_height = true
+
+[sub_resource type="Resource" id="Resource_4udkj"]
+script = ExtResource("10_btpkh")
+ray_length = 5.0
+ray_offset = 5.0
+align_with_collision_normal = true
+collision_mask = 16
+exclude_mask = 32
+
+[sub_resource type="Resource" id="Resource_wd2py"]
+script = ExtResource("5_t2ggk")
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_gokht"), SubResource("Resource_k0c0j"), SubResource("Resource_sqhsv"), SubResource("Resource_4udkj")])
+
+[sub_resource type="Resource" id="Resource_xao4l"]
+script = ExtResource("13_k1ht2")
+size = Vector3(100, 1, 100)
+
+[sub_resource type="Resource" id="Resource_k7omw"]
+script = ExtResource("7_g1i77")
+amount = 10000
+restrict_height = true
+reference_frame = 1
+
+[sub_resource type="Resource" id="Resource_2332m"]
+script = ExtResource("8_q55b2")
+position = Vector3(0.15, 0, 0.15)
+rotation = Vector3(15, 360, 15)
+scale = Vector3(1, 1, 1)
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_3hlrx"]
+script = ExtResource("9_hwde3")
+iterations = -2
+offset_step = 0.7000000000000028
+consecutive_step_multiplier = 0.480000000000004
+restrict_height = true
+
+[sub_resource type="Resource" id="Resource_feqsq"]
+script = ExtResource("10_btpkh")
+ray_length = 5.0
+ray_offset = 5.0
+align_with_collision_normal = true
+collision_mask = 16
+exclude_mask = 32
+
+[sub_resource type="Resource" id="Resource_4l4o8"]
+script = ExtResource("5_t2ggk")
+stack = Array[ExtResource("6_x7ba5")]([SubResource("Resource_k7omw"), SubResource("Resource_2332m"), SubResource("Resource_3hlrx"), SubResource("Resource_feqsq")])
+
+[sub_resource type="Resource" id="Resource_6i5w5"]
+script = ExtResource("13_k1ht2")
+size = Vector3(100, 1, 100)
 
 [node name="Level_Test" type="Node3D"]
 
@@ -314,14 +422,75 @@ metadata/_custom_type_script = "uid://c5iwctc5ytawr"
 
 [node name="ScatterItem" type="Node3D" parent="World/Grass"]
 script = ExtResource("11_m1fqf")
-source_scale_multiplier = 0.5
+source_scale_multiplier = 0.25
 source_ignore_scale = false
 override_cast_shadow = 0
 path = "uid://c7cun65u8mgn2"
 
 [node name="ScatterShape" type="Node3D" parent="World/Grass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.5566, 0, -49.023743)
 script = ExtResource("12_fk2v1")
 shape = SubResource("Resource_d1w1t")
+
+[node name="Grass2" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 102.328224)
+script = ExtResource("4_oerva")
+modifier_stack = SubResource("Resource_v6cxb")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(10, 10, 10)
+metadata/_custom_type_script = "uid://c5iwctc5ytawr"
+
+[node name="ScatterItem" type="Node3D" parent="World/Grass2"]
+script = ExtResource("11_m1fqf")
+source_scale_multiplier = 0.25
+source_ignore_scale = false
+override_cast_shadow = 0
+path = "uid://c7cun65u8mgn2"
+
+[node name="ScatterShape" type="Node3D" parent="World/Grass2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.5566, 0, -49.023743)
+script = ExtResource("12_fk2v1")
+shape = SubResource("Resource_gljck")
+
+[node name="Grass3" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -99.91956, 0, 102.328224)
+script = ExtResource("4_oerva")
+modifier_stack = SubResource("Resource_wd2py")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(10, 10, 10)
+metadata/_custom_type_script = "uid://c5iwctc5ytawr"
+
+[node name="ScatterItem" type="Node3D" parent="World/Grass3"]
+script = ExtResource("11_m1fqf")
+source_scale_multiplier = 0.25
+source_ignore_scale = false
+override_cast_shadow = 0
+path = "uid://c7cun65u8mgn2"
+
+[node name="ScatterShape" type="Node3D" parent="World/Grass3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.5566, 0, -49.023743)
+script = ExtResource("12_fk2v1")
+shape = SubResource("Resource_xao4l")
+
+[node name="Grass4" type="Node3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -99.91956, 0, 1.8111115)
+script = ExtResource("4_oerva")
+modifier_stack = SubResource("Resource_4l4o8")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(10, 10, 10)
+metadata/_custom_type_script = "uid://c5iwctc5ytawr"
+
+[node name="ScatterItem" type="Node3D" parent="World/Grass4"]
+script = ExtResource("11_m1fqf")
+source_scale_multiplier = 0.25
+source_ignore_scale = false
+override_cast_shadow = 0
+path = "uid://c7cun65u8mgn2"
+
+[node name="ScatterShape" type="Node3D" parent="World/Grass4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48.5566, 0, -49.023743)
+script = ExtResource("12_fk2v1")
+shape = SubResource("Resource_6i5w5")
 
 [node name="Entities" type="Node3D" parent="."]
 

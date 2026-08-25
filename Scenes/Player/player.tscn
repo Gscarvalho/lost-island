@@ -15,6 +15,7 @@ height = 2.5
 collision_mask = 54
 script = ExtResource("1_v0iea")
 progression = ExtResource("2_cqrjx")
+grass_interaction_radius = 0.5
 knockback_deceleration = 15.0
 
 [node name="Character" parent="." instance=ExtResource("2_40svl")]

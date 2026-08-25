@@ -47,6 +47,16 @@ enum RegenType {
 )
 #endregion
 
+#region Grass Interaction
+@export_category("Grass Interaction")
+
+@export_range(0.1, 5.0, 0.1)
+var grass_interaction_radius := 1.2
+
+@export_range(0.0, 2.0, 0.05)
+var grass_interaction_strength := 0.35
+#endregion
+
 #region Movement Configuration
 var walk_speed: float = 5.5
 var run_speed: float = 8.5
@@ -118,6 +128,11 @@ func _ready() -> void:
 		StateManager.current_state
 	)
 
+	RenderingServer.global_shader_parameter_set(
+		&"player_grass_position",
+		global_position
+	)
+
 
 func _physics_process(delta: float) -> void:	
 	_equip_logic(delta)
@@ -138,6 +153,11 @@ func _physics_process(delta: float) -> void:
 	_attacks_logic()
 
 	move_and_slide()
+	
+	RenderingServer.global_shader_parameter_set(
+		&"player_grass_position",
+		global_position
+	)
 #endregion
 
 #region Game State

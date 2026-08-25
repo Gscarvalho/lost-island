@@ -1,19 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7cun65u8mgn2"]
+[gd_scene load_steps=6 format=3 uid="uid://c7cun65u8mgn2"]
 
 [ext_resource type="ArrayMesh" uid="uid://c7elby5mp4u11" path="res://Assets/Meshes/grass.res" id="1_d2g5e"]
-[ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_wnn3j"]
+[ext_resource type="Shader" uid="uid://xait4dy11544" path="res://Assets/Shaders/grass_surface.gdshader" id="2_wnn3j"]
+[ext_resource type="Texture2D" uid="uid://dsu5ldqmy7jb5" path="res://Assets/Colors/gradient_hard_toon_surface.tres" id="3_mo32x"]
+[ext_resource type="Texture2D" uid="uid://2bn31fr53nr4" path="res://Assets/Colors/gradient_soft_toon_surface.tres" id="4_ns1hc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_spq4o"]
 render_priority = 0
 shader = ExtResource("2_wnn3j")
+shader_parameter/player_grass_radius = 1.2
+shader_parameter/player_grass_strength = 1.0000000149012
+shader_parameter/wind_direction = Vector3(1, 0, 0.35)
+shader_parameter/wind_strength = 0.499999988824
+shader_parameter/wind_speed = 2.0
+shader_parameter/wind_wave_scale = 1.5
 shader_parameter/base_color = Color(0.39677697, 0.5960542, 1.92523e-07, 1)
 shader_parameter/use_albedo_texture = false
+shader_parameter/use_color_gradient = true
+shader_parameter/color_gradient = ExtResource("3_mo32x")
 shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
 shader_parameter/shadow_threshold = 0.2
 shader_parameter/shadow_softness = 0.02
+shader_parameter/use_fresnel = true
+shader_parameter/fresnel_gradient = ExtResource("4_ns1hc")
+shader_parameter/fresnel_power = 4.0
+shader_parameter/fresnel_strength = 0.25
 
 [node name="Grass" type="MeshInstance3D"]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
-cast_shadow = 0
 mesh = ExtResource("1_d2g5e")
 surface_material_override/0 = SubResource("ShaderMaterial_spq4o")
