@@ -102,6 +102,94 @@ size_flags_vertical = 4
 theme_override_constants/separation = 15
 alignment = 1
 
+[node name="Current" type="VBoxContainer" parent="Main/Seperator/Stats"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="MenuHealthBar" type="TextureProgressBar" parent="Main/Seperator/Stats/Current"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_under = Color(1, 1, 1, 0)
+tint_progress = Color(0.3647059, 1, 0.62352943, 1)
+
+[node name="MenuHealthLabel" type="RichTextLabel" parent="Main/Seperator/Stats/Current/MenuHealthBar"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = -8.0
+offset_right = 25.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "50/100"
+scroll_active = false
+vertical_alignment = 3
+justification_flags = 161
+
+[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Stats/Current/MenuHealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_n8txd")
+expand_mode = 1
+
+[node name="MenuStaminaBar" type="TextureProgressBar" parent="Main/Seperator/Stats/Current"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_cuj2c")
+texture_progress = ExtResource("2_cuj2c")
+tint_under = Color(1, 1, 1, 0)
+tint_progress = Color(0.3647059, 1, 1, 1)
+
+[node name="MenuStaminaLabel" type="RichTextLabel" parent="Main/Seperator/Stats/Current/MenuStaminaBar"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = -8.0
+offset_right = 25.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "50/100"
+scroll_active = false
+vertical_alignment = 3
+justification_flags = 161
+
+[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Stats/Current/MenuStaminaBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_n8txd")
+expand_mode = 1
+
 [node name="StatsTitle" type="HBoxContainer" parent="Main/Seperator/Stats"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -489,7 +577,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Equips" type="VBoxContainer" parent="Main/Seperator/Stats"]
-z_index = 2
 layout_mode = 2
 size_flags_vertical = 0
 
@@ -514,95 +601,6 @@ size_flags_horizontal = 5
 size_flags_vertical = 4
 theme_override_constants/separation = 30
 alignment = 1
-
-[node name="Current" type="VBoxContainer" parent="Main/Seperator/Player"]
-z_index = 2
-layout_mode = 2
-size_flags_vertical = 0
-
-[node name="MenuHealthBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 30)
-layout_mode = 2
-size_flags_horizontal = 4
-value = 10.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_cuj2c")
-texture_progress = ExtResource("2_cuj2c")
-tint_under = Color(1, 1, 1, 0)
-tint_progress = Color(0.3647059, 1, 0.62352943, 1)
-
-[node name="MenuHealthLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuHealthBar"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = -8.0
-offset_right = 25.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 32
-text = "50/100"
-scroll_active = false
-vertical_alignment = 3
-justification_flags = 161
-
-[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuHealthBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_n8txd")
-expand_mode = 1
-
-[node name="MenuStaminaBar" type="TextureProgressBar" parent="Main/Seperator/Player/Current"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(400, 30)
-layout_mode = 2
-size_flags_horizontal = 4
-value = 10.0
-nine_patch_stretch = true
-texture_under = ExtResource("2_cuj2c")
-texture_progress = ExtResource("2_cuj2c")
-tint_under = Color(1, 1, 1, 0)
-tint_progress = Color(0.3647059, 1, 1, 1)
-
-[node name="MenuStaminaLabel" type="RichTextLabel" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
-unique_name_in_owner = true
-clip_contents = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = -8.0
-offset_right = 25.0
-offset_bottom = -8.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/normal_font_size = 32
-text = "50/100"
-scroll_active = false
-vertical_alignment = 3
-justification_flags = 161
-
-[node name="TextureRect" type="TextureRect" parent="Main/Seperator/Player/Current/MenuStaminaBar"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_n8txd")
-expand_mode = 1
 
 [node name="Anim" type="MarginContainer" parent="Main/Seperator/Player"]
 layout_mode = 2
@@ -864,7 +862,7 @@ stretch_mode = 5
 
 [node name="SkillTreeOverlay" type="Control" parent="."]
 visible = false
-z_index = 2
+z_index = 10
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1258,7 +1256,6 @@ offset_left = 80.0
 offset_top = 180.0
 offset_right = -1100.0
 offset_bottom = -440.0
-pivot_offset = Vector2(370, 230)
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath("../Flare")
@@ -1271,7 +1268,6 @@ offset_left = 50.0
 offset_top = 350.0
 offset_right = -1130.0
 offset_bottom = -270.0
-pivot_offset = Vector2(370, 230)
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath("../FireFlight")
 focus_neighbor_right = NodePath("../Flamethrower")
@@ -1284,7 +1280,6 @@ offset_left = 520.0
 offset_top = 440.0
 offset_right = -660.0
 offset_bottom = -180.0
-pivot_offset = Vector2(370, 230)
 focus_neighbor_left = NodePath("../FireJump")
 focus_neighbor_top = NodePath("../Flare")
 focus_neighbor_right = NodePath(".")
@@ -1297,7 +1292,6 @@ offset_left = 500.0
 offset_top = 280.0
 offset_right = -680.0
 offset_bottom = -340.0
-pivot_offset = Vector2(370, 230)
 focus_neighbor_left = NodePath("../FireFlight")
 focus_neighbor_top = NodePath(".")
 focus_neighbor_right = NodePath(".")
@@ -1310,7 +1304,6 @@ offset_left = 390.0
 offset_top = 560.0
 offset_right = -790.0
 offset_bottom = -60.0
-pivot_offset = Vector2(370, 230)
 focus_neighbor_left = NodePath("../FireJump")
 focus_neighbor_top = NodePath("../Flamethrower")
 focus_neighbor_right = NodePath("../Flamethrower")
@@ -1319,6 +1312,7 @@ skill = ExtResource("14_0uc32")
 
 [node name="WaterTree" type="Control" parent="SkillTreeOverlay" node_paths=PackedStringArray("default_skill_node")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

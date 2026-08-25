@@ -90,6 +90,9 @@ enum MenuPage {
 @onready var skill_tree_overlay: Control = (
 	$SkillTreeOverlay
 )
+@onready var skill_tree_bg: TextureRect = (
+	$SkillTreeOverlay/SkillTreeBG
+)
 @onready var skill_tree_title: Label = (
 	$SkillTreeOverlay/TitleContainer/SkillTreeTitle
 )
@@ -160,6 +163,14 @@ func _connect_signals() -> void:
 	)
 
 	fire_tree.skill_activated.connect(
+		_on_tree_skill_activated
+	)
+
+	water_tree.skill_focused.connect(
+		_on_tree_skill_focused
+	)
+
+	water_tree.skill_activated.connect(
 		_on_tree_skill_activated
 	)
 
@@ -691,16 +702,20 @@ func _set_controls_focus_enabled(
 #endregion
 
 #region Skill Tree
+func _hide_all_skill_trees() -> void:
+	fire_tree.visible = false
+	water_tree.visible = false
+
 func _get_skill_tree_for_type(
-	skill_type: Skills.SkillType
-) -> SkillTree:
-	match skill_type:
-		Skills.SkillType.Fire:
-			return fire_tree
-		Skills.SkillType.Water:
-			return water_tree
-		_:
-			return null
+		skill_type: Skills.SkillType
+	) -> SkillTree:
+		match skill_type:
+			Skills.SkillType.Fire:
+				return fire_tree
+			Skills.SkillType.Water:
+				return water_tree
+			_:
+				return null
 
 func _open_skill_tree(
 	skill_type: Skills.SkillType,
@@ -712,6 +727,8 @@ func _open_skill_tree(
 
 	if tree == null:
 		return false
+
+	_hide_all_skill_trees()
 
 	skill_tree_open = true
 	last_mana_focus = mana_control
@@ -867,6 +884,9 @@ func _apply_skill_tree_visuals(tree: SkillTree) -> void:
 
 	skill_tree_bg_icon.texture = tree.background_icon
 	skill_tree_bg_icon.self_modulate = tree.tree_color
+	skill_tree_bg.self_modulate = (
+		tree.tree_color
+	)
 
 	#skill_name.add_theme_color_override(
 		#"default_color",

@@ -32,6 +32,10 @@ var tree_color: Color = Color.WHITE
 
 #region Lifecycle
 func _ready() -> void:
+	pivot_offset = (
+		size / 2.0
+	)
+
 	_refresh()
 
 	if Engine.is_editor_hint():
@@ -76,8 +80,20 @@ func _refresh() -> void:
 		)
 
 
-func set_tree_color(color: Color) -> void:
-	tree_color = color
+func set_tree_color(
+		color: Color
+	) -> void:
+		tree_color = color
+
+		if circle_bg != null:
+			circle_bg.self_modulate = (
+				tree_color
+			)
+
+		if focus_ring != null:
+			focus_ring.tint_progress = (
+				tree_color
+			)
 #endregion
 
 #region Focus Events
