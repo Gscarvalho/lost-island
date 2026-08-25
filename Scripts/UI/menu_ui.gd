@@ -146,7 +146,10 @@ var skill_tree_tween: Tween
 var page_tween: Tween
 
 var loadout_popup_open := false
-var selected_loadout_skill: Skills
+
+var held_loadout_skill: Skills
+var held_loadout_source_slot := -1
+
 var last_skill_focus: Control
 #endregion
 
@@ -976,30 +979,64 @@ func _get_range_text(
 #endregion
 
 #region Loadout Popup
-func _open_loadout_popup(skill: Skills) -> void:
-	if skill == null:
-		return
+func _open_loadout_popup(
+		skill: Skills
+	) -> void:
+		if skill == null:
+			return
 
-	var loadout := (
-		player_controller.progression.skill_loadout
-	)
+		var loadout := (
+			player_controller
+			.progression
+			.skill_loadout
+		)
 
-	if loadout == null:
-		return
+		if loadout == null:
+			return
 
-	selected_loadout_skill = skill
+		last_skill_focus = (
+			get_viewport()
+			.gui_get_focus_owner()
+			as Control
+		)
 
-	last_skill_focus = (
-		get_viewport().gui_get_focus_owner()
-		as Control
-	)
+		loadout_popup_open = true
+		loadout_popup.visible = true
 
-	loadout_popup_open = true
-	loadout_popup.visible = true
+		var current_slot := (
+			loadout.get_skill_slot(
+				skill
+			)
+		)
 
-	_refresh_loadout_popup()
+		if current_slot == -1:
+			# The skill could not be auto-equipped,
+			# usually because all six slots were full.
+			# Open the editor already holding it.
+			held_loadout_skill = skill
+			held_loadout_source_slot = -1
 
-	slot_x_button.grab_focus()
+		else:
+			# It was already auto-equipped.
+			# Open directly into normal editing mode.
+			held_loadout_skill = null
+			held_loadout_source_slot = -1
+
+		_refresh_loadout_popup()
+
+		if current_slot != -1:
+			var current_button := (
+				_get_loadout_button(
+					current_slot
+				)
+			)
+
+			if current_button != null:
+				current_button.grab_focus()
+				return
+
+		slot_x_button.grab_focus()
+
 
 func _close_loadout_popup() -> void:
 	if not loadout_popup_open:
@@ -1007,21 +1044,30 @@ func _close_loadout_popup() -> void:
 
 	loadout_popup_open = false
 	loadout_popup.visible = false
-	selected_loadout_skill = null
+
+	held_loadout_skill = null
+	held_loadout_source_slot = -1
 
 	if (
 		last_skill_focus != null
-		and is_instance_valid(last_skill_focus)
+		and is_instance_valid(
+			last_skill_focus
+		)
 	):
 		last_skill_focus.grab_focus()
 
-func _refresh_loadout_popup() -> void:
-	if selected_loadout_skill == null:
-		return
 
-	loadout_skill_name.text = (
-		selected_loadout_skill.skill_name.to_upper()
-	)
+func _refresh_loadout_popup() -> void:
+	if held_loadout_skill != null:
+		loadout_skill_name.text = (
+			held_loadout_skill
+			.skill_name
+			.to_upper()
+		)
+	else:
+		loadout_skill_name.text = (
+			"EDIT LOADOUT"
+		)
 
 	_update_loadout_button(
 		slot_x_button,
@@ -1053,41 +1099,139 @@ func _refresh_loadout_popup() -> void:
 		SkillLoadout.Slot.RT_B
 	)
 
+
 func _update_loadout_button(
-	button: LoadoutSlotButton,
-	slot: int
-) -> void:
-	var loadout := (
-		player_controller.progression.skill_loadout
-	)
+		button: LoadoutSlotButton,
+		slot: int
+	) -> void:
+		var loadout := (
+			player_controller
+			.progression
+			.skill_loadout
+		)
 
-	var assigned_skill := loadout.get_skill(slot)
+		var assigned_skill := (
+			loadout.get_skill(
+				slot
+			)
+		)
 
-	button.set_skill_display(
-		assigned_skill,
-		assigned_skill == selected_loadout_skill
-	)
+		button.set_skill_display(
+			assigned_skill,
+			(
+				held_loadout_skill != null
+				and assigned_skill
+				== held_loadout_skill
+			)
+		)
+
 
 func _on_loadout_slot_pressed(
-	slot: int
-) -> void:
-	if selected_loadout_skill == null:
-		return
+		slot: int
+	) -> void:
+		var loadout := (
+			player_controller
+			.progression
+			.skill_loadout
+		)
 
-	var loadout := (
-		player_controller.progression.skill_loadout
-	)
+		if loadout == null:
+			return
 
-	loadout.assign_skill(
-		selected_loadout_skill,
-		slot
-	)
+		# Nothing is currently being moved.
+		# Pick up the skill in this slot.
+		if held_loadout_skill == null:
+			var slot_skill := (
+				loadout.get_skill(
+					slot
+				)
+			)
 
-	_refresh_loadout_popup()
+			if slot_skill == null:
+				return
 
-	_update_skill_action_text(
-		selected_loadout_skill
-	)
+			held_loadout_skill = (
+				slot_skill
+			)
+
+			held_loadout_source_slot = (
+				slot
+			)
+
+			_refresh_loadout_popup()
+			return
+
+		# The held skill already belongs to the
+		# loadout, so move/swap its two slots.
+		if held_loadout_source_slot != -1:
+			loadout.move_or_swap_slots(
+				held_loadout_source_slot,
+				slot
+			)
+
+			held_loadout_skill = null
+			held_loadout_source_slot = -1
+
+			_refresh_loadout_popup()
+			return
+
+		# The held skill is not currently equipped.
+		# This happens when auto-equip found no
+		# available empty slot.
+		var displaced_skill := (
+			loadout.get_skill(
+				slot
+			)
+		)
+
+		loadout.assign_skill(
+			held_loadout_skill,
+			slot
+		)
+
+		# Empty destination:
+		# placement is complete.
+		if displaced_skill == null:
+			held_loadout_skill = null
+			held_loadout_source_slot = -1
+
+		# Occupied destination:
+		# equip the new skill and pick up the
+		# displaced one instead.
+		else:
+			held_loadout_skill = (
+				displaced_skill
+			)
+
+			held_loadout_source_slot = -1
+
+		_refresh_loadout_popup()
+
+
+func _get_loadout_button(
+		slot: int
+	) -> LoadoutSlotButton:
+		match slot:
+			SkillLoadout.Slot.X:
+				return slot_x_button
+
+			SkillLoadout.Slot.Y:
+				return slot_y_button
+
+			SkillLoadout.Slot.B:
+				return slot_b_button
+
+			SkillLoadout.Slot.RT_X:
+				return slot_rt_x_button
+
+			SkillLoadout.Slot.RT_Y:
+				return slot_rt_y_button
+
+			SkillLoadout.Slot.RT_B:
+				return slot_rt_b_button
+
+			_:
+				return null
 #endregion
 
 #region Settings
@@ -1117,10 +1261,19 @@ func _input(event: InputEvent) -> void:
 		return
 		
 	if loadout_popup_open:
-		if event.is_action_pressed("ui_cancel"):
-			_close_loadout_popup()
+		if event.is_action_pressed(
+			"ui_cancel"
+		):
+			if held_loadout_skill != null:
+				held_loadout_skill = null
+				held_loadout_source_slot = -1
+
+				_refresh_loadout_popup()
+			else:
+				_close_loadout_popup()
+
 			get_viewport().set_input_as_handled()
-		
+
 		return
 		
 	if skill_tree_open:

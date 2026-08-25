@@ -73,33 +73,59 @@ func get_skill_slot(skill: Skills) -> int:
 
 
 func assign_skill(
-	skill: Skills,
-	slot: int
-) -> void:
-	if skill == null:
-		clear_slot(slot)
-		return
+		skill: Skills,
+		slot: int
+	) -> void:
+		if skill == null:
+			clear_slot(slot)
+			return
 
-	var previous_slot: int = (
-		get_skill_slot(skill)
-	)
-
-	if previous_slot == slot:
-		return
-
-	if previous_slot != -1:
-		_set_skill(
-			previous_slot,
-			null
+		var previous_slot: int = (
+			get_skill_slot(skill)
 		)
 
-	_set_skill(
-		slot,
-		skill
-	)
+		if previous_slot == slot:
+			return
 
-	loadout_changed.emit()
+		if previous_slot != -1:
+			_set_skill(
+				previous_slot,
+				null
+			)
 
+		_set_skill(
+			slot,
+			skill
+		)
+
+		loadout_changed.emit()
+
+func move_or_swap_slots(
+		first_slot: int,
+		second_slot: int
+	) -> void:
+		if first_slot == second_slot:
+			return
+
+		var first_skill := get_skill(
+			first_slot
+		)
+
+		var second_skill := get_skill(
+			second_slot
+		)
+
+		_set_skill(
+			first_slot,
+			second_skill
+		)
+
+		_set_skill(
+			second_slot,
+			first_skill
+		)
+
+		loadout_changed.emit()
 
 func clear_slot(slot: int) -> void:
 	if get_skill(slot) == null:

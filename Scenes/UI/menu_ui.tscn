@@ -30,8 +30,8 @@
 [ext_resource type="Texture2D" uid="uid://cj01mnwjwpfca" path="res://Assets/Images/Icons/Input Retro/T_X_B_White_Retro.png" id="24_ipr0g"]
 [ext_resource type="Resource" uid="uid://cjxdcwbppgaca" path="res://Data/Skills/Water/tsunami.tres" id="24_uosdh"]
 [ext_resource type="Resource" uid="uid://cvmxm60irvtdh" path="res://Data/Skills/Water/wave_strike.tres" id="25_jww18"]
-[ext_resource type="Texture2D" uid="uid://clklaxtbqb7g" path="res://Assets/Images/Icons/Input Retro/T_X_LT_Retro.png" id="25_rj5fu"]
 [ext_resource type="Resource" uid="uid://b3h22jf0vul52" path="res://Data/Skills/Water/bubble_shot.tres" id="26_mq557"]
+[ext_resource type="Texture2D" uid="uid://n0nit41e2kec" path="res://Assets/Images/Icons/Input Retro/T_X_RT_Retro.png" id="32_kcy7n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w61pg"]
 bg_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
@@ -1542,7 +1542,7 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../SlotRTY")
 focus_next = NodePath("../SlotRTY")
 focus_previous = NodePath("../SlotB")
-primary_input_icon = ExtResource("25_rj5fu")
+primary_input_icon = ExtResource("32_kcy7n")
 secondary_input_icon = ExtResource("22_8eyqk")
 
 [node name="SlotRTY" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
@@ -1554,7 +1554,7 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../SlotRTB")
 focus_next = NodePath("../SlotRTB")
 focus_previous = NodePath("../SlotRTX")
-primary_input_icon = ExtResource("25_rj5fu")
+primary_input_icon = ExtResource("32_kcy7n")
 secondary_input_icon = ExtResource("23_21gkc")
 
 [node name="SlotRTB" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer" instance=ExtResource("21_aa3vm")]
@@ -1566,5 +1566,5 @@ focus_neighbor_right = NodePath(".")
 focus_neighbor_bottom = NodePath("../SlotX")
 focus_next = NodePath("../SlotX")
 focus_previous = NodePath("../SlotRTY")
-primary_input_icon = ExtResource("25_rj5fu")
+primary_input_icon = ExtResource("32_kcy7n")
 secondary_input_icon = ExtResource("24_ipr0g")
