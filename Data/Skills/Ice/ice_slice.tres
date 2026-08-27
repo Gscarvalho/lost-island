@@ -14,4 +14,5 @@ skill_power = 50.0
 damage_types = 17
 skill_cost = 10.0
 animation_state_name = &"Melee_Slice"
+impact_stagger_power = 0.65
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"

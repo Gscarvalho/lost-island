@@ -33,7 +33,8 @@ metadata/_custom_type_script = "uid://ekdbymhxwlvd"
 script = ExtResource("3_1y704")
 skill = ExtResource("9_nkuns")
 hit_pressure_response = 1.0
-preferred_distance_max = 1.0
+preferred_distance_min = 0.5
+preferred_distance_max = 0.5
 use_distance_max = 1.5
 metadata/_custom_type_script = "uid://brvympepo0n"
 
@@ -54,8 +55,10 @@ options = Array[ExtResource("3_1y704")]([SubResource("Resource_hv31o"), SubResou
 metadata/_custom_type_script = "uid://dais1kwarudf6"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6p2ka"]
+radius = 0.4
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dtw0f"]
+radius = 0.4
 height = 2.0804443
 
 [sub_resource type="Resource" id="Resource_ra6lb"]

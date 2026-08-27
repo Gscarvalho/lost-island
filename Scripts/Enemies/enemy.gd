@@ -93,6 +93,15 @@ var target: Node3D
 var combat_engaged := false
 
 var memory := EnemyMemory.new()
+
+@export_category("Stagger")
+
+@export var stagger_threshold := 1.0
+@export var stagger_decay_per_second := 0.35
+@export var stagger_immunity_duration := 0.75
+
+var stagger_pressure := 0.0
+var stagger_immunity_left := 0.0
 #endregion
 
 
@@ -161,6 +170,10 @@ func _physics_process(
 		)
 		
 		_apply_gravity(
+			delta
+		)
+
+		_update_stagger(
 			delta
 		)
 
@@ -628,6 +641,52 @@ func is_in_hit_reaction() -> bool:
 		return (
 			hit_reaction_left > 0.0
 		)
+
+func _update_stagger(
+			delta: float
+	) -> void:
+		stagger_immunity_left = maxf(
+			stagger_immunity_left - delta,
+			0.0
+		)
+
+		if stagger_immunity_left > 0.0:
+			return
+
+		stagger_pressure = maxf(
+			stagger_pressure
+			- stagger_decay_per_second * delta,
+			0.0
+		)
+
+func _add_stagger_pressure(
+			damage_data: DamageData
+	) -> bool:
+		if stagger_immunity_left > 0.0:
+			return false
+
+		if damage_data == null:
+			return false
+
+		var skill := damage_data.source_skill
+
+		if skill == null:
+			return false
+
+		stagger_pressure += (
+			skill.impact_stagger_power
+		)
+
+		if stagger_pressure < stagger_threshold:
+			return false
+
+		stagger_pressure = 0.0
+
+		stagger_immunity_left = (
+			stagger_immunity_duration
+		)
+
+		return true
 #endregion
 
 

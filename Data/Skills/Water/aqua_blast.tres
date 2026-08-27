@@ -22,4 +22,5 @@ interrupt_lock_floor = 0.8
 impact_shake_intensity = 0.7
 impact_shake_duration = 0.5
 impact_knockback_strength = 15.0
+impact_stagger_power = 0.7
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"

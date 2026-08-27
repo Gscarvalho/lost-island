@@ -504,37 +504,37 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.820274, 5.3763695, 30.565
 [node name="EnemyGroup" type="Node3D" parent="Entities"]
 
 [node name="BarbarianEnemy" parent="Entities/EnemyGroup" instance=ExtResource("15_x7ba5")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 40.02739, 0, -56.194508)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 55.429794, 0, 0.9227104)
 
 [node name="DarkMageEnemy" parent="Entities/EnemyGroup" instance=ExtResource("16_g1i77")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 82.11949, 5.137018, 2.7006683)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.761795, 5.137018, -70.03286)
 
 [node name="DarkMageEnemy2" parent="Entities/EnemyGroup" instance=ExtResource("16_g1i77")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -62.413315, 5.137018, 28.470589)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.28936, 5.137018, -71.00321)
 
 [node name="DarkMageEnemy3" parent="Entities/EnemyGroup" instance=ExtResource("16_g1i77")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9993896, 5.137018, 49.051792)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.107643, 5.137018, -46.785328)
 
 [node name="DarkMageEnemy4" parent="Entities/EnemyGroup" instance=ExtResource("16_g1i77")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9993896, 5.137018, -73.24991)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8410263, 5.137018, -63.4095)
 
 [node name="DarkMageEnemy5" parent="Entities/EnemyGroup" instance=ExtResource("16_g1i77")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.657978, 5.137018, -27.48626)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.21477, 5.137018, -50.803772)
 
 [node name="FishMonsterEnemy" parent="Entities/EnemyGroup" instance=ExtResource("19_q55b2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.968538, 0.0033382308, -47.663475)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.664652, 0.0033382308, -73.97589)
 
 [node name="FishMonsterEnemy2" parent="Entities/EnemyGroup" instance=ExtResource("19_q55b2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.968538, 0.0033382308, 32.59069)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68.24533, 0.0033382308, -78.4349)
 
 [node name="FishMonsterEnemy3" parent="Entities/EnemyGroup" instance=ExtResource("19_q55b2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.75981, 0.0033382308, 32.59069)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.791992, 0.0033382308, -74.79822)
 
 [node name="RogueEnemy" parent="Entities/EnemyGroup" instance=ExtResource("17_q55b2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -67.959755, 0.002025309, 54.170204)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2109528, 0.002025309, -20.916473)
 
 [node name="RogueEnemy2" parent="Entities/EnemyGroup" instance=ExtResource("17_q55b2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.272247, 0.0020291237, 41.132828)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.053799, 0.0020291237, 0.2736969)
 
 [node name="Pickups" type="Node3D" parent="."]
 

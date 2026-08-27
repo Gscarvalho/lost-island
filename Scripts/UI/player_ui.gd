@@ -162,6 +162,13 @@ func _initialize_display() -> void:
 		StateManager.current_state
 	)
 
+	var maximum_hp := character.base_stats.max_hp
+
+	if character.current_stats != null:
+		maximum_hp = character.current_stats.max_hp
+
+	hitpoints.max_value = maximum_hp
+
 	update_health(
 		character.current_hp
 	)
@@ -206,8 +213,9 @@ func _on_state_changed(
 
 func _on_health_changed(
 	value: float,
-	_maximum: float
+	maximum: float
 ) -> void:
+	hitpoints.max_value = maximum
 	update_health(value)
 
 

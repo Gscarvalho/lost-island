@@ -184,4 +184,7 @@ var impact_hit_stop_time_scale := 0.05
 
 @export_range(0.0, 30.0, 0.1)
 var impact_knockback_strength := 5.0
+
+@export_range(0.0, 2.0, 0.05)
+var impact_stagger_power := 0.35
 #endregion
