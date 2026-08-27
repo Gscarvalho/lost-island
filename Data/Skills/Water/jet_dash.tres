@@ -10,7 +10,6 @@ skill_id = &"jet_dash"
 skill_name = "Jet Dash"
 skill_icon = ExtResource("3_vquj2")
 projectile_scene = ExtResource("1_437ju")
-skill_power = 50.0
 skill_type = 2
 skill_cost = 1.0
 animation_state_name = &"Magic_Shoot"
