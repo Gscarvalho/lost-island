@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_brl2i")
 fire = 0.5
-water = 0.0
+water = 0.5
 lightning = 2.0
 plant = 2.0
 metadata/_custom_type_script = "uid://ekdbymhxwlvd"

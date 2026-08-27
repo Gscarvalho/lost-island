@@ -15,11 +15,11 @@
 
 [sub_resource type="Resource" id="Resource_ptuny"]
 script = ExtResource("2_1y704")
-max_hp = 250.0
-attack = 12.0
+max_hp = 280.0
+attack = 18.0
 defense = 8.0
 m_defense = 12.0
-speed = 15.0
+speed = 18.0
 metadata/_custom_type_script = "uid://baaxbte0f7aus"
 
 [sub_resource type="Resource" id="Resource_egcem"]

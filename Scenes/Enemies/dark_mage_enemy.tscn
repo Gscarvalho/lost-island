@@ -14,12 +14,12 @@
 
 [sub_resource type="Resource" id="Resource_33g7k"]
 script = ExtResource("2_yfemv")
-max_hp = 250.0
+max_hp = 220.0
 attack = 5.0
-defense = 35.0
-m_attack = 6.0
-m_defense = 20.0
-speed = 15.0
+defense = 6.0
+m_attack = 30.0
+m_defense = 25.0
+speed = 12.0
 metadata/_custom_type_script = "uid://baaxbte0f7aus"
 
 [sub_resource type="Resource" id="Resource_yfemv"]

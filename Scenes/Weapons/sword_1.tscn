@@ -10,8 +10,8 @@
 
 [sub_resource type="Resource" id="Resource_shmom"]
 script = ExtResource("2_i0jd5")
-attack = 2.0
-speed = 1.0
+attack = 12.0
+speed = 4.0
 metadata/_custom_type_script = "uid://c7arumaghh7h7"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tio7r"]

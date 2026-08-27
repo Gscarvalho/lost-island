@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://bkykolltj4tsa"]
+[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://bkykolltj4tsa"]
 
-[ext_resource type="PackedScene" uid="uid://c4e32saqfakvc" path="res://Scenes/Combat/Projectiles/aqua_blast_projectile.tscn" id="1_437ju"]
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="2_vquj2"]
 [ext_resource type="Texture2D" uid="uid://btdwklaitq7vc" path="res://Assets/Images/Icons/Prototype/water_icon.png" id="3_vquj2"]
 
@@ -9,9 +8,9 @@ script = ExtResource("2_vquj2")
 skill_id = &"jet_dash"
 skill_name = "Jet Dash"
 skill_icon = ExtResource("3_vquj2")
-projectile_scene = ExtResource("1_437ju")
 skill_type = 2
 skill_cost = 1.0
+cooldown_time = 1.5
 animation_channel = 1
 directional_animation = true
 animation_forward = &"Dodge_Forward"
@@ -22,6 +21,7 @@ movement_direction = 2
 movement_speed = 20.0
 movement_duration = 0.1
 movement_vertical_speed = 0.5
+air_use_rule = 1
 interrupt_lock_time = 0.5
 interrupt_lock_floor = 0.5
 impact_knockback_strength = 20.0

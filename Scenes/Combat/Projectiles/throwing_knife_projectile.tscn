@@ -180,7 +180,7 @@ void light() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ph533"]
 render_priority = 0
 shader = SubResource("Shader_vow1b")
-shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/base_color = Color(0.46229059, 0.46229059, 0.46229059, 1)
 shader_parameter/use_albedo_texture = true
 shader_parameter/albedo_texture = ExtResource("5_mt22o")
 shader_parameter/use_color_gradient = true
@@ -191,7 +191,7 @@ shader_parameter/shadow_softness = 0.02
 shader_parameter/use_fresnel = true
 shader_parameter/fresnel_gradient = ExtResource("7_fiath")
 shader_parameter/fresnel_power = 0.50000002049012
-shader_parameter/fresnel_strength = 2.0
+shader_parameter/fresnel_strength = 1.2890000612275
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 
