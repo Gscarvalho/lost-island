@@ -880,13 +880,22 @@ func take_damage(
 
 		current_hp -= damage
 
+func calculate_received_damage_result(
+		damage_data: DamageData
+	) -> DamageResult:
+		return DamageResolver.resolve_damage(
+			damage_data,
+			current_stats,
+			damage_affinity
+		)
 
 func calculate_received_damage(
 		damage_data: DamageData
 	) -> float:
-		return DamageResolver.calculate_damage(
-			damage_data,
-			current_stats,
-			damage_affinity
+		return (
+			calculate_received_damage_result(
+				damage_data
+			)
+			.final_damage
 		)
 #endregion

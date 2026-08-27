@@ -643,18 +643,25 @@ func _on_hurtbox_hit_received(
 			damage_data
 		)
 		
-		var final_damage := (
-			calculate_received_damage(
+		var damage_result := (
+			calculate_received_damage_result(
 				damage_data
 			)
 		)
 
 		take_damage(
-			final_damage
+			damage_result.final_damage
 		)
-		
+
 		ui.display_damage(
-			final_damage
+			damage_result.final_damage
+		)
+
+		print(
+			"Damage Effectiveness: ",
+			damage_result.get_effectiveness_name(),
+			" | x",
+			damage_result.effectiveness_multiplier
 		)
 
 func take_damage(
@@ -681,13 +688,24 @@ func take_damage(
 		if current_health <= 0.0:
 			die()
 
-func calculate_received_damage(
+func calculate_received_damage_result(
 		damage_data: DamageData
-	) -> float:
-		return DamageResolver.calculate_damage(
+	) -> DamageResult:
+		return DamageResolver.resolve_damage(
 			damage_data,
 			stats,
 			damage_affinity
+		)
+
+
+func calculate_received_damage(
+		damage_data: DamageData
+	) -> float:
+		return (
+			calculate_received_damage_result(
+				damage_data
+			)
+			.final_damage
 		)
 
 func get_max_health() -> float:

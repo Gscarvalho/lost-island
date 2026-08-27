@@ -2,13 +2,23 @@ class_name DamageResolver
 extends RefCounted
 
 
-static func calculate_damage(
+static func resolve_damage(
 	damage_data: DamageData,
 	stats: Stats,
 	affinity: DamageAffinityProfile = null
-) -> float:
+) -> DamageResult:
+	var result := DamageResult.new()
+
 	if damage_data == null:
-		return 0.0
+		return result
+
+	result.base_damage = (
+		damage_data.amount
+	)
+
+	result.damage_types = (
+		damage_data.damage_types
+	)
 
 	var active_types := (
 		DamageTypes.get_active_types(
@@ -16,17 +26,17 @@ static func calculate_damage(
 		)
 	)
 
-	var type_count := active_types.size()
+	var type_count := (
+		active_types.size()
+	)
 
 	if type_count <= 0:
-		return 0.0
+		return result
 
 	var damage_per_type := (
 		damage_data.amount
 		/ float(type_count)
 	)
-
-	var final_damage := 0.0
 
 	for damage_type in active_types:
 		var defense_value := (
@@ -52,14 +62,49 @@ static func calculate_damage(
 			)
 		)
 
-		final_damage += (
+		var type_final_damage := (
 			defended_damage
 			* affinity_multiplier
 		)
 
-	return maxf(
-		final_damage,
-		0.0
+		result.type_neutral_damage[
+			damage_type
+		] = defended_damage
+
+		result.type_final_damage[
+			damage_type
+		] = type_final_damage
+
+		result.neutral_damage += (
+			defended_damage
+		)
+
+		result.final_damage += (
+			type_final_damage
+		)
+
+	result.update_effectiveness()
+
+	return result
+
+
+## Convenience function for systems that only
+## need the final numeric damage.
+##
+## This also preserves compatibility with the
+## old DamageResolver API.
+static func calculate_damage(
+	damage_data: DamageData,
+	stats: Stats,
+	affinity: DamageAffinityProfile = null
+) -> float:
+	return (
+		resolve_damage(
+			damage_data,
+			stats,
+			affinity
+		)
+		.final_damage
 	)
 
 

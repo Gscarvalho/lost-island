@@ -11,7 +11,7 @@
 
 [sub_resource type="Resource" id="Resource_shmom"]
 script = ExtResource("2_2nqna")
-attack = 2.0
+m_attack = 2.0
 speed = 1.0
 metadata/_custom_type_script = "uid://c7arumaghh7h7"
 

@@ -14,6 +14,12 @@
 
 [sub_resource type="Resource" id="Resource_s7oqs"]
 script = ExtResource("2_vrlml")
+max_hp = 250.0
+attack = 5.0
+defense = 15.0
+m_attack = 28.0
+m_defense = 20.0
+speed = 5.0
 metadata/_custom_type_script = "uid://baaxbte0f7aus"
 
 [sub_resource type="Resource" id="Resource_de604"]
