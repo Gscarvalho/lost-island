@@ -97,10 +97,12 @@ var memory := EnemyMemory.new()
 @export_category("Stagger")
 
 @export var stagger_threshold := 1.0
-@export var stagger_decay_per_second := 0.35
+@export var stagger_decay_delay := 1.0
+@export var stagger_decay_per_second := 0.75
 @export var stagger_immunity_duration := 0.75
 
 var stagger_pressure := 0.0
+var stagger_decay_delay_left := 0.0
 var stagger_immunity_left := 0.0
 #endregion
 
@@ -178,6 +180,10 @@ func _physics_process(
 		)
 
 		_update_hit_reaction(
+			delta
+		)
+
+		_update_knockback(
 			delta
 		)
 
@@ -535,9 +541,24 @@ func _start_hit_reaction(
 
 		_face_hit_source()
 
+func _apply_knockback(
+		damage_data: DamageData
+	) -> void:
+		if damage_data == null:
+			return
+
+		var source_node := (
+			_get_damage_source_3d(
+				damage_data
+			)
+		)
+
+		if source_node == null:
+			return
+
 		var away_direction := (
 			global_position
-			- hit_source_position
+			- source_node.global_position
 		)
 
 		away_direction.y = 0.0
@@ -561,7 +582,6 @@ func _start_hit_reaction(
 			* strength
 		)
 
-
 func _update_hit_reaction(
 		delta: float
 	) -> void:
@@ -569,6 +589,27 @@ func _update_hit_reaction(
 			return
 
 		_face_hit_source()
+
+		if knockback_velocity.is_zero_approx():
+			velocity.x = 0.0
+			velocity.z = 0.0
+
+		hit_reaction_left = maxf(
+			hit_reaction_left - delta,
+			0.0
+		)
+
+		if hit_reaction_left > 0.0:
+			return
+
+		has_hit_source_position = false
+
+func _update_knockback(
+		delta: float
+	) -> void:
+		if knockback_velocity.is_zero_approx():
+			knockback_velocity = Vector3.ZERO
+			return
 
 		velocity.x = knockback_velocity.x
 		velocity.z = knockback_velocity.z
@@ -581,21 +622,11 @@ func _update_hit_reaction(
 			)
 		)
 
-		hit_reaction_left = maxf(
-			hit_reaction_left - delta,
-			0.0
-		)
-
-		if hit_reaction_left > 0.0:
-			return
-
-		knockback_velocity = Vector3.ZERO
-
-		velocity.x = 0.0
-		velocity.z = 0.0
-
-		has_hit_source_position = false
-
+		if (
+			knockback_velocity.length_squared()
+			<= 0.0001
+		):
+			knockback_velocity = Vector3.ZERO
 
 func _face_hit_source() -> void:
 		if not has_hit_source_position:
@@ -643,7 +674,7 @@ func is_in_hit_reaction() -> bool:
 		)
 
 func _update_stagger(
-			delta: float
+		delta: float
 	) -> void:
 		stagger_immunity_left = maxf(
 			stagger_immunity_left - delta,
@@ -653,6 +684,14 @@ func _update_stagger(
 		if stagger_immunity_left > 0.0:
 			return
 
+		if stagger_decay_delay_left > 0.0:
+			stagger_decay_delay_left = maxf(
+				stagger_decay_delay_left - delta,
+				0.0
+			)
+
+			return
+
 		stagger_pressure = maxf(
 			stagger_pressure
 			- stagger_decay_per_second * delta,
@@ -660,7 +699,7 @@ func _update_stagger(
 		)
 
 func _add_stagger_pressure(
-			damage_data: DamageData
+		damage_data: DamageData
 	) -> bool:
 		if stagger_immunity_left > 0.0:
 			return false
@@ -673,6 +712,10 @@ func _add_stagger_pressure(
 		if skill == null:
 			return false
 
+		stagger_decay_delay_left = (
+			stagger_decay_delay
+		)
+
 		stagger_pressure += (
 			skill.impact_stagger_power
 		)
@@ -681,6 +724,7 @@ func _add_stagger_pressure(
 			return false
 
 		stagger_pressure = 0.0
+		stagger_decay_delay_left = 0.0
 
 		stagger_immunity_left = (
 			stagger_immunity_duration
@@ -694,13 +738,20 @@ func _add_stagger_pressure(
 func _on_hurtbox_hit_received(
 		damage_data: DamageData
 	) -> void:
-		_start_hit_reaction(
-			damage_data
-		)
-		
 		_record_attack_memory(
 			damage_data
 		)
+
+		_apply_knockback(
+			damage_data
+		)
+
+		if _add_stagger_pressure(
+			damage_data
+		):
+			_start_hit_reaction(
+				damage_data
+			)
 		
 		var damage_result := (
 			calculate_received_damage_result(
