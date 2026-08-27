@@ -5,8 +5,8 @@
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="3_8fne0"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_mdo4f"]
-radius = 0.25
-height = 0.5
+radius = 1.5
+height = 3.0
 
 [sub_resource type="Gradient" id="Gradient_shmom"]
 offsets = PackedFloat32Array(0.7627907, 0.9255814, 0.97209305)
@@ -30,13 +30,15 @@ shader_parameter/fresnel_power = 1.94700008922262
 shader_parameter/fresnel_strength = 0.32400001539
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
+radius = 1.5
 
 [node name="AquaBlastProjectile" type="Node3D"]
 script = ExtResource("1_n3ijv")
-speed = 15.0
+speed = 10.0
 lifetime = 3.0
 
 [node name="Visual" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("SphereMesh_mdo4f")
 surface_material_override/0 = SubResource("ShaderMaterial_eje42")
 
@@ -47,4 +49,5 @@ script = ExtResource("3_8fne0")
 metadata/_custom_type_script = "uid://dxtt2fs3u4dv3"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("SphereShape3D_ryes3")

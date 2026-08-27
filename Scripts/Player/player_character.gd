@@ -71,7 +71,7 @@ signal combat_mode_changed(
 @export var damage_affinity: DamageAffinityProfile
 @export var attacks: Array[Skills]
 @export var skill_book: Skillbook
-@export var starting_mana: float = 100.0
+@export var starting_mana: float
 
 var current_stats: Stats
 var pending_projectile_skill: Skills
@@ -124,11 +124,7 @@ func set_combat_mode(
 	10.0,
 ]
 
-var mana_inventory: Array[float] = [
-	starting_mana,
-	starting_mana,
-	starting_mana
-]
+var mana_inventory: Array[float] = []
 
 func get_mana_amount(
 	skill_type: Skills.SkillType
@@ -276,6 +272,12 @@ var current_stamina := 1.0:
 
 #region Lifecycle
 func _ready() -> void:
+	mana_inventory = [
+		starting_mana,
+		starting_mana,
+		starting_mana
+	]
+	
 	player_hurtbox.hit_received.connect(
 		_on_hurtbox_hit_received
 	)
