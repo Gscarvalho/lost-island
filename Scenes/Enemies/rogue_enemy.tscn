@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://brvympepo0n" path="res://Scripts/Skills/enemy_skill_option.gd" id="3_1y704"]
 [ext_resource type="Script" uid="uid://ekdbymhxwlvd" path="res://Scripts/Combat/damage_affinity_profile.gd" id="3_17n6f"]
 [ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="3_hv31o"]
-[ext_resource type="Resource" uid="uid://cq02rul8xsug0" path="res://Data/Skills/Ranged/crossbow_shot.tres" id="5_hv31o"]
+[ext_resource type="Resource" uid="uid://dceql32rig2mc" path="res://Data/Skills/Ranged/throwing_knife_shot.tres" id="6_hv31o"]
 [ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/Visuals/rogue_visual.tscn" id="6_kftis"]
 [ext_resource type="Script" uid="uid://bw2tr5xfe80sr" path="res://Scripts/Combat/hurtbox.gd" id="7_ra6lb"]
 [ext_resource type="Script" uid="uid://cg1324m5q1gfs" path="res://Scripts/Enemies/Behaviors/hunter_enemy_behavior.gd" id="8_3enca"]
@@ -39,7 +39,7 @@ metadata/_custom_type_script = "uid://brvympepo0n"
 
 [sub_resource type="Resource" id="Resource_17n6f"]
 script = ExtResource("3_1y704")
-skill = ExtResource("5_hv31o")
+skill = ExtResource("6_hv31o")
 base_priority = 1.15
 hit_pressure_response = 0.5
 use_distance_min = 4.0

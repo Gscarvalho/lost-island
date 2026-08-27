@@ -12,6 +12,7 @@ skill_icon = ExtResource("3_nj5tu")
 projectile_scene = ExtResource("1_rfwho")
 skill_power = 50.0
 skill_type = 2
+damage_types = 4
 skill_cost = 1.0
 animation_state_name = &"Magic_Shoot"
 interrupt_lock_time = 0.5

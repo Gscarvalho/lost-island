@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://dceql32rig2mc"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_f5h3f"]
+[ext_resource type="PackedScene" uid="uid://cpi582gjflf4x" path="res://Scenes/Combat/Projectiles/throwing_knife_projectile.tscn" id="1_u36vg"]
+[ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="2_u36vg"]
+
+[resource]
+script = ExtResource("1_f5h3f")
+skill_id = &"throwing_knife_shot"
+skill_name = "Throwing Knife Shot"
+skill_icon = ExtResource("2_u36vg")
+projectile_scene = ExtResource("1_u36vg")
+skill_power = 30.0
+damage_types = 1
+skill_range = 2
+animation_state_name = &"Ranged_Shoot"
+impact_knockback_strength = 2.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

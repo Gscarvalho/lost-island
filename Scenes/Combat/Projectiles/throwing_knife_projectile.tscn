@@ -1,0 +1,214 @@
+[gd_scene load_steps=10 format=3 uid="uid://cpi582gjflf4x"]
+
+[ext_resource type="Script" uid="uid://y6livvl7t3qf" path="res://Scripts/Combat/skill_projectile.gd" id="1_rkmvb"]
+[ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="3_ohsxq"]
+[ext_resource type="ArrayMesh" uid="uid://dqhdbcfjd3xsf" path="res://Imports/KayKit_Adventurers_2.0_FREE/Assets/obj/dagger.obj" id="4_844xr"]
+[ext_resource type="Texture2D" uid="uid://dqkxlkpl8il4v" path="res://Imports/KayKit_Adventurers_2.0_FREE/Characters/gltf/Barbarian_barbarian_texture.png" id="5_mt22o"]
+[ext_resource type="Texture2D" uid="uid://dsu5ldqmy7jb5" path="res://Assets/Colors/gradient_hard_toon_surface.tres" id="6_66ah8"]
+[ext_resource type="Texture2D" uid="uid://2bn31fr53nr4" path="res://Assets/Colors/gradient_soft_toon_surface.tres" id="7_fiath"]
+
+[sub_resource type="Shader" id="Shader_vow1b"]
+code = "shader_type spatial;
+
+render_mode blend_mix, depth_draw_opaque, cull_disabled, specular_disabled;
+
+
+/* BASE SURFACE */
+
+uniform vec4 base_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
+
+uniform bool use_albedo_texture = false;
+
+uniform sampler2D albedo_texture :
+	source_color,
+	filter_linear_mipmap,
+	repeat_enable;
+
+
+/* TOON LIGHTING */
+
+uniform bool use_color_gradient = true;
+
+uniform sampler2D color_gradient :
+	source_color,
+	hint_default_white,
+	filter_linear,
+	repeat_disable;
+
+uniform vec4 shadow_color : source_color = vec4(
+	0.45,
+	0.45,
+	0.5,
+	1.0
+);
+
+uniform float shadow_threshold : hint_range(-1.0, 1.0) = 0.2;
+
+uniform float shadow_softness : hint_range(0.0, 0.2) = 0.02;
+
+
+/* FRESNEL */
+
+uniform bool use_fresnel = true;
+
+uniform sampler2D fresnel_gradient :
+	source_color,
+	hint_default_black,
+	filter_linear,
+	repeat_disable;
+
+uniform float fresnel_power : hint_range(0.1, 10.0) = 4.0;
+
+uniform float fresnel_strength : hint_range(0.0, 2.0) = 0.25;
+
+
+/* FUNCTIONS */
+
+float fresnel(
+	float power,
+	vec3 normal,
+	vec3 view
+) {
+	float facing = clamp(
+		dot(
+			normalize(normal),
+			normalize(view)
+		),
+		0.0,
+		1.0
+	);
+
+	return pow(
+		1.0 - facing,
+		power
+	);
+}
+
+
+/* SURFACE COLOR */
+
+void fragment() {
+	vec4 final_color = base_color;
+
+	if (use_albedo_texture) {
+		final_color *= texture(
+			albedo_texture,
+			UV
+		);
+	}
+
+	if (use_fresnel) {
+		float fresnel_amount = fresnel(
+			fresnel_power,
+			NORMAL,
+			VIEW
+		);
+
+		vec3 fresnel_color = texture(
+			fresnel_gradient,
+			vec2(
+				fresnel_amount,
+				0.0
+			)
+		).rgb;
+
+		final_color.rgb += (
+			fresnel_color
+			* fresnel_amount
+			* fresnel_strength
+		);
+	}
+
+	ALBEDO = final_color.rgb;
+}
+
+
+/* TOON LIGHTING */
+
+void light() {
+	float light_amount = clamp(
+		dot(
+			NORMAL,
+			LIGHT
+		),
+		-1.0,
+		1.0
+	);
+
+	vec3 lighting;
+
+	if (use_color_gradient) {
+		float gradient_position = clamp(
+			(
+				light_amount + 1.0
+			)
+			* 0.5
+			* ATTENUATION,
+			0.0,
+			1.0
+		);
+
+		lighting = texture(
+			color_gradient,
+			vec2(
+				gradient_position,
+				0.0
+			)
+		).rgb;
+	}
+	else {
+		float toon_amount = smoothstep(
+			shadow_threshold - shadow_softness,
+			shadow_threshold + shadow_softness,
+			light_amount
+		);
+
+		lighting = mix(
+			shadow_color.rgb,
+			vec3(1.0),
+			toon_amount
+		);
+	}
+
+	DIFFUSE_LIGHT += (
+		lighting
+		* LIGHT_COLOR
+		* ATTENUATION
+	);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ph533"]
+render_priority = 0
+shader = SubResource("Shader_vow1b")
+shader_parameter/base_color = Color(1, 1, 1, 1)
+shader_parameter/use_albedo_texture = true
+shader_parameter/albedo_texture = ExtResource("5_mt22o")
+shader_parameter/use_color_gradient = true
+shader_parameter/color_gradient = ExtResource("6_66ah8")
+shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
+shader_parameter/shadow_threshold = 0.2
+shader_parameter/shadow_softness = 0.02
+shader_parameter/use_fresnel = true
+shader_parameter/fresnel_gradient = ExtResource("7_fiath")
+shader_parameter/fresnel_power = 0.50000002049012
+shader_parameter/fresnel_strength = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
+
+[node name="FireballProjectile" type="Node3D"]
+script = ExtResource("1_rkmvb")
+speed = 25.0
+
+[node name="Visual" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = ExtResource("4_844xr")
+surface_material_override/0 = SubResource("ShaderMaterial_ph533")
+
+[node name="Hitbox" type="Area3D" parent="."]
+collision_layer = 512
+collision_mask = 256
+script = ExtResource("3_ohsxq")
+metadata/_custom_type_script = "uid://dxtt2fs3u4dv3"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("SphereShape3D_ryes3")
