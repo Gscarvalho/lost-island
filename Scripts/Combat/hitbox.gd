@@ -45,20 +45,41 @@ func configure_attack(
 		)
 
 func create_damage_data() -> DamageData:
-	var weapon := source_node as Weapon
+	var valid_source_node: Node = null
+	var valid_source_actor: Node = null
+
+	if is_instance_valid(
+		source_node
+	):
+		valid_source_node = (
+			source_node
+		)
+
+	if is_instance_valid(
+		source_actor
+	):
+		valid_source_actor = (
+			source_actor
+		)
+
+	var weapon := (
+		valid_source_node
+		as Weapon
+	)
 
 	var damage_data := DamageData.new(
 		damage,
-		_get_damage_type(),
-		source_node,
+		_get_damage_types(),
+		valid_source_node,
 		source_skill,
 		weapon,
-		source_actor
+		valid_source_actor
 	)
 
 	if source_skill != null:
 		damage_data.knockback_strength = (
-			source_skill.impact_knockback_strength
+			source_skill
+			.impact_knockback_strength
 		)
 
 	return damage_data
@@ -99,7 +120,11 @@ func _try_hit(
 			hurtbox.get_damage_receiver()
 		)
 		
-		if damage_receiver == source_actor:
+		if (
+			is_instance_valid(source_actor)
+			and damage_receiver
+			== source_actor
+		):
 			return
 
 		if already_hit.has(
@@ -119,19 +144,12 @@ func _try_hit(
 		hurtbox
 	)
 
-func _get_damage_type() -> DamageData.DamageType:
+func _get_damage_types() -> int:
 	if source_skill == null:
-		return DamageData.DamageType.PHYSICAL
+		return (
+			DamageTypes.Type.PHYSICAL
+		)
 
-	match source_skill.skill_type:
-		Skills.SkillType.Fire:
-			return DamageData.DamageType.FIRE
-
-		Skills.SkillType.Water:
-			return DamageData.DamageType.WATER
-
-		Skills.SkillType.Light:
-			return DamageData.DamageType.LIGHT
-
-		_:
-			return DamageData.DamageType.PHYSICAL
+	return (
+		source_skill.get_damage_types()
+	)

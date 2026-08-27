@@ -1,8 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://c1jx521ax84qo"]
+[gd_scene load_steps=18 format=3 uid="uid://c1jx521ax84qo"]
 
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_xsikj"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_vrlml"]
 [ext_resource type="Script" uid="uid://brvympepo0n" path="res://Scripts/Skills/enemy_skill_option.gd" id="3_ru20j"]
+[ext_resource type="Resource" uid="uid://d023c2u5jl13b" path="res://Data/Combat/aquatic_creature_damage_affinity.tres" id="3_s7oqs"]
 [ext_resource type="Resource" uid="uid://q60bwcioaa0s" path="res://Data/Skills/Water/aqua_blast.tres" id="4_602yv"]
 [ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="6_ok7rb"]
 [ext_resource type="PackedScene" uid="uid://dgseyagqirx7m" path="res://Scenes/UI/enemy_hud_ui.tscn" id="7_s7oqs"]
@@ -48,6 +49,7 @@ collision_mask = 50
 floor_max_angle = 0.87266463
 script = ExtResource("1_xsikj")
 stats = SubResource("Resource_s7oqs")
+damage_affinity = ExtResource("3_s7oqs")
 skill_loadout = SubResource("Resource_xsikj")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

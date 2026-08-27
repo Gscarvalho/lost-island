@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://d4aycs4gahm23"]
+
+[ext_resource type="PackedScene" uid="uid://c4e32saqfakvc" path="res://Scenes/Combat/Projectiles/aqua_blast_projectile.tscn" id="1_gsx2v"]
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_xsmqr"]
+[ext_resource type="Texture2D" uid="uid://btdwklaitq7vc" path="res://Assets/Images/Icons/Prototype/water_icon.png" id="2_gsx2v"]
+
+[resource]
+script = ExtResource("1_xsmqr")
+skill_id = &"ice_slash"
+skill_name = "Ice Slash"
+skill_icon = ExtResource("2_gsx2v")
+projectile_scene = ExtResource("1_gsx2v")
+skill_power = 50.0
+damage_types = 17
+skill_cost = 10.0
+animation_state_name = &"Melee_Slice"
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

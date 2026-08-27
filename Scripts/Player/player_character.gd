@@ -68,6 +68,7 @@ signal combat_mode_changed(
 
 #region Character Data
 @export var base_stats: Stats
+@export var damage_affinity: DamageAffinityProfile
 @export var attacks: Array[Skills]
 @export var skill_book: Skillbook
 @export var starting_mana: float = 100.0
@@ -883,33 +884,9 @@ func take_damage(
 func calculate_received_damage(
 		damage_data: DamageData
 	) -> float:
-		if damage_data == null:
-			return 0.0
-
-		if current_stats == null:
-			return damage_data.amount
-
-		var defense_value := 0.0
-
-		match damage_data.damage_type:
-			DamageData.DamageType.PHYSICAL:
-				defense_value = (
-					current_stats.defense
-				)
-
-			_:
-				defense_value = (
-					current_stats.m_defense
-				)
-
-		defense_value = maxf(
-			defense_value,
-			0.0
-		)
-
-		return (
-			damage_data.amount
-			* 100.0
-			/ (100.0 + defense_value)
+		return DamageResolver.calculate_damage(
+			damage_data,
+			current_stats,
+			damage_affinity
 		)
 #endregion

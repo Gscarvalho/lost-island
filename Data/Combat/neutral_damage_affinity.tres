@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="DamageAffinityProfile" load_steps=2 format=3 uid="uid://dbstntkfwurpf"]
+
+[ext_resource type="Script" uid="uid://ekdbymhxwlvd" path="res://Scripts/Combat/damage_affinity_profile.gd" id="1_ifb5g"]
+
+[resource]
+script = ExtResource("1_ifb5g")
+metadata/_custom_type_script = "uid://ekdbymhxwlvd"

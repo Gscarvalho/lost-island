@@ -64,6 +64,25 @@ var unlock_cost: int = 1
 
 @export var skill_power: float
 @export var skill_type: SkillType
+## The actual damage elements dealt by this skill.
+##
+## Leave every option unchecked to automatically use
+## the Skill Type as the damage type.
+##
+## Multiple selections divide the skill's damage evenly
+## between the selected types.
+@export_flags(
+	"Physical",
+	"Fire",
+	"Water",
+	"Light",
+	"Snow",
+	"Lightning",
+	"Plant",
+	"Dark"
+)
+var damage_types: int = 0
+
 @export var skill_range: RangeType
 @export var skill_cost: float
 @export var cost_type: CostType = CostType.PerUse
@@ -85,6 +104,25 @@ var unlock_cost: int = 1
 @export var animation_back: StringName
 @export var animation_left: StringName
 @export var animation_right: StringName
+#endregion
+
+#region Damage Types
+func get_damage_types() -> int:
+	if damage_types != 0:
+		return damage_types
+
+	match skill_type:
+		SkillType.Fire:
+			return DamageTypes.Type.FIRE
+
+		SkillType.Water:
+			return DamageTypes.Type.WATER
+
+		SkillType.Light:
+			return DamageTypes.Type.LIGHT
+
+		_:
+			return DamageTypes.Type.PHYSICAL
 #endregion
 
 #region Regeneration

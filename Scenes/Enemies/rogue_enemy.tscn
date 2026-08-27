@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://duph0cuiqslaa"]
+[gd_scene load_steps=20 format=3 uid="uid://duph0cuiqslaa"]
 
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_qmm4d"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_1y704"]
 [ext_resource type="Script" uid="uid://brvympepo0n" path="res://Scripts/Skills/enemy_skill_option.gd" id="3_1y704"]
+[ext_resource type="Resource" uid="uid://rv36edsruqkq" path="res://Data/Combat/fire_weakness_damage_affinity.tres" id="3_17n6f"]
 [ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="3_hv31o"]
 [ext_resource type="Resource" uid="uid://cq02rul8xsug0" path="res://Data/Skills/Ranged/crossbow_shot.tres" id="5_hv31o"]
 [ext_resource type="PackedScene" uid="uid://b6og5145jgic5" path="res://Scenes/Enemies/Visuals/rogue_visual.tscn" id="6_kftis"]
@@ -61,6 +62,7 @@ collision_mask = 50
 floor_max_angle = 0.87266463
 script = ExtResource("1_qmm4d")
 stats = SubResource("Resource_ptuny")
+damage_affinity = ExtResource("3_17n6f")
 skill_loadout = SubResource("Resource_kftis")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

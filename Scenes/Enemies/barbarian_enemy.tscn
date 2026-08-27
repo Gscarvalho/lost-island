@@ -1,8 +1,9 @@
-[gd_scene load_steps=19 format=3 uid="uid://cqty62oudwfem"]
+[gd_scene load_steps=20 format=3 uid="uid://cqty62oudwfem"]
 
 [ext_resource type="Script" uid="uid://xxsge3120k85" path="res://Scripts/Enemies/enemy.gd" id="1_buj10"]
 [ext_resource type="Script" uid="uid://baaxbte0f7aus" path="res://Scripts/Player/stats.gd" id="2_k0lqx"]
 [ext_resource type="Script" uid="uid://brvympepo0n" path="res://Scripts/Skills/enemy_skill_option.gd" id="3_a5q5m"]
+[ext_resource type="Resource" uid="uid://j8xiflh4xmbn" path="res://Data/Combat/physically_tough_damage_affinity.tres" id="3_dwer6"]
 [ext_resource type="Resource" uid="uid://kkvwe3wr2dc2" path="res://Data/Skills/Physical/spin_attack.tres" id="4_buj10"]
 [ext_resource type="Resource" uid="uid://cq6yixodrxrce" path="res://Data/Skills/Physical/heavy_chop.tres" id="5_k0lqx"]
 [ext_resource type="Script" uid="uid://dais1kwarudf6" path="res://Scripts/Skills/enemy_skill_loadout.gd" id="6_aairu"]
@@ -62,6 +63,7 @@ collision_mask = 50
 floor_max_angle = 0.87266463
 script = ExtResource("1_buj10")
 stats = SubResource("Resource_gvajm")
+damage_affinity = ExtResource("3_dwer6")
 skill_loadout = SubResource("Resource_fyuuu")
 hit_reaction_duration = 0.35
 

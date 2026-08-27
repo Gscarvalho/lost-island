@@ -24,6 +24,12 @@ signal player_attack_received(
 ## universal enemy calculations.
 @export var stats: Stats
 
+## Elemental and physical damage relationships
+## for this enemy.
+##
+## Null means every damage type is neutral at 1.0.
+@export var damage_affinity: DamageAffinityProfile
+
 ## The collection of skill options this enemy may choose from.
 ## Skill selection is handled by the Behavior's Priority Profile.
 @export var skill_loadout: EnemySkillLoadout
@@ -678,30 +684,10 @@ func take_damage(
 func calculate_received_damage(
 		damage_data: DamageData
 	) -> float:
-		if damage_data == null:
-			return 0.0
-
-		if stats == null:
-			return damage_data.amount
-
-		var defense_value := 0.0
-
-		match damage_data.damage_type:
-			DamageData.DamageType.PHYSICAL:
-				defense_value = stats.defense
-
-			_:
-				defense_value = stats.m_defense
-
-		defense_value = maxf(
-			defense_value,
-			0.0
-		)
-
-		return (
-			damage_data.amount
-			* 100.0
-			/ (100.0 + defense_value)
+		return DamageResolver.calculate_damage(
+			damage_data,
+			stats,
+			damage_affinity
 		)
 
 func get_max_health() -> float:
