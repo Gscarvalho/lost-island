@@ -7,22 +7,24 @@ colors = PackedColorArray(0.4627451, 1, 1, 1, 0, 0.6745098, 1, 1, 0, 0.26666668,
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_qkwy0"]
 gradient = SubResource("Gradient_1wpyy")
 
-[sub_resource type="Curve" id="Curve_sa4hd"]
-_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.6489899, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
+[sub_resource type="Curve" id="Curve_rkrjr"]
+_data = [Vector2(0, 0.6645569), 0.0, 0.0, 0, 0, Vector2(0.5909091, 1), 0.0, 0.0, 0, 0, Vector2(0.6085859, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 4
 
-[sub_resource type="CurveTexture" id="CurveTexture_mb33h"]
-curve = SubResource("Curve_sa4hd")
+[sub_resource type="CurveTexture" id="CurveTexture_30fkm"]
+curve = SubResource("Curve_rkrjr")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rkrjr"]
+emission_shape = 1
+emission_sphere_radius = 0.5
 direction = Vector3(0, 0, 0)
 spread = 90.0
-initial_velocity_min = 0.14999999
-initial_velocity_max = 0.5
-gravity = Vector3(0, -0.3, 0)
-scale_min = 0.099999994
+orbit_velocity_min = 0.7000001
+orbit_velocity_max = 2.0000002
+gravity = Vector3(0, 0, 0)
+scale_min = 0.79999995
 scale_max = 1.15
-scale_curve = SubResource("CurveTexture_mb33h")
+scale_curve = SubResource("CurveTexture_30fkm")
 color_ramp = SubResource("GradientTexture1D_qkwy0")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rkrjr"]
@@ -39,8 +41,9 @@ radial_segments = 8
 rings = 4
 
 [node name="WaterVFX" type="GPUParticles3D"]
-amount = 13
-lifetime = 0.8
+amount = 18
+lifetime = 1.2
 randomness = 0.15
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_rkrjr")
 draw_pass_1 = SubResource("SphereMesh_30fkm")
