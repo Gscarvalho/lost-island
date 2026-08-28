@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dkfwe34arf1td"]
+[gd_scene load_steps=8 format=3 uid="uid://dkfwe34arf1td"]
 
 [ext_resource type="Script" uid="uid://y6livvl7t3qf" path="res://Scripts/Combat/skill_projectile.gd" id="1_qqkdr"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="2_qqkdr"]
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_ryes3"]
+[ext_resource type="AudioStream" uid="uid://ip14ipqnu011" path="res://Assets/Audio/yodguard-fire-1.mp3" id="4_fire_audio"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_mdo4f"]
 radius = 0.25
@@ -26,6 +27,10 @@ speed = 25.0
 [node name="Visual" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_mdo4f")
 surface_material_override/0 = SubResource("ShaderMaterial_an0y3")
+
+[node name="CastSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_fire_audio")
+autoplay = true
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 512
