@@ -1,26 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkfwe34arf1td"]
+[gd_scene load_steps=6 format=3 uid="uid://dkfwe34arf1td"]
 
 [ext_resource type="Script" uid="uid://y6livvl7t3qf" path="res://Scripts/Combat/skill_projectile.gd" id="1_qqkdr"]
+[ext_resource type="PackedScene" uid="uid://coiuiv50svkh5" path="res://Scenes/VFX/fire_vfx.tscn" id="2_1wpyy"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="2_qqkdr"]
-[ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_ryes3"]
 [ext_resource type="AudioStream" uid="uid://ip14ipqnu011" path="res://Assets/Audio/yodguard-fire-1.mp3" id="4_fire_audio"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_mdo4f"]
-radius = 0.25
-height = 0.5
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_an0y3"]
-render_priority = 0
-shader = ExtResource("2_ryes3")
-shader_parameter/base_color = Color(1, 0.07058824, 0, 1)
-shader_parameter/use_albedo_texture = false
-shader_parameter/use_color_gradient = true
-shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
-shader_parameter/shadow_threshold = 0.2
-shader_parameter/shadow_softness = 0.02
-shader_parameter/use_fresnel = true
-shader_parameter/fresnel_power = 4.0
-shader_parameter/fresnel_strength = 0.25
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 
@@ -28,9 +11,7 @@ shader_parameter/fresnel_strength = 0.25
 script = ExtResource("1_qqkdr")
 speed = 25.0
 
-[node name="Visual" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_mdo4f")
-surface_material_override/0 = SubResource("ShaderMaterial_an0y3")
+[node name="Visual" parent="." instance=ExtResource("2_1wpyy")]
 
 [node name="CastSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4_fire_audio")

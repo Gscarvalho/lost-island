@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://b34suugt64k8a"]
+
+[sub_resource type="Gradient" id="Gradient_1wpyy"]
+offsets = PackedFloat32Array(0, 0.2027027, 0.672973, 1)
+colors = PackedColorArray(0.4627451, 1, 1, 1, 0, 0.6745098, 1, 1, 0, 0.26666668, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qkwy0"]
+gradient = SubResource("Gradient_1wpyy")
+
+[sub_resource type="Curve" id="Curve_sa4hd"]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.6489899, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_mb33h"]
+curve = SubResource("Curve_sa4hd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rkrjr"]
+direction = Vector3(0, 0, 0)
+spread = 90.0
+initial_velocity_min = 0.14999999
+initial_velocity_max = 0.5
+gravity = Vector3(0, -0.3, 0)
+scale_min = 0.099999994
+scale_max = 1.15
+scale_curve = SubResource("CurveTexture_mb33h")
+color_ramp = SubResource("GradientTexture1D_qkwy0")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rkrjr"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.39215687, 0.8862745, 1, 0.78431374)
+
+[sub_resource type="SphereMesh" id="SphereMesh_30fkm"]
+material = SubResource("StandardMaterial3D_rkrjr")
+radius = 1.5
+height = 3.0
+radial_segments = 8
+rings = 4
+
+[node name="WaterVFX" type="GPUParticles3D"]
+amount = 13
+lifetime = 0.8
+randomness = 0.15
+process_material = SubResource("ParticleProcessMaterial_rkrjr")
+draw_pass_1 = SubResource("SphereMesh_30fkm")

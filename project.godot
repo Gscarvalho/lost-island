@@ -15,6 +15,10 @@ run/main_scene="uid://df6prq4xcpyx3"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://Assets/Images/Icons/Prototype/godot_icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://Assets/Audio/default_bus_layout.tres"
+
 [autoload]
 
 StateManager="*res://Scripts/Core/state_manager.gd"

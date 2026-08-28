@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://coiuiv50svkh5"]
+
+[sub_resource type="Gradient" id="Gradient_1wpyy"]
+offsets = PackedFloat32Array(0, 0.2027027, 0.672973, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.54901963, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qkwy0"]
+gradient = SubResource("Gradient_1wpyy")
+
+[sub_resource type="Curve" id="Curve_sa4hd"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_mb33h"]
+curve = SubResource("Curve_sa4hd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1ufri"]
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 0.099999994
+initial_velocity_max = 0.5
+gravity = Vector3(0, 0.8, 0)
+scale_min = 0.099999994
+scale_max = 1.15
+scale_curve = SubResource("CurveTexture_mb33h")
+color_ramp = SubResource("GradientTexture1D_qkwy0")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f8tgu"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.54901963, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_7ecvm"]
+material = SubResource("StandardMaterial3D_f8tgu")
+radial_segments = 8
+rings = 4
+
+[node name="FireVFX" type="GPUParticles3D"]
+amount = 28
+lifetime = 0.35000000000000003
+randomness = 0.25
+process_material = SubResource("ParticleProcessMaterial_1ufri")
+draw_pass_1 = SubResource("SphereMesh_7ecvm")

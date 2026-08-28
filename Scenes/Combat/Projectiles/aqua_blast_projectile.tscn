@@ -1,34 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://c4e32saqfakvc"]
+[gd_scene load_steps=6 format=3 uid="uid://c4e32saqfakvc"]
 
 [ext_resource type="Script" uid="uid://y6livvl7t3qf" path="res://Scripts/Combat/skill_projectile.gd" id="1_n3ijv"]
-[ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_eje42"]
+[ext_resource type="PackedScene" uid="uid://b34suugt64k8a" path="res://Scenes/VFX/water_vfx.tscn" id="2_eje42"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="3_8fne0"]
 [ext_resource type="AudioStream" uid="uid://dkxajwd4tq2lk" path="res://Assets/Audio/dragon-studio-water-splash-1.mp3" id="4_water_audio"]
-
-[sub_resource type="SphereMesh" id="SphereMesh_mdo4f"]
-radius = 1.5
-height = 3.0
-
-[sub_resource type="Gradient" id="Gradient_shmom"]
-offsets = PackedFloat32Array(0.7627907, 0.9255814, 0.97209305)
-colors = PackedColorArray(0, 0, 0, 1, 0.7058824, 0.7058824, 0.7058824, 1, 0.9607843, 0.9607843, 0.9607843, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_n3ijv"]
-gradient = SubResource("Gradient_shmom")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_eje42"]
-render_priority = 0
-shader = ExtResource("2_eje42")
-shader_parameter/base_color = Color(0, 0.6745098, 1, 1)
-shader_parameter/use_albedo_texture = false
-shader_parameter/use_color_gradient = false
-shader_parameter/shadow_color = Color(0, 0, 0, 1)
-shader_parameter/shadow_threshold = -1.0
-shader_parameter/shadow_softness = 0.0
-shader_parameter/use_fresnel = true
-shader_parameter/fresnel_gradient = SubResource("GradientTexture2D_n3ijv")
-shader_parameter/fresnel_power = 1.94700008922262
-shader_parameter/fresnel_strength = 0.32400001539
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 radius = 1.5
@@ -38,10 +13,8 @@ script = ExtResource("1_n3ijv")
 speed = 10.0
 lifetime = 3.0
 
-[node name="Visual" type="MeshInstance3D" parent="."]
+[node name="Visual" parent="." instance=ExtResource("2_eje42")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("SphereMesh_mdo4f")
-surface_material_override/0 = SubResource("ShaderMaterial_eje42")
 
 [node name="CastSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4_water_audio")
