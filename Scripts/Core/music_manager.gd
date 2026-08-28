@@ -15,6 +15,9 @@ extends Node
 ## Combat ending does not automatically count as a victory.
 @export var celebration_track: AudioStream
 
+@export var menu_track: AudioStream
+
+@export var danger_track: AudioStream
 
 @export_category("Transitions")
 
