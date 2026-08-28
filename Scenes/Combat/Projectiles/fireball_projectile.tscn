@@ -14,9 +14,13 @@ render_priority = 0
 shader = ExtResource("2_ryes3")
 shader_parameter/base_color = Color(1, 0.07058824, 0, 1)
 shader_parameter/use_albedo_texture = false
+shader_parameter/use_color_gradient = true
 shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
 shader_parameter/shadow_threshold = 0.2
 shader_parameter/shadow_softness = 0.02
+shader_parameter/use_fresnel = true
+shader_parameter/fresnel_power = 4.0
+shader_parameter/fresnel_strength = 0.25
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 
@@ -31,6 +35,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_an0y3")
 [node name="CastSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4_fire_audio")
 autoplay = true
+bus = &"SFX"
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 512

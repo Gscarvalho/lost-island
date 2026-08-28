@@ -59,6 +59,8 @@ var music_tween: Tween
 
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	active_player = track_a
 	standby_player = track_b
 
@@ -89,6 +91,9 @@ func _on_state_changed(
 	) -> void:
 	match state:
 		StateManager.State.TITLE:
+			play_menu()
+			
+		StateManager.State.MENU:
 			play_menu()
 
 		StateManager.State.PLAY:
@@ -131,7 +136,8 @@ func play_menu() -> void:
 	_switch_track(
 		menu_track,
 		false,
-		menu_crossfade_duration
+		menu_crossfade_duration,
+		0.85
 	)
 
 
@@ -161,71 +167,92 @@ func return_to_context_music() -> void:
 
 
 func _switch_track(
-	stream: AudioStream,
-	immediate := false,
-	fade_duration := 1.0
-) -> void:
-	if stream == null:
-		return
+		stream: AudioStream,
+		immediate := false,
+		fade_duration := 1.0,
+		pitch_scale := 1.0
+	) -> void:
+		if stream == null:
+			return
 
-	if (
-		active_player.playing
-		and active_player.stream == stream
-	):
-		return
+		if (
+			active_player.playing
+			and active_player.stream == stream
+		):
+			return
 
-	if music_tween != null:
-		music_tween.kill()
+		if music_tween != null:
+			music_tween.kill()
 
-	if immediate:
-		standby_player.stop()
+		if immediate:
+			standby_player.stop()
 
-		active_player.stream = stream
-		active_player.volume_db = 0.0
+			active_player.stream = stream
+			active_player.bus = (
+				_get_bus_for_track(
+					stream
+				)
+			)
+			active_player.volume_db = 0.0
+			active_player.pitch_scale = pitch_scale
 
-		active_player.play()
+			active_player.play()
 
-		return
+			return
 
-	var previous_player := (
-		active_player
-	)
+		var previous_player := (
+			active_player
+		)
 
-	var next_player := (
-		standby_player
-	)
+		var next_player := (
+			standby_player
+		)
 
-	next_player.stop()
+		next_player.stop()
 
-	next_player.stream = stream
-	next_player.volume_db = -60.0
+		next_player.stream = stream
+		next_player.bus = (
+			_get_bus_for_track(
+				stream
+			)
+		)
+		next_player.volume_db = -60.0
+		next_player.pitch_scale = pitch_scale
 
-	next_player.play()
+		next_player.play()
 
-	music_tween = create_tween()
+		music_tween = create_tween()
 
-	music_tween.set_parallel(
-		true
-	)
+		music_tween.set_parallel(
+			true
+		)
 
-	music_tween.tween_property(
-		previous_player,
-		"volume_db",
-		-60.0,
-		fade_duration
-	)
+		music_tween.tween_property(
+			previous_player,
+			"volume_db",
+			-60.0,
+			fade_duration
+		)
 
-	music_tween.tween_property(
-		next_player,
-		"volume_db",
-		0.0,
-		fade_duration
-	)
+		music_tween.tween_property(
+			next_player,
+			"volume_db",
+			0.0,
+			fade_duration
+		)
 
-	music_tween.finished.connect(
-		func() -> void:
-			previous_player.stop()
-	)
+		music_tween.finished.connect(
+			func() -> void:
+				previous_player.stop()
+		)
 
-	active_player = next_player
-	standby_player = previous_player
+		active_player = next_player
+		standby_player = previous_player
+
+func _get_bus_for_track(
+		stream: AudioStream
+	) -> StringName:
+	if stream == menu_track:
+		return &"Menu Music"
+
+	return &"BG Music"

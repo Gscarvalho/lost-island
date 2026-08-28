@@ -73,9 +73,21 @@ enum MenuPage {
 @onready var master_volume_slider: HSlider = (
 	%MasterVolumeSlider
 )
+@onready var sfx_volume_slider: HSlider = (
+	%SFXVolumeSlider
+)
+@onready var bg_music_volume_slider: HSlider = (
+	%BGMusicVolumeSlider
+)
+@onready var menu_music_volume_slider: HSlider = (
+	%MenuMusicVolumeSlider
+)
 @onready var exit_game_button: TextureButton = (
 	%ExitGameButton
 )
+
+
+
 #endregion
 
 #region Skill Tree References
@@ -154,8 +166,8 @@ var last_loadout_focus: Control
 #region Lifecycle
 func _ready() -> void:
 	_connect_signals()
-	_configure_focus_navigation()
 	_resolve_player_references()
+	_initialize_audio_sliders()
 	_initialize_menu()
 
 func _connect_signals() -> void:
@@ -199,6 +211,18 @@ func _connect_signals() -> void:
 		_on_master_volume_changed
 	)
 
+	sfx_volume_slider.value_changed.connect(
+		_on_sfx_volume_changed
+	)
+
+	bg_music_volume_slider.value_changed.connect(
+		_on_bg_music_volume_changed
+	)
+
+	menu_music_volume_slider.value_changed.connect(
+		_on_menu_music_volume_changed
+	)
+
 	slot_x_button.pressed.connect(
 		_on_loadout_slot_pressed.bind(
 			SkillLoadout.Slot.X
@@ -232,19 +256,6 @@ func _connect_signals() -> void:
 	slot_rt_b_button.pressed.connect(
 		_on_loadout_slot_pressed.bind(
 			SkillLoadout.Slot.RT_B
-		)
-	)
-
-func _configure_focus_navigation() -> void:
-	master_volume_slider.focus_neighbor_bottom = (
-		master_volume_slider.get_path_to(
-			exit_game_button
-		)
-	)
-
-	exit_game_button.focus_neighbor_top = (
-		exit_game_button.get_path_to(
-			master_volume_slider
 		)
 	)
 
@@ -735,6 +746,9 @@ func _get_mana_controls() -> Array[Control]:
 func _get_settings_controls() -> Array[Control]:
 	return [
 		master_volume_slider,
+		sfx_volume_slider,
+		bg_music_volume_slider,
+		menu_music_volume_slider,
 		exit_game_button,
 	]
 
@@ -1648,17 +1662,124 @@ func _set_loadout_slot_focus_enabled(
 #endregion
 
 #region Settings
-func _on_master_volume_changed(value: float) -> void:
-	var master_bus := AudioServer.get_bus_index("Master")
+func _initialize_audio_sliders() -> void:
+	_set_slider_from_bus(
+		master_volume_slider,
+		&"Master"
+	)
 
-	if value <= 0.0:
-		AudioServer.set_bus_mute(master_bus, true)
+	_set_slider_from_bus(
+		sfx_volume_slider,
+		&"SFX"
+	)
+
+	_set_slider_from_bus(
+		bg_music_volume_slider,
+		&"BG Music"
+	)
+
+	_set_slider_from_bus(
+		menu_music_volume_slider,
+		&"Menu Music"
+	)
+
+
+func _set_slider_from_bus(
+		slider: HSlider,
+		bus_name: StringName
+	) -> void:
+	var bus_index := (
+		AudioServer.get_bus_index(
+			bus_name
+		)
+	)
+
+	if bus_index == -1:
 		return
 
-	AudioServer.set_bus_mute(master_bus, false)
+	if AudioServer.is_bus_mute(
+		bus_index
+	):
+		slider.value = 0.0
+		return
 
-	var volume_db := linear_to_db(value / 100.0)
-	AudioServer.set_bus_volume_db(master_bus, volume_db)
+	slider.value = (
+		db_to_linear(
+			AudioServer.get_bus_volume_db(
+				bus_index
+			)
+		)
+		* 100.0
+	)
+
+func _on_master_volume_changed(
+		value: float
+	) -> void:
+	_set_bus_volume(
+		&"Master",
+		value
+	)
+
+
+func _on_sfx_volume_changed(
+		value: float
+	) -> void:
+	_set_bus_volume(
+		&"SFX",
+		value
+	)
+
+
+func _on_bg_music_volume_changed(
+		value: float
+	) -> void:
+	_set_bus_volume(
+		&"BG Music",
+		value
+	)
+
+
+func _on_menu_music_volume_changed(
+		value: float
+	) -> void:
+	_set_bus_volume(
+		&"Menu Music",
+		value
+	)
+
+
+func _set_bus_volume(
+		bus_name: StringName,
+		value: float
+	) -> void:
+	var bus_index := (
+		AudioServer.get_bus_index(
+			bus_name
+		)
+	)
+
+	if bus_index == -1:
+		return
+
+	if value <= 0.0:
+		AudioServer.set_bus_mute(
+			bus_index,
+			true
+		)
+
+		return
+
+	AudioServer.set_bus_mute(
+		bus_index,
+		false
+	)
+
+	AudioServer.set_bus_volume_db(
+		bus_index,
+		linear_to_db(
+			value / 100.0
+		)
+	)
 
 func _on_exit_game_pressed() -> void:
 	if OS.is_debug_build():

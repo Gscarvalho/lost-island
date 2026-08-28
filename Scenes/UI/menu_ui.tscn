@@ -832,7 +832,7 @@ text = "SETTINGS"
 fit_content = true
 horizontal_alignment = 1
 
-[node name="VolumeLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
+[node name="MasterVolumeLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "Master Volume"
 fit_content = true
@@ -841,6 +841,58 @@ fit_content = true
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
+focus_neighbor_top = NodePath("../ExitGameButton")
+focus_neighbor_bottom = NodePath("../SFXVolumeSlider")
+focus_next = NodePath("../SFXVolumeSlider")
+focus_previous = NodePath("../ExitGameButton")
+theme_override_icons/grabber_disabled = ExtResource("9_fjin3")
+value = 100.0
+
+[node name="SFXVolumeLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "SFX Volume"
+fit_content = true
+
+[node name="SFXVolumeSlider" type="HSlider" parent="SettingsPage/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 2
+focus_neighbor_top = NodePath("../MasterVolumeSlider")
+focus_neighbor_bottom = NodePath("../BGMusicVolumeSlider")
+focus_next = NodePath("../BGMusicVolumeSlider")
+focus_previous = NodePath("../MasterVolumeSlider")
+theme_override_icons/grabber_disabled = ExtResource("9_fjin3")
+value = 100.0
+
+[node name="BGMusicVolumeLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Bacground Music Volume"
+fit_content = true
+
+[node name="BGMusicVolumeSlider" type="HSlider" parent="SettingsPage/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 2
+focus_neighbor_top = NodePath("../SFXVolumeSlider")
+focus_neighbor_bottom = NodePath("../MenuMusicVolumeSlider")
+focus_next = NodePath("../MenuMusicVolumeSlider")
+focus_previous = NodePath("../SFXVolumeSlider")
+theme_override_icons/grabber_disabled = ExtResource("9_fjin3")
+value = 100.0
+
+[node name="MenuMusicLabel" type="RichTextLabel" parent="SettingsPage/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Menu Music Volume"
+fit_content = true
+
+[node name="MenuMusicVolumeSlider" type="HSlider" parent="SettingsPage/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 2
+focus_neighbor_top = NodePath("../BGMusicVolumeSlider")
+focus_neighbor_bottom = NodePath("../ExitGameButton")
+focus_next = NodePath("../ExitGameButton")
+focus_previous = NodePath("../BGMusicVolumeSlider")
 theme_override_icons/grabber_disabled = ExtResource("9_fjin3")
 value = 100.0
 
@@ -854,6 +906,8 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+focus_neighbor_top = NodePath("../MenuMusicVolumeSlider")
+focus_previous = NodePath("../MenuMusicVolumeSlider")
 texture_normal = ExtResource("3_prqvn")
 texture_hover = ExtResource("10_ujsln")
 texture_focused = ExtResource("11_ujsln")
@@ -1592,6 +1646,7 @@ secondary_input_icon = ExtResource("24_ipr0g")
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("20_w61pg")
+theme_override_constants/separation = 12
 alignment = 1
 
 [node name="YButtonIcon" type="TextureRect" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -1607,7 +1662,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("20_w61pg")
 theme_override_font_sizes/normal_font_size = 20
-text = "  ALL SKILLS"
+text = " ALL SKILLS"
 fit_content = true
 scroll_active = false
 vertical_alignment = 1

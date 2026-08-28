@@ -46,6 +46,7 @@ surface_material_override/0 = SubResource("ShaderMaterial_eje42")
 [node name="CastSound" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4_water_audio")
 autoplay = true
+bus = &"SFX"
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 512
