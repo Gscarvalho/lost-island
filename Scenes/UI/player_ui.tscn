@@ -84,7 +84,7 @@ offset_right = 300.0
 offset_bottom = 110.0
 grow_vertical = 2
 theme = ExtResource("2_nwg7q")
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
@@ -424,21 +424,20 @@ vertical_alignment = 1
 
 [node name="VitalsHUD" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -225.0
-offset_top = -84.0
-offset_right = 225.0
-grow_horizontal = 2
+offset_left = -490.0
+offset_top = -124.0
+grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("2_nwg7q")
 theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
 [node name="PanelContainer" type="PanelContainer" parent="VitalsHUD"]
 self_modulate = Color(0.2, 0.2, 0.2, 0.11764706)
@@ -448,9 +447,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_plo7s")
 [node name="MarginContainer" type="MarginContainer" parent="VitalsHUD/PanelContainer"]
 layout_mode = 2
 theme = ExtResource("2_nwg7q")
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="HUD" type="VBoxContainer" parent="VitalsHUD/PanelContainer/MarginContainer"]
@@ -477,7 +476,7 @@ vertical_alignment = 2
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 20)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 8
 size_flags_vertical = 4
 value = 70.0
 nine_patch_stretch = true
@@ -489,7 +488,7 @@ tint_progress = Color(0.3647059, 1, 0.62352943, 1)
 unique_name_in_owner = true
 custom_minimum_size = Vector2(300, 10)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 8
 size_flags_vertical = 4
 value = 40.0
 nine_patch_stretch = true
@@ -589,7 +588,7 @@ size_flags_vertical = 4
 theme = ExtResource("2_nwg7q")
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 30
 
 [node name="ManaHUD" type="VBoxContainer" parent="ManaHUD"]

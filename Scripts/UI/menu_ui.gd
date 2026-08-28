@@ -67,11 +67,6 @@ enum MenuPage {
 @onready var light_mana_amount: RichTextLabel = (
 	%LightManaAmount
 )
-
-
-
-
-
 #endregion
 
 #region Settings References
@@ -272,6 +267,11 @@ func _resolve_player_references() -> void:
 	character.stamina_changed.connect(
 		_update_stamina
 	)
+
+	#TODO
+	#character.mana_changed.connect(
+		#_update_mana
+	#)
 
 func _initialize_menu() -> void:
 	_update_skill_points(

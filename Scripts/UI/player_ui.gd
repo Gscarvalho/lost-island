@@ -358,13 +358,13 @@ func _update_input_layer() -> void:
 
 #region Mana HUD
 func _on_mana_changed(
-	skill_type: Skills.SkillType,
-	amount: float
-) -> void:
-	_update_mana_display(
-		skill_type,
-		amount
-	)
+		skill_type: Skills.SkillType,
+		amount: float
+	) -> void:
+		_update_mana_display(
+			skill_type,
+			amount
+		)
 
 
 func _update_mana_display(
