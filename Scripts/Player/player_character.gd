@@ -127,31 +127,34 @@ func set_combat_mode(
 var mana_inventory: Array[float] = []
 
 func get_mana_amount(
-	skill_type: Skills.SkillType
-) -> float:
-	var mana_index := _get_mana_index(
-		skill_type
-	)
+		skill_type: Skills.SkillType
+	) -> float:
+		var mana_index := _get_mana_index(
+			skill_type
+		)
 
-	if mana_index == -1:
-		return 0.0
+		if mana_index == -1:
+			return 0.0
 
-	return mana_inventory[mana_index]
+		if mana_index >= mana_inventory.size():
+			return starting_mana
+
+		return mana_inventory[mana_index]
 
 func get_mana_maximum(
-	skill_type: Skills.SkillType
-) -> float:
-	var mana_index := _get_mana_index(
-		skill_type
-	)
+		skill_type: Skills.SkillType
+	) -> float:
+		var mana_index := _get_mana_index(
+			skill_type
+		)
 
-	if mana_index == -1:
-		return 0.0
+		if mana_index == -1:
+			return 0.0
 
-	if mana_index >= mana_maximums.size():
-		return 0.0
+		if mana_index >= mana_maximums.size():
+			return 0.0
 
-	return mana_maximums[mana_index]
+		return mana_maximums[mana_index]
 
 func set_mana_maximum(
 	skill_type: Skills.SkillType,

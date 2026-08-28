@@ -1432,7 +1432,6 @@ vertical_alignment = 1
 
 [node name="LoadoutPopup" type="Control" parent="SkillTreeOverlay"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1568,3 +1567,74 @@ focus_next = NodePath("../SlotX")
 focus_previous = NodePath("../SlotRTY")
 primary_input_icon = ExtResource("32_kcy7n")
 secondary_input_icon = ExtResource("24_ipr0g")
+
+[node name="SkillPickerPopup" type="Control" parent="SkillTreeOverlay"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="DimBG" type="ColorRect" parent="SkillTreeOverlay/SkillPickerPopup"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.5882353)
+
+[node name="CenterContainer" type="CenterContainer" parent="SkillTreeOverlay/SkillPickerPopup/DimBG"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -550.0
+offset_right = -50.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="SkillTreeOverlay/SkillPickerPopup/DimBG/CenterContainer"]
+custom_minimum_size = Vector2(400, 450)
+layout_mode = 2
+theme = ExtResource("20_w61pg")
+
+[node name="MarginContainer" type="MarginContainer" parent="SkillTreeOverlay/SkillPickerPopup/DimBG/CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillTreeOverlay/SkillPickerPopup/DimBG/CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PopupTitle" type="RichTextLabel" parent="SkillTreeOverlay/SkillPickerPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("20_w61pg")
+theme_override_font_sizes/normal_font_size = 20
+text = "SELECT SKILL"
+vertical_alignment = 1
+
+[node name="UnlockedSkillScroll" type="ScrollContainer" parent="SkillTreeOverlay/SkillPickerPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 9.0
+follow_focus = true
+
+[node name="UnlockedSkillList" type="VBoxContainer" parent="SkillTreeOverlay/SkillPickerPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/UnlockedSkillScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3

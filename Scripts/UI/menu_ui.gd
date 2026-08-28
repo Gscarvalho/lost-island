@@ -140,12 +140,14 @@ var menu_tween: Tween
 var skill_tree_tween: Tween
 var page_tween: Tween
 
-var loadout_popup_open := false
-
-var held_loadout_skill: Skills
-var held_loadout_source_slot := -1
-
 var last_skill_focus: Control
+
+var loadout_popup_open := false
+var held_loadout_source_slot := -1
+var held_loadout_skill: Skills
+
+var skill_picker_popup_open := false
+var skill_picker_target_slot := -1
 #endregion
 
 #region Lifecycle
@@ -268,10 +270,9 @@ func _resolve_player_references() -> void:
 		_update_stamina
 	)
 
-	#TODO
-	#character.mana_changed.connect(
-		#_update_mana
-	#)
+	character.mana_changed.connect(
+		_update_mana
+	)
 
 func _initialize_menu() -> void:
 	_update_skill_points(
@@ -570,6 +571,27 @@ func _set_stats() -> void:
 		100.0
 	)
 
+	_update_mana(
+		Skills.SkillType.Fire,
+		character.get_mana_amount(
+			Skills.SkillType.Fire
+		)
+	)
+
+	_update_mana(
+		Skills.SkillType.Water,
+		character.get_mana_amount(
+			Skills.SkillType.Water
+		)
+	)
+
+	_update_mana(
+		Skills.SkillType.Light,
+		character.get_mana_amount(
+			Skills.SkillType.Light
+		)
+	)
+
 func _set_stat_display(
 	label: RichTextLabel,
 	final_value: float,
@@ -632,6 +654,31 @@ func _update_stamina(
 		value,
 		0.5
 	)
+
+func _update_mana(
+		skill_type: Skills.SkillType,
+		amount: float
+	) -> void:
+		var amount_text := (
+			str(amount).pad_decimals(0)
+		)
+
+		match skill_type:
+			Skills.SkillType.Fire:
+				fire_mana_amount.text = (
+					amount_text
+				)
+
+			Skills.SkillType.Water:
+				water_mana_amount.text = (
+					amount_text
+				)
+
+			Skills.SkillType.Light:
+				light_mana_amount.text = (
+					amount_text
+				)
+
 #endregion
 
 #region Mana Focus
@@ -1148,6 +1195,9 @@ func _on_loadout_slot_pressed(
 			)
 
 			if slot_skill == null:
+				_open_skill_picker(
+					slot
+				)
 				return
 
 			held_loadout_skill = (
@@ -1234,6 +1284,211 @@ func _get_loadout_button(
 				return null
 #endregion
 
+#region Skill Picker Popup
+func _open_skill_picker(
+	slot: int
+) -> void:
+	skill_picker_target_slot = slot
+	skill_picker_popup_open = true
+	skill_picker_popup.visible = true
+
+	_set_loadout_slot_focus_enabled(
+		false
+	)
+
+	_refresh_skill_picker()
+
+
+func _close_skill_picker() -> void:
+	if not skill_picker_popup_open:
+		return
+
+	var return_slot := (
+		skill_picker_target_slot
+	)
+
+	skill_picker_popup_open = false
+	skill_picker_popup.visible = false
+	skill_picker_target_slot = -1
+
+	_set_loadout_slot_focus_enabled(
+		true
+	)
+
+	var return_button := (
+		_get_loadout_button(
+			return_slot
+		)
+	)
+
+	if return_button != null:
+		return_button.grab_focus()
+
+
+func _refresh_skill_picker() -> void:
+	for child in unlocked_skill_list.get_children():
+		child.queue_free()
+
+	var unlocked_skills := (
+		_get_unlocked_skills()
+	)
+
+	var first_button: Button
+
+	for skill in unlocked_skills:
+		var button := Button.new()
+
+		button.custom_minimum_size = (
+			Vector2(
+				0.0,
+				55.0
+			)
+		)
+
+		button.text = (
+			skill.skill_name.to_upper()
+		)
+
+		var loadout := (
+			player_controller
+			.progression
+			.skill_loadout
+		)
+
+		var equipped_slot := (
+			loadout.get_skill_slot(
+				skill
+			)
+		)
+
+		if equipped_slot != -1:
+			button.text += (
+                "   ["
+				+ loadout.get_slot_name(
+					equipped_slot
+				)
+				+ "]"
+			)
+
+		button.focus_mode = (
+			Control.FOCUS_ALL
+		)
+
+		button.pressed.connect(
+			_on_skill_picker_skill_pressed.bind(
+				skill
+			)
+		)
+
+		unlocked_skill_list.add_child(
+			button
+		)
+
+		if first_button == null:
+			first_button = button
+
+	if first_button != null:
+		first_button.grab_focus()
+
+
+func _get_unlocked_skills() -> Array[Skills]:
+	var unlocked_skills: Array[Skills] = []
+
+	var progression := (
+		player_controller.progression
+	)
+
+	var trees: Array[SkillTree] = [
+		fire_tree,
+		water_tree,
+	]
+
+	for tree in trees:
+		for node in tree.skill_nodes:
+			var skill := node.skill
+
+			if skill == null:
+				continue
+
+			if not progression.is_skill_unlocked(
+				skill
+			):
+				continue
+
+			if unlocked_skills.has(
+				skill
+			):
+				continue
+
+			unlocked_skills.append(
+				skill
+			)
+
+	return unlocked_skills
+
+
+func _on_skill_picker_skill_pressed(
+	skill: Skills
+) -> void:
+	if skill == null:
+		return
+
+	if skill_picker_target_slot == -1:
+		return
+
+	var loadout := (
+		player_controller
+		.progression
+		.skill_loadout
+	)
+
+	if loadout == null:
+		return
+
+	loadout.assign_skill(
+		skill,
+		skill_picker_target_slot
+	)
+
+	_refresh_loadout_popup()
+
+	_close_skill_picker()
+
+
+func _set_loadout_slot_focus_enabled(
+		enabled: bool
+	) -> void:
+		var focus_mode := (
+			Control.FOCUS_ALL
+			if enabled
+			else Control.FOCUS_NONE
+		)
+
+		var buttons: Array[LoadoutSlotButton] = [
+			slot_x_button,
+			slot_y_button,
+			slot_b_button,
+			slot_rt_x_button,
+			slot_rt_y_button,
+			slot_rt_b_button,
+		]
+
+		for button in buttons:
+			button.focus_mode = (
+				focus_mode
+			)
+#endregion
+
+#region Skill Picker Popup References
+@onready var skill_picker_popup: Control = (
+	%SkillPickerPopup
+)
+
+@onready var unlocked_skill_list: VBoxContainer = (
+	%UnlockedSkillList
+)
+#endregion
+
 #region Settings
 func _on_master_volume_changed(value: float) -> void:
 	var master_bus := AudioServer.get_bus_index("Master")
@@ -1258,6 +1513,16 @@ func _on_exit_game_pressed() -> void:
 #region Input
 func _input(event: InputEvent) -> void:
 	if StateManager.current_state != StateManager.State.MENU:
+		return
+	
+	if skill_picker_popup_open:
+		if event.is_action_pressed(
+	        "ui_cancel"
+		):
+			_close_skill_picker()
+
+			get_viewport().set_input_as_handled()
+
 		return
 		
 	if loadout_popup_open:

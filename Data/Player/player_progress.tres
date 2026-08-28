@@ -6,7 +6,6 @@
 
 [resource]
 script = ExtResource("1_fijew")
-skill_points = 0
 unlocked_skill_ids = Array[StringName]([&"fireball", &"aqua_blast", &"jet_dash"])
 skill_loadout = ExtResource("3_bpm0o")
 physical_loadout = ExtResource("1_bpm0o")
