@@ -15,6 +15,7 @@ extends Node
 ## Combat ending does not automatically count as a victory.
 @export var celebration_track: AudioStream
 
+## Music used by the title screen.
 @export var menu_track: AudioStream
 
 @export var danger_track: AudioStream
@@ -35,6 +36,11 @@ var exploration_crossfade_duration := 1.5
 ## Seconds used when transitioning into celebration music.
 @export_range(0.0, 5.0, 0.05)
 var celebration_crossfade_duration := 1.0
+
+
+## Seconds used when transitioning into or out of title music.
+@export_range(0.0, 5.0, 0.05)
+var menu_crossfade_duration := 1.0
 
 
 @onready var track_a: AudioStreamPlayer = (
@@ -64,13 +70,42 @@ func _ready() -> void:
 		_on_combat_ended
 	)
 
+	StateManager.state_changed.connect(
+		_on_state_changed
+	)
+
 	_switch_track(
 		exploration_track,
 		true
 	)
 
+	_on_state_changed(
+		StateManager.current_state
+	)
+
+
+func _on_state_changed(
+		state: StateManager.State
+	) -> void:
+	match state:
+		StateManager.State.TITLE:
+			play_menu()
+
+		StateManager.State.PLAY:
+			if (
+				active_player.stream
+				== menu_track
+			):
+				return_to_context_music()
+
 
 func _on_combat_started() -> void:
+	if (
+		StateManager.current_state
+		== StateManager.State.TITLE
+	):
+		return
+
 	_switch_track(
 		battle_track,
 		false,
@@ -79,10 +114,24 @@ func _on_combat_started() -> void:
 
 
 func _on_combat_ended() -> void:
+	if (
+		StateManager.current_state
+		== StateManager.State.TITLE
+	):
+		return
+
 	_switch_track(
 		exploration_track,
 		false,
 		exploration_crossfade_duration
+	)
+
+
+func play_menu() -> void:
+	_switch_track(
+		menu_track,
+		false,
+		menu_crossfade_duration
 	)
 
 
