@@ -148,6 +148,7 @@ var held_loadout_skill: Skills
 
 var skill_picker_popup_open := false
 var skill_picker_target_slot := -1
+var last_loadout_focus: Control
 #endregion
 
 #region Lifecycle
@@ -1025,13 +1026,28 @@ func _get_range_text(
 	)
 #endregion
 
+#region Skill Colors
+func _get_skill_color(
+		skill: Skills
+	) -> Color:
+		if skill == null:
+			return Color.WHITE
+
+		match skill.skill_type:
+			Skills.SkillType.Fire:
+				return fire_tree.tree_color
+
+			Skills.SkillType.Water:
+				return water_tree.tree_color
+
+			_:
+				return Color.WHITE
+#endregion
+
 #region Loadout Popup
 func _open_loadout_popup(
-		skill: Skills
+		skill: Skills = null
 	) -> void:
-		if skill == null:
-			return
-
 		var loadout := (
 			player_controller
 			.progression
@@ -1041,6 +1057,8 @@ func _open_loadout_popup(
 		if loadout == null:
 			return
 
+		# Remember exactly where we were in
+		# the skill tree before stealing focus.
 		last_skill_focus = (
 			get_viewport()
 			.gui_get_focus_owner()
@@ -1050,27 +1068,32 @@ func _open_loadout_popup(
 		loadout_popup_open = true
 		loadout_popup.visible = true
 
-		var current_slot := (
-			loadout.get_skill_slot(
-				skill
+		# General loadout-editing state.
+		held_loadout_skill = null
+		held_loadout_source_slot = -1
+
+		var current_slot := -1
+
+		# If the popup was opened through
+		# activating a specific skill, preserve
+		# the existing skill-specific behavior.
+		if skill != null:
+			current_slot = (
+				loadout.get_skill_slot(
+					skill
+				)
 			)
-		)
 
-		if current_slot == -1:
-			# The skill could not be auto-equipped,
-			# usually because all six slots were full.
-			# Open the editor already holding it.
-			held_loadout_skill = skill
-			held_loadout_source_slot = -1
-
-		else:
-			# It was already auto-equipped.
-			# Open directly into normal editing mode.
-			held_loadout_skill = null
-			held_loadout_source_slot = -1
+			# Skill exists but could not be
+			# auto-equipped because the loadout
+			# was full. Open while holding it.
+			if current_slot == -1:
+				held_loadout_skill = skill
 
 		_refresh_loadout_popup()
 
+		# Skill-specific opening:
+		# focus its current slot.
 		if current_slot != -1:
 			var current_button := (
 				_get_loadout_button(
@@ -1082,8 +1105,9 @@ func _open_loadout_popup(
 				current_button.grab_focus()
 				return
 
+		# General Y opening, or an unequipped
+		# held skill: begin at X.
 		slot_x_button.grab_focus()
-
 
 func _close_loadout_popup() -> void:
 	if not loadout_popup_open:
@@ -1103,6 +1127,14 @@ func _close_loadout_popup() -> void:
 	):
 		last_skill_focus.grab_focus()
 
+	elif (
+		skill_tree_open
+		and active_skill_tree != null
+	):
+		active_skill_tree.grab_default_focus()
+
+	last_skill_focus = null
+
 
 func _refresh_loadout_popup() -> void:
 	if held_loadout_skill != null:
@@ -1111,10 +1143,22 @@ func _refresh_loadout_popup() -> void:
 			.skill_name
 			.to_upper()
 		)
+
+		loadout_skill_name.add_theme_color_override(
+			&"default_color",
+			_get_skill_color(
+				held_loadout_skill
+			)
+		)
+
 	else:
 		loadout_skill_name.text = (
 			"EDIT LOADOUT"
 		)
+
+	loadout_skill_name.remove_theme_color_override(
+		&"default_color"
+	)
 
 	_update_loadout_button(
 		slot_x_button,
@@ -1286,17 +1330,23 @@ func _get_loadout_button(
 
 #region Skill Picker Popup
 func _open_skill_picker(
-	slot: int
-) -> void:
-	skill_picker_target_slot = slot
-	skill_picker_popup_open = true
-	skill_picker_popup.visible = true
+		slot: int = -1
+	) -> void:
+		last_loadout_focus = (
+			get_viewport()
+			.gui_get_focus_owner()
+			as Control
+		)
+		
+		skill_picker_target_slot = slot
+		skill_picker_popup_open = true
+		skill_picker_popup.visible = true
 
-	_set_loadout_slot_focus_enabled(
-		false
-	)
+		_set_loadout_slot_focus_enabled(
+			false
+		)
 
-	_refresh_skill_picker()
+		_refresh_skill_picker()
 
 
 func _close_skill_picker() -> void:
@@ -1324,6 +1374,15 @@ func _close_skill_picker() -> void:
 	if return_button != null:
 		return_button.grab_focus()
 
+	elif (
+		last_loadout_focus != null
+		and is_instance_valid(
+			last_loadout_focus
+		)
+	):
+		last_loadout_focus.grab_focus()
+
+	last_loadout_focus = null
 
 func _refresh_skill_picker() -> void:
 	for child in unlocked_skill_list.get_children():
@@ -1333,7 +1392,7 @@ func _refresh_skill_picker() -> void:
 		_get_unlocked_skills()
 	)
 
-	var first_button: Button
+	var skill_buttons: Array[Button] = []
 
 	for skill in unlocked_skills:
 		var button := Button.new()
@@ -1384,12 +1443,94 @@ func _refresh_skill_picker() -> void:
 			button
 		)
 
-		if first_button == null:
-			first_button = button
+		var focus_style := (
+			button.get_theme_stylebox(
+				&"focus"
+			).duplicate()
+			as StyleBoxFlat
+		)
 
-	if first_button != null:
-		first_button.grab_focus()
+		if focus_style != null:
+			focus_style.bg_color = (
+				_get_skill_color(
+					skill
+				)
+			)
 
+			button.add_theme_stylebox_override(
+				&"focus",
+				focus_style
+			)
+
+		skill_buttons.append(
+			button
+		)
+
+	if skill_buttons.is_empty():
+		return
+
+	for index in skill_buttons.size():
+		var button := (
+			skill_buttons[index]
+		)
+
+		var previous_index := (
+			index - 1
+		)
+
+		if previous_index < 0:
+			previous_index = (
+				skill_buttons.size() - 1
+			)
+
+		var next_index := (
+			index + 1
+		)
+
+		if next_index >= skill_buttons.size():
+			next_index = 0
+
+		var previous_button := (
+			skill_buttons[previous_index]
+		)
+
+		var next_button := (
+			skill_buttons[next_index]
+		)
+
+		button.focus_neighbor_top = (
+			button.get_path_to(
+				previous_button
+			)
+		)
+
+		button.focus_neighbor_bottom = (
+			button.get_path_to(
+				next_button
+			)
+		)
+
+		button.focus_previous = (
+			button.get_path_to(
+				previous_button
+			)
+		)
+
+		button.focus_next = (
+			button.get_path_to(
+				next_button
+			)
+		)
+
+		button.focus_neighbor_left = (
+			NodePath(".")
+		)
+
+		button.focus_neighbor_right = (
+			NodePath(".")
+		)
+
+	skill_buttons[0].grab_focus()
 
 func _get_unlocked_skills() -> Array[Skills]:
 	var unlocked_skills: Array[Skills] = []
@@ -1428,32 +1569,49 @@ func _get_unlocked_skills() -> Array[Skills]:
 
 
 func _on_skill_picker_skill_pressed(
-	skill: Skills
-) -> void:
-	if skill == null:
-		return
+		skill: Skills
+	) -> void:
+		if skill == null:
+			return
 
-	if skill_picker_target_slot == -1:
-		return
+		var loadout := (
+			player_controller
+			.progression
+			.skill_loadout
+		)
 
-	var loadout := (
-		player_controller
-		.progression
-		.skill_loadout
-	)
+		if loadout == null:
+			return
 
-	if loadout == null:
-		return
+		# Picker was opened from a specific
+		# empty loadout slot.
+		if skill_picker_target_slot != -1:
+			loadout.assign_skill(
+				skill,
+				skill_picker_target_slot
+			)
 
-	loadout.assign_skill(
-		skill,
-		skill_picker_target_slot
-	)
+			_refresh_loadout_popup()
+			_close_skill_picker()
+			return
 
-	_refresh_loadout_popup()
+		# Picker was opened through
+		# "All Skills".
+		#
+		# Pick this skill up and return to
+		# the loadout editor. The player
+		# chooses its destination next.
+		held_loadout_skill = skill
 
-	_close_skill_picker()
+		held_loadout_source_slot = (
+			loadout.get_skill_slot(
+				skill
+			)
+		)
 
+		_close_skill_picker()
+
+		_refresh_loadout_popup()
 
 func _set_loadout_slot_focus_enabled(
 		enabled: bool
@@ -1527,6 +1685,14 @@ func _input(event: InputEvent) -> void:
 		
 	if loadout_popup_open:
 		if event.is_action_pressed(
+			"skill"
+		):
+			_open_skill_picker()
+
+			get_viewport().set_input_as_handled()
+			return
+			
+		if event.is_action_pressed(
 			"ui_cancel"
 		):
 			if held_loadout_skill != null:
@@ -1542,6 +1708,14 @@ func _input(event: InputEvent) -> void:
 		return
 		
 	if skill_tree_open:
+		if event.is_action_pressed(
+			"skill"
+		):
+			_open_loadout_popup()
+
+			get_viewport().set_input_as_handled()
+			return
+
 		_handle_skill_tree_input(event)
 		return
 		

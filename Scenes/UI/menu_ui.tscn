@@ -1218,8 +1218,27 @@ custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("20_w61pg")
+theme_override_font_sizes/normal_font_size = 20
 text = "Skill unassigned."
 fit_content = true
+vertical_alignment = 1
+
+[node name="YButtonIcon" type="TextureRect" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/ActionsBox"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("23_21gkc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LoadoutText" type="RichTextLabel" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer/MarginContainerTop/SkillInfoContainer/ActionsBox"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("20_w61pg")
+theme_override_font_sizes/normal_font_size = 20
+text = "LOADOUT"
+fit_content = true
+scroll_active = false
 vertical_alignment = 1
 
 [node name="MarginContainerBottom" type="MarginContainer" parent="SkillTreeOverlay/HBoxContainer/SkillInfo/VboxContainer"]
@@ -1493,7 +1512,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme = ExtResource("20_w61pg")
-theme_override_colors/default_color = Color(1, 0.54901963, 0, 1)
+theme_override_colors/default_color = Color(0.2, 0.2, 0.2, 1)
 theme_override_font_sizes/normal_font_size = 32
 text = "Fireball"
 fit_content = true
@@ -1568,6 +1587,30 @@ focus_next = NodePath("../SlotX")
 focus_previous = NodePath("../SlotRTY")
 primary_input_icon = ExtResource("32_kcy7n")
 secondary_input_icon = ExtResource("24_ipr0g")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("20_w61pg")
+alignment = 1
+
+[node name="YButtonIcon" type="TextureRect" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("23_21gkc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AllSkillsText" type="RichTextLabel" parent="SkillTreeOverlay/LoadoutPopup/DimBG/CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("20_w61pg")
+theme_override_font_sizes/normal_font_size = 20
+text = "  ALL SKILLS"
+fit_content = true
+scroll_active = false
+vertical_alignment = 1
 
 [node name="SkillPickerPopup" type="Control" parent="SkillTreeOverlay"]
 unique_name_in_owner = true
