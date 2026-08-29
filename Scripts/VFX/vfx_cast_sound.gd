@@ -2,11 +2,6 @@ class_name VFXCastSound
 extends AudioStreamPlayer3D
 
 
-@export_category("Lifetime")
-
-@export var survive_visual := true
-
-
 @export_category("Variation")
 
 @export_range(
@@ -16,67 +11,33 @@ extends AudioStreamPlayer3D
 )
 var pitch_variation := 0.0
 
+@export_category("Timing")
 
-var detached := false
+@export_range(
+	0.0,
+	2.0,
+	0.01
+)
+var start_delay := 0.0
+
 
 
 func _ready() -> void:
-	if pitch_variation > 0.0:
-		pitch_scale *= randf_range(
-			1.0 - pitch_variation,
-			1.0 + pitch_variation
-		)
-
-	finished.connect(
-		_on_sound_finished
-	)
-
-	if not survive_visual:
+	if pitch_variation <= 0.0:
 		return
 
-	var particles := (
-		get_parent()
-		as GPUParticles3D
+	pitch_scale *= randf_range(
+		1.0 - pitch_variation,
+		1.0 + pitch_variation
 	)
 
-	if particles == null:
+func play_vfx_sound() -> void:
+	if start_delay > 0.0:
+		await get_tree().create_timer(
+			start_delay
+		).timeout
+
+	if not is_inside_tree():
 		return
 
-	particles.finished.connect(
-		_on_visual_finished
-	)
-
-
-func _on_visual_finished() -> void:
-	if not survive_visual:
-		return
-
-	if not playing:
-		return
-
-	var particles := (
-		get_parent()
-		as GPUParticles3D
-	)
-
-	if particles == null:
-		return
-
-	var survivor_parent := (
-		particles.get_parent()
-	)
-
-	if survivor_parent == null:
-		return
-
-	reparent(
-		survivor_parent,
-		true
-	)
-
-	detached = true
-
-
-func _on_sound_finished() -> void:
-	if detached:
-		queue_free()
+	play()

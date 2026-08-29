@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PlayerProgress" load_steps=4 format=3 uid="uid://bn6jowkshal4b"]
+
+[ext_resource type="Resource" uid="uid://cugo8yv632wx" path="res://Data/Player/starting_physical_loadout.tres" id="1_8ijc1"]
+[ext_resource type="Script" uid="uid://cyy31lq4aaaf0" path="res://Scripts/Player/player_progress.gd" id="2_wmkp8"]
+[ext_resource type="Resource" uid="uid://bsn7aj7rag6hl" path="res://Data/Player/DEBUG_starting_skill_loadout.tres" id="3_8ijc1"]
+
+[resource]
+script = ExtResource("2_wmkp8")
+unlocked_skill_ids = Array[StringName]([&"fireball", &"fire_jump", &"jet_dash", &"aqua_blast"])
+skill_loadout = ExtResource("3_8ijc1")
+physical_loadout = ExtResource("1_8ijc1")
+metadata/_custom_type_script = "uid://cyy31lq4aaaf0"

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="SkillLoadout" load_steps=7 format=3 uid="uid://bsn7aj7rag6hl"]
+
+[ext_resource type="Resource" uid="uid://bkykolltj4tsa" path="res://Data/Skills/Water/jet_dash.tres" id="1_aaeg7"]
+[ext_resource type="Script" uid="uid://5vxi6cmich0g" path="res://Scripts/Skills/skill_loadout.gd" id="1_gjrod"]
+[ext_resource type="Resource" uid="uid://q60bwcioaa0s" path="res://Data/Skills/Water/aqua_blast.tres" id="2_baxba"]
+[ext_resource type="Resource" uid="uid://bbrxr7xs60se1" path="res://Data/Skills/Fire/fireball.tres" id="4_6kp8u"]
+[ext_resource type="Resource" uid="uid://xd3vstqirscr" path="res://Data/Skills/Plant/grass_heal.tres" id="5_baxba"]
+[ext_resource type="Resource" uid="uid://b6tvfeksugqay" path="res://Data/Skills/Fire/fire_jump.tres" id="5_o1lnf"]
+
+[resource]
+script = ExtResource("1_gjrod")
+x_skill = ExtResource("5_baxba")
+y_skill = ExtResource("5_o1lnf")
+b_skill = ExtResource("1_aaeg7")
+rt_x_skill = ExtResource("4_6kp8u")
+rt_y_skill = ExtResource("2_baxba")
+metadata/_custom_type_script = "uid://5vxi6cmich0g"

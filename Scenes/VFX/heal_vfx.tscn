@@ -1,0 +1,68 @@
+[gd_scene load_steps=11 format=3 uid="uid://bi11kt1pnys1x"]
+
+[ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_be4w1"]
+[ext_resource type="AudioStream" uid="uid://xi5dy0yq4ujr" path="res://Assets/Audio/yodguard-heal-1.mp3" id="2_be4w1"]
+[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_s05v2"]
+
+[sub_resource type="Gradient" id="Gradient_be4w1"]
+offsets = PackedFloat32Array(0.054054055, 0.12972973, 0.4, 1)
+colors = PackedColorArray(0.11764706, 1, 1, 1, 1, 1, 0.2784314, 1, 0, 1, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4j3dm"]
+gradient = SubResource("Gradient_be4w1")
+
+[sub_resource type="Curve" id="Curve_sa4hd"]
+_data = [Vector2(0, 0.5759493), 0.0, 0.0, 0, 0, Vector2(0.31313133, 1), 0.0, 0.0, 0, 0, Vector2(0.80808085, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_mb33h"]
+curve = SubResource("Curve_sa4hd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1ufri"]
+lifetime_randomness = 0.5
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 3.5
+initial_velocity_max = 6.0
+gravity = Vector3(0, 10, 0)
+radial_accel_min = 0.49999776
+radial_accel_max = 4.9999976
+scale_min = 0.39999998
+scale_max = 1.3
+scale_curve = SubResource("CurveTexture_mb33h")
+color_ramp = SubResource("GradientTexture1D_4j3dm")
+anim_speed_min = 0.099999994
+anim_speed_max = 1.0
+anim_offset_min = 0.099999994
+anim_offset_max = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f8tgu"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.5882353)
+
+[sub_resource type="SphereMesh" id="SphereMesh_7ecvm"]
+material = SubResource("StandardMaterial3D_f8tgu")
+radial_segments = 16
+rings = 8
+
+[node name="HealVFX" type="Node3D"]
+script = ExtResource("1_be4w1")
+play_on_ready = true
+auto_free = true
+
+[node name="CastSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_be4w1")
+autoplay = true
+bus = &"SFX"
+script = ExtResource("3_s05v2")
+pitch_variation = 0.03
+
+[node name="Particles" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 30
+one_shot = true
+randomness = 0.35
+process_material = SubResource("ParticleProcessMaterial_1ufri")
+draw_pass_1 = SubResource("SphereMesh_7ecvm")

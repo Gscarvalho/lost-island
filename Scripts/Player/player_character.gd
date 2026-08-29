@@ -483,7 +483,7 @@ func _spawn_skill_vfx(
 	) -> void:
 	var effect := (
 		vfx_scene.instantiate()
-		as GPUParticles3D
+		as VFXInstance
 	)
 
 	if effect == null:
@@ -493,14 +493,7 @@ func _spawn_skill_vfx(
 		effect
 	)
 
-	effect.finished.connect(
-		func() -> void:
-			effect.call_deferred(
-				"queue_free"
-			)
-	)
-
-	effect.restart()
+	effect.play()
 
 func _apply_skill_movement(
 		skill: Skills

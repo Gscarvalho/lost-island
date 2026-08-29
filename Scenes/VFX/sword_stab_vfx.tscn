@@ -1,8 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dwsli0andbsnv"]
+[gd_scene load_steps=11 format=3 uid="uid://x123njft8uo6"]
 
-[ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_cvubt"]
-[ext_resource type="AudioStream" uid="uid://bgxbvxwb28vxp" path="res://Assets/Audio/dragon-fire-impact-1.mp3" id="2_tib48"]
-[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_d6t4m"]
+[ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_d70tj"]
+[ext_resource type="AudioStream" uid="uid://cr7ssvqygr52y" path="res://Assets/Audio/oxidvideos-weapon_swing_3.mp3" id="2_d70tj"]
+[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_rcqam"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]
 offsets = PackedFloat32Array(0, 0.2027027, 0.672973, 1)
@@ -40,19 +40,19 @@ material = SubResource("StandardMaterial3D_f8tgu")
 radial_segments = 16
 rings = 8
 
-[node name="FireImpactVFX" type="Node3D"]
-script = ExtResource("1_cvubt")
-play_on_ready = true
+[node name="SwordStabVFX" type="Node3D"]
+script = ExtResource("1_d70tj")
 auto_free = true
 
 [node name="CastSound" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("2_tib48")
-autoplay = true
+stream = ExtResource("2_d70tj")
 bus = &"SFX"
-script = ExtResource("3_d6t4m")
+script = ExtResource("3_rcqam")
 pitch_variation = 0.03
+start_delay = 0.33
 
 [node name="Particles" type="GPUParticles3D" parent="."]
+visible = false
 emitting = false
 amount = 30
 lifetime = 0.45

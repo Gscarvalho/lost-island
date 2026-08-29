@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://xd3vstqirscr"]
+
+[ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_lgk4u"]
+[ext_resource type="PackedScene" uid="uid://bi11kt1pnys1x" path="res://Scenes/VFX/heal_vfx.tscn" id="1_xm046"]
+[ext_resource type="Texture2D" uid="uid://dblrxxsowneyj" path="res://Assets/Images/Icons/Prototype/sun_icon.svg" id="3_8krba"]
+
+[resource]
+script = ExtResource("1_lgk4u")
+skill_id = &"grass_heal"
+skill_name = "Grass Heal"
+skill_description = "  Heal 50% of max HP."
+skill_icon = ExtResource("3_8krba")
+activation_vfx_scene = ExtResource("1_xm046")
+activation_vfx_attachment = 2
+skill_type = 3
+damage_types = 72
+skill_cost = 1.0
+cooldown_time = 8.0
+animation_state_name = &"Use_Item"
+skill_regen_type = 1
+skill_regen_power = 50.0
+air_use_rule = 0
+impact_hit_stop_time_scale = 0.01
+impact_knockback_strength = 0.0
+impact_stagger_power = 0.0
+metadata/_custom_type_script = "uid://bcwfqgys7sog2"

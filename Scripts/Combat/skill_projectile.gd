@@ -69,7 +69,7 @@ func _spawn_impact_vfx() -> void:
 
 	var effect := (
 		impact_vfx.instantiate()
-		as GPUParticles3D
+		as VFXInstance
 	)
 
 	if effect == null:
@@ -79,16 +79,11 @@ func _spawn_impact_vfx() -> void:
 		effect
 	)
 
-	effect.global_position = global_position
-
-	effect.finished.connect(
-		func() -> void:
-			effect.call_deferred(
-				"queue_free"
-			)
+	effect.global_position = (
+		global_position
 	)
 
-	effect.restart()
+	effect.play()
 
 func _on_hit_confirmed(
 		_hurtbox: Hurtbox

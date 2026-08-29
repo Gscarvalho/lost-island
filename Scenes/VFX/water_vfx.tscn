@@ -1,4 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b34suugt64k8a"]
+[gd_scene load_steps=10 format=3 uid="uid://b34suugt64k8a"]
+
+[ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_wyqer"]
+[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="2_wyqer"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]
 offsets = PackedFloat32Array(0, 0.2027027, 0.672973, 1)
@@ -40,7 +43,16 @@ height = 3.0
 radial_segments = 16
 rings = 8
 
-[node name="WaterVFX" type="GPUParticles3D"]
+[node name="WaterVFX" type="Node3D"]
+script = ExtResource("1_wyqer")
+play_on_ready = true
+
+[node name="CastSound" type="AudioStreamPlayer3D" parent="."]
+bus = &"SFX"
+script = ExtResource("2_wyqer")
+pitch_variation = 0.03
+
+[node name="Particles" type="GPUParticles3D" parent="."]
 amount = 18
 lifetime = 1.2
 preprocess = 1.0

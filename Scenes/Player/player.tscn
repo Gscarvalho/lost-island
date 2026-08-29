@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ctshhk3eb7d2h" path="res://Scripts/Player/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://c7hpgqo2k5244" path="res://Scenes/Player/player_character.tscn" id="2_40svl"]
-[ext_resource type="Resource" uid="uid://bv6tkpmy8ybc4" path="res://Data/Player/player_progress.tres" id="2_cqrjx"]
+[ext_resource type="Resource" uid="uid://bn6jowkshal4b" path="res://Data/Player/DEBUG_player_progress.tres" id="2_htcer"]
 [ext_resource type="PackedScene" uid="uid://d3csq11psgdpd" path="res://Scenes/Player/player_camera.tscn" id="3_al8ar"]
 [ext_resource type="PackedScene" uid="uid://krfjlcxyplgw" path="res://Scenes/UI/player_ui.tscn" id="4_gy20a"]
 
@@ -13,7 +13,7 @@ height = 2.5
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_mask = 54
 script = ExtResource("1_v0iea")
-progression = ExtResource("2_cqrjx")
+progression = ExtResource("2_htcer")
 grass_interaction_radius = 0.5
 knockback_deceleration = 15.0
 

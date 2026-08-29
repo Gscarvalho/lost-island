@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://csyf6gt01a8q4"]
+[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://csyf6gt01a8q4"]
 
+[ext_resource type="PackedScene" uid="uid://x123njft8uo6" path="res://Scenes/VFX/sword_stab_vfx.tscn" id="1_4gqln"]
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_jny26"]
 [ext_resource type="Texture2D" uid="uid://ctb8tq0cld2dk" path="res://Assets/Images/Icons/Prototype/sword_icon.svg" id="2_1qyiu"]
 
@@ -8,6 +9,8 @@ script = ExtResource("1_jny26")
 skill_id = &"stab"
 skill_name = "Stab"
 skill_icon = ExtResource("2_1qyiu")
+activation_vfx_scene = ExtResource("1_4gqln")
+activation_vfx_attachment = 1
 unlock_cost = 0
 skill_power = 32.0
 damage_types = 1

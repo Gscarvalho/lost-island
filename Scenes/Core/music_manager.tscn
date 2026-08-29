@@ -14,7 +14,8 @@ battle_track = ExtResource("3_3xwro")
 celebration_track = ExtResource("4_mwlcj")
 menu_track = ExtResource("5_3xwro")
 danger_track = ExtResource("6_mwlcj")
-battle_crossfade_duration = 0.5
+battle_crossfade_duration = 1.0
+menu_crossfade_duration = 2.0
 
 [node name="TrackA" type="AudioStreamPlayer" parent="."]
 

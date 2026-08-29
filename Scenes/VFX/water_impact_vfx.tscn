@@ -1,4 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://e2dwsenwnqlr"]
+[gd_scene load_steps=11 format=3 uid="uid://e2dwsenwnqlr"]
+
+[ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_3lq7n"]
+[ext_resource type="AudioStream" uid="uid://b7p5tfjypl4s0" path="res://Assets/Audio/dragon-studio-water-splash-2.mp3" id="2_3lq7n"]
+[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_f4eky"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]
 offsets = PackedFloat32Array(0, 0.2027027, 0.672973, 1)
@@ -39,7 +43,19 @@ height = 0.35
 radial_segments = 16
 rings = 8
 
-[node name="WaterImpactVFX" type="GPUParticles3D"]
+[node name="WaterImpactVFX" type="Node3D"]
+script = ExtResource("1_3lq7n")
+play_on_ready = true
+auto_free = true
+
+[node name="CastSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_3lq7n")
+autoplay = true
+bus = &"SFX"
+script = ExtResource("3_f4eky")
+pitch_variation = 0.03
+
+[node name="Particles" type="GPUParticles3D" parent="."]
 emitting = false
 amount = 54
 lifetime = 0.6
