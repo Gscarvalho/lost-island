@@ -9,7 +9,12 @@ enum SkillType {
 	Water,
 	Light
 }
-
+enum VFXAttachment {
+	None,
+	Root,
+	Hands,
+	Feet,
+}
 enum CostType {
 	PerUse,
 	PerSecond
@@ -46,6 +51,14 @@ enum AnimationChannel {
 @export_category("Delivery")
 
 @export var projectile_scene: PackedScene
+
+@export_category("VFX")
+
+@export var activation_vfx_scene: PackedScene
+
+@export var activation_vfx_attachment: VFXAttachment = (
+	VFXAttachment.None
+)
 #endregion
 
 #region Progression

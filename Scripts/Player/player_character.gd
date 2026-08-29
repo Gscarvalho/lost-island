@@ -49,9 +49,25 @@ signal combat_mode_changed(
 @onready var handslot_r: BoneAttachment3D = (
 	$Rig/Skeleton3D/handslot_r
 )
+@onready var handslot_l: BoneAttachment3D = (
+	$Rig/Skeleton3D/handslot_l
+)
 @onready var stamina_regen_timer: Timer = (
 	$"../Timers/StaminaRegenTimer"
 )
+@onready var skill_vfx_hand_l: BoneAttachment3D = (
+	$Rig/Skeleton3D/SkillVFXHandL
+)
+@onready var skill_vfx_hand_r: BoneAttachment3D = (
+	$Rig/Skeleton3D/SkillVFXHandR
+)
+@onready var skill_vfx_foot_l: BoneAttachment3D = (
+	$Rig/Skeleton3D/SkillVFXFootL
+)
+@onready var skill_vfx_foot_r: BoneAttachment3D = (
+	$Rig/Skeleton3D/SkillVFXFootR
+)
+
 @onready var projectile_spawn: Marker3D = (
 	%ProjectileSpawn
 )
@@ -426,6 +442,66 @@ func _apply_skill_effect(skill: Skills) -> void:
 				skill.skill_regen_power
 			)
 
+func _play_skill_vfx(
+		skill: Skills
+	) -> void:
+	if skill.activation_vfx_scene == null:
+		return
+
+	match skill.activation_vfx_attachment:
+		Skills.VFXAttachment.Hands:
+			_spawn_skill_vfx(
+				skill.activation_vfx_scene,
+				skill_vfx_hand_l
+			)
+
+			_spawn_skill_vfx(
+				skill.activation_vfx_scene,
+				skill_vfx_hand_r
+			)
+
+		Skills.VFXAttachment.Feet:
+			_spawn_skill_vfx(
+				skill.activation_vfx_scene,
+				skill_vfx_foot_l
+			)
+
+			_spawn_skill_vfx(
+				skill.activation_vfx_scene,
+				skill_vfx_foot_r
+			)
+
+		Skills.VFXAttachment.Root:
+			_spawn_skill_vfx(
+				skill.activation_vfx_scene,
+				self
+			)
+
+func _spawn_skill_vfx(
+		vfx_scene: PackedScene,
+		parent: Node3D
+	) -> void:
+	var effect := (
+		vfx_scene.instantiate()
+		as GPUParticles3D
+	)
+
+	if effect == null:
+		return
+
+	parent.add_child(
+		effect
+	)
+
+	effect.finished.connect(
+		func() -> void:
+			effect.call_deferred(
+				"queue_free"
+			)
+	)
+
+	effect.restart()
+
 func _apply_skill_movement(
 		skill: Skills
 	) -> void:
@@ -555,6 +631,7 @@ func attack(skill: Skills) -> void:
 	_pay_skill_cost(skill)
 	_apply_skill_effect(skill)
 	_apply_skill_movement(skill)
+	_play_skill_vfx(skill)
 	_record_air_skill_use(skill)
 	_play_skill_animation(skill)
 

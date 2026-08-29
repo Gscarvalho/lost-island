@@ -1,4 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://b34suugt64k8a"]
+[gd_scene load_steps=10 format=3 uid="uid://b2vke4l3n30t1"]
+
+[ext_resource type="AudioStream" uid="uid://b7p5tfjypl4s0" path="res://Assets/Audio/dragon-studio-water-splash-2.mp3" id="1_udoic"]
+[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="2_nsl48"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]
 offsets = PackedFloat32Array(0, 0.2027027, 0.672973, 1)
@@ -14,16 +17,15 @@ point_count = 4
 [sub_resource type="CurveTexture" id="CurveTexture_30fkm"]
 curve = SubResource("Curve_rkrjr")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rkrjr"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_c2ior"]
 emission_shape = 1
-emission_sphere_radius = 0.5
-direction = Vector3(0, 0, 0)
-spread = 90.0
-orbit_velocity_min = 0.7000001
-orbit_velocity_max = 2.0000002
-gravity = Vector3(0, 0, 0)
-scale_min = 0.79999995
-scale_max = 1.15
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 20.0
+initial_velocity_min = 4.0
+initial_velocity_max = 7.0
+gravity = Vector3(0, -25, 0)
+scale_min = 0.39999998
 scale_curve = SubResource("CurveTexture_30fkm")
 color_ramp = SubResource("GradientTexture1D_qkwy0")
 
@@ -31,20 +33,26 @@ color_ramp = SubResource("GradientTexture1D_qkwy0")
 transparency = 1
 shading_mode = 0
 vertex_color_use_as_albedo = true
-albedo_color = Color(0.39215687, 0.8862745, 1, 0.78431374)
+albedo_color = Color(0.39215687, 0.8862745, 1, 0.39215687)
 
 [sub_resource type="SphereMesh" id="SphereMesh_30fkm"]
 material = SubResource("StandardMaterial3D_rkrjr")
-radius = 1.5
-height = 3.0
+radius = 0.25
+height = 0.5
 radial_segments = 16
 rings = 8
 
-[node name="WaterVFX" type="GPUParticles3D"]
-amount = 18
-lifetime = 1.2
-preprocess = 1.0
-randomness = 0.15
-local_coords = true
-process_material = SubResource("ParticleProcessMaterial_rkrjr")
+[node name="WaterJetVFX" type="GPUParticles3D"]
+emitting = false
+amount = 100
+lifetime = 0.35000000000000003
+one_shot = true
+explosiveness = 0.25
+process_material = SubResource("ParticleProcessMaterial_c2ior")
 draw_pass_1 = SubResource("SphereMesh_30fkm")
+
+[node name="CastSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("1_udoic")
+autoplay = true
+bus = &"SFX"
+script = ExtResource("2_nsl48")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4e32saqfakvc"]
+[gd_scene load_steps=7 format=3 uid="uid://c4e32saqfakvc"]
 
 [ext_resource type="Script" uid="uid://y6livvl7t3qf" path="res://Scripts/Combat/skill_projectile.gd" id="1_n3ijv"]
+[ext_resource type="PackedScene" uid="uid://e2dwsenwnqlr" path="res://Scenes/VFX/water_impact_vfx.tscn" id="2_8fne0"]
 [ext_resource type="PackedScene" uid="uid://b34suugt64k8a" path="res://Scenes/VFX/water_vfx.tscn" id="2_eje42"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="3_8fne0"]
 [ext_resource type="AudioStream" uid="uid://dkxajwd4tq2lk" path="res://Assets/Audio/dragon-studio-water-splash-1.mp3" id="4_water_audio"]
@@ -12,6 +13,7 @@ radius = 1.5
 script = ExtResource("1_n3ijv")
 speed = 10.0
 lifetime = 3.0
+impact_vfx = ExtResource("2_8fne0")
 
 [node name="Visual" parent="." instance=ExtResource("2_eje42")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://b6tvfeksugqay"]
+[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://b6tvfeksugqay"]
 
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="1_g6t8d"]
+[ext_resource type="PackedScene" uid="uid://dxfmpemfhpu1p" path="res://Scenes/VFX/fire_thruster_vfx.tscn" id="1_wtf0k"]
 [ext_resource type="Texture2D" uid="uid://bp0hdteqf4cv4" path="res://Assets/Images/Icons/Prototype/fire_icon.png" id="2_njfpq"]
 
 [resource]
@@ -9,6 +10,8 @@ skill_id = &"fire_jump"
 skill_name = "Fire Jump"
 skill_description = "After jumping, burst flames enabling a second jump."
 skill_icon = ExtResource("2_njfpq")
+activation_vfx_scene = ExtResource("1_wtf0k")
+activation_vfx_attachment = 2
 unlock_cost = 3
 skill_power = 12.0
 skill_type = 1

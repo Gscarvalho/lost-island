@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="Skills" load_steps=3 format=3 uid="uid://bkykolltj4tsa"]
+[gd_resource type="Resource" script_class="Skills" load_steps=4 format=3 uid="uid://bkykolltj4tsa"]
 
+[ext_resource type="PackedScene" uid="uid://b2vke4l3n30t1" path="res://Scenes/VFX/water_jet_vfx.tscn" id="1_vquj2"]
 [ext_resource type="Script" uid="uid://bcwfqgys7sog2" path="res://Scripts/Skills/skills.gd" id="2_vquj2"]
 [ext_resource type="Texture2D" uid="uid://btdwklaitq7vc" path="res://Assets/Images/Icons/Prototype/water_icon.png" id="3_vquj2"]
 
@@ -8,6 +9,8 @@ script = ExtResource("2_vquj2")
 skill_id = &"jet_dash"
 skill_name = "Jet Dash"
 skill_icon = ExtResource("3_vquj2")
+activation_vfx_scene = ExtResource("1_vquj2")
+activation_vfx_attachment = 3
 skill_type = 2
 skill_cost = 1.0
 cooldown_time = 1.5

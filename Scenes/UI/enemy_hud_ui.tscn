@@ -61,7 +61,7 @@ fit_content = true
 scroll_active = false
 
 [node name="DamagePopup" type="Sprite3D" parent="."]
-sorting_offset = 0.1
+sorting_offset = 1.0
 offset = Vector2(25, -50)
 billboard = 1
 texture = SubResource("ViewportTexture_vqjxw")

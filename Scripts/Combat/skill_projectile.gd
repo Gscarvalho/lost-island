@@ -6,6 +6,8 @@ extends Node3D
 @export var speed: float = 12.0
 @export var lifetime: float = 5.0
 
+@export var impact_vfx: PackedScene
+
 @onready var hitbox: Hitbox = (
 	$Hitbox
 )
@@ -48,19 +50,45 @@ func setup(
 
 
 func _physics_process(
-	delta: float
-) -> void:
-	global_position += (
-		direction
-		* speed
-		* delta
+		delta: float
+	) -> void:
+		global_position += (
+			direction
+			* speed
+			* delta
+		)
+
+		lifetime -= delta
+
+		if lifetime <= 0.0:
+			queue_free()
+
+func _spawn_impact_vfx() -> void:
+	if impact_vfx == null:
+		return
+
+	var effect := (
+		impact_vfx.instantiate()
+		as GPUParticles3D
 	)
 
-	lifetime -= delta
+	if effect == null:
+		return
 
-	if lifetime <= 0.0:
-		queue_free()
+	get_tree().current_scene.add_child(
+		effect
+	)
 
+	effect.global_position = global_position
+
+	effect.finished.connect(
+		func() -> void:
+			effect.call_deferred(
+				"queue_free"
+			)
+	)
+
+	effect.restart()
 
 func _on_hit_confirmed(
 		_hurtbox: Hurtbox
@@ -68,5 +96,7 @@ func _on_hit_confirmed(
 		CombatEffects.apply_impact(
 			hitbox.source_skill
 		)
+
+		_spawn_impact_vfx()
 
 		queue_free()
