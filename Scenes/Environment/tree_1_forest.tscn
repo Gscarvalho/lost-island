@@ -1,0 +1,82 @@
+[gd_scene load_steps=12 format=3 uid="uid://dg22hvive0pm6"]
+
+[ext_resource type="ArrayMesh" uid="uid://or6v7xsj36am" path="res://Assets/Meshes/tree_1.res" id="1_1ipea"]
+[ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_762fh"]
+[ext_resource type="Texture2D" uid="uid://dsu5ldqmy7jb5" path="res://Assets/Colors/gradient_hard_toon_surface.tres" id="3_g2ywi"]
+[ext_resource type="Texture2D" uid="uid://2bn31fr53nr4" path="res://Assets/Colors/gradient_soft_toon_surface.tres" id="4_j86oi"]
+[ext_resource type="Shader" uid="uid://xait4dy11544" path="res://Assets/Shaders/grass_surface.gdshader" id="5_g2ywi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j8krb"]
+render_priority = 0
+shader = ExtResource("2_762fh")
+shader_parameter/base_color = Color(0.42745098, 0.29411766, 0.27058825, 1)
+shader_parameter/use_albedo_texture = false
+shader_parameter/use_color_gradient = true
+shader_parameter/color_gradient = ExtResource("3_g2ywi")
+shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
+shader_parameter/shadow_threshold = 0.2
+shader_parameter/shadow_softness = 0.02
+shader_parameter/use_fresnel = true
+shader_parameter/fresnel_gradient = ExtResource("4_j86oi")
+shader_parameter/fresnel_power = 0.50000002049012
+shader_parameter/fresnel_strength = 0.25
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j86oi"]
+render_priority = 0
+shader = ExtResource("5_g2ywi")
+shader_parameter/player_grass_radius = 1.2
+shader_parameter/player_grass_strength = 0.12
+shader_parameter/wind_direction = Vector3(0.5, 1, 0.5)
+shader_parameter/wind_strength = 0.0499999988824
+shader_parameter/wind_speed = 1.0000000149012
+shader_parameter/wind_wave_scale = 1.0000000149012
+shader_parameter/base_color = Color(0.3137255, 0.627451, 0.11764706, 1)
+shader_parameter/use_albedo_texture = false
+shader_parameter/use_color_gradient = true
+shader_parameter/color_gradient = ExtResource("3_g2ywi")
+shader_parameter/shadow_color = Color(0.45, 0.45, 0.5, 1)
+shader_parameter/shadow_threshold = 0.2
+shader_parameter/shadow_softness = 0.02
+shader_parameter/use_fresnel = true
+shader_parameter/fresnel_gradient = ExtResource("4_j86oi")
+shader_parameter/fresnel_power = 0.50000002049012
+shader_parameter/fresnel_strength = 0.25
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g2ywi"]
+friction = 0.0
+rough = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jjwjw"]
+height = 0.8095665
+radius = 0.08203125
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_2icne"]
+height = 0.6425476
+radius = 0.057128906
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_762fh"]
+height = 0.89648247
+radius = 0.05029297
+
+[node name="Tree" type="MeshInstance3D"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+mesh = ExtResource("1_1ipea")
+surface_material_override/0 = SubResource("ShaderMaterial_j8krb")
+surface_material_override/1 = SubResource("ShaderMaterial_j86oi")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 32
+collision_mask = 7
+physics_material_override = SubResource("PhysicsMaterial_g2ywi")
+
+[node name="TrunkCollider" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(0.9995768, -0.029090537, 0, 0.028982958, 0.99588037, -0.08592122, 0.0024994942, 0.08588487, 0.996302, -0.00816934, 0.37059894, 0.039171685)
+shape = SubResource("CylinderShape3D_jjwjw")
+
+[node name="BranchCollider1" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.6535396, 0.75689244, 0, -0.75689244, 0.6535396, -0.015678724, 0.84175205, -0.15343606)
+shape = SubResource("CylinderShape3D_2icne")
+
+[node name="BranchCollider2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.6776721, -0.7353644, 0, 0.7353644, 0.6776721, -0.02527551, 0.85879034, 0.3871847)
+shape = SubResource("CylinderShape3D_762fh")

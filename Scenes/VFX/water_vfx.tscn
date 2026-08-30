@@ -33,6 +33,9 @@ color_ramp = SubResource("GradientTexture1D_qkwy0")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rkrjr"]
 transparency = 1
 shading_mode = 0
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
 vertex_color_use_as_albedo = true
 albedo_color = Color(0.39215687, 0.8862745, 1, 0.78431374)
 

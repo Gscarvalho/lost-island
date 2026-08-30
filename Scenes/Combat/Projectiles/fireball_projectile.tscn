@@ -22,7 +22,7 @@ bus = &"SFX"
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_layer = 512
-collision_mask = 256
+collision_mask = 288
 script = ExtResource("2_qqkdr")
 metadata/_custom_type_script = "uid://dxtt2fs3u4dv3"
 
