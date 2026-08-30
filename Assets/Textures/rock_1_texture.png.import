@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ckg536leeihy"
-path.s3tc="res://.godot/imported/legendsvr-rocks-303_Stylized Forest Rocks_mat_AlbedoTransparency.png-86ab1b1cc45ae082aa831d88205246cb.s3tc.ctex"
+path.s3tc="res://.godot/imported/rock_1_texture.png-1d0ce8d8d61c130ee67199aac2fad3a5.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -14,8 +14,8 @@ generator_parameters={
 
 [deps]
 
-source_file="res://Imports/Environment/legendsvr-rocks-303_Stylized Forest Rocks_mat_AlbedoTransparency.png"
-dest_files=["res://.godot/imported/legendsvr-rocks-303_Stylized Forest Rocks_mat_AlbedoTransparency.png-86ab1b1cc45ae082aa831d88205246cb.s3tc.ctex"]
+source_file="res://Assets/Textures/rock_1_texture.png"
+dest_files=["res://.godot/imported/rock_1_texture.png-1d0ce8d8d61c130ee67199aac2fad3a5.s3tc.ctex"]
 
 [params]
 

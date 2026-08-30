@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://c28p404sx05eu"]
+
+[ext_resource type="ArrayMesh" uid="uid://brtc51nfq0g1d" path="res://Assets/Meshes/tree_stump.res" id="1_vcdg8"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_acjk6"]
+friction = 0.0
+rough = true
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vcdg8"]
+height = 0.34173536
+radius = 0.35058594
+
+[node name="TreeStump" type="MeshInstance3D"]
+mesh = ExtResource("1_vcdg8")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+collision_layer = 32
+collision_mask = 7
+physics_material_override = SubResource("PhysicsMaterial_acjk6")
+
+[node name="TrunkCollider" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1.0000002, 0, 0, 0, 1, 0, 0, 0, 1, -0.005, 0.18, -0.03)
+shape = SubResource("CylinderShape3D_vcdg8")

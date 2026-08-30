@@ -11,7 +11,7 @@ radius = 0.7
 height = 2.5
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
-collision_mask = 54
+collision_mask = 62
 script = ExtResource("1_v0iea")
 progression = ExtResource("2_htcer")
 grass_interaction_radius = 0.5

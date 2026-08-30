@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cp6e18h87wfj2"
-path="res://.godot/imported/legendsvr-rocks-303.glb-f10ca4d579e8ce9f8ee30dcdc989161d.scn"
+uid="uid://otu7nnum60wm"
+path="res://.godot/imported/quaternius_cc0-bush-762.glb-e0aed7289ae9fd57cd426971a0def34b.scn"
 
 [deps]
 
-source_file="res://Imports/Environment/legendsvr-rocks-303.glb"
-dest_files=["res://.godot/imported/legendsvr-rocks-303.glb-f10ca4d579e8ce9f8ee30dcdc989161d.scn"]
+source_file="res://Imports/Quaternius/Trees/quaternius_cc0-bush-762.glb"
+dest_files=["res://.godot/imported/quaternius_cc0-bush-762.glb-e0aed7289ae9fd57cd426971a0def34b.scn"]
 
 [params]
 
@@ -39,14 +39,14 @@ materials/extract_format=0
 materials/extract_path=""
 _subresources={
 "meshes": {
-"legendsvr-rocks-303_Cube_017": {
+"quaternius_cc0-bush-762_Cube_044": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
 "lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://Assets/Meshes/rock_1.res",
-"save_to_file/path": "uid://46xfv7osuga"
+"save_to_file/fallback_path": "res://Assets/Meshes/bush_berries_1.res",
+"save_to_file/path": "uid://fesqbvbyrxmw"
 }
 }
 }

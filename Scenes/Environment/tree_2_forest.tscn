@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://p62w2ffjcq5f"]
 
-[ext_resource type="ArrayMesh" uid="uid://b3lcxwrb2h5fr" path="res://Assets/Meshes/tree_2.res" id="1_acjk6"]
+[ext_resource type="ArrayMesh" uid="uid://cn4yy60b51m8l" path="res://Assets/Meshes/tree_2.res" id="1_acjk6"]
 [ext_resource type="Shader" uid="uid://b8xeb87e1m6d7" path="res://Assets/Shaders/toon_surface.gdshader" id="2_u4vxh"]
 [ext_resource type="Texture2D" uid="uid://dsu5ldqmy7jb5" path="res://Assets/Colors/gradient_hard_toon_surface.tres" id="3_gr1sb"]
 [ext_resource type="Texture2D" uid="uid://2bn31fr53nr4" path="res://Assets/Colors/gradient_soft_toon_surface.tres" id="4_ep8ot"]
