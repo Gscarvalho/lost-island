@@ -502,56 +502,51 @@ func _cancel_idle_activity() -> void:
 	is_wandering = false
 
 func _move_toward_position(
-	target_position: Vector3,
-	delta: float
-) -> bool:
-	navigation_agent.target_position = (
-		target_position
-	)
+		target_position: Vector3,
+		delta: float
+	) -> bool:
+		navigation_agent.target_position = (
+			target_position
+		)
 
-	if navigation_agent.is_navigation_finished():
-		_stop()
-		return true
+		if navigation_agent.is_navigation_finished():
+			_stop()
+			return true
 
-	var next_path_position := (
-		navigation_agent.get_next_path_position()
-	)
+		var next_path_position := (
+			navigation_agent.get_next_path_position()
+		)
 
-	var direction := (
-		next_path_position
-		- enemy.global_position
-	)
+		var direction := (
+			next_path_position
+			- enemy.global_position
+		)
 
-	direction.y = 0.0
+		direction.y = 0.0
 
-	if direction.is_zero_approx():
-		_stop()
+		if direction.is_zero_approx():
+			_stop()
+			return false
+
+		var move_direction := (
+			direction.normalized()
+		)
+
+		_face_position(
+			next_path_position,
+			delta
+		)
+
+		enemy.set_move_velocity(
+			move_direction
+			* move_speed
+		)
+
+		enemy.play_movement_state(
+			&"Move"
+		)
+
 		return false
-
-	var move_direction := (
-		direction.normalized()
-	)
-
-	_face_position(
-		next_path_position,
-		delta
-	)
-
-	enemy.velocity.x = (
-		move_direction.x
-		* move_speed
-	)
-
-	enemy.velocity.z = (
-		move_direction.z
-		* move_speed
-	)
-
-	enemy.play_movement_state(
-		&"Move"
-	)
-
-	return false
 
 
 func _start_look_around() -> void:
@@ -563,8 +558,9 @@ func _start_look_around() -> void:
 
 	enemy.clear_target()
 
-	enemy.velocity.x = 0.0
-	enemy.velocity.z = 0.0
+	enemy.set_move_velocity(
+		Vector3.ZERO
+	)
 
 	enemy.sight_origin.rotation = (
 		Vector3.ZERO
@@ -650,8 +646,9 @@ func _finish_look_around_without_target() -> void:
 
 
 func _stop() -> void:
-	enemy.velocity.x = 0.0
-	enemy.velocity.z = 0.0
+	enemy.set_move_velocity(
+		Vector3.ZERO
+	)
 
 	enemy.play_movement_state(
 		&"Idle"

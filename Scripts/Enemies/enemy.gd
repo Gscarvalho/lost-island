@@ -77,6 +77,11 @@ var gravity_strength := float(
 	)
 )
 
+var requested_move_velocity := Vector3.ZERO
+var safe_move_velocity := Vector3.ZERO
+
+var has_safe_move_velocity := false
+
 @export_category("Hit Reaction")
 
 @export var hit_reaction_duration := 0.25
@@ -120,7 +125,11 @@ var stagger_immunity_left := 0.0
 @onready var ui: EnemyUI = (
 	$UI
 )
-
+@onready var navigation_agent: NavigationAgent3D = (
+	get_node_or_null(
+		"NavigationAgent3D"
+	) as NavigationAgent3D
+)
 var animation_tree: AnimationTree
 
 var movement_state_machine: AnimationNodeStateMachinePlayback
@@ -157,6 +166,10 @@ func _ready() -> void:
 	)
 	
 	_setup_animation()
+	if navigation_agent != null:
+		navigation_agent.velocity_computed.connect(
+			_on_navigation_velocity_computed
+		)
 
 func _exit_tree() -> void:
 	if combat_engaged:
@@ -178,6 +191,8 @@ func _physics_process(
 		_update_stagger(
 			delta
 		)
+
+		_apply_move_velocity()
 
 		_update_hit_reaction(
 			delta
@@ -205,6 +220,69 @@ func _apply_gravity(
 		)
 #endregion
 
+#region Movement
+
+func set_move_velocity(
+		move_velocity: Vector3
+	) -> void:
+	requested_move_velocity = Vector3(
+		move_velocity.x,
+		0.0,
+		move_velocity.z
+	)
+
+	if navigation_agent == null:
+		safe_move_velocity = (
+			requested_move_velocity
+		)
+
+		has_safe_move_velocity = true
+		return
+
+	if not navigation_agent.avoidance_enabled:
+		safe_move_velocity = (
+			requested_move_velocity
+		)
+
+		has_safe_move_velocity = true
+		return
+
+	navigation_agent.velocity = (
+		requested_move_velocity
+	)
+
+
+func _apply_move_velocity() -> void:
+	var move_velocity := (
+		requested_move_velocity
+	)
+
+	if (
+		navigation_agent != null
+		and navigation_agent.avoidance_enabled
+		and has_safe_move_velocity
+		and not requested_move_velocity.is_zero_approx()
+	):
+		move_velocity = (
+			safe_move_velocity
+		)
+
+	velocity.x = move_velocity.x
+	velocity.z = move_velocity.z
+
+
+func _on_navigation_velocity_computed(
+		safe_velocity: Vector3
+	) -> void:
+	safe_move_velocity = Vector3(
+		safe_velocity.x,
+		0.0,
+		safe_velocity.z
+	)
+
+	has_safe_move_velocity = true
+
+#endregion
 
 #region Animation
 func _setup_animation() -> void:
@@ -308,7 +386,6 @@ func is_skill_animation_playing() -> bool:
 		)
 	)
 #endregion
-
 
 #region Target
 func set_target(
@@ -430,7 +507,6 @@ func can_see_target(
 		)
 #endregion
 
-
 #region Memory
 func _record_attack_memory(
 		damage_data: DamageData
@@ -472,7 +548,6 @@ func _get_player_from_node(
 		return null
 #endregion
 
-
 #region Combat State
 func enter_combat() -> void:
 	if combat_engaged:
@@ -507,7 +582,6 @@ func exit_combat() -> void:
 func is_combat_engaged() -> bool:
 	return combat_engaged
 #endregion
-
 
 #region Hit Reaction
 func _start_hit_reaction(
@@ -733,7 +807,6 @@ func _add_stagger_pressure(
 		return true
 #endregion
 
-
 #region Damage
 func _on_hurtbox_hit_received(
 		damage_data: DamageData
@@ -830,7 +903,6 @@ func die() -> void:
 	queue_free()
 #endregion
 
-
 #region Weapons
 func get_equipped_weapons() -> Array[Weapon]:
 	var weapons: Array[Weapon] = []
@@ -912,7 +984,6 @@ func end_weapon_damage_window() -> void:
 	for weapon in get_equipped_weapons():
 		weapon.end_damage_window()
 #endregion
-
 
 #region Skills
 func interrupt_skill_execution() -> void:
