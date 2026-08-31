@@ -81,9 +81,9 @@ var knockback_velocity := Vector3.ZERO
 #endregion
 
 #region Jump Configuration
-var jump_height: float = 3.5
-var jump_time_to_peak: float = 0.4
-var jump_time_to_descent: float = 0.3
+@export var jump_height: float = 5.5
+@export var jump_time_to_peak: float = 0.4
+@export var jump_time_to_descent: float = 0.3
 
 @onready var jump_velocity: float = (
 	(2.0 * jump_height) / jump_time_to_peak
