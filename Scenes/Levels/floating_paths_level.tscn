@@ -1,8 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://l35x5ldvkukq"]
+[gd_scene load_steps=27 format=3 uid="uid://l35x5ldvkukq"]
 
 [ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/UI/menu_ui.tscn" id="1_11lly"]
 [ext_resource type="Environment" uid="uid://u80qrojpdqdc" path="res://Data/Environments/morning_sky_world_environment.tres" id="2_cbcxg"]
 [ext_resource type="Script" uid="uid://cdcfm4jrk4hqy" path="res://Scripts/Core/world_wall.gd" id="3_eetui"]
+[ext_resource type="Script" uid="uid://dg635u6uhu136" path="res://Scripts/Navigation/traversal_link.gd" id="6_rjkis"]
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Player/player.tscn" id="13_qjmi8"]
 [ext_resource type="PackedScene" uid="uid://duph0cuiqslaa" path="res://Scenes/Enemies/rogue_enemy.tscn" id="14_thcn0"]
 
@@ -237,10 +238,7 @@ debug_color = Color(0.9605219, 4.813075e-07, 0.5182777, 0.41960785)
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("13_qjmi8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.186001, -0.21472263, -31.298897)
-
-[node name="RogueEnemy2" parent="Entities" instance=ExtResource("14_thcn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.63821, 6.51336, -36.661297)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.987648, 9.555783, -30.188547)
 
 [node name="Pickups" type="Node3D" parent="."]
 
@@ -249,5 +247,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.63821, 6.51336, -36.66129
 [node name="Stamina" type="Node3D" parent="Pickups"]
 
 [node name="Mana" type="Node3D" parent="Pickups"]
+
+[node name="TraversalLinks" type="Node3D" parent="."]
+
+[node name="JumpLinkTest" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.357084, 1.8167987, -19.586903)
+start_position = Vector3(6.168, 1.628, 4.458)
+end_position = Vector3(4.737, -1.335, -3.72)
+script = ExtResource("6_rjkis")
+
+[node name="RogueEnemy" parent="." instance=ExtResource("14_thcn0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.324408, 2.0825572, -35.545227)
 
 [connection signal="body_entered" from="World/Boundaries/WorldWall/Area3D" to="World/Boundaries/WorldWall" method="_on_area_3d_body_entered"]

@@ -82,6 +82,10 @@ var safe_move_velocity := Vector3.ZERO
 
 var has_safe_move_velocity := false
 
+var is_traversing := false
+var traversal_horizontal_velocity := Vector3.ZERO
+var traversal_has_left_floor := false
+
 @export_category("Hit Reaction")
 
 @export var hit_reaction_duration := 0.25
@@ -111,7 +115,6 @@ var stagger_decay_delay_left := 0.0
 var stagger_immunity_left := 0.0
 #endregion
 
-
 #region References
 @onready var visual: Node3D = (
 	$Visual
@@ -137,7 +140,6 @@ var movement_state_machine: AnimationNodeStateMachinePlayback
 var attack_state_machine: AnimationNodeStateMachinePlayback
 
 #endregion
-
 
 #region Lifecycle
 func _ready() -> void:
@@ -169,6 +171,10 @@ func _ready() -> void:
 	if navigation_agent != null:
 		navigation_agent.velocity_computed.connect(
 			_on_navigation_velocity_computed
+		)
+
+		navigation_agent.link_reached.connect(
+			_on_navigation_link_reached
 		)
 
 func _exit_tree() -> void:
@@ -203,6 +209,8 @@ func _physics_process(
 		)
 
 		move_and_slide()
+		
+		_update_traversal()
 
 func _apply_gravity(
 		delta: float
@@ -225,6 +233,9 @@ func _apply_gravity(
 func set_move_velocity(
 		move_velocity: Vector3
 	) -> void:
+	if is_traversing:
+		return
+	
 	requested_move_velocity = Vector3(
 		move_velocity.x,
 		0.0,
@@ -253,6 +264,12 @@ func set_move_velocity(
 
 
 func _apply_move_velocity() -> void:
+	if is_traversing:
+		velocity.x = traversal_horizontal_velocity.x
+		velocity.z = traversal_horizontal_velocity.z
+		return
+	
+	
 	var move_velocity := (
 		requested_move_velocity
 	)
@@ -281,6 +298,145 @@ func _on_navigation_velocity_computed(
 	)
 
 	has_safe_move_velocity = true
+
+#endregion
+
+#region Traversal
+
+func _on_navigation_link_reached(
+		details: Dictionary
+	) -> void:
+	if is_traversing:
+		return
+
+	var traversal_link := (
+		details.get("owner")
+		as TraversalLink
+	)
+
+	if traversal_link == null:
+		return
+
+	var exit_position: Vector3 = (
+		details.get(
+			"link_exit_position",
+			global_position
+		)
+	)
+
+	match traversal_link.traversal_type:
+		TraversalLink.TraversalType.JUMP:
+			_start_jump_traversal(
+				traversal_link,
+				exit_position
+			)
+
+
+func _start_jump_traversal(
+		link: TraversalLink,
+		exit_position: Vector3
+	) -> void:
+	var gravity := (
+		gravity_strength
+		* gravity_scale
+	)
+
+	if gravity <= 0.0:
+		return
+
+	var start_position := global_position
+
+	var apex_y := (
+		maxf(
+			start_position.y,
+			exit_position.y
+		)
+		+ link.jump_arc_height
+	)
+
+	var rise_height := maxf(
+		apex_y - start_position.y,
+		0.01
+	)
+
+	var fall_height := maxf(
+		apex_y - exit_position.y,
+		0.01
+	)
+
+	var vertical_speed := sqrt(
+		2.0
+		* gravity
+		* rise_height
+	)
+
+	var rise_time := (
+		vertical_speed
+		/ gravity
+	)
+
+	var fall_time := sqrt(
+		2.0
+		* fall_height
+		/ gravity
+	)
+
+	var total_time := maxf(
+		rise_time + fall_time,
+		0.1
+	)
+
+	var horizontal_offset := (
+		exit_position
+		- start_position
+	)
+
+	horizontal_offset.y = 0.0
+
+	traversal_horizontal_velocity = (
+		horizontal_offset
+		/ total_time
+	)
+
+	requested_move_velocity = Vector3.ZERO
+	safe_move_velocity = Vector3.ZERO
+	has_safe_move_velocity = false
+
+	is_traversing = true
+	traversal_has_left_floor = false
+
+	play_movement_state(
+		&"Jump"
+	)
+
+	velocity.y = vertical_speed
+
+
+func _update_traversal() -> void:
+	if not is_traversing:
+		return
+
+	if not is_on_floor():
+		traversal_has_left_floor = true
+		return
+
+	if not traversal_has_left_floor:
+		return
+
+	is_traversing = false
+	traversal_horizontal_velocity = (
+		Vector3.ZERO
+	)
+
+	velocity.y = 0.0
+	
+	play_movement_state(
+		&"Idle"
+	)
+
+
+func is_in_traversal() -> bool:
+	return is_traversing
 
 #endregion
 

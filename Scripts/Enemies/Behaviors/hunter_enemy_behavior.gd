@@ -98,6 +98,9 @@ func _physics_process(
 		if enemy.is_in_hit_reaction():
 			return
 		
+		if enemy.is_in_traversal():
+			return
+		
 		if is_looking_around:
 			_update_look_around(
 				delta
