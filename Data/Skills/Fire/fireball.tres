@@ -26,6 +26,6 @@ impact_shake_intensity = 0.35
 impact_shake_duration = 0.12
 impact_hit_stop_duration = 0.03
 impact_hit_stop_time_scale = 0.12
-impact_knockback_strength = 4.0
+impact_knockback_strength = 10.0
 impact_stagger_power = 0.25
 metadata/_custom_type_script = "uid://bcwfqgys7sog2"
