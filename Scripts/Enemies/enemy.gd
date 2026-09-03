@@ -82,9 +82,16 @@ var safe_move_velocity := Vector3.ZERO
 
 var has_safe_move_velocity := false
 
+@export_category("Traversal")
+
+@export var can_jump := true
+@export var can_climb := false
+@export var can_swim := false
+
 var is_traversing := false
 var traversal_horizontal_velocity := Vector3.ZERO
 var traversal_has_left_floor := false
+var traversal_movement_state: StringName = &""
 
 @export_category("Hit Reaction")
 
@@ -169,6 +176,8 @@ func _ready() -> void:
 	
 	_setup_animation()
 	if navigation_agent != null:
+		_configure_traversal_navigation()
+		
 		navigation_agent.velocity_computed.connect(
 			_on_navigation_velocity_computed
 		)
@@ -303,6 +312,33 @@ func _on_navigation_velocity_computed(
 
 #region Traversal
 
+func _configure_traversal_navigation() -> void:
+	if navigation_agent == null:
+		return
+
+	var navigation_layers := (
+		TraversalLink.BASE_NAVIGATION_LAYER
+	)
+
+	if can_jump:
+		navigation_layers |= (
+			TraversalLink.JUMP_NAVIGATION_LAYER
+		)
+
+	if can_climb:
+		navigation_layers |= (
+			TraversalLink.CLIMB_NAVIGATION_LAYER
+		)
+
+	if can_swim:
+		navigation_layers |= (
+			TraversalLink.SWIM_NAVIGATION_LAYER
+		)
+
+	navigation_agent.navigation_layers = (
+		navigation_layers
+	)
+
 func _on_navigation_link_reached(
 		details: Dictionary
 	) -> void:
@@ -315,6 +351,11 @@ func _on_navigation_link_reached(
 	)
 
 	if traversal_link == null:
+		return
+
+	if not can_use_traversal_type(
+		traversal_link.traversal_type
+	):
 		return
 
 	var exit_position: Vector3 = (
@@ -330,7 +371,6 @@ func _on_navigation_link_reached(
 				traversal_link,
 				exit_position
 			)
-
 
 func _start_jump_traversal(
 		link: TraversalLink,
@@ -405,12 +445,7 @@ func _start_jump_traversal(
 	is_traversing = true
 	traversal_has_left_floor = false
 
-	play_movement_state(
-		&"Jump"
-	)
-
 	velocity.y = vertical_speed
-
 
 func _update_traversal() -> void:
 	if not is_traversing:
@@ -424,19 +459,31 @@ func _update_traversal() -> void:
 		return
 
 	is_traversing = false
+	traversal_movement_state = &""
+
 	traversal_horizontal_velocity = (
 		Vector3.ZERO
 	)
 
 	velocity.y = 0.0
-	
-	play_movement_state(
-		&"Idle"
-	)
-
 
 func is_in_traversal() -> bool:
 	return is_traversing
+
+func can_use_traversal_type(
+		traversal_type: int
+	) -> bool:
+	match traversal_type:
+		TraversalLink.TraversalType.JUMP:
+			return can_jump
+
+		TraversalLink.TraversalType.CLIMB:
+			return can_climb
+
+		TraversalLink.TraversalType.SWIM:
+			return can_swim
+
+	return false
 
 #endregion
 
@@ -454,6 +501,12 @@ func _setup_animation() -> void:
 		return
 
 	animation_tree.active = true
+	
+	animation_tree.advance_expression_base_node = (
+		animation_tree.get_path_to(
+			self
+		)
+	)
 
 	movement_state_machine = (
 		animation_tree.get(
@@ -473,12 +526,18 @@ func _setup_animation() -> void:
 func play_movement_state(
 		state_name: StringName
 	) -> void:
-		if movement_state_machine == null:
-			return
+	if movement_state_machine == null:
+		return
 
-		movement_state_machine.travel(
-			state_name
-		)
+	if (
+		is_traversing
+		and state_name != traversal_movement_state
+	):
+		return
+
+	movement_state_machine.travel(
+		state_name
+	)
 
 func play_attack_state(
 		state_name: StringName

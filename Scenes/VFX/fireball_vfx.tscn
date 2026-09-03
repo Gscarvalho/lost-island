@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://coiuiv50svkh5"]
 
-[ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_pc1m7"]
-[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="2_pc1m7"]
+[ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_4fqcc"]
+[ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="2_hm3as"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]
 offsets = PackedFloat32Array(0, 0.2027027, 0.672973, 1)
@@ -42,13 +42,14 @@ material = SubResource("StandardMaterial3D_f8tgu")
 radial_segments = 16
 rings = 8
 
-[node name="FireVFX" type="Node3D"]
-script = ExtResource("1_pc1m7")
+[node name="FireballVFX" type="Node3D"]
+script = ExtResource("1_4fqcc")
 play_on_ready = true
 
 [node name="CastSound" type="AudioStreamPlayer3D" parent="."]
+volume_db = 1.0
 bus = &"SFX"
-script = ExtResource("2_pc1m7")
+script = ExtResource("2_hm3as")
 pitch_variation = 0.03
 
 [node name="Particles" type="GPUParticles3D" parent="."]

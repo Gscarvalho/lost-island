@@ -52,7 +52,6 @@ pitch_variation = 0.03
 start_delay = 0.33
 
 [node name="Particles" type="GPUParticles3D" parent="."]
-visible = false
 emitting = false
 amount = 30
 lifetime = 0.45

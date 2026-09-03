@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://dkfwe34arf1td"]
 
 [ext_resource type="Script" uid="uid://y6livvl7t3qf" path="res://Scripts/Combat/skill_projectile.gd" id="1_qqkdr"]
-[ext_resource type="PackedScene" uid="uid://coiuiv50svkh5" path="res://Scenes/VFX/fire_vfx.tscn" id="2_1wpyy"]
+[ext_resource type="PackedScene" uid="uid://coiuiv50svkh5" path="res://Scenes/VFX/fireball_vfx.tscn" id="2_1wpyy"]
 [ext_resource type="PackedScene" uid="uid://dwsli0andbsnv" path="res://Scenes/VFX/fire_impact_vfx.tscn" id="2_qkwy0"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="2_qqkdr"]
 [ext_resource type="AudioStream" uid="uid://ip14ipqnu011" path="res://Assets/Audio/yodguard-fire-1.mp3" id="4_fire_audio"]

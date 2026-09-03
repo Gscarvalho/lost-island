@@ -184,10 +184,10 @@ var interrupt_requirement := 0.0
 @export_category("Impact")
 
 @export_range(0.0, 1.0, 0.05)
-var impact_shake_intensity := 0.0
+var impact_shake_intensity := 0.25
 
 @export_range(0.0, 1.0, 0.01)
-var impact_shake_duration := 0.0
+var impact_shake_duration := 0.5
 
 @export_range(0.0, 0.25, 0.005)
 var impact_hit_stop_duration := 0.0
@@ -196,8 +196,8 @@ var impact_hit_stop_duration := 0.0
 var impact_hit_stop_time_scale := 0.05
 
 @export_range(0.0, 30.0, 0.1)
-var impact_knockback_strength := 5.0
+var impact_knockback_strength := 7.0
 
 @export_range(0.0, 2.0, 0.05)
-var impact_stagger_power := 0.35
+var impact_stagger_power := 0.45
 #endregion

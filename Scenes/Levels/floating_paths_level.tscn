@@ -1,9 +1,11 @@
-[gd_scene load_steps=27 format=3 uid="uid://l35x5ldvkukq"]
+[gd_scene load_steps=29 format=3 uid="uid://l35x5ldvkukq"]
 
 [ext_resource type="PackedScene" uid="uid://ddwgfs476kvdr" path="res://Scenes/UI/menu_ui.tscn" id="1_11lly"]
 [ext_resource type="Environment" uid="uid://u80qrojpdqdc" path="res://Data/Environments/morning_sky_world_environment.tres" id="2_cbcxg"]
 [ext_resource type="Script" uid="uid://cdcfm4jrk4hqy" path="res://Scripts/Core/world_wall.gd" id="3_eetui"]
 [ext_resource type="Script" uid="uid://dg635u6uhu136" path="res://Scripts/Navigation/traversal_link.gd" id="6_rjkis"]
+[ext_resource type="PackedScene" uid="uid://c1jx521ax84qo" path="res://Scenes/Enemies/fish_monster_enemy.tscn" id="7_tkjp8"]
+[ext_resource type="PackedScene" uid="uid://cqty62oudwfem" path="res://Scenes/Enemies/barbarian_enemy.tscn" id="8_8uwd3"]
 [ext_resource type="PackedScene" uid="uid://c6rjbesajt77w" path="res://Scenes/Player/player.tscn" id="13_qjmi8"]
 [ext_resource type="PackedScene" uid="uid://duph0cuiqslaa" path="res://Scenes/Enemies/rogue_enemy.tscn" id="14_thcn0"]
 
@@ -238,7 +240,17 @@ debug_color = Color(0.9605219, 4.813075e-07, 0.5182777, 0.41960785)
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("13_qjmi8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.987648, 9.555783, -30.188547)
+transform = Transform3D(0.69360304, 0, 0.7203575, 0, 1, 0, -0.7203575, 0, 0.69360304, -16.987648, 5.7402377, -7.186079)
+
+[node name="RogueEnemy" parent="Entities" instance=ExtResource("14_thcn0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.296844, 2.0274882, -34.95732)
+
+[node name="FishMonsterEnemy" parent="Entities" instance=ExtResource("7_tkjp8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8641305, -2.3425598, -23.200516)
+can_jump = false
+
+[node name="BarbarianEnemy" parent="Entities" instance=ExtResource("8_8uwd3")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -84.6606, -16.887442, -17.900526)
 
 [node name="Pickups" type="Node3D" parent="."]
 
@@ -250,13 +262,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.987648, 9.555783, -30.188
 
 [node name="TraversalLinks" type="Node3D" parent="."]
 
-[node name="JumpLinkTest" type="NavigationLink3D" parent="TraversalLinks"]
+[node name="TraversalSpot" type="NavigationLink3D" parent="TraversalLinks"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.357084, 1.8167987, -19.586903)
 start_position = Vector3(6.168, 1.628, 4.458)
 end_position = Vector3(4.737, -1.335, -3.72)
 script = ExtResource("6_rjkis")
 
-[node name="RogueEnemy" parent="." instance=ExtResource("14_thcn0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.324408, 2.0825572, -35.545227)
+[node name="TraversalSpot3" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0288906, -4.830709, -11.565008)
+start_position = Vector3(2.044, -2.167, 3.357)
+end_position = Vector3(2.922, 3.9, -6.05)
+script = ExtResource("6_rjkis")
+jump_arc_height = 3.0
+
+[node name="TraversalSpot2" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -91.99242, -26.223892, -36.083244)
+start_position = Vector3(3.267, 11.303, 6.018)
+end_position = Vector3(11.644, -4.337, 1.156)
+enter_cost = 1.0
+script = ExtResource("6_rjkis")
+jump_arc_height = 2.0
 
 [connection signal="body_entered" from="World/Boundaries/WorldWall/Area3D" to="World/Boundaries/WorldWall" method="_on_area_3d_body_entered"]
