@@ -135,6 +135,9 @@ var stagger_immunity_left := 0.0
 @onready var ui: EnemyUI = (
 	$UI
 )
+@onready var hurt_sound: AudioStreamPlayer3D = (
+	$Visual/Sounds/HurtSound
+)
 @onready var navigation_agent: NavigationAgent3D = (
 	get_node_or_null(
 		"NavigationAgent3D"
@@ -1026,6 +1029,8 @@ func _add_stagger_pressure(
 func _on_hurtbox_hit_received(
 		damage_data: DamageData
 	) -> void:
+		hurt_sound.play()
+		
 		_record_attack_memory(
 			damage_data
 		)

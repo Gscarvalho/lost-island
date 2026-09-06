@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c0cxw3mc6yhdr"
+path="res://.godot/imported/yodguard-weapon-swing-1.mp3-5d917d95a9d1254b76f5fc65f15ea31e.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Skill Sounds/yodguard-weapon-swing-1.mp3"
+dest_files=["res://.godot/imported/yodguard-weapon-swing-1.mp3-5d917d95a9d1254b76f5fc65f15ea31e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

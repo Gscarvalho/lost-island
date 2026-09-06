@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ca2l3411j3i1w"
+path="res://.godot/imported/freesound_community-monster-hurt.mp3-34861dd1e8a8fbf9fb490788a503ec60.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Hurt Sounds/freesound_community-monster-hurt.mp3"
+dest_files=["res://.godot/imported/freesound_community-monster-hurt.mp3-34861dd1e8a8fbf9fb490788a503ec60.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

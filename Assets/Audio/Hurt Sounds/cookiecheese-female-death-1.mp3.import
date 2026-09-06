@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bccnv2d4my8ar"
+path="res://.godot/imported/cookiecheese-female-death-1.mp3-6cb9f51f0f1419c40e8e32322863821d.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Hurt Sounds/cookiecheese-female-death-1.mp3"
+dest_files=["res://.godot/imported/cookiecheese-female-death-1.mp3-6cb9f51f0f1419c40e8e32322863821d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

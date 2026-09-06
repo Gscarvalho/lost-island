@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://x123njft8uo6"]
 
 [ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_d70tj"]
-[ext_resource type="AudioStream" uid="uid://cr7ssvqygr52y" path="res://Assets/Audio/oxidvideos-weapon_swing_3.mp3" id="2_d70tj"]
+[ext_resource type="AudioStream" uid="uid://cr7ssvqygr52y" path="res://Assets/Audio/Skill Sounds/oxidvideos-weapon_swing_3.mp3" id="2_d70tj"]
 [ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_rcqam"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]

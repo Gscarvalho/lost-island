@@ -10,14 +10,27 @@ enum MenuPage {
 #endregion
 
 #region Main Menu References
-@onready var screen: ColorRect = $MenuBG
-@onready var main: MarginContainer = $Main
-@onready var inventory_page: Control = $InventoryPage
-@onready var settings_page: Control = $SettingsPage
+@onready var screen: ColorRect = (
+	$MenuBG
+)
+@onready var main: MarginContainer = (
+	$Main
+)
+@onready var inventory_page: Control = (
+	$InventoryPage
+)
+@onready var settings_page: Control = (
+	$SettingsPage
+)
 @onready var avatar_viewport_layer: SubViewportContainer = (
 	%AvatarViewportLayer
 )
-@onready var menu_avatar: MenuAvatar = %MenuAvatar
+@onready var menu_avatar: MenuAvatar = (
+	%MenuAvatar
+)
+@onready var focus_sound: AudioStreamPlayer = (
+	$Sounds/FocusSound
+)
 #endregion
 
 #region Character Page References
@@ -707,6 +720,8 @@ func _set_mana_focus_visual(
 	mana_control: Control,
 	is_focused: bool
 	) -> void:
+	focus_sound.play()
+	
 	var mana_bg := mana_control.get_child(0) as Control
 
 	mana_bg.pivot_offset = mana_bg.size / 2.0
@@ -900,6 +915,8 @@ func _on_tree_skill_focused(skill: Skills) -> void:
 	skill_mana_cost_box.modulate.a = 1.0
 	skill_range_box.modulate.a = 1.0
 	actions_box.modulate.a = 1.0
+	
+	focus_sound.play()
 
 func _on_tree_skill_activated(
 	skill: Skills

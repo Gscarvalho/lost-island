@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://b2vke4l3n30t1"]
 
 [ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_g24sk"]
-[ext_resource type="AudioStream" uid="uid://dkxajwd4tq2lk" path="res://Assets/Audio/dragon-studio-water-splash-1.mp3" id="2_g24sk"]
+[ext_resource type="AudioStream" uid="uid://dkxajwd4tq2lk" path="res://Assets/Audio/Skill Sounds/dragon-studio-water-splash-1.mp3" id="2_g24sk"]
 [ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="2_nsl48"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]

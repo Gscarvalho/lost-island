@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://b4l11e1knltcp"]
+[gd_scene load_steps=16 format=4 uid="uid://b4l11e1knltcp"]
 
 [ext_resource type="Script" uid="uid://cp6dyfr1sfrb8" path="res://Scripts/Combat/weapon.gd" id="1_6rbmi"]
 [ext_resource type="Script" uid="uid://c7arumaghh7h7" path="res://Scripts/Player/stat_modifiers.gd" id="2_88x81"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://2bn31fr53nr4" path="res://Assets/Colors/gradient_soft_toon_surface.tres" id="5_80vgk"]
 [ext_resource type="Texture2D" uid="uid://dsu5ldqmy7jb5" path="res://Assets/Colors/gradient_hard_toon_surface.tres" id="6_5tcrh"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="7_2hh7e"]
+[ext_resource type="AudioStream" uid="uid://cdhu6xpqxcqa3" path="res://Assets/Audio/Hit Sounds/universfield-hit-2.mp3" id="8_88x81"]
 
 [sub_resource type="Resource" id="Resource_shmom"]
 script = ExtResource("2_88x81")
@@ -265,3 +266,8 @@ metadata/_custom_type_script = "uid://dxtt2fs3u4dv3"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0040771514, 0.9064589, 0)
 shape = SubResource("BoxShape3D_x7goj")
+
+[node name="HitSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("8_88x81")
+max_distance = 30.0
+bus = &"SFX"

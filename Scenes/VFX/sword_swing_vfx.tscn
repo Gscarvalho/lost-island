@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://donkbfjp6e08u"]
 
 [ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_gql2d"]
-[ext_resource type="AudioStream" uid="uid://c0cxw3mc6yhdr" path="res://Assets/Audio/yodguard-weapon-swing-1.mp3" id="2_gql2d"]
+[ext_resource type="AudioStream" uid="uid://c0cxw3mc6yhdr" path="res://Assets/Audio/Skill Sounds/yodguard-weapon-swing-1.mp3" id="2_gql2d"]
 [ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_x6bj6"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]

@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://bk3xuqctmt7cc"]
 
 [ext_resource type="Script" uid="uid://b4xbv63gkinex" path="res://Scripts/Core/music_manager.gd" id="1_437gn"]
-[ext_resource type="AudioStream" uid="uid://ulvahbx8tfdf" path="res://Assets/Audio/alex-morgan-exploration.mp3" id="2_oeqty"]
-[ext_resource type="AudioStream" uid="uid://bnw5xybld76xp" path="res://Assets/Audio/alex-morgan-battle.mp3" id="3_3xwro"]
-[ext_resource type="AudioStream" uid="uid://dahq30ot8m6uw" path="res://Assets/Audio/alex-morgan-celebration.mp3" id="4_mwlcj"]
-[ext_resource type="AudioStream" uid="uid://dbr6bnlv3ky55" path="res://Assets/Audio/zephiramusic-menu-1.mp3" id="5_3xwro"]
-[ext_resource type="AudioStream" uid="uid://ctpvs61ncnyku" path="res://Assets/Audio/raydellrios-suspense-1.mp3" id="6_mwlcj"]
+[ext_resource type="AudioStream" uid="uid://ulvahbx8tfdf" path="res://Assets/Audio/BG Music/alex-morgan-exploration.mp3" id="2_oeqty"]
+[ext_resource type="AudioStream" uid="uid://bnw5xybld76xp" path="res://Assets/Audio/BG Music/alex-morgan-battle.mp3" id="3_3xwro"]
+[ext_resource type="AudioStream" uid="uid://dahq30ot8m6uw" path="res://Assets/Audio/BG Music/alex-morgan-celebration.mp3" id="4_mwlcj"]
+[ext_resource type="AudioStream" uid="uid://dbr6bnlv3ky55" path="res://Assets/Audio/UI/zephiramusic-menu-1.mp3" id="5_3xwro"]
+[ext_resource type="AudioStream" uid="uid://ctpvs61ncnyku" path="res://Assets/Audio/BG Music/raydellrios-suspense-1.mp3" id="6_mwlcj"]
 
 [node name="MusicManager" type="Node"]
 script = ExtResource("1_437gn")

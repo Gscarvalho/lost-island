@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://xi5dy0yq4ujr"
+path="res://.godot/imported/yodguard-heal-1.mp3-94c00e1dec8d44e1f71f6d78843a5302.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Skill Sounds/yodguard-heal-1.mp3"
+dest_files=["res://.godot/imported/yodguard-heal-1.mp3-94c00e1dec8d44e1f71f6d78843a5302.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

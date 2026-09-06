@@ -8,6 +8,9 @@ extends Node3D
 @onready var hitbox: Hitbox = (
 	$Hitbox
 )
+@onready var hit_sound: AudioStreamPlayer3D = (
+	$HitSound
+)
 
 var user: Node
 
@@ -35,6 +38,8 @@ func prepare_attack(
 func _on_hit_confirmed(
 		_hurtbox: Hurtbox
 	) -> void:
+		hit_sound.play()
+		
 		CombatEffects.apply_impact(
 			hitbox.source_skill
 		)

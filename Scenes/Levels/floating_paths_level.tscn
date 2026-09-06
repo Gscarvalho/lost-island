@@ -240,7 +240,7 @@ debug_color = Color(0.9605219, 4.813075e-07, 0.5182777, 0.41960785)
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="Player" parent="Entities" instance=ExtResource("13_qjmi8")]
-transform = Transform3D(0.69360304, 0, 0.7203575, 0, 1, 0, -0.7203575, 0, 0.69360304, -16.987648, 5.7402377, -7.186079)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.157776, 5.2298856, 1.9799718)
 
 [node name="RogueEnemy" parent="Entities" instance=ExtResource("14_thcn0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.296844, 2.0274882, -34.95732)
@@ -282,5 +282,43 @@ end_position = Vector3(11.644, -4.337, 1.156)
 enter_cost = 1.0
 script = ExtResource("6_rjkis")
 jump_arc_height = 2.0
+
+[node name="TraversalSpot6" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.949734, -26.223892, -89.96102)
+start_position = Vector3(-1.888, 5.583, 6.018)
+end_position = Vector3(3.144, 3.988, -3.464)
+enter_cost = 1.0
+script = ExtResource("6_rjkis")
+jump_arc_height = 1.3
+
+[node name="TraversalSpot8" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.106133, -26.223892, -100.088554)
+start_position = Vector3(1.152, 3.078, 2.738)
+end_position = Vector3(3.144, 3.593, -2.394)
+enter_cost = 1.0
+script = ExtResource("6_rjkis")
+jump_arc_height = 1.0
+
+[node name="TraversalSpot7" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9632835, -24.060074, -93.42881)
+start_position = Vector3(-1.888, 5.863, 4.303)
+end_position = Vector3(-2.226, 3.148, -2.289)
+enter_cost = 1.0
+script = ExtResource("6_rjkis")
+jump_arc_height = 1.3
+
+[node name="TraversalSpot4" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.784355, -26.223892, 24.725468)
+start_position = Vector3(-4.478, 1.443, -1.892)
+end_position = Vector3(3.949, 5.668, 1.511)
+enter_cost = 1.0
+script = ExtResource("6_rjkis")
+
+[node name="TraversalSpot5" type="NavigationLink3D" parent="TraversalLinks"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.232452, -16.642078, 11.714352)
+start_position = Vector3(-0.588, 4.678, -1.992)
+end_position = Vector3(-0.616, -4.227, 5.941)
+enter_cost = 1.0
+script = ExtResource("6_rjkis")
 
 [connection signal="body_entered" from="World/Boundaries/WorldWall/Area3D" to="World/Boundaries/WorldWall" method="_on_area_3d_body_entered"]

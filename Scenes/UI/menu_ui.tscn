@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://ddwgfs476kvdr"]
+[gd_scene load_steps=38 format=3 uid="uid://ddwgfs476kvdr"]
 
 [ext_resource type="Script" uid="uid://pwbugieadr48" path="res://Scripts/UI/menu_ui.gd" id="1_axiel"]
 [ext_resource type="Texture2D" uid="uid://d4et2iboegaqd" path="res://Assets/Images/UI/bar_big.svg" id="2_cuj2c"]
@@ -32,6 +32,8 @@
 [ext_resource type="Resource" uid="uid://cvmxm60irvtdh" path="res://Data/Skills/Water/wave_strike.tres" id="25_jww18"]
 [ext_resource type="Resource" uid="uid://b3h22jf0vul52" path="res://Data/Skills/Water/bubble_shot.tres" id="26_mq557"]
 [ext_resource type="Texture2D" uid="uid://n0nit41e2kec" path="res://Assets/Images/Icons/Input Retro/T_X_RT_Retro.png" id="32_kcy7n"]
+[ext_resource type="AudioStream" uid="uid://dts1oqbvh4fn5" path="res://Assets/Audio/UI/freesound_gamestudio-click-1.mp3" id="33_jww18"]
+[ext_resource type="AudioStream" uid="uid://car0p5x2kuy1h" path="res://Assets/Audio/UI/black_kumizhi-error.mp3" id="33_uosdh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w61pg"]
 bg_color = Color(0.9607843, 0.9607843, 0.9607843, 1)
@@ -1737,3 +1739,15 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="FocusSound" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("33_jww18")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="ErrorSound" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource("33_uosdh")
+volume_db = 3.0
+bus = &"SFX"

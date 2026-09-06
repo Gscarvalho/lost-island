@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://e2dwsenwnqlr" path="res://Scenes/VFX/water_impact_vfx.tscn" id="2_8fne0"]
 [ext_resource type="PackedScene" uid="uid://b34suugt64k8a" path="res://Scenes/VFX/water_vfx.tscn" id="2_eje42"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="3_8fne0"]
-[ext_resource type="AudioStream" uid="uid://dkxajwd4tq2lk" path="res://Assets/Audio/dragon-studio-water-splash-1.mp3" id="4_water_audio"]
+[ext_resource type="AudioStream" uid="uid://dkxajwd4tq2lk" path="res://Assets/Audio/Skill Sounds/dragon-studio-water-splash-1.mp3" id="4_water_audio"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 radius = 1.5

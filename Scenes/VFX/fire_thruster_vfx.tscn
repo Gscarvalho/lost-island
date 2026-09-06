@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://dxfmpemfhpu1p"]
 
-[ext_resource type="AudioStream" uid="uid://ctymfiu2ryofu" path="res://Assets/Audio/floraphonic-fire-2.mp3" id="1_1a4aj"]
+[ext_resource type="AudioStream" uid="uid://ctymfiu2ryofu" path="res://Assets/Audio/Skill Sounds/floraphonic-fire-2.mp3" id="1_1a4aj"]
 [ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_qo735"]
 [ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="2_2x07t"]
 

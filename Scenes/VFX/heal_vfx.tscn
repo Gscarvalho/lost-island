@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://bi11kt1pnys1x"]
 
 [ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_be4w1"]
-[ext_resource type="AudioStream" uid="uid://xi5dy0yq4ujr" path="res://Assets/Audio/yodguard-heal-1.mp3" id="2_be4w1"]
+[ext_resource type="AudioStream" uid="uid://xi5dy0yq4ujr" path="res://Assets/Audio/Skill Sounds/yodguard-heal-1.mp3" id="2_be4w1"]
 [ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_s05v2"]
 
 [sub_resource type="Gradient" id="Gradient_be4w1"]

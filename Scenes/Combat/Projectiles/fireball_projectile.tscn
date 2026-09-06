@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://coiuiv50svkh5" path="res://Scenes/VFX/fireball_vfx.tscn" id="2_1wpyy"]
 [ext_resource type="PackedScene" uid="uid://dwsli0andbsnv" path="res://Scenes/VFX/fire_impact_vfx.tscn" id="2_qkwy0"]
 [ext_resource type="Script" uid="uid://dxtt2fs3u4dv3" path="res://Scripts/Combat/hitbox.gd" id="2_qqkdr"]
-[ext_resource type="AudioStream" uid="uid://ip14ipqnu011" path="res://Assets/Audio/yodguard-fire-1.mp3" id="4_fire_audio"]
+[ext_resource type="AudioStream" uid="uid://ip14ipqnu011" path="res://Assets/Audio/Skill Sounds/yodguard-fire-1.mp3" id="4_fire_audio"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ryes3"]
 

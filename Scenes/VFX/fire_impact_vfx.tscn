@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dwsli0andbsnv"]
 
 [ext_resource type="Script" uid="uid://0gg72w0jqi3q" path="res://Scripts/VFX/vfx_instance.gd" id="1_cvubt"]
-[ext_resource type="AudioStream" uid="uid://bgxbvxwb28vxp" path="res://Assets/Audio/dragon-fire-impact-1.mp3" id="2_tib48"]
+[ext_resource type="AudioStream" uid="uid://bgxbvxwb28vxp" path="res://Assets/Audio/Skill Sounds/dragon-fire-impact-1.mp3" id="2_tib48"]
 [ext_resource type="Script" uid="uid://8mvoj7murbcx" path="res://Scripts/VFX/vfx_cast_sound.gd" id="3_d6t4m"]
 
 [sub_resource type="Gradient" id="Gradient_1wpyy"]
