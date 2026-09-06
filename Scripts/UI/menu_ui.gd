@@ -31,6 +31,15 @@ enum MenuPage {
 @onready var focus_sound: AudioStreamPlayer = (
 	$Sounds/FocusSound
 )
+@onready var skill_unlock_sound: AudioStreamPlayer = (
+	$Sounds/SkillUnlockSound
+)
+@onready var panel_open_sound: AudioStreamPlayer = (
+	$Sounds/PanelOpenSound
+)
+@onready var panel_close_sound: AudioStreamPlayer = (
+	$Sounds/PanelCloseSound
+)
 #endregion
 
 #region Character Page References
@@ -271,6 +280,7 @@ func _connect_signals() -> void:
 			SkillLoadout.Slot.RT_B
 		)
 	)
+
 
 func _resolve_player_references() -> void:
 	player_controller = (
@@ -933,6 +943,8 @@ func _on_tree_skill_activated(
 		return
 
 	if progression.try_unlock_skill(skill):
+		skill_unlock_sound.play()
+		
 		active_skill_tree.refresh_unlock_states(
 			progression
 		)
@@ -1098,7 +1110,9 @@ func _open_loadout_popup(
 
 		loadout_popup_open = true
 		loadout_popup.visible = true
-
+		
+		panel_open_sound.play()
+		
 		# General loadout-editing state.
 		held_loadout_skill = null
 		held_loadout_source_slot = -1
@@ -1146,6 +1160,8 @@ func _close_loadout_popup() -> void:
 
 	loadout_popup_open = false
 	loadout_popup.visible = false
+	
+	panel_close_sound.play()
 
 	held_loadout_skill = null
 	held_loadout_source_slot = -1
